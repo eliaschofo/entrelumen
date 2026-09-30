@@ -4,532 +4,507 @@
   "act": "III",
   "icon": "entrelumen:growth_altar",
   "emblem": "entrelumen:textures/item/heart_of_heliodor.png",
-  "title": {
-    "en_us": "The Six Altars of Heliodor",
-    "es_es": "Los seis altares de Heliodor"
-  },
+  "title": {"en_us": "The Six Altars of Heliodor", "es_es": "Los seis altares de Heliodor"},
   "subtitle": {
     "en_us": "Earned in the Atlas, fed with fuel and left to work. And copied, if you love them.",
     "es_es": "Se ganan en el Atlas, se alimentan y se dejan trabajando. Y se copian, si los querés."
   },
+  "presentation": 2,
+  "art": [
+    {"id": "title", "text": {"en_us": "The Six Altars of Heliodor", "es_es": "Los seis altares de Heliodor"}, "x": -2.0, "y": -12.4, "scale": 3, "align": "start", "tint": "#E8B04A"},
+    {"id": "ground", "frame": [4.0, -11.0, 28.4, 12.2], "color": "#5E8C4A", "alpha": 70, "fill": "#3E6B35", "fill_alpha": 40, "corners": false, "reveal": "entrelumen_altars_welcome", "order": -9, "sketch": true},
+    {"id": "meadow", "scatter": ["minecraft:textures/block/poppy.png", "minecraft:textures/block/dandelion.png", "minecraft:textures/block/cornflower.png", "minecraft:textures/block/oxeye_daisy.png", "minecraft:textures/block/azure_bluet.png"], "region": [4.4, -10.6, 28.0, 11.8], "count": 18, "size": [0.35, 0.5], "seed": 11, "reveal": "entrelumen_altars_welcome", "order": -7, "avoid": [[10, 0, 8.0], [17.71, -4.45, 2.6], [17.71, 4.45, 1.9], [20.4, 0.0, 1.5], [21.6, -4.7, 1.4], [25.8, 0.2, 2.0], [6.0, 9.6, 1.4], [10.0, 9.0, 1.3], [2.55, 4.3, 1.3], [10.0, -8.6, 1.3], [14.6, 8.0, 1.2], [18.4, -9.4, 1.2], [2.4, -4.9, 1.4], [2.4, -9.3, 1.4]]},
+    {"id": "shade", "glow": [10.0, 0.0], "r": 7.2, "tint": "#0E2A33", "alpha": 190, "reveal": "entrelumen_altars_welcome", "order": -8},
+    {"id": "rim", "path": [[16.4, 0.0], [16.18, 1.66], [15.54, 3.2], [14.53, 4.53], [13.2, 5.54], [11.66, 6.18], [10.0, 6.4], [8.34, 6.18], [6.8, 5.54], [5.47, 4.53], [4.46, 3.2], [3.82, 1.66], [3.6, 0.0], [3.82, -1.66], [4.46, -3.2], [5.47, -4.53], [6.8, -5.54], [8.34, -6.18], [10.0, -6.4], [11.66, -6.18], [13.2, -5.54], [14.53, -4.53], [15.54, -3.2], [16.18, -1.66]], "closed": true, "smooth": 1, "texture": "minecraft:textures/block/cut_copper.png", "width": 0.78, "step": 1.4, "reveal": "entrelumen_altars_welcome", "sketch": true, "order": -6},
+    {"id": "glass", "path": [[15.75, 0.0], [15.55, 1.49], [14.98, 2.87], [14.07, 4.07], [12.88, 4.98], [11.49, 5.55], [10.0, 5.75], [8.51, 5.55], [7.13, 4.98], [5.93, 4.07], [5.02, 2.87], [4.45, 1.49], [4.25, 0.0], [4.45, -1.49], [5.02, -2.87], [5.93, -4.07], [7.12, -4.98], [8.51, -5.55], [10.0, -5.75], [11.49, -5.55], [12.88, -4.98], [14.07, -4.07], [14.98, -2.88], [15.55, -1.49]], "closed": true, "smooth": 1, "texture": "minecraft:textures/block/light_blue_stained_glass.png", "width": 0.5, "step": 1.3, "reveal": "entrelumen_altars_common", "sketch": true, "order": -6, "alpha": 210},
+    {"id": "hub", "picture": "entrelumen:textures/block/altar_plinth_top.png", "x": 10.0, "y": 0.0, "w": 2.1, "h": 2.1, "reveal": "entrelumen_altars_common", "sketch": true, "order": -5},
+    {"id": "hub_glow", "glow": [10.0, 0.0], "r": 2.6, "tint": "#8FD6C8", "alpha": 110, "reveal": "entrelumen_altars_common", "order": -4},
+    {"id": "road_in", "path": [[1.3, 0.0], [3.6, 0.0]], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.8, "step": 0.8, "reveal": "entrelumen_altars_welcome", "sketch": true, "order": -6},
+    {"id": "inlay_in", "through": [[3.6, 0.0], "entrelumen_altars_common"], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": true, "sketch": true, "order": -4},
+    {"id": "spoke_growth", "through": ["entrelumen_altars_common", "entrelumen_altars_growth"], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": true, "sketch": true, "order": -4},
+    {"id": "spoke_time", "through": ["entrelumen_altars_common", "entrelumen_altars_time"], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": true, "sketch": true, "order": -4},
+    {"id": "spoke_levelling", "through": ["entrelumen_altars_common", "entrelumen_altars_levelling"], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": true, "sketch": true, "order": -4},
+    {"id": "spoke_peace", "through": ["entrelumen_altars_common", "entrelumen_altars_peace"], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": true, "sketch": true, "order": -4},
+    {"id": "spoke_repose", "through": ["entrelumen_altars_common", "entrelumen_altars_repose"], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": true, "sketch": true, "order": -4},
+    {"id": "arc_renewal", "through": ["entrelumen_altars_time", [12.1, -3.64], "entrelumen_altars_renewal"], "smooth": 4, "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": true, "sketch": true, "order": -4},
+    {"id": "pad_growth", "picture": "entrelumen:textures/block/growth_altar_top.png", "x": 6.8, "y": -1.85, "w": 2.0, "h": 2.0, "reveal": "entrelumen_altars_growth", "sketch": true, "order": -3},
+    {"id": "bowl_growth", "picture": "entrelumen:textures/block/enves_brazier_bell_top.png", "x": 6.92, "y": -3.94, "w": 0.8, "h": 0.8, "tint": "#C77B3A", "reveal": "entrelumen_altars_growth", "order": -2},
+    {"id": "fuel_growth", "picture": "minecraft:textures/block/bone_block_side.png", "x": 6.92, "y": -3.94, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_growth", "order": -1},
+    {"id": "flame_growth", "sprite": "minecraft:block/campfire_fire", "x": 6.92, "y": -4.44, "w": 0.62, "h": 0.8, "reveal": "entrelumen_altars_growth", "order": 0},
+    {"id": "glow_growth", "glow": [6.92, -4.39], "r": 1.25, "tint": "#FFB347", "alpha": 150, "reveal": "entrelumen_altars_growth", "order": 1},
+    {"id": "pad_time", "picture": "entrelumen:textures/block/time_altar_top.png", "x": 10.0, "y": -3.7, "w": 2.0, "h": 2.0, "reveal": "entrelumen_altars_time", "sketch": true, "order": -3},
+    {"id": "bowl_time", "picture": "entrelumen:textures/block/enves_brazier_bell_top.png", "x": 11.87, "y": -4.64, "w": 0.8, "h": 0.8, "tint": "#C77B3A", "reveal": "entrelumen_altars_time", "order": -2},
+    {"id": "fuel_time", "picture": "minecraft:textures/item/amethyst_shard.png", "x": 11.87, "y": -4.64, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_time", "order": -1},
+    {"id": "flame_time", "sprite": "minecraft:block/campfire_fire", "x": 11.87, "y": -5.14, "w": 0.62, "h": 0.8, "reveal": "entrelumen_altars_time", "order": 0},
+    {"id": "glow_time", "glow": [11.87, -5.09], "r": 1.25, "tint": "#FFB347", "alpha": 150, "reveal": "entrelumen_altars_time", "order": 1},
+    {"id": "pad_renewal", "picture": "entrelumen:textures/block/renewal_altar_top.png", "x": 13.2, "y": -1.85, "w": 2.0, "h": 2.0, "reveal": "entrelumen_altars_renewal", "sketch": true, "order": -3},
+    {"id": "bowl_renewal", "picture": "entrelumen:textures/block/enves_brazier_bell_top.png", "x": 14.95, "y": -0.7, "w": 0.8, "h": 0.8, "tint": "#C77B3A", "reveal": "entrelumen_altars_renewal", "order": -2},
+    {"id": "fuel_renewal", "picture": "minecraft:textures/item/bone_meal.png", "x": 14.95, "y": -0.7, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_renewal", "order": -1},
+    {"id": "flame_renewal", "sprite": "minecraft:block/campfire_fire", "x": 14.95, "y": -1.2, "w": 0.62, "h": 0.8, "reveal": "entrelumen_altars_renewal", "order": 0},
+    {"id": "glow_renewal", "glow": [14.95, -1.15], "r": 1.25, "tint": "#FFB347", "alpha": 150, "reveal": "entrelumen_altars_renewal", "order": 1},
+    {"id": "pad_levelling", "picture": "entrelumen:textures/block/terraform_altar_top.png", "x": 13.2, "y": 1.85, "w": 2.0, "h": 2.0, "reveal": "entrelumen_altars_levelling", "sketch": true, "order": -3},
+    {"id": "bowl_levelling", "picture": "entrelumen:textures/block/enves_brazier_bell_top.png", "x": 13.08, "y": 3.94, "w": 0.8, "h": 0.8, "tint": "#C77B3A", "reveal": "entrelumen_altars_levelling", "order": -2},
+    {"id": "fuel_levelling", "picture": "minecraft:textures/item/coal.png", "x": 13.08, "y": 3.94, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_levelling", "order": -1},
+    {"id": "flame_levelling", "sprite": "minecraft:block/campfire_fire", "x": 13.08, "y": 3.44, "w": 0.62, "h": 0.8, "reveal": "entrelumen_altars_levelling", "order": 0},
+    {"id": "glow_levelling", "glow": [13.08, 3.49], "r": 1.25, "tint": "#FFB347", "alpha": 150, "reveal": "entrelumen_altars_levelling", "order": 1},
+    {"id": "pad_peace", "picture": "entrelumen:textures/block/peace_altar_top.png", "x": 10.0, "y": 3.7, "w": 2.0, "h": 2.0, "reveal": "entrelumen_altars_peace", "sketch": true, "order": -3},
+    {"id": "bowl_peace", "picture": "entrelumen:textures/block/enves_brazier_bell_top.png", "x": 8.13, "y": 4.64, "w": 0.8, "h": 0.8, "tint": "#C77B3A", "reveal": "entrelumen_altars_peace", "order": -2},
+    {"id": "fuel_peace", "picture": "minecraft:textures/item/candle.png", "x": 8.13, "y": 4.64, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_peace", "order": -1},
+    {"id": "flame_peace", "sprite": "minecraft:block/campfire_fire", "x": 8.13, "y": 4.14, "w": 0.62, "h": 0.8, "reveal": "entrelumen_altars_peace", "order": 0},
+    {"id": "glow_peace", "glow": [8.13, 4.19], "r": 1.25, "tint": "#FFB347", "alpha": 150, "reveal": "entrelumen_altars_peace", "order": 1},
+    {"id": "pad_repose", "picture": "entrelumen:textures/block/repose_altar_top.png", "x": 6.8, "y": 1.85, "w": 2.0, "h": 2.0, "reveal": "entrelumen_altars_repose", "sketch": true, "order": -3},
+    {"id": "bowl_repose", "picture": "entrelumen:textures/block/enves_brazier_bell_top.png", "x": 5.05, "y": 0.7, "w": 0.8, "h": 0.8, "tint": "#C77B3A", "reveal": "entrelumen_altars_repose", "order": -2},
+    {"id": "fuel_repose", "picture": "minecraft:textures/item/experience_bottle.png", "x": 5.05, "y": 0.7, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_repose", "order": -1},
+    {"id": "flame_repose", "sprite": "minecraft:block/campfire_fire", "x": 5.05, "y": 0.2, "w": 0.62, "h": 0.8, "reveal": "entrelumen_altars_repose", "order": 0},
+    {"id": "glow_repose", "glow": [5.05, 0.25], "r": 1.25, "tint": "#FFB347", "alpha": 150, "reveal": "entrelumen_altars_repose", "order": 1},
+    {"id": "grid_frame", "frame": [5.5, -9.4, 7.5, -7.4], "color": "#E8DCB5", "thickness_px": 1.5, "alpha": 90, "corners": false, "sketch": true, "reveal": "entrelumen_altars_duplicate"},
+    {"id": "grid", "mosaic": [5.6, -9.3], "cell": 0.62, "rows": ["DCD", "CAC", "DCD"], "reveal": "entrelumen_altars_duplicate", "order": -3, "legend": {"D": "minecraft:textures/item/diamond.png", "C": "entrelumen:textures/item/propagation_core.png", "A": "entrelumen:textures/block/growth_altar_top.png"}},
+    {"id": "grid_x2", "text": {"en_us": "×2", "es_es": "×2"}, "x": 8.2, "y": -8.350000000000001, "scale": 3, "tint": "#E8B04A", "reveal": "entrelumen_altars_duplicate"},
+    {"id": "dye_white", "picture": "minecraft:textures/item/white_dye.png", "x": 17.71, "y": -6.05, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_light_gray", "picture": "minecraft:textures/item/light_gray_dye.png", "x": 18.32, "y": -5.93, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_gray", "picture": "minecraft:textures/item/gray_dye.png", "x": 18.84, "y": -5.58, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_black", "picture": "minecraft:textures/item/black_dye.png", "x": 19.19, "y": -5.06, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_brown", "picture": "minecraft:textures/item/brown_dye.png", "x": 19.31, "y": -4.45, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_red", "picture": "minecraft:textures/item/red_dye.png", "x": 19.19, "y": -3.84, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_orange", "picture": "minecraft:textures/item/orange_dye.png", "x": 18.84, "y": -3.32, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_yellow", "picture": "minecraft:textures/item/yellow_dye.png", "x": 18.32, "y": -2.97, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_lime", "picture": "minecraft:textures/item/lime_dye.png", "x": 17.71, "y": -2.85, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_green", "picture": "minecraft:textures/item/green_dye.png", "x": 17.1, "y": -2.97, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_cyan", "picture": "minecraft:textures/item/cyan_dye.png", "x": 16.58, "y": -3.32, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_light_blue", "picture": "minecraft:textures/item/light_blue_dye.png", "x": 16.23, "y": -3.84, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_blue", "picture": "minecraft:textures/item/blue_dye.png", "x": 16.11, "y": -4.45, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_purple", "picture": "minecraft:textures/item/purple_dye.png", "x": 16.23, "y": -5.06, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_magenta", "picture": "minecraft:textures/item/magenta_dye.png", "x": 16.58, "y": -5.58, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "dye_pink", "picture": "minecraft:textures/item/pink_dye.png", "x": 17.1, "y": -5.93, "w": 0.5, "h": 0.5, "reveal": "entrelumen_altars_renewal_limits", "order": -2},
+    {"id": "garden", "scatter": ["minecraft:textures/block/lily_of_the_valley.png", "minecraft:textures/block/poppy.png", "minecraft:textures/block/dandelion.png", "minecraft:textures/block/cornflower.png"], "region": [15.110000000000001, -7.050000000000001, 20.310000000000002, -1.85], "count": 8, "size": [0.35, 0.5], "seed": 4, "reveal": "entrelumen_altars_renewal_limits", "order": -3, "avoid": [[17.71, -4.45, 1.25]]},
+    {"id": "strata", "mosaic": [16.810000000000002, 5.4], "cell": 0.6, "rows": ["MMM", "DDD", "SSS"], "reveal": "entrelumen_altars_levelling_matter", "order": -3, "legend": {"M": "minecraft:textures/block/moss_block.png", "D": "minecraft:textures/block/dirt.png", "S": "minecraft:textures/block/stone.png"}},
+    {"id": "square_0", "frame": [6.6, -3.4, 13.4, 3.4], "color": "#F2C14E", "thickness_px": 1.5, "alpha": 130, "corners": false, "reveal": "entrelumen_altars_symmetry", "order": 2},
+    {"id": "square_1", "frame": [3.5999999999999996, -6.4, 16.4, 6.4], "color": "#F2C14E", "thickness_px": 1.5, "alpha": 110, "corners": false, "reveal": "entrelumen_altars_symmetry", "order": 2},
+    {"id": "shards", "scatter": ["minecraft:textures/item/amethyst_shard.png"], "region": [6.8, -6.1, 13.2, -5.1], "count": 5, "size": [0.35, 0.45], "seed": 2, "reveal": "entrelumen_altars_time", "order": -2, "avoid": [[11.87, -4.64, 0.9]]},
+    {"id": "road_sym", "through": ["entrelumen_altars_symmetry", "entrelumen_altars_close"], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": ["entrelumen_altars_symmetry"], "sketch": true, "order": -6},
+    {"id": "road_claims", "through": ["entrelumen_altars_claims", "entrelumen_altars_close"], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": ["entrelumen_altars_claims"], "sketch": true, "order": -6},
+    {"id": "road_tip", "through": ["entrelumen_altars_tip_farm", [12.5, 11.9], [19.8, 10.6], [24.8, 5.6], "entrelumen_altars_close"], "smooth": 3, "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": ["entrelumen_altars_tip_farm", "entrelumen_altars_tip_farm", "entrelumen_altars_tip_farm", "entrelumen_altars_tip_farm"], "sketch": true, "order": -6},
+    {"id": "sun", "picture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 25.8, "y": -4.6, "w": 2.6, "h": 2.6, "reveal": "entrelumen_altars_close", "order": -3},
+    {"id": "sun_glow", "glow": [25.8, -4.6], "r": 3.6, "alpha": 90, "reveal": "entrelumen_altars_close", "order": -4},
+    {"id": "dawn", "glow": [10.0, 0.0], "r": 9.0, "tint": "#FFE9A8", "alpha": 60, "reveal": "entrelumen_altars_close", "order": 3},
+    {"id": "candle_0", "picture": "minecraft:textures/item/candle.png", "x": 15.93, "y": 2.4, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_1", "picture": "minecraft:textures/item/candle.png", "x": 12.5, "y": 5.89, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_2", "picture": "minecraft:textures/item/candle.png", "x": 7.6, "y": 5.93, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_3", "picture": "minecraft:textures/item/candle.png", "x": 4.11, "y": 2.5, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_4", "picture": "minecraft:textures/item/candle.png", "x": 4.07, "y": -2.4, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_5", "picture": "minecraft:textures/item/candle.png", "x": 7.5, "y": -5.89, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_6", "picture": "minecraft:textures/item/candle.png", "x": 12.4, "y": -5.93, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_7", "picture": "minecraft:textures/item/candle.png", "x": 15.89, "y": -2.5, "w": 0.42, "h": 0.42, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_glow_0", "glow": [15.93, 2.4], "r": 0.6, "tint": "#FFD98A", "alpha": 130, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_glow_1", "glow": [12.5, 5.89], "r": 0.6, "tint": "#FFD98A", "alpha": 130, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_glow_2", "glow": [7.6, 5.93], "r": 0.6, "tint": "#FFD98A", "alpha": 130, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_glow_3", "glow": [4.11, 2.5], "r": 0.6, "tint": "#FFD98A", "alpha": 130, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_glow_4", "glow": [4.07, -2.4], "r": 0.6, "tint": "#FFD98A", "alpha": 130, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_glow_5", "glow": [7.5, -5.89], "r": 0.6, "tint": "#FFD98A", "alpha": 130, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_glow_6", "glow": [12.4, -5.93], "r": 0.6, "tint": "#FFD98A", "alpha": 130, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "candle_glow_7", "glow": [15.89, -2.5], "r": 0.6, "tint": "#FFD98A", "alpha": 130, "reveal": "entrelumen_altars_toy_candles", "order": 1},
+    {"id": "sprouts", "scatter": ["minecraft:textures/block/wheat_stage7.png", "minecraft:textures/block/carrots_stage3.png", "minecraft:textures/block/oak_sapling.png", "minecraft:textures/block/short_grass.png"], "region": [4.6, -10.4, 27.8, 11.6], "count": 14, "size": [0.4, 0.55], "seed": 21, "reveal": "entrelumen_altars_toy_bonemeal", "order": -6, "avoid": [[10, 0, 8.0], [17.71, -4.45, 2.6], [17.71, 4.45, 1.9], [20.4, 0.0, 1.5], [21.6, -4.7, 1.4], [25.8, 0.2, 2.0], [6.0, 9.6, 1.4], [10.0, 9.0, 1.3], [2.55, 4.3, 1.3], [10.0, -8.6, 1.3], [14.6, 8.0, 1.2], [18.4, -9.4, 1.2], [2.4, -4.9, 1.4], [2.4, -9.3, 1.4]]}
+  ],
   "quests": [
     {
-      "key": "entrelumen_altars_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Machines That Remember the Land",
-        "Six blocks you place, feed and leave working: they grow gardens, shape the land, keep monsters away, speed up crops, slow enemies and mend gear. None is crafted from scratch: the Atlas grants one of each in acts III and IV, and an original can be copied.\n\nHeliodor's groundskeepers, still clocking in."
-      ],
-      "es_es": [
-        "Máquinas que recuerdan la tierra",
-        "Seis bloques que ponés, alimentás y dejás trabajando: hacen crecer jardines, dan forma a la tierra, alejan monstruos, apuran cultivos, frenan enemigos y reparan equipo. Ninguno se fabrica desde cero: el Atlas da uno de cada uno en los actos III y IV, y un original se puede copiar.\n\nLos jardineros de Heliodor, todavía fichando."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"
-      ]
+      "key": "entrelumen_altars_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0.0, "y": 0.0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Machines That Remember the Land", "subtitle": "Heliodor's groundskeepers, still clocking in.",
+        "text": ["[lead] Six blocks you place, feed and leave working.",
+                 "[li] Renewal grows gardens",
+                 "[li] Levelling shapes the land",
+                 "[li] Peace keeps monsters away",
+                 "[li] Growth speeds up crops",
+                 "[li] Time slows enemies",
+                 "[li] Repose mends gear",
+                 "{page}",
+                 "None is crafted from scratch: the Atlas grants one of each in acts [hl|III] and [hl|IV], and an original can be copied."]},
+      "es_es": {"title": "Máquinas que recuerdan la tierra", "subtitle": "Los jardineros de Heliodor, todavía fichando.",
+        "text": ["[lead] Seis bloques que ponés, alimentás y dejás trabajando.",
+                 "[li] Renovación hace crecer jardines",
+                 "[li] Nivelación da forma a la tierra",
+                 "[li] Paz aleja monstruos",
+                 "[li] Crecimiento apura cultivos",
+                 "[li] Tiempo frena enemigos",
+                 "[li] Reposo repara equipo",
+                 "{page}",
+                 "Ninguno se fabrica desde cero: el Atlas da uno de cada uno en los actos [hl|III] y [hl|IV], y un original se puede copiar."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"]
     },
     {
-      "key": "entrelumen_altars_common",
-      "deps": [
-        "entrelumen_altars_welcome"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_altars_common", "deps": ["entrelumen_altars_welcome"], "type": "checkmark", "layout": {"x": 10.0, "y": 0.0, "size": 1.5, "shape": "square"}, "hide_lines": true,
       "icon": "entrelumen:peace_altar",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "How Every Altar Works",
-        "&eFuel in your main hand&r feeds it; hoppers and pipes can too, but nothing comes out. An &eempty hand&r shows its status and outlines its area. &eCrouching with an empty hand&r pauses or resumes it (Levelling and Repose use it differently).\n\nFuel burns only while it works and its area is loaded. Broken, it drops with its fuel and contents."
-      ],
-      "es_es": [
-        "Cómo funciona todo altar",
-        "El &ecombustible en la mano principal&r lo alimenta; tolvas y caños también pueden, pero no sale nada. La &emano vacía&r muestra su estado y marca su área. &eAgachado con la mano vacía&r lo pausás o reanudás (Nivelación y Reposo lo usan distinto).\n\nEl combustible se quema sólo mientras trabaja y su área está cargada. Roto, suelta el altar con su combustible y su contenido."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/AltarType.java"
-      ]
+      "en_us": {"title": "How Every Altar Works",
+        "text": ["[lead] Fuel in your main hand feeds it.",
+                 "[item:minecraft:hopper|Hoppers] and pipes can too, but nothing comes out.",
+                 "[li] An [hl|empty hand] shows its status and outlines its area",
+                 "[li] [hl|Crouching with an empty hand] pauses or resumes it (Levelling and Repose use it differently)",
+                 "Fuel burns only while it works and its area is loaded.",
+                 "{page}",
+                 "Broken, it drops with its fuel and contents."]},
+      "es_es": {"title": "Cómo funciona todo altar",
+        "text": ["[lead] El combustible en la mano principal lo alimenta.",
+                 "[item:minecraft:hopper|Tolvas] y caños también pueden, pero no sale nada.",
+                 "[li] La [hl|mano vacía] muestra su estado y marca su área",
+                 "[li] [hl|Agachado con la mano vacía] lo pausás o reanudás (Nivelación y Reposo lo usan distinto)",
+                 "El combustible se quema sólo mientras trabaja y su área está cargada.",
+                 "{page}",
+                 "Roto, suelta el altar con su combustible y su contenido."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/AltarType.java"]
     },
     {
-      "key": "entrelumen_altars_rewards",
-      "deps": [
-        "entrelumen_altars_welcome"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_altars_rewards", "deps": ["entrelumen_altars_welcome"], "type": "checkmark", "layout": {"x": 2.4, "y": -4.9, "size": 1.25, "shape": "pentagon"},
       "icon": "entrelumen:atlas",
-      "layout": {
-        "x": 3,
-        "y": -3.5,
-        "size": 1.25,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Where Each Altar Comes From",
-        "One per Atlas project, once per campaign, to whoever delivers:\n- act III: &ePeace&r (Routing Matrix), &eGrowth&r (Propagation Core) and &eLevelling&r (Handling Core);\n- act IV: &eRenewal&r (Ecosystem Capsule), &eRepose&r (Horizon Chart) and &eTime&r (Containment Seal)."
-      ],
-      "es_es": [
-        "De dónde sale cada altar",
-        "Uno por proyecto del Atlas, una vez por campaña, para quien entrega:\n- acto III: &ePaz&r (Matriz de distribución), &eCrecimiento&r (Núcleo de propagación) y &eNivelación&r (Núcleo de manipulación);\n- acto IV: &eRenovación&r (Cápsula de ecosistema), &eReposo&r (Carta de horizontes) y &eTiempo&r (Sello de contención)."
-      ],
-      "sources": [
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
-        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json",
-        "repo:companion/src/main/resources/assets/entrelumen/lang/es_es.json"
-      ]
+      "en_us": {"title": "Where Each Altar Comes From",
+        "text": ["[lead] One per Atlas project, once per campaign, to whoever delivers.",
+                 "[li:entrelumen:routing_matrix] [hl|III] Peace: [item:entrelumen:routing_matrix|Routing Matrix]",
+                 "[li:entrelumen:propagation_core] [hl|III] Growth: [item:entrelumen:propagation_core|Propagation Core]",
+                 "[li:entrelumen:handling_core] [hl|III] Levelling: [item:entrelumen:handling_core|Handling Core]",
+                 "[li:entrelumen:ecosystem_capsule] [hl|IV] Renewal: [item:entrelumen:ecosystem_capsule|Ecosystem Capsule]",
+                 "[li:entrelumen:horizon_chart] [hl|IV] Repose: [item:entrelumen:horizon_chart|Horizon Chart]",
+                 "[li:entrelumen:containment_seal] [hl|IV] Time: [item:entrelumen:containment_seal|Containment Seal]"]},
+      "es_es": {"title": "De dónde sale cada altar",
+        "text": ["[lead] Uno por proyecto del Atlas, una vez por campaña, para quien entrega.",
+                 "[li:entrelumen:routing_matrix] [hl|III] Paz: [item:entrelumen:routing_matrix|Matriz de distribución]",
+                 "[li:entrelumen:propagation_core] [hl|III] Crecimiento: [item:entrelumen:propagation_core|Núcleo de propagación]",
+                 "[li:entrelumen:handling_core] [hl|III] Nivelación: [item:entrelumen:handling_core|Núcleo de manipulación]",
+                 "[li:entrelumen:ecosystem_capsule] [hl|IV] Renovación: [item:entrelumen:ecosystem_capsule|Cápsula de ecosistema]",
+                 "[li:entrelumen:horizon_chart] [hl|IV] Reposo: [item:entrelumen:horizon_chart|Carta de horizontes]",
+                 "[li:entrelumen:containment_seal] [hl|IV] Tiempo: [item:entrelumen:containment_seal|Sello de contención]"]},
+      "sources": ["repo:companion/src/main/resources/data/entrelumen/campaign/projects.json", "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json", "repo:companion/src/main/resources/assets/entrelumen/lang/es_es.json"]
     },
     {
-      "key": "entrelumen_altars_duplicate",
-      "deps": [
-        "entrelumen_altars_rewards"
-      ],
-      "type": "item",
-      "item": "minecraft:diamond",
-      "layout": {
-        "x": 6,
-        "y": -3.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Copies, Like Smithing Templates",
-        "Altar in the center, its act's component in the four side slots, diamonds in the corners: two altars come out. Peace takes a Routing Matrix; Growth and Renewal a Propagation Core; Levelling a Handling Core; Repose a Horizon Chart; Time a Containment Seal.\n\nLike a smithing template: the original survives, the copy costs the act."
-      ],
-      "es_es": [
-        "Copias, como las plantillas",
-        "Altar en el centro, el componente de su acto en los cuatro casilleros laterales, diamantes en las esquinas: salen dos altares. Paz lleva Matriz de distribución; Crecimiento y Renovación, Núcleo de propagación; Nivelación, Núcleo de manipulación; Reposo, Carta de horizontes; Tiempo, Sello de contención.\n\nComo una plantilla de herrería: el original sobrevive y la copia cuesta el acto."
-      ],
-      "sources": [
-        "repo:companion/src/main/resources/data/entrelumen/recipe/peace_altar_duplication.json",
-        "repo:companion/src/main/resources/data/entrelumen/recipe/growth_altar_duplication.json",
-        "repo:companion/src/main/resources/data/entrelumen/recipe/terraform_altar_duplication.json",
-        "repo:companion/src/main/resources/data/entrelumen/recipe/renewal_altar_duplication.json",
-        "repo:companion/src/main/resources/data/entrelumen/recipe/repose_altar_duplication.json",
-        "repo:companion/src/main/resources/data/entrelumen/recipe/time_altar_duplication.json",
-        "repo:docs/design/ark-altars.md"
-      ]
+      "key": "entrelumen_altars_duplicate", "deps": ["entrelumen_altars_rewards"], "type": "item", "item": "minecraft:diamond", "layout": {"x": 2.4, "y": -9.3, "size": 1.25, "shape": "circle"},
+      "en_us": {"title": "Copies, Like Smithing Templates",
+        "text": ["[lead] Altar in the center, [item:minecraft:diamond|diamonds] in the corners: two altars come out.",
+                 "The four side slots take the component of the altar's act:",
+                 "[li:entrelumen:routing_matrix] Peace: [item:entrelumen:routing_matrix|Routing Matrix]",
+                 "[li:entrelumen:propagation_core] Growth and Renewal: [item:entrelumen:propagation_core|Propagation Core]",
+                 "[li:entrelumen:handling_core] Levelling: [item:entrelumen:handling_core|Handling Core]",
+                 "[li:entrelumen:horizon_chart] Repose: [item:entrelumen:horizon_chart|Horizon Chart]",
+                 "[li:entrelumen:containment_seal] Time: [item:entrelumen:containment_seal|Containment Seal]",
+                 "{page}",
+                 "Like a smithing template: the original survives, the copy costs the act."]},
+      "es_es": {"title": "Copias, como las plantillas",
+        "text": ["[lead] Altar en el centro, [item:minecraft:diamond|diamantes] en las esquinas: salen dos altares.",
+                 "Los cuatro casilleros laterales llevan el componente del acto del altar:",
+                 "[li:entrelumen:routing_matrix] Paz: [item:entrelumen:routing_matrix|Matriz de distribución]",
+                 "[li:entrelumen:propagation_core] Crecimiento y Renovación: [item:entrelumen:propagation_core|Núcleo de propagación]",
+                 "[li:entrelumen:handling_core] Nivelación: [item:entrelumen:handling_core|Núcleo de manipulación]",
+                 "[li:entrelumen:horizon_chart] Reposo: [item:entrelumen:horizon_chart|Carta de horizontes]",
+                 "[li:entrelumen:containment_seal] Tiempo: [item:entrelumen:containment_seal|Sello de contención]",
+                 "{page}",
+                 "Como una plantilla de herrería: el original sobrevive y la copia cuesta el acto."]},
+      "sources": ["repo:companion/src/main/resources/data/entrelumen/recipe/peace_altar_duplication.json", "repo:companion/src/main/resources/data/entrelumen/recipe/growth_altar_duplication.json", "repo:companion/src/main/resources/data/entrelumen/recipe/terraform_altar_duplication.json", "repo:companion/src/main/resources/data/entrelumen/recipe/renewal_altar_duplication.json", "repo:companion/src/main/resources/data/entrelumen/recipe/repose_altar_duplication.json", "repo:companion/src/main/resources/data/entrelumen/recipe/time_altar_duplication.json", "repo:docs/design/ark-altars.md"]
     },
     {
-      "key": "entrelumen_altars_peace",
-      "deps": [
-        "entrelumen_altars_common"
-      ],
-      "type": "item",
-      "item": "entrelumen:peace_altar",
-      "layout": {
-        "x": 6,
-        "y": 3,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Altar of Peace",
-        "Burns &ecandles&r, 10 minutes each. While lit, no hostile mob spawns naturally in the &e129-block cube&r around it: 64 blocks each way, up and down included, so a deep mine below still bites. It replaces Torchmaster's Mega Torch.\n\nAbout six candles an hour keep a base safe; bees make the wax renewable."
-      ],
-      "es_es": [
-        "Altar de Paz",
-        "Quema &evelas&r, 10 minutos cada una. Prendido, ningún mob hostil aparece naturalmente en el &ecubo de 129 bloques&r a su alrededor: 64 bloques para cada lado, arriba y abajo incluidos, así que una mina profunda sigue mordiendo. Reemplaza a la Mega Torch de Torchmaster.\n\nUnas seis velas por hora mantienen segura una base; las abejas hacen renovable la cera."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/PeaceAltarEntity.java",
-        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js",
-        "repo:companion/src/main/resources/data/entrelumen/tags/item/peace_altar_fuels.json"
-      ]
+      "key": "entrelumen_altars_peace", "deps": ["entrelumen_altars_common"], "type": "item", "item": "entrelumen:peace_altar", "layout": {"x": 10.0, "y": 3.7, "size": 1.25, "shape": "circle"}, "hide_lines": true, "icon_scale": 1.5,
+      "en_us": {"title": "Altar of Peace",
+        "text": ["[lead] Burns [item:minecraft:candle|candles], [hl|10] minutes each.",
+                 "While lit, no hostile mob spawns naturally in the [hl|129-block cube] around it: [hl|64] blocks each way, up and down included, so a deep mine below still bites.",
+                 "It replaces Torchmaster's Mega Torch.",
+                 "{page}",
+                 "[li] About [hl|six] candles an hour keep a base safe",
+                 "[li] Bees make the wax renewable"]},
+      "es_es": {"title": "Altar de Paz",
+        "text": ["[lead] Quema [item:minecraft:candle|velas], [hl|10] minutos cada una.",
+                 "Prendido, ningún mob hostil aparece naturalmente en el [hl|cubo de 129 bloques] a su alrededor: [hl|64] bloques para cada lado, arriba y abajo incluidos, así que una mina profunda sigue mordiendo.",
+                 "Reemplaza a la Mega Torch de Torchmaster.",
+                 "{page}",
+                 "[li] Unas [hl|seis] velas por hora mantienen segura una base",
+                 "[li] Las abejas hacen renovable la cera"]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/PeaceAltarEntity.java", "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js", "repo:companion/src/main/resources/data/entrelumen/tags/item/peace_altar_fuels.json"]
     },
     {
-      "key": "entrelumen_altars_peace_limits",
-      "deps": [
-        "entrelumen_altars_peace"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_altars_peace_limits", "deps": ["entrelumen_altars_peace"], "type": "checkmark", "optional": true, "layout": {"x": 10.0, "y": 9.0, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:spawner",
-      "layout": {
-        "x": 9,
-        "y": 4.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "What Peace Does Not Stop",
-        "Only &enatural&r monster spawns are refused. Spawners, trial spawners, eggs, summons, conversions, raids, patrols, zombie sieges and every boss still happen, and a modded hostile filed outside the monster category may slip through.\n\nPeace, not a force field."
-      ],
-      "es_es": [
-        "Lo que la Paz no frena",
-        "Sólo se rechazan las apariciones &enaturales&r de monstruos. Spawners, spawners de desafío, huevos, invocaciones, conversiones, asaltos, patrullas, asedios zombi y todos los jefes siguen pasando, y un hostil de algún mod fuera de la categoría de monstruos puede colarse.\n\nEs paz, no un campo de fuerza."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md"
-      ]
+      "en_us": {"title": "What Peace Does Not Stop", "subtitle": "Peace, not a force field.",
+        "text": ["[lead] Only [hl|natural] monster spawns are refused.",
+                 "These still happen:",
+                 "[li] [item:minecraft:spawner|Spawners] and trial spawners",
+                 "[li] Eggs, summons and conversions",
+                 "[li] Raids, patrols and zombie sieges",
+                 "[li] Every boss",
+                 "A modded hostile filed outside the monster category may slip through."]},
+      "es_es": {"title": "Lo que la Paz no frena", "subtitle": "Es paz, no un campo de fuerza.",
+        "text": ["[lead] Sólo se rechazan las apariciones [hl|naturales] de monstruos.",
+                 "Esto sigue pasando:",
+                 "[li] [item:minecraft:spawner|Spawners] y spawners de desafío",
+                 "[li] Huevos, invocaciones y conversiones",
+                 "[li] Asaltos, patrullas y asedios zombi",
+                 "[li] Todos los jefes",
+                 "Un hostil de algún mod fuera de la categoría de monstruos puede colarse."]},
+      "sources": ["repo:docs/design/ark-altars.md"]
     },
     {
-      "key": "entrelumen_altars_growth",
-      "deps": [
-        "entrelumen_altars_common"
-      ],
-      "type": "item",
-      "item": "entrelumen:growth_altar",
-      "layout": {
-        "x": 9,
-        "y": 1.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Altar of Growth",
-        "Burns &ebone blocks&r, 3 minutes each. Crops and saplings in the &e33 by 33&r field around it, from four blocks below to four above, grow about &e20 times&r faster, and ripe harvests drop &edouble&r.\n\nSeeds never double and unripe crops get nothing. Melons, pumpkins, cane, cactus and bamboo only grow faster, and Mystical Agriculture essence is not multiplied."
-      ],
-      "es_es": [
-        "Altar de Crecimiento",
-        "Quema &ebloques de hueso&r, 3 minutos cada uno. Los cultivos y brotes del campo de &e33 por 33&r a su alrededor, de cuatro bloques abajo a cuatro arriba, crecen unas &e20 veces&r más rápido, y las cosechas maduras sueltan el &edoble&r.\n\nLas semillas nunca se duplican y los cultivos verdes no dan nada extra. Melones, calabazas, cañas, cactus y bambú sólo crecen más rápido, y la esencia de Mystical Agriculture no se multiplica."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/GrowthAltarEntity.java",
-        "repo:companion/src/main/resources/data/entrelumen/loot_modifiers/growth_altar.json",
-        "repo:companion/src/main/resources/data/entrelumen/tags/item/growth_altar_fuels.json"
-      ]
+      "key": "entrelumen_altars_growth", "deps": ["entrelumen_altars_common"], "type": "item", "item": "entrelumen:growth_altar", "layout": {"x": 6.8, "y": -1.85, "size": 1.25, "shape": "circle"}, "hide_lines": true, "icon_scale": 1.5,
+      "en_us": {"title": "Altar of Growth",
+        "text": ["[lead] Burns [item:minecraft:bone_block|bone blocks], [hl|3] minutes each.",
+                 "Crops and saplings in the [hl|33 by 33] field around it, from four blocks below to four above, grow about [hl|20 times] faster.",
+                 "Ripe harvests drop [big|×2].",
+                 "Seeds never double and unripe crops get nothing.",
+                 "{page}",
+                 "Melons, pumpkins, cane, cactus and bamboo only grow faster, and Mystical Agriculture essence is not multiplied."]},
+      "es_es": {"title": "Altar de Crecimiento",
+        "text": ["[lead] Quema [item:minecraft:bone_block|bloques de hueso], [hl|3] minutos cada uno.",
+                 "Los cultivos y brotes del campo de [hl|33 por 33] a su alrededor, de cuatro bloques abajo a cuatro arriba, crecen unas [hl|20 veces] más rápido.",
+                 "Las cosechas maduras sueltan [big|×2].",
+                 "Las semillas nunca se duplican y los cultivos verdes no dan nada extra.",
+                 "{page}",
+                 "Melones, calabazas, cañas, cactus y bambú sólo crecen más rápido, y la esencia de Mystical Agriculture no se multiplica."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/GrowthAltarEntity.java", "repo:companion/src/main/resources/data/entrelumen/loot_modifiers/growth_altar.json", "repo:companion/src/main/resources/data/entrelumen/tags/item/growth_altar_fuels.json"]
     },
     {
-      "key": "entrelumen_altars_time",
-      "deps": [
-        "entrelumen_altars_common"
-      ],
-      "type": "item",
-      "item": "entrelumen:time_altar",
-      "layout": {
-        "x": 9,
-        "y": -1.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Altar of Time",
-        "Burns &eamethyst shards&r, 2 minutes each. Hostile mobs in the &e33-block cube&r move and strike at a third of their strength, and their projectiles fly at a third of the speed. Monsters a player kills inside drop &etriple&r loot and experience.\n\nBosses are never slowed or multiplied. They have a schedule to keep."
-      ],
-      "es_es": [
-        "Altar del Tiempo",
-        "Quema &efragmentos de amatista&r, 2 minutos cada uno. Los mobs hostiles del &ecubo de 33 bloques&r se mueven y golpean con un tercio de su fuerza, y sus proyectiles vuelan a un tercio de la velocidad. Los monstruos que un jugador mata adentro sueltan el &etriple&r de botín y experiencia.\n\nA los jefes nunca se los frena ni se los multiplica. Tienen agenda."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/TimeAltarEntity.java",
-        "repo:companion/src/main/resources/data/entrelumen/loot_modifiers/time_altar.json",
-        "repo:companion/src/main/resources/data/entrelumen/tags/item/time_altar_fuels.json"
-      ]
+      "key": "entrelumen_altars_time", "deps": ["entrelumen_altars_common"], "type": "item", "item": "entrelumen:time_altar", "layout": {"x": 10.0, "y": -3.7, "size": 1.25, "shape": "circle"}, "hide_lines": true, "icon_scale": 1.5,
+      "en_us": {"title": "Altar of Time",
+        "text": ["[lead] Burns [item:minecraft:amethyst_shard|amethyst shards], [hl|2] minutes each.",
+                 "Hostile mobs in the [hl|33-block cube] move and strike at a third of their strength, and their projectiles fly at a third of the speed.",
+                 "Monsters a player kills inside drop [big|×3] loot and experience.",
+                 "{page}",
+                 "Bosses are never slowed or multiplied. They have a schedule to keep."]},
+      "es_es": {"title": "Altar del Tiempo",
+        "text": ["[lead] Quema [item:minecraft:amethyst_shard|fragmentos de amatista], [hl|2] minutos cada uno.",
+                 "Los mobs hostiles del [hl|cubo de 33 bloques] se mueven y golpean con un tercio de su fuerza, y sus proyectiles vuelan a un tercio de la velocidad.",
+                 "Los monstruos que un jugador mata adentro sueltan [big|×3] de botín y experiencia.",
+                 "{page}",
+                 "A los jefes nunca se los frena ni se los multiplica. Tienen agenda."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/TimeAltarEntity.java", "repo:companion/src/main/resources/data/entrelumen/loot_modifiers/time_altar.json", "repo:companion/src/main/resources/data/entrelumen/tags/item/time_altar_fuels.json"]
     },
     {
-      "key": "entrelumen_altars_time_quirk",
-      "deps": [
-        "entrelumen_altars_time"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_altars_time_quirk", "deps": ["entrelumen_altars_time"], "type": "checkmark", "optional": true, "layout": {"x": 10.0, "y": -8.6, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:skeleton_skull",
-      "layout": {
-        "x": 12,
-        "y": -3,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Only Real Kills Triple",
-        "Triple loot needs a real player's kill: fake-player grinders, pets and traps get the slow motion, not the bonus. Nether stars, dragon eggs, mob heads and trial keys never multiply, and gear a mob wore drops once.\n\nSlowed mobs hit a third as hard, not a third as often: their cadence comes from behavior, not stats."
-      ],
-      "es_es": [
-        "Particularidad: muertes reales",
-        "El triple de botín necesita que mate un jugador real: las granjas con jugador falso, las mascotas y las trampas ralentizan, pero sin bonus. Estrellas del Nether, huevos de dragón, cabezas y llaves de desafío nunca se multiplican, y el equipo que llevaba un mob cae una vez.\n\nLos mobs ralentizados pegan un tercio de fuerte, no un tercio de seguido: el ritmo viene de su comportamiento, no de sus estadísticas."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md"
-      ]
+      "en_us": {"title": "Quirk: Only Real Kills Triple",
+        "text": ["[lead] Triple needs a real player's kill: fake-player grinders, pets and traps get the slow motion, not the bonus.",
+                 "[li] [item:minecraft:nether_star|Nether stars], [item:minecraft:dragon_egg|dragon eggs], mob heads and [item:minecraft:trial_key|trial keys] never multiply",
+                 "[li] Gear a mob wore drops once",
+                 "{page}",
+                 "Slowed mobs hit a third as hard, not a third as often: their cadence comes from behavior, not stats."]},
+      "es_es": {"title": "Particularidad: muertes reales",
+        "text": ["[lead] El triple pide que mate un jugador real: las granjas con jugador falso, las mascotas y las trampas ralentizan, pero sin bonus.",
+                 "[li] [item:minecraft:nether_star|Estrellas del Nether], [item:minecraft:dragon_egg|huevos de dragón], cabezas y [item:minecraft:trial_key|llaves de desafío] nunca se multiplican",
+                 "[li] El equipo que llevaba un mob cae una vez",
+                 "{page}",
+                 "Los mobs ralentizados pegan un tercio de fuerte, no un tercio de seguido: el ritmo viene de su comportamiento, no de sus estadísticas."]},
+      "sources": ["repo:docs/design/ark-altars.md"]
     },
     {
-      "key": "entrelumen_altars_repose",
-      "deps": [
-        "entrelumen_altars_common"
-      ],
-      "type": "item",
-      "item": "entrelumen:repose_altar",
-      "layout": {
-        "x": 12,
-        "y": 1.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Altar of Repose",
-        "A four-slot coffer that slowly mends what it holds, like Mending without orbs. It burns &eBottles o' Enchanting&r, one a minute, only while something inside is damaged; every 5 seconds each item regains a point, so a bottle is 12 points for one item or 48 for four.\n\nPipes insert only damaged items and pull only whole ones, so a pipe through it is a repair line. Crouch with an empty hand to see progress."
-      ],
-      "es_es": [
-        "Altar de Reposo",
-        "Un cofre de cuatro casilleros que repara despacio lo que guarda, como Reparación sin orbes. Quema &eBotellas de encantamiento&r, una por minuto, sólo mientras hay algo dañado adentro; cada 5 segundos cada ítem recupera un punto, así que una botella son 12 puntos para uno o 48 para cuatro.\n\nLos caños sólo meten ítems dañados y sólo sacan enteros: un caño que pase por él es una línea de reparación. Agachate con la mano vacía para ver el avance."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/ReposeAltarEntity.java",
-        "repo:companion/src/main/resources/data/entrelumen/tags/item/repose_altar_fuels.json"
-      ]
+      "key": "entrelumen_altars_repose", "deps": ["entrelumen_altars_common"], "type": "item", "item": "entrelumen:repose_altar", "layout": {"x": 6.8, "y": 1.85, "size": 1.25, "shape": "circle"}, "hide_lines": true, "icon_scale": 1.5,
+      "en_us": {"title": "Altar of Repose",
+        "text": ["[lead] A four-slot coffer that slowly mends what it holds, like Mending without orbs.",
+                 "[li] Burns [item:minecraft:experience_bottle|Bottles o' Enchanting], one a minute, only while something inside is damaged",
+                 "[li] Every [hl|5] seconds each item regains a point, so a bottle is [hl|12] points for one item or [hl|48] for four",
+                 "{page}",
+                 "Pipes insert only damaged items and pull only whole ones, so a pipe through it is a repair line.",
+                 "Crouch with an empty hand to see progress."]},
+      "es_es": {"title": "Altar de Reposo",
+        "text": ["[lead] Un cofre de cuatro casilleros que repara despacio lo que guarda, como Reparación sin orbes.",
+                 "[li] Quema [item:minecraft:experience_bottle|Botellas de encantamiento], una por minuto, sólo mientras hay algo dañado adentro",
+                 "[li] Cada [hl|5] segundos cada ítem recupera un punto, así que una botella son [hl|12] puntos para uno o [hl|48] para cuatro",
+                 "{page}",
+                 "Los caños sólo meten ítems dañados y sólo sacan enteros: un caño que pase por él es una línea de reparación.",
+                 "Agachate con la mano vacía para ver el avance."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/ReposeAltarEntity.java", "repo:companion/src/main/resources/data/entrelumen/tags/item/repose_altar_fuels.json"]
     },
     {
-      "key": "entrelumen_altars_repose_quirk",
-      "deps": [
-        "entrelumen_altars_repose"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_altars_repose_quirk", "deps": ["entrelumen_altars_repose"], "type": "checkmark", "optional": true, "layout": {"x": 2.55, "y": 4.3, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:elytra",
-      "layout": {
-        "x": 15,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Slow on Purpose",
-        "From zero, an iron chestplate takes about 20 minutes, an elytra about 36 and a diamond pickaxe over two hours. Mending with the same bottle is faster but needs you there. Energy or custom-bar durability is not mended, and unbreakable items are refused.\n\nCheap, patient and unattended, like a good grandmother."
-      ],
-      "es_es": [
-        "Particularidad: lento a propósito",
-        "Desde cero, una pechera de hierro tarda unos 20 minutos, unas élitros unos 36 y un pico de diamante más de dos horas. Reparación con la misma botella es más rápida pero te necesita ahí. La durabilidad de energía o de barra propia no se repara, y los irrompibles se rechazan.\n\nBarato, paciente y desatendido, como una buena abuela."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md"
-      ]
+      "en_us": {"title": "Quirk: Slow on Purpose", "subtitle": "Cheap, patient and unattended, like a good grandmother.",
+        "text": ["[lead] From zero, an [item:minecraft:iron_chestplate|iron chestplate] takes about [hl|20] minutes, an [item:minecraft:elytra|elytra] about [hl|36] and a [item:minecraft:diamond_pickaxe|diamond pickaxe] over two hours.",
+                 "Mending with the same bottle is faster but needs you there.",
+                 "Energy or custom-bar durability is not mended, and unbreakable items are refused."]},
+      "es_es": {"title": "Particularidad: lento a propósito", "subtitle": "Barato, paciente y desatendido, como una buena abuela.",
+        "text": ["[lead] Desde cero, una [item:minecraft:iron_chestplate|pechera de hierro] tarda unos [hl|20] minutos, unas [item:minecraft:elytra|élitros] unos [hl|36] y un [item:minecraft:diamond_pickaxe|pico de diamante] más de dos horas.",
+                 "Reparación con la misma botella es más rápida pero te necesita ahí.",
+                 "La durabilidad de energía o de barra propia no se repara, y los irrompibles se rechazan."]},
+      "sources": ["repo:docs/design/ark-altars.md"]
     },
     {
-      "key": "entrelumen_altars_renewal",
-      "deps": [
-        "entrelumen_altars_time"
-      ],
-      "type": "item",
-      "item": "entrelumen:renewal_altar",
-      "layout": {
-        "x": 12,
-        "y": -6,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Altar of Renewal",
-        "Grows its biome in the &e49 by 49&r square around it: the biome's trees, giant cacti in the desert, giant spruces in old taigas, mangroves, huge fungi in the Nether, chorus in the End, and flowers. Near your team's Ark garden it grows 65 by 65.\n\nIt only eats &ebone meal&r or other fertilizers: each one pays 10 seconds of work and four plants, and a whole tree takes up to four. Keep the square loaded."
-      ],
-      "es_es": [
-        "Altar de Renovación",
-        "Hace crecer su bioma en el cuadrado de &e49 por 49&r a su alrededor: los árboles del bioma, cactus gigantes en el desierto, abetos gigantes en las taigas viejas, mangles, hongos gigantes en el Nether, chorus en el End, y flores. Cerca del jardín del Arca de tu equipo pasa a 65 por 65.\n\nSólo come &epolvo de hueso&r u otros fertilizantes: cada uno paga 10 segundos de trabajo y cuatro plantas, y un árbol entero lleva hasta cuatro. Mantené el cuadrado cargado."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/RenewalAltarEntity.java",
-        "repo:companion/src/main/java/dev/entrelumen/AltarVegetation.java",
-        "repo:companion/src/main/resources/data/entrelumen/tags/item/renewal_fertilizers.json"
-      ]
+      "key": "entrelumen_altars_renewal", "deps": ["entrelumen_altars_time"], "type": "item", "item": "entrelumen:renewal_altar", "layout": {"x": 13.2, "y": -1.85, "size": 1.25, "shape": "circle"}, "hide_lines": true, "icon_scale": 1.5,
+      "en_us": {"title": "Altar of Renewal",
+        "text": ["[lead] Grows its biome in the [hl|49 by 49] square around it.",
+                 "The biome's trees, giant cacti in the desert, giant spruces in old taigas, mangroves, huge fungi in the Nether, chorus in the End, and flowers.",
+                 "Near your team's Ark garden it grows [hl|65] by [hl|65].",
+                 "{page}",
+                 "It only eats [item:minecraft:bone_meal|bone meal] or other fertilizers: each one pays [hl|10] seconds of work and four plants, and a whole tree takes up to four.",
+                 "Keep the square loaded."]},
+      "es_es": {"title": "Altar de Renovación",
+        "text": ["[lead] Hace crecer su bioma en el cuadrado de [hl|49 por 49] a su alrededor.",
+                 "Los árboles del bioma, cactus gigantes en el desierto, abetos gigantes en las taigas viejas, mangles, hongos gigantes en el Nether, chorus en el End, y flores.",
+                 "Cerca del jardín del Arca de tu equipo pasa a [hl|65] por [hl|65].",
+                 "{page}",
+                 "Sólo come [item:minecraft:bone_meal|polvo de hueso] u otros fertilizantes: cada uno paga [hl|10] segundos de trabajo y cuatro plantas, y un árbol entero lleva hasta cuatro.",
+                 "Mantené el cuadrado cargado."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/RenewalAltarEntity.java", "repo:companion/src/main/java/dev/entrelumen/AltarVegetation.java", "repo:companion/src/main/resources/data/entrelumen/tags/item/renewal_fertilizers.json"]
     },
     {
-      "key": "entrelumen_altars_renewal_limits",
-      "deps": [
-        "entrelumen_altars_renewal"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_altars_renewal_limits", "deps": ["entrelumen_altars_renewal"], "type": "checkmark", "optional": true, "layout": {"x": 17.71, "y": -4.45, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:grass_block",
-      "layout": {
-        "x": 15,
-        "y": -6,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Every Dye, Always",
-        "Around the altar grows a symmetric dye garden: lily of the valley, poppy, dandelion, cornflower, conebloom, swamp rose and ink mushrooms, plus four huge ink mushrooms whose caps drop ink mushrooms. Its harvest crafts all 16 dyes.\n\nOn sand, stone, netherrack or end stone each bed lays its own block of grass, or podzol for mushrooms. Ores, ice, water, builds and claims keep their bed empty; wither roses and berry bushes never grow."
-      ],
-      "es_es": [
-        "Todos los tintes, siempre",
-        "Alrededor del altar crece un jardín de tintes simétrico: lirio de los valles, amapola, diente de león, aciano, Conebloom, Swamp Rose y hongos de tinta, más cuatro hongos de tinta gigantes cuyos sombreros sueltan hongos de tinta. Su cosecha da los 16 tintes.\n\nEn arena, piedra, netherrack o piedra del End cada cantero pone su propio bloque de pasto, o de podsol para los hongos. Minerales, hielo, agua, construcciones y reclamos dejan el cantero vacío; nunca crecen rosas marchitas ni bayas."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/AltarVegetation.java",
-        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/recipe/shapeless/brown_dye_from_conebloom.json",
-        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/recipe/shapeless/green_dye_from_swamp_rose.json",
-        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/recipe/ink_mushroom_to_dye.json",
-        "jar:utilitarian-1.21.1-0.19.2.jar:data/utilitarian/recipe/utility/green_dye.json"
-      ]
+      "en_us": {"title": "Every Dye, Always",
+        "text": ["[lead] A symmetric dye garden grows around the altar.",
+                 "Its harvest crafts all [big|16] dyes.",
+                 "[li:minecraft:textures/block/lily_of_the_valley.png] Lily of the valley",
+                 "[li:minecraft:textures/block/poppy.png] Poppy",
+                 "[li:minecraft:textures/block/dandelion.png] Dandelion",
+                 "[li:minecraft:textures/block/cornflower.png] Cornflower",
+                 "[li:eternal_starlight:textures/block/conebloom.png] Conebloom",
+                 "[li:eternal_starlight:textures/block/swamp_rose.png] Swamp rose",
+                 "[li:undergarden:textures/block/ink_mushroom.png] Ink mushrooms, and four huge ones whose caps drop more",
+                 "{page}",
+                 "On sand, stone, netherrack or end stone each bed lays its own block of grass, or podzol for mushrooms.",
+                 "[li] Ores, ice, water, builds and claims keep their bed empty",
+                 "[li] Wither roses and berry bushes never grow"]},
+      "es_es": {"title": "Todos los tintes, siempre",
+        "text": ["[lead] Un jardín de tintes simétrico crece alrededor del altar.",
+                 "Su cosecha da los [big|16] tintes.",
+                 "[li:minecraft:textures/block/lily_of_the_valley.png] Lirio de los valles",
+                 "[li:minecraft:textures/block/poppy.png] Amapola",
+                 "[li:minecraft:textures/block/dandelion.png] Diente de león",
+                 "[li:minecraft:textures/block/cornflower.png] Aciano",
+                 "[li:eternal_starlight:textures/block/conebloom.png] Conebloom",
+                 "[li:eternal_starlight:textures/block/swamp_rose.png] Swamp Rose",
+                 "[li:undergarden:textures/block/ink_mushroom.png] Hongos de tinta, y cuatro gigantes cuyos sombreros sueltan más",
+                 "{page}",
+                 "En arena, piedra, netherrack o piedra del End cada cantero pone su propio bloque de pasto, o de podsol para los hongos.",
+                 "[li] Minerales, hielo, agua, construcciones y reclamos dejan el cantero vacío",
+                 "[li] Nunca crecen rosas marchitas ni bayas"]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/AltarVegetation.java", "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/recipe/shapeless/brown_dye_from_conebloom.json", "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/recipe/shapeless/green_dye_from_swamp_rose.json", "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/recipe/ink_mushroom_to_dye.json", "jar:utilitarian-1.21.1-0.19.2.jar:data/utilitarian/recipe/utility/green_dye.json"]
     },
     {
-      "key": "entrelumen_altars_levelling",
-      "deps": [
-        "entrelumen_altars_common"
-      ],
-      "type": "item",
-      "item": "entrelumen:terraform_altar",
-      "layout": {
-        "x": 6,
-        "y": 0,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Altar of Levelling",
-        "Free terrain work with the land's own plain blocks: it asks for no materials and keeps none. Burns &ecoal, charcoal or redstone&r, a minute each.\n- Empty hand: 10-second preview; use again to start; while working, pause or resume.\n- Crouch during the preview: next setting, flat 9, 17, 25 or 33 wide with a 4-block slope, then repair 49 by 49.\n- Crouch otherwise: its status."
-      ],
-      "es_es": [
-        "Altar de Nivelación",
-        "Trabajo de terreno gratis con los bloques comunes del lugar: no pide materiales ni guarda nada. Quema &ecarbón, carbón vegetal o redstone&r, un minuto cada uno.\n- Mano vacía: vista previa de 10 segundos; usalo otra vez para empezar; trabajando, pausa o reanuda.\n- Agachado en la vista previa: siguiente modo, plano de 9, 17, 25 o 33 de lado con una pendiente de 4 bloques, y después reparar 49 por 49.\n- Agachado en otro momento: su estado."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/TerraformAltarEntity.java",
-        "repo:companion/src/main/resources/data/entrelumen/tags/item/terraform_fuels.json",
-        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
-      ]
+      "key": "entrelumen_altars_levelling", "deps": ["entrelumen_altars_common"], "type": "item", "item": "entrelumen:terraform_altar", "layout": {"x": 13.2, "y": 1.85, "size": 1.25, "shape": "circle"}, "hide_lines": true, "icon_scale": 1.5,
+      "en_us": {"title": "Altar of Levelling",
+        "text": ["[lead] Free terrain work with the land's own plain blocks: no materials asked, none kept.",
+                 "Burns [item:minecraft:coal|coal], [item:minecraft:charcoal|charcoal] or [item:minecraft:redstone|redstone], a minute each.",
+                 "{page}",
+                 "Empty hand:",
+                 "[li] [hl|10]-second preview; use again to start",
+                 "[li] While working, pause or resume",
+                 "Crouch during the preview:",
+                 "[li] Next setting: flat [hl|9], [hl|17], [hl|25] or [hl|33] wide with a [hl|4]-block slope",
+                 "[li] Then repair [hl|49] by [hl|49]",
+                 "Crouch otherwise: its status."]},
+      "es_es": {"title": "Altar de Nivelación",
+        "text": ["[lead] Trabajo de terreno gratis con los bloques comunes del lugar: no pide materiales ni guarda nada.",
+                 "Quema [item:minecraft:coal|carbón], [item:minecraft:charcoal|carbón vegetal] o [item:minecraft:redstone|redstone], un minuto cada uno.",
+                 "{page}",
+                 "Mano vacía:",
+                 "[li] Vista previa de [hl|10] segundos; usalo otra vez para empezar",
+                 "[li] Trabajando, pausa o reanuda",
+                 "Agachado en la vista previa:",
+                 "[li] Siguiente modo: plano de [hl|9], [hl|17], [hl|25] o [hl|33] de lado con una pendiente de [hl|4] bloques",
+                 "[li] Y después reparar [hl|49] por [hl|49]",
+                 "Agachado en otro momento: su estado."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/TerraformAltarEntity.java", "repo:companion/src/main/resources/data/entrelumen/tags/item/terraform_fuels.json", "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"]
     },
     {
-      "key": "entrelumen_altars_levelling_matter",
-      "deps": [
-        "entrelumen_altars_levelling"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_altars_levelling_matter", "deps": ["entrelumen_altars_levelling"], "type": "checkmark", "optional": true, "layout": {"x": 17.71, "y": 4.45, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:dirt",
-      "layout": {
-        "x": 9,
-        "y": -4.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Only Real Terrain",
-        "Flatten copies the top, subsurface and deep blocks around it: what it cuts vanishes and what it fills is free. Repair rebuilds pits and bare dirt as the world generator made them, with ores turned into plain rock.\n\nIt never removes or creates ores, trees, ice or builds: a column holding one, a container, a crop or a fluid is left whole. Fell the trees first.\n\nUnder a roof (the Nether, caves) it works the floor, never the roof or what hangs from it."
-      ],
-      "es_es": [
-        "Sólo terreno de verdad",
-        "Aplanar copia los bloques de superficie, subsuelo y profundidad de alrededor: lo que corta desaparece y lo que rellena es gratis. Reparar reconstruye pozos y tierra pelada como los hizo el generador del mundo, con los minerales convertidos en roca común.\n\nNunca saca ni crea minerales, árboles, hielo ni construcciones: una columna con alguno, un contenedor, un cultivo o un fluido queda entera. Talá los árboles primero.\n\nBajo techo (Nether, cuevas) trabaja el piso, nunca el techo ni lo que cuelga."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/TerraformAltarEntity.java"
-      ]
+      "en_us": {"title": "Only Real Terrain",
+        "text": ["[lead] Flatten copies the top, subsurface and deep blocks around it.",
+                 "What it cuts vanishes and what it fills is free.",
+                 "Repair rebuilds pits and bare dirt as the world generator made them, with ores turned into plain rock.",
+                 "{page}",
+                 "It never removes or creates ores, trees, ice or builds: a column holding one, a container, a crop or a fluid is left whole.",
+                 "[tip] Fell the trees first.",
+                 "Under a roof (the Nether, caves) it works the floor, never the roof or what hangs from it."]},
+      "es_es": {"title": "Sólo terreno de verdad",
+        "text": ["[lead] Aplanar copia los bloques de superficie, subsuelo y profundidad de alrededor.",
+                 "Lo que corta desaparece y lo que rellena es gratis.",
+                 "Reparar reconstruye pozos y tierra pelada como los hizo el generador del mundo, con los minerales convertidos en roca común.",
+                 "{page}",
+                 "Nunca saca ni crea minerales, árboles, hielo ni construcciones: una columna con alguno, un contenedor, un cultivo o un fluido queda entera.",
+                 "[tip] Talá los árboles primero.",
+                 "Bajo techo (Nether, cuevas) trabaja el piso, nunca el techo ni lo que cuelga."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/TerraformAltarEntity.java"]
     },
     {
-      "key": "entrelumen_altars_symmetry",
-      "deps": [
-        "entrelumen_altars_levelling_matter",
-        "entrelumen_altars_renewal"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_altars_symmetry", "deps": ["entrelumen_altars_levelling_matter", "entrelumen_altars_renewal"], "type": "checkmark", "optional": true, "layout": {"x": 20.4, "y": 0.0, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:target",
-      "layout": {
-        "x": 15,
-        "y": 0,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Everything Is Symmetric",
-        "Every area is a square centered on the altar, worked in rings from the center out. The Levelling slope is the same on every side, and Renewal's dye garden is a pattern of coloured rings. Put the altar at the exact center of what you want to affect.\n\nHeliodor built with symmetry. Its altars never learned any other way."
-      ],
-      "es_es": [
-        "Particularidad: todo es simétrico",
-        "Cada área es un cuadrado centrado en el altar, trabajado en anillos desde el centro hacia afuera. La pendiente de la Nivelación es igual en todos los lados, y el jardín de tintes de la Renovación es un dibujo de anillos de colores. Poné el altar justo en el centro de lo que querés afectar.\n\nHeliodor construía con simetría. Sus altares nunca aprendieron otra forma."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:docs/design/story-bible.md"
-      ]
+      "en_us": {"title": "Quirk: Everything Is Symmetric",
+        "text": ["[lead] Every area is a square centered on the altar, worked in rings from the center out.",
+                 "The Levelling slope is the same on every side, and Renewal's dye garden is a pattern of coloured rings.",
+                 "[tip] Put the altar at the exact center of what you want to affect.",
+                 "{page}",
+                 "Heliodor built with symmetry. Its altars never learned any other way."]},
+      "es_es": {"title": "Particularidad: todo es simétrico",
+        "text": ["[lead] Cada área es un cuadrado centrado en el altar, trabajado en anillos desde el centro hacia afuera.",
+                 "La pendiente de la Nivelación es igual en todos los lados, y el jardín de tintes de la Renovación es un dibujo de anillos de colores.",
+                 "[tip] Poné el altar justo en el centro de lo que querés afectar.",
+                 "{page}",
+                 "Heliodor construía con simetría. Sus altares nunca aprendieron otra forma."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:docs/design/story-bible.md"]
     },
     {
-      "key": "entrelumen_altars_claims",
-      "deps": [
-        "entrelumen_altars_renewal_limits"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_altars_claims", "deps": ["entrelumen_altars_renewal_limits"], "type": "checkmark", "layout": {"x": 21.6, "y": -4.7, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:shield",
-      "layout": {
-        "x": 15,
-        "y": -3,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Altars Act as Their Owner",
-        "The owner is whoever placed the altar, or the first player who fed it. Altars that change blocks act on the owner's behalf, so claims, protected ruins and Solsticio refuse them exactly as they would refuse the owner.\n\nIn a team, place them where your claims allow the work."
-      ],
-      "es_es": [
-        "Actúan como su dueño",
-        "El dueño es quien colocó el altar, o el primer jugador que lo alimentó. Los altares que cambian bloques actúan en nombre de su dueño, así que los reclamos, las ruinas protegidas y Solsticio los rechazan igual que rechazarían al dueño.\n\nEn equipo, ponelos donde tus reclamos permitan el trabajo."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/LandWorks.java"
-      ]
+      "en_us": {"title": "Altars Act as Their Owner",
+        "text": ["[lead] The owner is whoever placed the altar, or the first player who fed it.",
+                 "Altars that change blocks act on the owner's behalf, so claims, protected ruins and Solsticio refuse them exactly as they would refuse the owner.",
+                 "[tip] In a team, place them where your claims allow the work."]},
+      "es_es": {"title": "Actúan como su dueño",
+        "text": ["[lead] El dueño es quien colocó el altar, o el primer jugador que lo alimentó.",
+                 "Los altares que cambian bloques actúan en nombre de su dueño, así que los reclamos, las ruinas protegidas y Solsticio los rechazan igual que rechazarían al dueño.",
+                 "[tip] En equipo, ponelos donde tus reclamos permitan el trabajo."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/LandWorks.java"]
     },
     {
-      "key": "entrelumen_altars_tip_farm",
-      "deps": [
-        "entrelumen_altars_peace_limits",
-        "entrelumen_altars_repose_quirk"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_altars_tip_farm", "deps": ["entrelumen_altars_peace_limits", "entrelumen_altars_repose_quirk"], "type": "checkmark", "optional": true, "layout": {"x": 6.0, "y": 9.6, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:bone_block",
-      "layout": {
-        "x": 12,
-        "y": 6,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Stack the Effects",
-        "Peace over the base, Growth in the middle of the fields, Time in the mob room where you fight, Repose next to the bed where you drop damaged gear.\n\nIf you copy one, copy Growth first."
-      ],
-      "es_es": [
-        "Truco: sumá los efectos",
-        "Paz sobre la base, Crecimiento en el medio de los campos, Tiempo en la sala de mobs donde peleás, Reposo al lado de la cama donde dejás el equipo dañado.\n\nSi vas a copiar uno, empezá por Crecimiento."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md"
-      ]
+      "en_us": {"title": "Tip: Stack the Effects",
+        "text": ["[lead] Each altar goes where its effect pays off:",
+                 "[li] Peace over the base",
+                 "[li] Growth in the middle of the fields",
+                 "[li] Time in the mob room where you fight",
+                 "[li] Repose next to the bed where you drop damaged gear",
+                 "[tip] If you copy one, copy Growth first."]},
+      "es_es": {"title": "Truco: sumá los efectos",
+        "text": ["[lead] Cada altar va donde su efecto rinde:",
+                 "[li] Paz sobre la base",
+                 "[li] Crecimiento en el medio de los campos",
+                 "[li] Tiempo en la sala de mobs donde peleás",
+                 "[li] Reposo al lado de la cama donde dejás el equipo dañado",
+                 "[tip] Si vas a copiar uno, empezá por Crecimiento."]},
+      "sources": ["repo:docs/design/ark-altars.md"]
     },
     {
-      "key": "entrelumen_altars_close",
-      "deps": [
-        "entrelumen_altars_symmetry",
-        "entrelumen_altars_claims",
-        "entrelumen_altars_tip_farm"
-      ],
-      "type": "item",
-      "item": "entrelumen:repose_altar",
-      "layout": {
-        "x": 18,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Six Gifts From the Past",
-        "Peace for the base, Growth for the fields, Renewal for the gardens, Levelling for the land, Time for the fights and Repose for the gear.\n\nHeliodor could not save itself, but it left very good tools."
-      ],
-      "es_es": [
-        "Seis regalos del pasado",
-        "Paz para la base, Crecimiento para los campos, Renovación para los jardines, Nivelación para la tierra, Tiempo para las peleas y Reposo para el equipo.\n\nHeliodor no pudo salvarse, pero dejó muy buenas herramientas."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md"
-      ]
+      "key": "entrelumen_altars_close", "deps": ["entrelumen_altars_symmetry", "entrelumen_altars_claims", "entrelumen_altars_tip_farm"], "type": "item", "item": "entrelumen:repose_altar", "layout": {"x": 25.8, "y": 0.2, "size": 2.0, "shape": "hexagon"}, "hide_lines": true,
+      "en_us": {"title": "Six Gifts From the Past",
+        "text": ["[lead] Heliodor could not save itself, but it left very good tools.",
+                 "[li] Peace for the base",
+                 "[li] Growth for the fields",
+                 "[li] Renewal for the gardens",
+                 "[li] Levelling for the land",
+                 "[li] Time for the fights",
+                 "[li] Repose for the gear"]},
+      "es_es": {"title": "Seis regalos del pasado",
+        "text": ["[lead] Heliodor no pudo salvarse, pero dejó muy buenas herramientas.",
+                 "[li] Paz para la base",
+                 "[li] Crecimiento para los campos",
+                 "[li] Renovación para los jardines",
+                 "[li] Nivelación para la tierra",
+                 "[li] Tiempo para las peleas",
+                 "[li] Reposo para el equipo"]},
+      "sources": ["repo:docs/design/ark-altars.md"]
+    },
+    {
+      "key": "entrelumen_altars_toy_candles", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 14.6, "y": 8.0, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:candle",
+      "en_us": {"title": "Light the Candles",
+        "text": ["[lead] Eight candles around the plaza, one click.",
+                 "At the Altar of Peace each one buys [hl|10] minutes; here they last as long as the book stays open."]},
+      "es_es": {"title": "Prender las velas",
+        "text": ["[lead] Ocho velas alrededor de la plaza, un clic.",
+                 "En el Altar de Paz cada una rinde [hl|10] minutos; acá duran lo que el libro siga abierto."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/resources/data/entrelumen/tags/item/peace_altar_fuels.json"]
+    },
+    {
+      "key": "entrelumen_altars_toy_bonemeal", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 18.4, "y": -9.4, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:bone_meal",
+      "en_us": {"title": "A Handful of Bone Meal",
+        "text": ["[lead] One click, and the meadow greens up.",
+                 "It is the Altar of Renewal's only food, and its cousin Growth eats the same bone in blocks."]},
+      "es_es": {"title": "Un puñado de polvo de hueso",
+        "text": ["[lead] Un clic, y el prado se pone verde.",
+                 "Es la única comida del Altar de Renovación, y su primo Crecimiento se come el mismo hueso en bloques."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/resources/data/entrelumen/tags/item/renewal_fertilizers.json"]
     }
   ]
 }
