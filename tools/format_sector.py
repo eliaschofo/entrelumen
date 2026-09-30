@@ -2,7 +2,10 @@
 quest as a short block (identity and flags, task, rewards, icon, position, one line per language, sources).
 Keeps diffs readable when several writers add quests to the same chapter.
 
-usage: python tools/format_sector.py [--check] [files...]   (default: every content/sectors/sector_*.json)
+The guide and story chapters in presentation v2 (tools/quest_v2.py) use the same layout; v1 ones keep theirs.
+
+usage: python tools/format_sector.py [--check] [files...]
+       (default: every content/sectors/sector_*.json and every guide or story chapter with "presentation": 2)
 """
 import argparse
 import json
@@ -41,7 +44,8 @@ def quest_block(q):
             rows.append(f'      "{k}": {compact(q[k])}')
     for lang in ("en_us", "es_es"):
         rows.append(copy_block(lang, q[lang]))
-    rows.append(f'      "sources": {compact(q.get("sources", []))}')
+    if "sources" in q or "task" in q or "tasks" in q:   # a sector quest always shows its sources; a story quest has none
+        rows.append(f'      "sources": {compact(q.get("sources", []))}')
     unknown = [k for k in q if k not in HEAD and k not in BLOCK and False]
     assert not unknown
     return "    {\n" + ",\n".join(rows) + "\n    }"
@@ -65,12 +69,25 @@ def dumps(data):
     return text
 
 
+def v2_chapter_files():
+    """Guide and story chapter files in presentation v2."""
+    out = []
+    for path in sorted((ROOT / "content" / "guides").glob("guide_*.json")) + sorted((ROOT / "content").glob("*.json")):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except ValueError:
+            continue
+        if isinstance(data, dict) and data.get("presentation", 1) >= 2 and isinstance(data.get("quests"), list):
+            out.append(path)
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--check", action="store_true")
     ap.add_argument("files", nargs="*", type=Path)
     args = ap.parse_args()
-    files = args.files or sorted(SECTORS.glob("sector_*.json"))
+    files = args.files or sorted(SECTORS.glob("sector_*.json")) + v2_chapter_files()
     stale = []
     for path in files:
         raw = path.read_text(encoding="utf-8")
@@ -82,7 +99,7 @@ def main():
     if args.check and stale:
         print("FAIL: not in canonical layout (run tools/format_sector.py):", ", ".join(stale))
         return 1
-    print(f"{'PASS' if args.check else 'OK'}: {len(files)} sector files" + (f", rewrote {len(stale)}" if stale and not args.check else ""))
+    print(f"{'PASS' if args.check else 'OK'}: {len(files)} chapter files" + (f", rewrote {len(stale)}" if stale and not args.check else ""))
     return 0
 
 

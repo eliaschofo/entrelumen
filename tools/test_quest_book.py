@@ -7,6 +7,8 @@ from generate_quests import (ROOT, OUT, THEME, GRAMMAR, NODE_PX, VISUAL, ART_PX,
                              load_chapters, load_guides, stable_id, finale_of, story_role, group_order,
                              generate_guide, guide_lines)
 import quest_engine
+import quest_art
+import quest_v2
 
 ART = ROOT / 'companion/src/main/resources/assets/entrelumen/textures/gui/quests'
 
@@ -27,6 +29,8 @@ class QuestBook(unittest.TestCase):
         cls.sectors = quest_engine.load_sectors()
         cls.files = generate_book(cls.story, cls.guides, cls.book, cls.sectors)
         cls.sector_names = {x['chapter'] for x in cls.sectors}
+        # Guides and story chapters in presentation v2 draw like sectors (tools/quest_v2.py; test_presentation.py).
+        cls.v2_names = {x['chapter'] for x in cls.guides + cls.story if x.get('presentation', 1) >= 2}
         cls.chapters = {p.stem: json.loads(c) for p, c in cls.files.items() if p.parent == OUT / 'chapters'}
         cls.lang = {l: json.loads(cls.files[OUT / 'lang' / (l + '.snbt')]) for l in LOCALES}
         cls.quests = {q['id']: q for c in cls.chapters.values() for q in c['quests']}
@@ -93,6 +97,15 @@ class QuestBook(unittest.TestCase):
                         self.assertEqual(task['advancement'], source['advancement'])
                     if kind == 'dimension':
                         self.assertEqual(task['dimension'], source['dimension'])
+                    if quest_v2.is_v2_copy(source):
+                        # v2 copy compiles like a sector's (quest_engine.quest_copy), links resolved the same way.
+                        ctx = quest_v2.context(data, self.book, lambda t, w: stable_id('quest:' + t),
+                                               lambda t, w: stable_id('chapter:' + t))
+                        texts = quest_v2.copy_lines(source, data['chapter'], ctx)
+                        for lang in LOCALES:
+                            self.assertEqual(self.lang[lang][f"quest.{q['id']}.title"], source[lang]['title'])
+                            self.assertEqual(self.lang[lang][f"quest.{q['id']}.quest_desc"], texts[lang][0])
+                        continue
                     for lang in LOCALES:
                         title, text = source[lang]
                         self.assertEqual(self.lang[lang][f"quest.{q['id']}.title"], title)
@@ -124,6 +137,10 @@ class QuestBook(unittest.TestCase):
             finale = finale_of(data['quests'])
             c = self.chapters[data['chapter']]
             for source, q in zip(data['quests'], c['quests']):
+                if source.get('role') == 'decor':   # a v2 toy: no node grammar, never content
+                    self.assertEqual(q['shape'], 'none')
+                    self.assertIn(q['size'], quest_art.DECOR_SIZES)
+                    continue
                 role = story_role(source, finale)
                 roles[role] = roles.get(role, 0) + 1
                 self.assertEqual((q['shape'], q['size']), GRAMMAR[role], source['key'])
@@ -152,7 +169,8 @@ class QuestBook(unittest.TestCase):
         for data in self.story:
             for q in data['quests']:
                 for lang in LOCALES:
-                    text = ' '.join(q[lang])
+                    copy_ = q[lang]
+                    text = ' '.join([copy_['title'], *copy_['text']] if isinstance(copy_, dict) else copy_)
                     with self.subTest(quest=q['key'], lang=lang):
                         for phrase in quest_engine.BANNED[lang]:
                             self.assertNotIn(phrase, text.lower())
@@ -165,9 +183,10 @@ class QuestBook(unittest.TestCase):
         emblems = {g['emblem'] for g in self.guides + self.sectors}
         ids = set()
         for chapter, c in self.chapters.items():
-            if chapter in self.sector_names:
+            if chapter in self.sector_names | self.v2_names:
+                self.assertFalse(ids & {i['id'] for i in c.get('images', [])})
                 ids.update(i['id'] for i in c.get('images', []))
-                continue  # sector images: tools/test_sector_book.py
+                continue  # sector and v2 images: tools/test_sector_book.py and tools/test_presentation.py
             for img in c.get('images', []):
                 with self.subTest(chapter=chapter, image=img['id']):
                     self.assertNotIn(img['id'], ids)
@@ -278,8 +297,8 @@ class QuestBook(unittest.TestCase):
         roles = {f'entrelumen_{r}' for r in quest_engine.ROLES}
         for chapter, c in self.chapters.items():
             for q in c['quests']:
-                if chapter in self.sector_names:
-                    self.assertEqual(len(set(q['tags']) & roles), 1)  # the role colours the node
+                if chapter in self.sector_names or q['tags'] == ['entrelumen_decor']:
+                    self.assertEqual(len(set(q['tags']) & roles), 1)  # the role colours the node (a v2 toy too)
                     continue
                 self.assertEqual(len(set(q['tags']) & names), 1)
                 self.assertEqual('entrelumen_optional' in q['tags'], q.get('optional', False))
@@ -294,10 +313,17 @@ class QuestBook(unittest.TestCase):
         for data in self.guides:
             c = self.chapters[data['chapter']]
             pictures = [i['image'] for i in c['images']]
-            self.assertEqual(pictures, ['entrelumen:textures/gui/quests/medallion.png', data['emblem']])
-            medal, emblem = c['images']
+            if data.get('medallion') is False:   # a v2 guide may leave the emblem to its scene
+                continue
+            # A v2 guide draws its art after the two (tools/quest_v2.py).
+            self.assertEqual(pictures[:2], ['entrelumen:textures/gui/quests/medallion.png', data['emblem']])
+            if data.get('presentation', 1) < 2:
+                self.assertEqual(len(pictures), 2)
+            medal, emblem = c['images'][:2]
             self.assertEqual((medal['x'], medal['y']), (emblem['x'], emblem['y']))
-            left = min(q['x'] - q['size'] * VISUAL / 2 for q in c['quests'])
+            if isinstance(data.get('medallion'), dict):
+                continue
+            left = min(q['x'] - q['size'] * VISUAL / 2 for q in c['quests'] if q['tags'] != ['entrelumen_decor'])
             self.assertLess(medal['x'] + medal['width'] * VISUAL / 2, left)
 
     def test_guide_without_concrete_item_rejected(self):

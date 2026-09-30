@@ -18,6 +18,9 @@ The FTB theme that colours the nodes ships in the companion (assets/ftbquests).
 Quest book v3 (docs/design/quest-book-v3.md): sector chapters (content/sectors) compiled by
 tools/quest_engine.py, reward tables and loot crates (reward_tables/), node presets in data.snbt, the
 extended theme, custom node shapes and the companion's ftbquests-namespace strings.
+
+Presentation v2 (tools/quest_v2.py): a guide or a story chapter with "presentation": 2 takes the sectors' text
+markup and canvas art; one without it compiles exactly as before.
 """
 import argparse
 import hashlib
@@ -29,6 +32,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import quest_engine  # noqa: E402
+import quest_v2  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "pack/config/ftbquests/quests"
@@ -245,9 +249,11 @@ def crosses(segment, img):
     return False
 
 
-def decorate_story(data, chapter, finale, languages, hub_id):
+def decorate_story(data, chapter, finale, languages, hub_id, caption_scale=1, drawn=(), title_color=None):
     """Images around the nodes: numeral and act emblem (back to the hub), branch corners with their
-    label, and the Sun of Heliodor behind the finale or, when the chapter asks for it, behind everything."""
+    label, and the Sun of Heliodor behind the finale or, when the chapter asks for it, behind everything.
+    A v2 chapter draws its branch captions larger (caption_scale: "book": {"caption_scale"}, 2 by default), keeps
+    the title block above its art too (drawn) and writes its name beside the emblem (title_color, scale 3)."""
     book = data.get("book", {})
     name = data["chapter"]
     act = data["act"]
@@ -289,17 +295,17 @@ def decorate_story(data, chapter, finale, languages, hub_id):
             width_px = max((bx1 - bx0) * GRID_PX, 120)
             # The caption goes under the panel unless a dependency line crosses it there.
             below = label(f"{name}:{group}:label", (bx0 + bx1) / 2, by1 + 0.25, labels, languages,
-                          scale=1, max_px=width_px, anchor="top")
+                          scale=caption_scale, max_px=width_px, anchor="top")
             if any(crosses(seg, below) for seg in segments):
                 above = label(f"{name}:{group}:label", (bx0 + bx1) / 2, by0 - 0.25, labels, languages,
-                              scale=1, max_px=width_px, anchor="bottom")
+                              scale=caption_scale, max_px=width_px, anchor="bottom")
                 if not any(crosses(seg, above) for seg in segments):
                     below = above
             images.append(below)
     if book.get("numeral", True):
         # Title block above the nodes and the panels: numeral, act emblem (back to the hub), divider.
-        top_drawn = min([y0] + [i["y"] - i["height"] * VISUAL / 2 for i in images])
-        left = min([x0] + [i["x"] - i["width"] * VISUAL / 2 for i in images])
+        top_drawn = min([y0] + [i["y"] - i["height"] * VISUAL / 2 for i in images + list(drawn)])
+        left = min([x0] + [i["x"] - i["width"] * VISUAL / 2 for i in images + list(drawn)])
         nw, nh = ART_PX[f"numeral_{act}"]
         numeral_w, numeral_h = nw * 2 / NODE_PX * VISUAL, nh * 2 / NODE_PX * VISUAL
         emblem_w = 64 / NODE_PX * VISUAL
@@ -311,15 +317,21 @@ def decorate_story(data, chapter, finale, languages, hub_id):
         for lang in LOCALES:
             languages[lang][f"image.{images[-1]['id']}.title"] = data["title"][lang]
         images.append(art("divider", f"{name}:divider", left + divider_w / 2, top + numeral_h + 0.45 + divider_h / 2, 2))
+        if title_color:
+            names = {lang: data["title"][lang].split(" · ", 1)[-1] for lang in LOCALES}
+            images.append(quest_engine.label(f"{name}:title", left + numeral_w + 0.4 + emblem_w + 0.5, top + numeral_h / 2,
+                                             names, languages, scale=3, color=title_color, align="start"))
     sun = book.get("sun")
     if sun:
         images.append(art("sun_heliodor", f"{name}:sun", sun["x"], sun["y"], sun["scale"], order=-1))
+    # A v2 chapter starts as a sketch: the finale's sun and medallion are the prize of the finale.
+    prize = {"dependency": stable_id("quest:" + finale)} if finale and title_color else {}
     if finale and book.get("finale_sun", True):
         f = quests[finale]["layout"]
-        images.append(art("sun_heliodor", f"{name}:finale_sun", f["x"], f["y"], 1, order=-1))
+        images.append(art("sun_heliodor", f"{name}:finale_sun", f["x"], f["y"], 1, order=-1, **prize))
     if finale and book.get("finale_medallion"):
         f = quests[finale]["layout"]
-        images.append(art("medallion", f"{name}:finale_medallion", f["x"], f["y"], 2, order=-1))
+        images.append(art("medallion", f"{name}:finale_medallion", f["x"], f["y"], 2, order=-1, **prize))
     return images
 
 
@@ -373,6 +385,7 @@ def generate(data, all_quests=None, order_index=0, book=None):
 
     for key in keys:
         visit(key)
+    v2 = quest_v2.enabled(data)
     finale = finale_of(quests)
     positions = []
     assert data["layout_groups"] and all(set(labels) == set(LOCALES) for labels in data["layout_groups"].values())
@@ -380,14 +393,16 @@ def generate(data, all_quests=None, order_index=0, book=None):
         layout = q["layout"]
         assert layout["group"] in data["layout_groups"], "unknown layout group"
         assert all(isinstance(layout[c], (int, float)) and math.isfinite(layout[c]) for c in ("x", "y", "size"))
-        role = story_role(q, finale)
-        assert (layout["shape"], float(layout["size"])) == GRAMMAR[role], f"node grammar: {q['key']} is a {role}"
+        decor = v2 and quest_v2.is_decor(q)
+        role = "decor" if decor else story_role(q, finale)
+        if not decor:
+            assert (layout["shape"], float(layout["size"])) == GRAMMAR[role], f"node grammar: {q['key']} is a {role}"
         assert isinstance(layout.get("hide_dependent_lines", False), bool)
         for previous in positions:
             assert math.hypot(layout["x"]-previous["x"], layout["y"]-previous["y"]) >= min_distance(layout["size"], previous["size"]), \
                 f"overlapping quest nodes: {q['key']}"
         positions.append(layout)
-        if not data.get("book", {}).get("radial"):
+        if not data.get("book", {}).get("radial") and not decor:
             for dep in q["deps"]:
                 if dep in local_keys:
                     assert by_key[dep]["layout"]["y"] <= layout["y"], "dependency runs against reading direction"
@@ -416,6 +431,15 @@ def generate(data, all_quests=None, order_index=0, book=None):
                "autofocus_id": stable_id("quest:" + data["autofocus"]), "quests": []}
     milestones = {}
     seen_text = {lang: set() for lang in LOCALES}
+    if v2:
+        # Links in a story chapter reach its own story: generate() sees no guide or sector.
+        def no_chapter_links(target, where):
+            raise AssertionError(f"{where}: a story chapter links quests of the story, not chapters")
+
+        def story_quest(target, where):
+            assert target in by_key, f"{where}: link to unknown story quest {target}"
+            return stable_id("quest:" + target)
+        ctx = quest_v2.context(data, book, story_quest, no_chapter_links)
     for q in quests:
         key = q["key"]
         qid, tid = ident("quest:" + key), ident("task:" + key)
@@ -434,7 +458,8 @@ def generate(data, all_quests=None, order_index=0, book=None):
             assert q["type"] == "checkmark" and q.get("optional"), "checkmarks must be optional learning tasks"
             task.update(type="checkmark")
         layout = q["layout"]
-        role = story_role(q, finale)
+        decor = v2 and quest_v2.is_decor(q)
+        role = "decor" if decor else story_role(q, finale)
         output = {"id": qid, "x": float(layout["x"]), "y": float(layout["y"]),
                   "shape": layout["shape"], "size": float(layout["size"]),
                   "hide_dependent_lines": layout.get("hide_dependent_lines", False),
@@ -444,22 +469,40 @@ def generate(data, all_quests=None, order_index=0, book=None):
                   "tags": [colour_tag(q)]}
         if q.get("optional"):
             output["optional"] = True
+        if v2:
+            quest_v2.node_flags(q, output)
+            if decor:
+                quest_v2.decor(q, output)
+            texts = quest_v2.copy_lines(q, data["chapter"], ctx, story=not data.get("book", {}).get("branch"))
         chapter["quests"].append(output)
         placeholders = []
         for lang in LOCALES:
-            title, description = q[lang]
-            assert title.strip() and len(description) >= 80, f"missing text: {key}/{lang}"
+            title, description = quest_v2.title_of(q, lang), quest_v2.description_of(q, lang)
+            shown = texts[lang][1] if v2 else description
+            assert title.strip() and (decor or len(shown) >= 80), f"missing text: {key}/{lang}"
             check_formatting(title, f"{key}/title/{lang}", False)
-            check_formatting(description, f"{key}/{lang}", True)
+            if not v2:
+                check_formatting(description, f"{key}/{lang}", True)
             assert description not in seen_text[lang], "duplicate description"
             seen_text[lang].add(description)
             languages[lang][f"quest.{qid}.title"] = title
+            if v2 and q[lang].get("subtitle"):   # only the optional branch may have one (quest_v2.copy_lines)
+                languages[lang][f"quest.{qid}.quest_subtitle"] = q[lang]["subtitle"]
             # Keep the route label separate from prose; no hardcoded UI shortcut keys.
-            languages[lang][f"quest.{qid}.quest_desc"] = [data["layout_groups"][layout["group"]][lang], "", *paragraphs(description)]
+            lines = texts[lang][0] if v2 else paragraphs(description)
+            languages[lang][f"quest.{qid}.quest_desc"] = [data["layout_groups"][layout["group"]][lang], "", *lines]
             placeholders.append(re.findall(r"%[0-9$]*[sd]|\{[a-zA-Z_][a-zA-Z_0-9]*\}", title + description))
         assert sorted(placeholders[0]) == sorted(placeholders[1]), f"placeholder mismatch: {key}"
+    drawn = []
+    if v2:
+        placed = {q["key"]: (q["layout"]["x"], q["layout"]["y"]) for q in quests}
+        drawn = quest_v2.art_images(data, book, languages, ctx, {q["key"]: q for q in quests}, placed)
     if act:
-        chapter["images"] = decorate_story(data, chapter, finale, languages, stable_id("chapter:" + book["hub"]["chapter"]))
+        caption = data.get("book", {}).get("caption_scale", 2) if v2 else 1
+        chapter["images"] = decorate_story(data, chapter, finale, languages, stable_id("chapter:" + book["hub"]["chapter"]),
+                                           caption, drawn, quest_v2.palette(data, book)["accent"] if v2 else None)
+    if drawn:
+        chapter.setdefault("images", []).extend(drawn)
     assert languages["en_us"].keys() == languages["es_es"].keys(), "locale key mismatch"
     assert set(milestones) == set(data.get("milestones", ["atlas_awakened", "travellers_table", "lens_assembled", "field_survey", "first_signal"]))
     files = {OUT / "chapters" / (data["chapter"] + ".snbt"): snbt(chapter),
@@ -490,8 +533,9 @@ def generate_all(chapters, book=None):
         ids.update(new_ids)
         for lang in LOCALES:
             for q in data['quests']:
-                assert q[lang][1] not in descriptions[lang], 'duplicate global description'
-                descriptions[lang].add(q[lang][1])
+                description = quest_v2.description_of(q, lang)
+                assert description not in descriptions[lang], 'duplicate global description'
+                descriptions[lang].add(description)
             path=OUT/'lang'/(lang+'.snbt'); values=json.loads(generated.pop(path))
             assert not languages[lang].keys() & values.keys(), 'duplicate locale key'
             languages[lang].update(values)
@@ -525,10 +569,12 @@ def guide_lines(description, lang, ctx, where):
 def generate_guide(data, group_id, order_index, book, languages, seen_ids, all_keys=frozenset(),
                    chapter_names=frozenset()):
     """One guide chapter of content/guides (validated against the pinned JARs by tools/check_guides.py).
-    all_keys and chapter_names are the book's quest keys and chapters, the targets its links may name."""
+    all_keys and chapter_names are the book's quest keys and chapters, the targets its links may name.
+    A guide with "presentation": 2 compiles its copy and art like a sector (tools/quest_v2.py)."""
     name = data["chapter"]
     assert re.fullmatch(r"guide_[a-z0-9_]+", name), name
     quests = data["quests"]
+    v2 = quest_v2.enabled(data)
     keys = {q["key"] for q in quests}
     assert len(keys) == len(quests), f"duplicate key in {name}"
     chapter_id = stable_id("chapter:" + name)
@@ -540,7 +586,9 @@ def generate_guide(data, group_id, order_index, book, languages, seen_ids, all_k
         return resolve
     ctx = {"items": set(), "names": set(), "keys": set(), "textures": set(),
            "resolve_quest": resolver("quest", all_keys), "resolve_chapter": resolver("chapter", chapter_names)}
-    roots = [q for q in quests if not q["deps"]]
+    if v2:
+        ctx = quest_v2.context(data, book, ctx["resolve_quest"], ctx["resolve_chapter"])
+    roots = [q for q in quests if not q["deps"] and not (v2 and quest_v2.is_decor(q))]
     assert roots, f"{name}: no entry quest"
     entry = min(roots, key=lambda q: (q["layout"]["x"], abs(q["layout"]["y"])))
     for lang in LOCALES:
@@ -582,22 +630,52 @@ def generate_guide(data, group_id, order_index, book, languages, seen_ids, all_k
             output["optional"] = True
         if kind != "checkmark":
             output["rewards"].append({"id": stable_id(f"reward:{key}:xp"), "type": "xp", "xp": xp})
+        decor = v2 and quest_v2.is_decor(q)
+        if v2:
+            quest_v2.node_flags(q, output)
+            if decor:
+                quest_v2.decor(q, output)
+            texts = quest_v2.copy_lines(q, name, ctx)
         chapter["quests"].append(output)
-        placed.append((layout["x"], layout["y"], layout["size"]))
+        if not decor:
+            placed.append((layout["x"], layout["y"], layout["size"]))
         for lang in LOCALES:
+            if v2:
+                copy = q[lang]
+                check_formatting(copy["title"], f"{key}/title/{lang}", False)
+                languages[lang][f"quest.{qid}.title"] = copy["title"]
+                if copy.get("subtitle"):
+                    languages[lang][f"quest.{qid}.quest_subtitle"] = copy["subtitle"]
+                languages[lang][f"quest.{qid}.quest_desc"] = texts[lang][0]
+                continue
             title, description = q[lang]
             check_formatting(title, f"{key}/title/{lang}", False)
             check_formatting(description, f"{key}/{lang}", True)
             languages[lang][f"quest.{qid}.title"] = title
             languages[lang][f"quest.{qid}.quest_desc"] = guide_lines(description, lang, ctx, f"{key}/{lang}")
-        links = {lang: sorted(m.group(1, 2) for m in quest_engine.TAG.finditer(q[lang][1])) for lang in LOCALES}
-        assert links["en_us"] == links["es_es"], f"{key}: EN and ES link to different quests or chapters"
+        if not v2:   # quest_copy checks the links of a v2 quest, with its items and keys
+            links = {lang: sorted(m.group(1, 2) for m in quest_engine.TAG.finditer(q[lang][1])) for lang in LOCALES}
+            assert links["en_us"] == links["es_es"], f"{key}: EN and ES link to different quests or chapters"
+    if v2:   # the canvas rule the sectors keep too: nodes never cover each other
+        nodes = [(q["key"], q["layout"]["x"], q["layout"]["y"], q["layout"]["size"]) for q in quests]
+        for i, (ka, xa, ya, sa) in enumerate(nodes):
+            for kb, xb, yb, sb in nodes[:i]:
+                assert math.hypot(xa - xb, ya - yb) >= min_distance(sa, sb) - 1e-6, f"{name}: overlapping nodes {ka} and {kb}"
     # Medallion with the guide's key item, left of the entry node (FTB Evolution's chapter emblem, redrawn).
+    # A v2 guide may place it ("medallion": {"x", "y"}) or leave it to the scene ("medallion": false).
     x0 = extents(placed)[0]
     mx, my = x0 - 0.6 - 64 * 2 / NODE_PX * VISUAL / 2, entry["layout"]["y"]
+    medallion = data.get("medallion", True)
+    if isinstance(medallion, dict):
+        mx, my = medallion["x"], medallion["y"]
     assert re.fullmatch(r"[a-z0-9_.-]+:textures/(items?|blocks?)/[a-z0-9_./-]+\.png", data["emblem"]), f"{name}: emblem"
     chapter["images"] = [art("medallion", f"{name}:medallion", mx, my, 2, order=0),
                          image(f"{name}:emblem", mx, my, 16 * 4 / NODE_PX, 16 * 4 / NODE_PX, data["emblem"], order=1)]
+    if medallion is False:
+        chapter["images"] = []
+    if v2:
+        placed_at = {q["key"]: (q["layout"]["x"], q["layout"]["y"]) for q in quests}
+        chapter["images"] += quest_v2.art_images(data, book, languages, ctx, {q["key"]: q for q in quests}, placed_at)
     return chapter
 
 
@@ -685,6 +763,15 @@ def gated_outputs():
     return out
 
 
+def v2_glyphs(data):
+    """Icon textures a v2 guide or story chapter draws in its text (the companion's icon font): the same refs
+    quest_text.icon_segment adds while compiling, [tip] included."""
+    if data.get("presentation", 1) < 2:
+        return set()
+    return {quest_engine.quest_text.icon_texture(ref)[0] for q in data["quests"] for lang in LOCALES
+            for para in q[lang]["text"] for ref in quest_engine.quest_text.icon_refs_in(para)}
+
+
 def generate_book(chapters=None, guides=None, book=None, sectors=None):
     """Every generated file: story (generate_all), hub, guides, sector chapters, chapter groups, reward
     tables, data.snbt presets, theme and the companion's ftbquests strings."""
@@ -742,7 +829,10 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
             glyphs |= sector_ctx.get("glyphs", set())
         else:
             chapter = generate_guide(data, gid, order[gid], book, languages, seen, all_keys, chapter_names)
+            glyphs |= v2_glyphs(data)
         files[OUT / "chapters" / (data["chapter"] + ".snbt")] = snbt(chapter)
+    for data in chapters:
+        glyphs |= v2_glyphs(data)
     if guides:
         assert set(first) == {g["id"] for g in book["groups"]}, "every group needs guides"
         hub = build_hub(book, chapters, first, ordered, languages)
@@ -779,7 +869,7 @@ def main():
         for p in stale:p.unlink()
     if failures:raise SystemExit('Generated output missing or stale: '+', '.join(failures))
     sectors=quest_engine.load_sectors()
-    quests=sum(len(d['quests']) for d in chapters)+sum(len(g['quests']) for g in guides)+sum(1 for x in sectors for q in x['quests'] if quest_engine.quest_art.is_counted(q))
+    quests=sum(1 for x in chapters+guides+sectors for q in x['quests'] if quest_engine.quest_art.is_counted(q))
     print(f"PASS: {len(chapters)+len(guides)+len(sectors)+1} chapters ({len(chapters)} story, {len(guides)} guides, "
           f"{len(sectors)} sectors, hub), {quests} quests, {len([p for p in files if p.parent == OUT / 'reward_tables'])} reward tables, "
           f"{len(book['groups'])} groups, global IDs/DAG, EN/ES parity; runtime not verified.")

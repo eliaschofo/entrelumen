@@ -22,7 +22,15 @@ Per quest:
 Then each quest compiles through quest_engine.quest_copy, the same check the book compiles with; a quest that
 fails keeps its v1 text. Quests already in v2 form are left alone. What it could not decide is printed.
 
+Guides and story chapters (content/guides/guide_*.json, content/act_*.json and the other story files) work too.
+Their v1 copy is [title, description] with & codes; the draft first turns every quest into the v2 form, {"title",
+"text": [paragraphs]}, with the codes as markup (&e and other colours -> [hl|…], &l -> [b|…], &o -> [i|…], &k ->
+[glitch|…], &m -> [strike|…]), sets "presentation": 2 on the chapter and writes it in tools/format_sector.py's layout.
+A story quest keeps its last paragraph, the lore, whole and last (tools/quest_v2.py: what, then why). A quest whose
+draft breaks a rule keeps the plain conversion; one that breaks a rule even then is printed, to fix by hand.
+
 usage: python tools/quest_draft.py content/sectors/sector_x.json [--dry-run] [--quest KEY ...] [--no-icons]
+       python tools/quest_draft.py content/guides/guide_x.json | content/act_two.json
 """
 import argparse
 import json
@@ -35,6 +43,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import format_sector  # noqa: E402
 import quest_engine as qe  # noqa: E402
 import quest_text  # noqa: E402
+import quest_v2  # noqa: E402
 
 LOCALES = ("en_us", "es_es")
 LEAD_MAX = {"en_us": 110, "es_es": 125}   # visible characters of a lead: about two lines of bold text at GUI 2
@@ -235,8 +244,9 @@ def clauses(masked, tags):
 # One quest
 
 class Draft:
-    def __init__(self, chapter, flat_icon=None):
+    def __init__(self, chapter, flat_icon=None, story=False):
         self.chapter = chapter
+        self.story = story    # a story quest keeps its lore, the last paragraph, whole and last
         self.flat_icon = flat_icon or (lambda item: None)
         self.notes = []       # (key, what could not be decided)
         self.stats = {"quests": 0, "drafted": 0, "v2": 0, "kept": 0, "lead": 0, "li": 0, "icons": 0, "careful": 0,
@@ -246,9 +256,12 @@ class Draft:
         self.notes.append((key, text))
 
     # --- paragraph level
-    def split_paragraph(self, key, i, src):
-        """{lang: [Block…]} for source paragraph i of both languages, in lockstep."""
+    def split_paragraph(self, key, i, src, lore=False):
+        """{lang: [Block…]} for source paragraph i of both languages, in lockstep. The lore of a story quest stays
+        one plain paragraph."""
         masked = {lang: mask(src[lang]) for lang in LOCALES}
+        if lore:
+            return {lang: [Block("plain", *masked[lang], whole=True)] for lang in LOCALES}
         kinds = set()
         for lang in LOCALES:
             text = src[lang]
@@ -293,7 +306,9 @@ class Draft:
             self.stats["kept"] += 1
             return None
         # 1. paragraphs cut into sentences (plain), kept whole (tip, raw)
-        paras = [self.split_paragraph(key, i, {lang: src[lang][i] for lang in LOCALES}) for i in range(len(src["en_us"]))]
+        last = len(src["en_us"]) - 1
+        paras = [self.split_paragraph(key, i, {lang: src[lang][i] for lang in LOCALES}, self.story and i == last and i > 0)
+                 for i in range(len(src["en_us"]))]
         # 2. warnings and pack notes out of plain paragraphs, into callouts after their paragraph
         careful_after = {}
         cautions = notes = 0
@@ -454,7 +469,7 @@ class Draft:
     def numbers(self, key, q, out):
         """[big|…] for the star number, [hl|…] for the rest (both languages)."""
         stars = set()
-        tasks = q.get("tasks") or [q.get("task") or {}]
+        tasks = q.get("tasks") or [q.get("task") or q]   # a guide or story quest names its count itself
         for t in tasks:
             if isinstance(t, dict) and int(t.get("count", 1)) >= 2:
                 stars.add(str(int(t["count"])))
@@ -565,9 +580,87 @@ def first_page_length(paragraphs, lang):
 # --------------------------------------------------------------------------------------------------
 # The chapter
 
+def kind_of(data):
+    """sector, guide or story."""
+    if data.get("format") == "sector":
+        return "sector"
+    return "story" if "layout_groups" in data else "guide"
+
+
+def codes_to_markup(text):
+    """A v1 paragraph's & codes as v2 markup, and what could not be carried over (dropped, text kept)."""
+    out, dropped = [], []
+    style, run = None, ""
+    tag = {"l": "b", "o": "i", "k": "glitch", "m": "strike"}
+
+    def close():
+        nonlocal run
+        if style is None:
+            out.append(run)
+        elif run.strip() and not re.search(r"[\[\]|]", run):
+            lead = run[:len(run) - len(run.lstrip())]
+            trail = run[len(run.rstrip()):]
+            out.append(f"{lead}[{tag.get(style, 'hl')}|{run.strip()}]{trail}")
+        else:
+            out.append(run)
+            if run.strip():
+                dropped.append(f"&{style} around {run.strip()!r}")
+        run = ""
+    for part in re.split(r"(&(?:#[0-9A-Fa-f]{6}|[0-9a-fk-or]))", text):
+        m = quest_v2.FORMAT_CODE.fullmatch(part)
+        if not m:
+            run += part
+            continue
+        close()
+        code = m.group(1)
+        if code == "r":
+            style = None
+        elif code == "n" or (style is not None and code not in ("k", "m")):
+            dropped.append(f"&{code}")   # underline, or a second code on top of the first: the first one stays
+        else:
+            style = code if code in tag or code in "klmo" else "hl"
+    close()
+    return "".join(out), dropped
+
+
+def to_v2(data, d):
+    """Turn a guide or story chapter's [title, description] copy into {"title", "text"} (codes as markup) and mark
+    the chapter "presentation": 2. Quests already in that form stay."""
+    for q in data["quests"]:
+        for lang in LOCALES:
+            if isinstance(q[lang], dict):
+                continue
+            title, description = q[lang]
+            text = []
+            for para in description.split("\n\n"):
+                para, dropped = codes_to_markup(para.strip())
+                for what in dropped:
+                    d.note(q["key"], f"{lang}: {what} has no markup; left as plain text")
+                text.append(para)
+            q[lang] = {"title": title, "text": text}
+    data["presentation"] = 2
+
+
+def lore_last(data):
+    """A story act says what, then why (the lore last); the optional branch (book.branch) does not."""
+    return kind_of(data) == "story" and not data.get("book", {}).get("branch")
+
+
+def check_copy(q, data, kind):
+    """The compile rules the book applies to this quest: quest_copy, plus the story's own (tools/quest_v2.py)."""
+    if kind == "sector":
+        qe.quest_copy(q, data["chapter"], _ctx())
+    else:
+        quest_v2.copy_lines(q, data["chapter"], _ctx(), story=lore_last(data))
+
+
 def draft_chapter(data, flat_icon=None, only=None):
-    """Draft every quest of a sector (in place). Returns the Draft with its notes and counts."""
-    d = Draft(data["chapter"], flat_icon)
+    """Draft every quest of a sector, guide or story chapter (in place). Returns the Draft with its notes and
+    counts."""
+    kind = kind_of(data)
+    d = Draft(data["chapter"], flat_icon, story=lore_last(data))
+    if kind != "sector":
+        to_v2(data, d)
     for q in data["quests"]:
         if only and q["key"] not in only:
             continue
@@ -583,12 +676,17 @@ def draft_chapter(data, flat_icon=None, only=None):
         for lang in LOCALES:
             q[lang]["text"] = texts[lang]
         try:
-            qe.quest_copy(q, data["chapter"], _ctx())
+            check_copy(q, data, kind)
         except AssertionError as e:
             for lang in LOCALES:
                 q[lang]["text"] = before[lang]
             d.note(q["key"], f"kept v1: the draft breaks a compile rule ({e})")
             d.stats["kept"] += 1
+            if kind != "sector":
+                try:
+                    check_copy(q, data, kind)
+                except AssertionError as e2:
+                    d.note(q["key"], f"fix by hand: the plain conversion breaks a rule too ({e2})")
             continue
         d.stats["drafted"] += 1
     return d
@@ -629,6 +727,8 @@ def main(argv=None):
             print(f"  {k:<{width}}  {text}")
     if data.get("presentation", 1) < 2:
         print('Reminder: add "presentation": 2 when the canvas follows the v2 rules too.')
+    elif kind_of(data) != "sector" and not data.get("art"):
+        print('The text is v2 ("presentation": 2 is set); the canvas still needs its sketch-first "art" list.')
     if not args.dry_run:
         path.write_text(format_sector.dumps(data), encoding="utf-8", newline="\n")
         print(f"wrote {path} (review it with git diff)")

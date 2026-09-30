@@ -1,5 +1,6 @@
 """Contracts of presentation v2 (docs/design/quest-book-v3.md, "Presentación v2"): the text markup and fonts of
-tools/quest_text.py, the canvas vocabulary and decor nodes of tools/quest_art.py, and the two pilot chapters.
+tools/quest_text.py, the canvas vocabulary and decor nodes of tools/quest_art.py, the two pilot chapters, and v2 for the
+guide and story chapters (tools/quest_v2.py) with their two pilots, the draft and the format that come with it.
 Static: what a font or an image looks like in the client is still to be seen (the preview renderer imitates it).
 Run on its own or through tools/test_sector_book.py, which imports these cases."""
 import json
@@ -241,5 +242,176 @@ class Pilots(unittest.TestCase):
                         self.assertTrue(first.startswith(("[lead]", "[tip]", "[i|")), first)
 
 
+V2_PILOTS = {"guide": "guide_entrelumen_start", "story": "the_lost_crafts"}
+
+
+def strong_share(images):
+    """(strong images, share shown before any quest): tools/check_guides.py image_budget's sketch-first measure."""
+    strong = [i for i in images if i["image"].startswith("item:") or i.get("alpha", 255) > quest_art.FAINT]
+    fresh = [i for i in strong if not i.get("dependency")]
+    return len(strong), len(fresh) / len(strong)
+
+
+class GuidesAndStory(unittest.TestCase):
+    """Presentation v2 for guides and story chapters (tools/quest_v2.py): opt-in, the same text and art as a sector,
+    the story's own rules kept, and the kit (draft, format, checks) working on both."""
+
+    @classmethod
+    def setUpClass(cls):
+        import generate_quests as gq
+        cls.gq = gq
+        cls.book = gq.load_book()
+        cls.story = gq.load_chapters()
+        cls.guides = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(gq.GUIDES.glob("guide_*.json"))]
+        cls.guide = next(g for g in cls.guides if g["chapter"] == V2_PILOTS["guide"])
+        cls.act = next(c for c in cls.story if c["chapter"] == V2_PILOTS["story"])
+        sectors = qe.load_sectors()
+        cls.names = {g["chapter"] for g in cls.guides + cls.story + sectors}
+        cls.keys = {q["key"] for g in cls.guides + cls.story + sectors for q in g["quests"]}
+
+    def compile_guide(self, data):
+        languages = {lang: {} for lang in LOCALES}
+        chapter = self.gq.generate_guide(data, "g", 0, self.book, languages, set(), self.keys, self.names)
+        return chapter, languages
+
+    def compile_story(self, chapters=None):
+        chapters = chapters or self.story
+        files = self.gq.generate_all(chapters, self.book)
+        return ({c["chapter"]: json.loads(files[OUT / "chapters" / (c["chapter"] + ".snbt")]) for c in chapters},
+                {lang: json.loads(files[OUT / "lang" / (lang + ".snbt")]) for lang in LOCALES})
+
+    def test_chapters_that_do_not_opt_in_carry_nothing_of_v2(self):
+        import copy
+        import quest_v2
+        v1 = [c for c in self.guides + self.story if c.get("presentation", 1) < 2]
+        self.assertTrue(v1)
+        for data in v1:
+            self.assertFalse(quest_v2.enabled(data))
+        data = copy.deepcopy(next(c for c in self.guides if c.get("presentation", 1) < 2))
+        for change in ({"art": []}, {"motif": "travel"}):
+            with self.subTest(change=change), self.assertRaises(AssertionError):
+                quest_v2.enabled({**data, **change})
+        q = data["quests"][0]
+        q["en_us"] = {"title": q["en_us"][0], "text": ["[lead] A v2 paragraph."]}
+        with self.assertRaises(AssertionError):
+            quest_v2.enabled(data)
+
+    def test_a_v2_guide_compiles_like_a_sector(self):
+        chapter, languages = self.compile_guide(self.guide)
+        quests = {q["id"]: q for q in chapter["quests"]}
+        welcome = languages["en_us"][f"quest.{qe.stable_id('quest:entrelumen_start_welcome')}.quest_desc"]
+        self.assertEqual(json.loads(welcome[0])[0], {"text": "", "bold": True})          # [lead]
+        pedestal = languages["en_us"][f"quest.{qe.stable_id('quest:entrelumen_start_pedestal')}.quest_desc"]
+        clicks = [seg.get("clickEvent") for line in pedestal if line.startswith("[") for seg in json.loads(line)[1:]]
+        self.assertIn({"action": "change_page", "value": qe.stable_id("chapter:guide_entrelumen_compass")}, clicks)
+        decor = [q for q in self.guide["quests"] if q.get("role") == "decor"]
+        self.assertTrue(1 <= len(decor) <= 3)
+        for q in decor:
+            out = quests[qe.stable_id("quest:" + q["key"])]
+            self.assertEqual((out["shape"], out["rewards"], out["optional"], out["tags"]),
+                             ("none", [], True, ["entrelumen_decor"]))
+            self.assertFalse(quest_art.is_counted(q))
+        pictures = [i["image"] for i in chapter["images"]]
+        self.assertEqual(pictures[:2], ["entrelumen:textures/gui/quests/medallion.png", self.guide["emblem"]])
+        self.assertTrue(any(i.get("dependency") for i in chapter["images"]))
+
+    def test_a_v2_story_chapter_keeps_its_campaign_and_draws_its_scene(self):
+        compiled, languages = self.compile_story()
+        c = compiled[V2_PILOTS["story"]]
+        campaign = [q for q in c["quests"] if q["tasks"][0]["type"] == "entrelumen:campaign"]
+        self.assertEqual(len(campaign), len(self.act["milestones"]))
+        numeral = [i for i in c["images"] if i["image"].endswith("numeral_2.png")]
+        self.assertEqual(len(numeral), 1)
+        drawn_top = min(i["y"] - i["height"] * qe.VISUAL / 2 for i in c["images"]
+                        if not i["image"].startswith("entrelumen:textures/gui/quests/") and not i.get("text_on_image"))
+        self.assertLess(numeral[0]["y"], drawn_top)                                 # the title block stays above the scene
+        entry = languages["es_es"][f"quest.{qe.stable_id('quest:crafts_welcome')}.quest_desc"]
+        self.assertEqual(entry[:2], [self.act["layout_groups"]["archive"]["es_es"], ""])   # the route label first, as in v1
+        glitch = [seg for line in languages["en_us"][f"quest.{qe.stable_id('quest:crafts_archive')}.quest_desc"]
+                  if line.startswith("[") for seg in json.loads(line)[1:] if seg.get("obfuscated")]
+        self.assertEqual([g["text"] for g in glitch], ["Te"])                         # the Atlas's interference survives
+
+    def test_the_story_keeps_its_own_rules_in_v2(self):
+        import copy
+        import quest_v2
+        key = "crafts_press"
+
+        def text(q):
+            return q["en_us"]["text"]
+        breaks = {
+            "lore last": lambda q: text(q).append("[li] A list item at the end."),
+            "no subtitle": lambda q: q["en_us"].update(subtitle="A subtitle"),
+            "no & codes": lambda q: text(q).__setitem__(0, "[lead] Press &eiron&r ingots."),
+            "two glitches": lambda q: text(q).__setitem__(-1, "[glitch|a] [glitch|b] [glitch|c] and the lore."),
+            "short glitch": lambda q: text(q).__setitem__(-1, "The lore, [glitch|far too long]."),
+            "story links": lambda q: text(q).__setitem__(-1, "See [chapter:guide_entrelumen_start|the guide] for the lore."),
+        }
+        for name, change in breaks.items():
+            data = copy.deepcopy(self.act)
+            change(next(x for x in data["quests"] if x["key"] == key))
+            chapters = [data if c["chapter"] == data["chapter"] else c for c in self.story]
+            with self.subTest(rule=name), self.assertRaises(AssertionError):
+                self.compile_story(chapters)
+        q = next(x for x in self.act["quests"] if x["key"] == key)
+        self.assertTrue(quest_v2.copy_lines(q, self.act["chapter"], ctx(), story=True))
+
+    def test_glitch_and_strike_are_markup(self):
+        line = json.loads(qe.compile_paragraph("A voice: …[glitch|those] who [strike|have] arrived.", "en_us", ctx(), "t")[0])
+        self.assertEqual(line[2], {"text": "those", "obfuscated": True})
+        self.assertEqual(line[4], {"text": "have", "strikethrough": True})
+
+    def test_pilots_start_as_a_sketch_within_the_image_budget(self):
+        guide, _ = self.compile_guide(self.guide)
+        story = self.compile_story()[0][V2_PILOTS["story"]]
+        for name, chapter in ((V2_PILOTS["guide"], guide), (V2_PILOTS["story"], story)):
+            strong, share = strong_share(chapter["images"])
+            with self.subTest(chapter=name):
+                self.assertLessEqual(len(chapter["images"]), 700)
+                self.assertLessEqual(share, 0.4, f"{share:.0%} of {strong} strong images show on a fresh book")
+
+    def test_the_draft_turns_v1_guides_and_story_into_v2(self):
+        import copy
+        import quest_draft
+        import quest_v2
+        v1 = [c for c in self.guides + self.story if c.get("presentation", 1) < 2]
+        for original in v1:
+            data = copy.deepcopy(original)
+            d = quest_draft.draft_chapter(data)
+            story = quest_draft.lore_last(data)
+            fixes = {k for k, note in d.notes if note.startswith("fix by hand")}
+            with self.subTest(chapter=data["chapter"]):
+                self.assertEqual(data["presentation"], 2)
+                for a, b in zip(original["quests"], data["quests"]):
+                    self.assertEqual({k: v for k, v in a.items() if k not in LOCALES},
+                                     {k: v for k, v in b.items() if k not in LOCALES})     # keys, tasks, sources, layout
+                    for lang in LOCALES:
+                        self.assertEqual(b[lang]["title"], a[lang][0])
+                        self.assertNotRegex(" ".join(b[lang]["text"]), r"&[0-9a-fk-or]")
+                        if story:   # the lore stays whole and last
+                            self.assertEqual(b[lang]["text"][-1],
+                                             quest_draft.codes_to_markup(a[lang][1].split("\n\n")[-1].strip())[0])
+                    if b["key"] not in fixes:
+                        quest_v2.copy_lines(b, data["chapter"], quest_draft._ctx(), story=story)
+
+    def test_codes_become_markup(self):
+        import quest_draft
+        self.assertEqual(quest_draft.codes_to_markup("Use the &eHeliodor Compass&r now."),
+                         ("Use the [hl|Heliodor Compass] now.", []))
+        self.assertEqual(quest_draft.codes_to_markup("…&kthose&r who &mhave&r arrived."),
+                         ("…[glitch|those] who [strike|have] arrived.", []))
+        self.assertEqual(quest_draft.codes_to_markup("&lBold&r and &oitalic&r.")[0], "[b|Bold] and [i|italic].")
+
+    def test_the_kit_covers_v2_guides_and_story(self):
+        import check_guides
+        import format_sector
+        self.assertLessEqual(set(V2_PILOTS.values()), check_guides.v2_chapters())      # image budget, sketch-first
+        files = format_sector.v2_chapter_files()
+        self.assertLessEqual({"guide_entrelumen_start.json", "act_two.json"}, {p.name for p in files})
+        for path in files:
+            self.assertEqual(format_sector.dumps(json.loads(path.read_text(encoding="utf-8"))),
+                             path.read_text(encoding="utf-8"), path.name)
+
+
 if __name__ == "__main__":
     unittest.main()
+
