@@ -1225,6 +1225,95 @@
       "hide_lock_icon": true,
       "hide_dependency_lines": true,
       "hide_dependent_lines": true
+    },
+    {
+      "id": "049EDFDB5A185E8C",
+      "x": 15.4,
+      "y": 11.2,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "55229EA85F7AE6E0"
+      ],
+      "tasks": [
+        {
+          "id": "30242D4CCFE0158F",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(croptopia:corn)item(croptopia:coffee_beans)item(croptopia:pineapple)item(croptopia:blueberry))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "croptopia:corn"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "15CB5AAB98441398",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "croptopia:corn"
+      },
+      "hide_until_deps_complete": true,
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "1772DF4970AEAC47",
+      "x": 4.5,
+      "y": -16.8,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "4F65428A124B93FC"
+      ],
+      "tasks": [
+        {
+          "id": "3878F35661E7A295",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(croptopia:orange)item(croptopia:cherry)item(croptopia:banana)item(croptopia:cinnamon))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "croptopia:orange"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "7621BD1A85605993",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "croptopia:orange"
+      },
+      "hide_dependency_lines": true
     }
   ],
   "quest_links": [
@@ -4361,6 +4450,144 @@
       "order": 6,
       "text_h_align": "end",
       "position_locked": true
+    },
+    {
+      "id": "28E5438F4DAF19FC",
+      "x": 15.4,
+      "y": 14.75,
+      "width": 4.4333,
+      "height": 5.25,
+      "rotation": 0.0,
+      "image": "minecraft:block/dirt",
+      "order": -6,
+      "position_locked": true,
+      "alpha": 46,
+      "color": 15260853
+    },
+    {
+      "id": "519815EB07F083A8",
+      "x": 15.4,
+      "y": 14.75,
+      "width": 4.4333,
+      "height": 5.25,
+      "rotation": 0.0,
+      "image": "minecraft:block/dirt",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "049EDFDB5A185E8C",
+      "alpha": 200,
+      "color": 16777215
+    },
+    {
+      "id": "6C0811654913AE99",
+      "x": 15.4,
+      "y": 15.9,
+      "width": 2.5667,
+      "height": 2.5667,
+      "rotation": 0.0,
+      "image": "item:botanypots:terracotta_botany_pot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "049EDFDB5A185E8C"
+    },
+    {
+      "id": "5E12260FA32D9AEB",
+      "x": 15.4,
+      "y": 13.9,
+      "width": 2.2167,
+      "height": 2.2167,
+      "rotation": 0.0,
+      "image": "item:croptopia:pineapple",
+      "order": 0,
+      "position_locked": true,
+      "dependency": "049EDFDB5A185E8C"
+    },
+    {
+      "id": "552B510F68D0D40B",
+      "x": 4.5,
+      "y": -11.82,
+      "width": 5.3667,
+      "height": 7.4083,
+      "rotation": 0.0,
+      "image": "minecraft:textures/block/dirt.png",
+      "order": -6,
+      "position_locked": true,
+      "alpha": 46,
+      "color": 15260853
+    },
+    {
+      "id": "0E08C001315AC885",
+      "x": 4.5,
+      "y": -11.82,
+      "width": 5.3667,
+      "height": 7.4083,
+      "rotation": 0.0,
+      "image": "minecraft:textures/block/dirt.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "1772DF4970AEAC47",
+      "alpha": 210,
+      "color": 2365970
+    },
+    {
+      "id": "1606D95866DAC002",
+      "x": 4.5,
+      "y": -9.55,
+      "width": 2.5667,
+      "height": 2.5667,
+      "rotation": 0.0,
+      "image": "item:botanypots:orange_terracotta_botany_pot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "1772DF4970AEAC47"
+    },
+    {
+      "id": "363E94D6923B6FB9",
+      "x": 4.5,
+      "y": -11.3,
+      "width": 1.4,
+      "height": 1.4,
+      "rotation": 0.0,
+      "image": "item:croptopia:cinnamon_log",
+      "order": 0,
+      "position_locked": true,
+      "dependency": "1772DF4970AEAC47"
+    },
+    {
+      "id": "2472E5A257E613AF",
+      "x": 4.5,
+      "y": -12.4,
+      "width": 1.4,
+      "height": 1.4,
+      "rotation": 0.0,
+      "image": "item:croptopia:cinnamon_log",
+      "order": 0,
+      "position_locked": true,
+      "dependency": "1772DF4970AEAC47"
+    },
+    {
+      "id": "00FF9E0CFA2AE81A",
+      "x": 4.5,
+      "y": -13.8,
+      "width": 2.5667,
+      "height": 2.5667,
+      "rotation": 0.0,
+      "image": "item:minecraft:oak_leaves",
+      "order": 0,
+      "position_locked": true,
+      "dependency": "1772DF4970AEAC47"
+    },
+    {
+      "id": "47DB346FDAA2540D",
+      "x": 5.4,
+      "y": -13.3,
+      "width": 1.05,
+      "height": 1.05,
+      "rotation": 0.0,
+      "image": "item:croptopia:orange",
+      "order": 1,
+      "position_locked": true,
+      "dependency": "1772DF4970AEAC47"
     }
   ]
 }

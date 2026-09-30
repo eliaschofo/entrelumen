@@ -1934,6 +1934,44 @@
       "hide_lock_icon": true,
       "hide_dependency_lines": true,
       "hide_dependent_lines": true
+    },
+    {
+      "id": "3E5574E91724A891",
+      "x": 8.6,
+      "y": 10.4,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "1126A9C30C2631CD"
+      ],
+      "tasks": [
+        {
+          "id": "76CEB0969C8D47B4",
+          "type": "observation",
+          "observation_type": "block",
+          "to_observe": "psi:programmer",
+          "timer": 20,
+          "icon": {
+            "id": "psi:programmer"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "4548B372B6D679D8",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "psi:programmer"
+      },
+      "hide_dependency_lines": true
     }
   ],
   "quest_links": [
@@ -5381,6 +5419,34 @@
       "order": -11,
       "position_locked": true,
       "alpha": 77
+    },
+    {
+      "id": "79238EA6AC74A4ED",
+      "x": 8.6,
+      "y": 10.4,
+      "width": 2.3333,
+      "height": 2.3333,
+      "rotation": 0.0,
+      "image": "psionicutilities:textures/spell/highlight.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "3E5574E91724A891",
+      "alpha": 150,
+      "color": 16751164
+    },
+    {
+      "id": "6C8C8287B69FECAC",
+      "x": 8.6,
+      "y": 10.4,
+      "width": 2.912,
+      "height": 0.125,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 16751164,
+      "alpha": 220,
+      "order": -2,
+      "position_locked": true,
+      "dependency": "3E5574E91724A891"
     }
   ]
 }
