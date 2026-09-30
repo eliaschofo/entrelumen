@@ -4,441 +4,441 @@
   "act": "any",
   "icon": "minecraft:white_banner",
   "emblem": "minecraft:textures/item/bell.png",
-  "title": {
-    "en_us": "Teams and Claims",
-    "es_es": "Equipos y reclamos"
-  },
+  "title": {"en_us": "Teams and Claims", "es_es": "Equipos y reclamos"},
   "subtitle": {
     "en_us": "Play together with FTB Teams, protect your land with FTB Chunks, and know what the team shares.",
     "es_es": "Jugá en grupo con FTB Teams, protegé tu terreno con FTB Chunks y sabé qué comparte el equipo."
   },
+  "presentation": 2,
+  "motif": "gadgets",
   "quests": [
     {
-      "key": "qol_teams_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Solo First, Better Together",
-        "Everything can be done alone. With friends, the campaign, the compass and the World Tier become shared, so you can split branches: one cooks, one builds machines, one explores.\n\nSomeone always ends up doing the paperwork. Usually the one with the Atlas."
-      ],
-      "es_es": [
-        "Primero solo, mejor en equipo",
-        "Todo se puede hacer solo. Con amigos, la campaña, la brújula y el World Tier pasan a ser compartidos, así que pueden repartirse ramas: uno cocina, otro arma máquinas, otro explora.\n\nAlguien siempre termina haciendo los trámites. Suele ser el del Atlas."
-      ],
-      "sources": [
-        "repo:docs/design/story-bible.md",
-        "repo:docs/design/team-lifecycle-runtime-cases.md"
-      ]
+      "key": "qol_teams_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Solo First, Better Together", "subtitle": "Someone does the paperwork. Usually the one with the Atlas.",
+        "text": ["[lead] Everything can be done alone. With friends, three things become shared:",
+                 "[li] The campaign",
+                 "[li] The [item:entrelumen:heliodor_compass|compass]",
+                 "[li] The World Tier",
+                 "So you can split the branches: one cooks, one builds machines, one explores."]},
+      "es_es": {"title": "Primero solo, mejor en equipo", "subtitle": "Alguien hace los trámites. Suele ser el del Atlas.",
+        "text": ["[lead] Todo se puede hacer solo. Con amigos, tres cosas pasan a ser compartidas:",
+                 "[li] La campaña",
+                 "[li] La [item:entrelumen:heliodor_compass|brújula]",
+                 "[li] El World Tier",
+                 "Así pueden repartirse las ramas: uno cocina, otro arma máquinas, otro explora."]},
+      "sources": ["repo:docs/design/story-bible.md", "repo:docs/design/team-lifecycle-runtime-cases.md"]
     },
     {
-      "key": "qol_teams_party",
-      "deps": [
-        "qol_teams_welcome"
-      ],
-      "type": "checkmark",
+      "key": "qol_teams_party", "deps": ["qol_teams_welcome"], "type": "checkmark", "layout": {"x": 3, "y": 0, "size": 1.5, "shape": "square"},
       "icon": "minecraft:player_head",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "Create a Party",
-        "The &eMy Team&r button on the side of your inventory creates and names a party and invites online players, who accept from their own My Team screen or the chat message.\n\nWithout a party you are still a team: a team of one."
-      ],
-      "es_es": [
-        "Creá un grupo",
-        "El botón &eMy Team&r del costado del inventario crea y nombra un grupo e invita a jugadores conectados, que aceptan desde su propia pantalla de My Team o desde el mensaje del chat.\n\nSin grupo igual sos un equipo: un equipo de uno."
-      ],
-      "sources": [
-        "jar:ftb-teams-neoforge-2101.1.11.jar:assets/ftbteams/lang/en_us.json"
-      ]
+      "en_us": {"title": "Create a Party", "subtitle": "Without a party you are still a team: a team of one.",
+        "text": ["[lead] The [hl|My Team] button on the side of your inventory creates a party.",
+                 "[li] Name it and invite players who are online",
+                 "[li] They accept from their own My Team screen or from the chat message"]},
+      "es_es": {"title": "Creá un grupo", "subtitle": "Sin grupo igual sos un equipo: un equipo de uno.",
+        "text": ["[lead] El botón [hl|My Team] del costado del inventario crea un grupo.",
+                 "[li] Ponele nombre e invitá a jugadores conectados",
+                 "[li] Aceptan desde su propia pantalla de My Team o desde el mensaje del chat"]},
+      "sources": ["jar:ftb-teams-neoforge-2101.1.11.jar:assets/ftbteams/lang/en_us.json"]
     },
     {
-      "key": "qol_teams_shared",
-      "deps": [
-        "qol_teams_party"
-      ],
-      "type": "checkmark",
+      "key": "qol_teams_shared", "deps": ["qol_teams_party"], "type": "checkmark", "layout": {"x": 6, "y": -2.5, "size": 1.25, "shape": "circle"},
       "icon": "entrelumen:atlas",
-      "layout": {
-        "x": 6,
-        "y": -2.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "What the Team Shares",
-        "Atlas projects, acts and milestones are shared and any member can deliver; the compass points everyone to the same objective; the World Tier follows the team's progress; and in Solsticio the team claims one plot.\n\nItems are not shared: each keeps their own inventory, and a reward goes to whoever delivered."
-      ],
-      "es_es": [
-        "Lo que comparte el equipo",
-        "Los proyectos del Atlas, los actos y los hitos son compartidos y cualquiera puede entregar; la brújula apunta a todos al mismo objetivo; el World Tier sigue el progreso del equipo; y en Solsticio el equipo reclama un lote.\n\nLos ítems no se comparten: cada uno tiene su inventario, y la recompensa va a quien entregó."
-      ],
-      "sources": [
-        "repo:companion/src/main/java/dev/entrelumen/Campaigns.java",
-        "repo:docs/design/heliodor-compass.md",
-        "repo:docs/design/apotheosis-family.md",
-        "repo:docs/design/solsticio.md",
-        "repo:docs/design/ark-altars.md"
-      ]
+      "en_us": {"title": "What the Team Shares",
+        "text": ["[lead] Progress is shared; items are not.",
+                 "[li] [item:entrelumen:atlas|Atlas] projects, acts and milestones: any member can deliver",
+                 "[li] The compass points everyone to the same objective",
+                 "[li] The World Tier follows the team's progress",
+                 "[li] In Solsticio, the team claims one plot",
+                 "{page}",
+                 "[note] Each keeps their own inventory, and a reward goes to whoever delivered."]},
+      "es_es": {"title": "Lo que comparte el equipo",
+        "text": ["[lead] El progreso se comparte; los ítems, no.",
+                 "[li] Los proyectos del [item:entrelumen:atlas|Atlas], los actos y los hitos: cualquiera puede entregar",
+                 "[li] La brújula apunta a todos al mismo objetivo",
+                 "[li] El World Tier sigue el progreso del equipo",
+                 "[li] En Solsticio, el equipo reclama un lote",
+                 "{page}",
+                 "[note] Cada uno tiene su propio inventario, y la recompensa va a quien entregó."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/Campaigns.java", "repo:docs/design/heliodor-compass.md", "repo:docs/design/apotheosis-family.md", "repo:docs/design/solsticio.md", "repo:docs/design/ark-altars.md"]
     },
     {
-      "key": "qol_teams_join_rules",
-      "deps": [
-        "qol_teams_shared"
-      ],
-      "type": "checkmark",
+      "key": "qol_teams_join_rules", "deps": ["qol_teams_shared"], "type": "checkmark", "layout": {"x": 9, "y": -4, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:oak_door",
-      "layout": {
-        "x": 9,
-        "y": -4,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Joining and Leaving",
-        "Creating a party copies the founder's campaign once. Joining someone else's does not merge histories: you play theirs while your personal campaign waits, and leaving brings you back to it. When the last owner leaves, the party's campaign is archived; an operator can restore it with &e/entrelumen admin recover&r.\n\nYour World Tier never drops on the way out."
-      ],
-      "es_es": [
-        "Entrar y salir",
-        "Crear un grupo copia una vez la campaña del fundador. Entrar al de otro no fusiona historias: jugás la del grupo mientras tu campaña personal espera, y salir te devuelve a ella. Cuando sale el último dueño, la campaña del grupo se archiva; un operador puede restaurarla con &e/entrelumen admin recover&r.\n\nTu World Tier nunca baja al salir."
-      ],
-      "sources": [
-        "repo:docs/design/team-lifecycle-runtime-cases.md",
-        "repo:companion/src/main/java/dev/entrelumen/Campaigns.java",
-        "repo:docs/design/apotheosis-family.md"
-      ]
+      "en_us": {"title": "Joining and Leaving",
+        "text": ["[lead] Joining a party never merges histories: you play theirs while yours waits.",
+                 "[li] Creating a party copies the founder's campaign once",
+                 "[li] Leaving brings you back to your personal campaign",
+                 "[li] When the last owner leaves, the party's campaign is archived",
+                 "{page}",
+                 "An operator can restore it with [hl|/entrelumen admin recover].",
+                 "[note] Your World Tier never drops on the way out."]},
+      "es_es": {"title": "Entrar y salir",
+        "text": ["[lead] Entrar a un grupo nunca fusiona historias: jugás la del grupo mientras la tuya espera.",
+                 "[li] Crear un grupo copia una vez la campaña del fundador",
+                 "[li] Salir te devuelve a tu campaña personal",
+                 "[li] Cuando sale el último dueño, la campaña del grupo se archiva",
+                 "{page}",
+                 "Un operador puede restaurarla con [hl|/entrelumen admin recover].",
+                 "[note] Tu World Tier nunca baja al salir."]},
+      "sources": ["repo:docs/design/team-lifecycle-runtime-cases.md", "repo:companion/src/main/java/dev/entrelumen/Campaigns.java", "repo:docs/design/apotheosis-family.md"]
     },
     {
-      "key": "qol_teams_allies",
-      "deps": [
-        "qol_teams_shared"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_teams_allies", "deps": ["qol_teams_shared"], "type": "checkmark", "optional": true, "layout": {"x": 9, "y": -1, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:emerald",
-      "layout": {
-        "x": 9,
-        "y": -1,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Allies",
-        "My Team can mark other teams as &eallies&r, who may interact with your claimed land as your settings allow, without joining your campaign.\n\nAlliances for the neighbors, parties for the people playing your story."
-      ],
-      "es_es": [
-        "Aliados",
-        "Desde My Team podés marcar a otros equipos como &ealiados&r, que interactúan con tu terreno reclamado según tu configuración, sin entrar a tu campaña.\n\nAlianzas para los vecinos, grupos para quienes juegan tu historia."
-      ],
-      "sources": [
-        "jar:ftb-teams-neoforge-2101.1.11.jar:assets/ftbteams/lang/en_us.json",
-        "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json"
-      ]
+      "en_us": {"title": "Allies", "subtitle": "Alliances for neighbors, parties for your story's players.",
+        "text": ["[lead] Mark another team as an ally and let it use your land, without joining your story.",
+                 "From My Team you mark other teams as [hl|allies]: they interact with your claimed land as your settings allow."]},
+      "es_es": {"title": "Aliados", "subtitle": "Alianzas para vecinos, grupos para los de tu historia.",
+        "text": ["[lead] Marcá a otro equipo como aliado y dejalo usar tu terreno, sin entrar a tu historia.",
+                 "Desde My Team marcás a otros equipos como [hl|aliados]: interactúan con tu terreno reclamado según tu configuración."]},
+      "sources": ["jar:ftb-teams-neoforge-2101.1.11.jar:assets/ftbteams/lang/en_us.json", "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json"]
     },
     {
-      "key": "qol_teams_claims",
-      "deps": [
-        "qol_teams_party"
-      ],
-      "type": "checkmark",
+      "key": "qol_teams_claims", "deps": ["qol_teams_party"], "type": "checkmark", "layout": {"x": 6, "y": 2.5, "size": 1.5, "shape": "square"},
       "icon": "minecraft:shield",
-      "layout": {
-        "x": 6,
-        "y": 2.5,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "Claim Your Land",
-        "&eK&r opens the claim manager: &eleft-drag&r claims, &eright-drag&r unclaims, &eTab&r hides the grid and &eAlt&r shows when each claim was made. Claimed chunks keep other teams from breaking, placing or opening containers unless you allow it.\n\nUp to 500 chunks per player by default. Nobody needs 500. Somebody will try."
-      ],
-      "es_es": [
-        "Reclamá tu terreno",
-        "&eK&r abre el administrador de reclamos: &earrastrar con clic izquierdo&r reclama, &econ clic derecho&r libera, &eTab&r oculta la grilla y &eAlt&r muestra cuándo se hizo cada reclamo. Los chunks reclamados impiden que otros equipos rompan, pongan o abran contenedores salvo que lo permitas.\n\nHasta 500 chunks por jugador por defecto. Nadie necesita 500. Alguien lo va a intentar."
-      ],
-      "sources": [
-        "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json",
-        "jar:ftb-chunks-neoforge-2101.1.21.jar:dev/ftb/mods/ftbchunks/FTBChunksWorldConfig.class",
-        "repo:pack/config/defaultoptions/keybindings.txt"
-      ]
+      "en_us": {"title": "Claim Your Land", "subtitle": "Nobody needs 500. Somebody will try.",
+        "text": ["[lead] Claimed chunks keep other teams from breaking, placing or opening containers, unless you allow it.",
+                 "[key:key.ftbchunks.claim_manager] opens the claim manager:",
+                 "[li] [icon:click] Left-drag claims",
+                 "[li] [icon:right_click] Right-drag unclaims",
+                 "[li] [hl|Tab] hides the grid; [hl|Alt] shows when each claim was made",
+                 "Up to [hl|500] chunks per player by default."]},
+      "es_es": {"title": "Reclamá tu terreno", "subtitle": "Nadie necesita 500. Alguien lo va a intentar.",
+        "text": ["[lead] Los chunks reclamados impiden que otros equipos rompan, pongan o abran contenedores, salvo que lo permitas.",
+                 "[key:key.ftbchunks.claim_manager] abre el administrador de reclamos:",
+                 "[li] [icon:click] Arrastrar con clic izquierdo reclama",
+                 "[li] [icon:right_click] Arrastrar con clic derecho libera",
+                 "[li] [hl|Tab] oculta la grilla; [hl|Alt] muestra cuándo se hizo cada reclamo",
+                 "Hasta [hl|500] chunks por jugador por defecto."]},
+      "sources": ["jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json", "jar:ftb-chunks-neoforge-2101.1.21.jar:dev/ftb/mods/ftbchunks/FTBChunksWorldConfig.class", "repo:pack/config/defaultoptions/keybindings.txt"]
     },
     {
-      "key": "qol_teams_forceload",
-      "deps": [
-        "qol_teams_claims"
-      ],
-      "type": "checkmark",
+      "key": "qol_teams_forceload", "deps": ["qol_teams_claims"], "type": "checkmark", "layout": {"x": 9, "y": 2, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:redstone_block",
-      "layout": {
-        "x": 9,
-        "y": 2,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Keep Machines Running",
-        "In the claim manager, &eShift+left-drag&r force-loads claimed chunks so machines keep working while you are away, and &eShift+right-drag&r stops it; the mouse wheel sets when it expires. Default limit: 25 per player.\n\nWhether they stay loaded with nobody online is a server setting. Force-load only what needs it: every chunk costs server time."
-      ],
-      "es_es": [
-        "Que las máquinas sigan andando",
-        "En el administrador de reclamos, &eShift+arrastrar con clic izquierdo&r fuerza la carga de chunks reclamados para que las máquinas sigan andando mientras no estás, y con clic derecho la quita; la rueda elige cuándo vence. Límite por defecto: 25 por jugador.\n\nQue sigan cargados sin nadie conectado depende del servidor. Forzá sólo lo necesario: cada chunk le cuesta tiempo al servidor."
-      ],
-      "sources": [
-        "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json",
-        "jar:ftb-chunks-neoforge-2101.1.21.jar:dev/ftb/mods/ftbchunks/FTBChunksWorldConfig.class",
-        "repo:docs/research/reference-packs.md"
-      ]
+      "en_us": {"title": "Keep Machines Running",
+        "text": ["[lead] Force-load claimed chunks and machines keep working while you are away.",
+                 "In the claim manager:",
+                 "[li] Hold [hl|Shift] and left-drag to force-load",
+                 "[li] Hold [hl|Shift] and right-drag to stop",
+                 "[li] The mouse wheel sets when it expires",
+                 "Default limit: [hl|25] per player.",
+                 "{page}",
+                 "[note] Whether they stay loaded with nobody online is a server setting.",
+                 "[careful] Force-load only what needs it: every chunk costs server time."]},
+      "es_es": {"title": "Que las máquinas sigan andando",
+        "text": ["[lead] Forzá la carga de chunks reclamados y las máquinas siguen andando mientras no estás.",
+                 "En el administrador de reclamos:",
+                 "[li] Mantené [hl|Shift] y arrastrá con clic izquierdo para forzar la carga",
+                 "[li] Mantené [hl|Shift] y arrastrá con clic derecho para quitarla",
+                 "[li] La rueda elige cuándo vence",
+                 "Límite por defecto: [hl|25] por jugador.",
+                 "{page}",
+                 "[note] Que sigan cargados sin nadie conectado depende del servidor.",
+                 "[careful] Forzá sólo lo necesario: cada chunk le cuesta tiempo al servidor."]},
+      "sources": ["jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json", "jar:ftb-chunks-neoforge-2101.1.21.jar:dev/ftb/mods/ftbchunks/FTBChunksWorldConfig.class", "repo:docs/research/reference-packs.md"]
     },
     {
-      "key": "qol_teams_settings",
-      "deps": [
-        "qol_teams_forceload"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_teams_settings", "deps": ["qol_teams_forceload"], "type": "checkmark", "optional": true, "layout": {"x": 9, "y": 5, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:tnt",
-      "layout": {
-        "x": 9,
-        "y": 5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Team Protection Settings",
-        "My Team also sets whether explosions and mobs can damage your land, who sees your claims on the map, and which fake players (machines that act as players, like Create deployers or block breakers) count as friends.\n\nIf a machine suddenly refuses to work, check the fake player setting first."
-      ],
-      "es_es": [
-        "Ajustes de protección",
-        "My Team también define si las explosiones y los mobs dañan tu terreno, quién ve tus reclamos en el mapa y qué jugadores falsos (máquinas que actúan como jugadores, como los desplegadores de Create o los rompedores de bloques) cuentan como amigos.\n\nSi una máquina de pronto no anda, revisá primero lo de los jugadores falsos."
-      ],
-      "sources": [
-        "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json"
-      ]
+      "en_us": {"title": "Team Protection Settings",
+        "text": ["[lead] My Team decides who can hurt your land and who sees it.",
+                 "[li] Whether explosions and mobs can damage your land",
+                 "[li] Who sees your claims on the map",
+                 "[li] Which fake players count as friends: machines that act as players, like Create [item:create:deployer|deployers]",
+                 "{page}",
+                 "[tip] If a machine suddenly refuses to work, check the fake player setting first."]},
+      "es_es": {"title": "Ajustes de protección",
+        "text": ["[lead] My Team decide quién puede dañar tu terreno y quién lo ve.",
+                 "[li] Si las explosiones y los mobs dañan tu terreno",
+                 "[li] Quién ve tus reclamos en el mapa",
+                 "[li] Qué jugadores falsos cuentan como amigos: máquinas que actúan como jugadores, como los [item:create:deployer|desplegadores] de Create",
+                 "{page}",
+                 "[tip] Si una máquina de pronto no anda, revisá primero lo de los jugadores falsos."]},
+      "sources": ["jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json"]
     },
     {
-      "key": "qol_teams_map_quirk",
-      "deps": [
-        "qol_teams_claims"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_teams_map_quirk", "deps": ["qol_teams_claims"], "type": "checkmark", "optional": true, "layout": {"x": 3, "y": 4, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:map",
-      "layout": {
-        "x": 3,
-        "y": 4,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Two Maps, One Visible",
-        "FTB Chunks' minimap is off and its map key unbound, so JourneyMap is the map you see; FTB Chunks only handles teams and claims (&eK&r or the inventory side button).\n\nPrefer the FTB minimap? Your personal config file can turn it back on."
-      ],
-      "es_es": [
-        "Particularidad: dos mapas",
-        "El minimapa de FTB Chunks está apagado y la tecla de su mapa sin asignar, así que el mapa que ves es JourneyMap; FTB Chunks sólo maneja equipos y reclamos (&eK&r o el botón lateral del inventario).\n\n¿Preferís el minimapa de FTB? Tu archivo de configuración personal lo vuelve a prender."
-      ],
-      "sources": [
-        "repo:pack/config/ftbchunks-client.snbt",
-        "repo:docs/design/qol-parity.md"
-      ]
+      "en_us": {"title": "Quirk: Two Maps, One Visible",
+        "text": ["[lead] JourneyMap is the map you see; FTB Chunks only handles teams and claims.",
+                 "The FTB Chunks minimap is off and its map key unbound. Claims live on [key:key.ftbchunks.claim_manager] or the inventory side button.",
+                 "[tip] Prefer the FTB minimap? Your personal config file can turn it back on."]},
+      "es_es": {"title": "Particularidad: dos mapas",
+        "text": ["[lead] El mapa que ves es JourneyMap; FTB Chunks sólo maneja equipos y reclamos.",
+                 "El minimapa de FTB Chunks está apagado y la tecla de su mapa sin asignar. Los reclamos están en [key:key.ftbchunks.claim_manager] o en el botón lateral del inventario.",
+                 "[tip] ¿Preferís el minimapa de FTB? Tu archivo de configuración personal lo vuelve a prender."]},
+      "sources": ["repo:pack/config/ftbchunks-client.snbt", "repo:docs/design/qol-parity.md"]
     },
     {
-      "key": "qol_teams_altars_claims",
-      "deps": [
-        "qol_teams_forceload",
-        "qol_teams_shared"
-      ],
-      "type": "checkmark",
+      "key": "qol_teams_altars_claims", "deps": ["qol_teams_forceload", "qol_teams_shared"], "type": "checkmark", "layout": {"x": 12, "y": 0, "size": 1.0, "shape": "pentagon"},
       "icon": "entrelumen:terraform_altar",
-      "layout": {
-        "x": 12,
-        "y": 0,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Claims Stop Altars Too",
-        "Land-shaping altars act as their owner, so another team's Altar of Renewal or Levelling skips your claimed chunks and charges nothing for them. The same goes for Ultimine and other tools wielded by outsiders.\n\nGood fences make good neighbors, even magical ones."
-      ],
-      "es_es": [
-        "Los reclamos frenan altares",
-        "Los altares que modifican el terreno actúan como su dueño, así que un Altar de Renovación o de Nivelación de otro equipo saltea tus chunks reclamados y no cobra nada por ellos. Lo mismo vale para Ultimine y otras herramientas en manos ajenas.\n\nUn buen alambrado hace buenos vecinos, aunque sean mágicos."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/LandWorks.java"
-      ]
+      "en_us": {"title": "Claims Stop Altars Too", "subtitle": "Good fences make good neighbors, even magical ones.",
+        "text": ["[lead] Land-shaping altars act as their owner, so your claims stop them.",
+                 "Another team's [item:entrelumen:renewal_altar|Altar of Renewal] or [item:entrelumen:terraform_altar|Altar of Levelling] skips your claimed chunks and charges nothing for them.",
+                 "The same goes for Ultimine and other tools wielded by outsiders."]},
+      "es_es": {"title": "Los reclamos frenan altares", "subtitle": "Un buen alambrado hace buenos vecinos, aunque sean mágicos.",
+        "text": ["[lead] Los altares que modifican el terreno actúan como su dueño, así que tus reclamos los frenan.",
+                 "Un [item:entrelumen:renewal_altar|Altar de Renovación] o un [item:entrelumen:terraform_altar|Altar de Nivelación] de otro equipo saltea tus chunks reclamados y no cobra nada por ellos.",
+                 "Lo mismo vale para Ultimine y otras herramientas en manos ajenas."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/LandWorks.java"]
     },
     {
-      "key": "qol_teams_split",
-      "deps": [
-        "qol_teams_shared"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 12,
-        "y": -3,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Split the Branches",
-        "Each act asks for several Atlas projects at once, each from a different discipline, so a team of three can take one each: engineering, nature and logistics in act III, for example.\n\nA delivery counts for the whole team the moment anyone makes it, so no need to pass items around first."
-      ],
-      "es_es": [
-        "Truco: repartan las ramas",
-        "Cada acto pide varios proyectos del Atlas a la vez, cada uno de una disciplina distinta, así que un equipo de tres puede tomar uno cada uno: ingeniería, naturaleza y logística en el acto III, por ejemplo.\n\nUna entrega cuenta para todo el equipo apenas alguien la hace, así que no hace falta pasarse los ítems antes."
-      ],
-      "sources": [
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"
-      ]
+      "key": "qol_teams_split", "deps": ["qol_teams_shared"], "type": "checkmark", "optional": true, "layout": {"x": 12, "y": -3, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Tip: Split the Branches",
+        "text": ["[tip] Each act asks for several Atlas projects at once, each from a different discipline.",
+                 "A team of three can take one each: engineering, nature and logistics in act III, for example.",
+                 "A delivery counts for the whole team the moment anyone makes it, so no need to pass items around first."]},
+      "es_es": {"title": "Truco: repartan las ramas",
+        "text": ["[tip] Cada acto pide varios proyectos del Atlas a la vez, cada uno de una disciplina distinta.",
+                 "Un equipo de tres puede tomar uno cada uno: ingeniería, naturaleza y logística en el acto III, por ejemplo.",
+                 "Una entrega cuenta para todo el equipo apenas alguien la hace, así que no hace falta pasarse los ítems antes."]},
+      "sources": ["repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"]
     },
     {
-      "key": "qol_teams_chat",
-      "deps": [
-        "qol_teams_party"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_teams_chat", "deps": ["qol_teams_party"], "type": "checkmark", "optional": true, "layout": {"x": 0, "y": -3.5, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:writable_book",
-      "layout": {
-        "x": 3,
-        "y": -4,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Co-op Comforts",
-        "&eChat Heads&r puts each player's face beside their messages, &eBetter Ping Display&r turns the Tab list bars into milliseconds, and &eNo Chat Reports&r strips signed-report data from server chat.\n\nNone changes the game; they just make a shared server easier to read."
-      ],
-      "es_es": [
-        "Comodidades para jugar juntos",
-        "&eChat Heads&r pone la cara de cada jugador al lado de sus mensajes, &eBetter Ping Display&r cambia las barras de la lista del Tab por milisegundos y &eNo Chat Reports&r quita del chat los datos de reporte firmado.\n\nNinguno cambia el juego; sólo hacen más legible un servidor compartido."
-      ],
-      "sources": [
-        "repo:docs/design/qol-batch-one.md",
-        "repo:docs/design/qol-functional-decor-family.md"
-      ]
+      "en_us": {"title": "Co-op Comforts",
+        "text": ["[lead] Three small mods make a shared server easier to read, and change nothing else.",
+                 "[li] [hl|Chat Heads]: each player's face beside their messages",
+                 "[li] [hl|Better Ping Display]: the Tab list bars become milliseconds",
+                 "[li] [hl|No Chat Reports]: strips signed-report data from server chat"]},
+      "es_es": {"title": "Comodidades para jugar juntos",
+        "text": ["[lead] Tres mods chicos hacen más legible un servidor compartido, y no cambian nada más.",
+                 "[li] [hl|Chat Heads]: la cara de cada jugador al lado de sus mensajes",
+                 "[li] [hl|Better Ping Display]: las barras de la lista del Tab pasan a milisegundos",
+                 "[li] [hl|No Chat Reports]: quita del chat los datos de reporte firmado"]},
+      "sources": ["repo:docs/design/qol-batch-one.md", "repo:docs/design/qol-functional-decor-family.md"]
     },
     {
-      "key": "qol_teams_lootr",
-      "deps": [
-        "qol_teams_claims"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_teams_lootr", "deps": ["qol_teams_claims"], "type": "checkmark", "optional": true, "layout": {"x": 6, "y": 5.5, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:chest",
-      "layout": {
-        "x": 6,
-        "y": 5.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Loot Is Per Player",
-        "&eLootr&r gives every player their own loot from dungeon and structure chests, so opening first steals nothing and exploring a ruin together is fine.\n\nA Lootr chest you already opened looks different from a fresh one."
-      ],
-      "es_es": [
-        "Particularidad: botín por jugador",
-        "&eLootr&r le da a cada jugador su propio botín de los cofres de mazmorras y estructuras, así que abrir primero no le roba nada a nadie y explorar una ruina juntos está bien.\n\nUn cofre de Lootr que ya abriste se ve distinto de uno nuevo."
-      ],
-      "sources": [
-        "jar:lootr-neoforge-1.21.1-1.11.38.124.jar:META-INF/neoforge.mods.toml",
-        "repo:docs/design/qol-parity.md"
-      ]
+      "en_us": {"title": "Quirk: Loot Is Per Player",
+        "text": ["[lead] [hl|Lootr] gives every player their own loot from dungeon and structure chests.",
+                 "Opening first steals nothing from anyone, so exploring a ruin together is fine.",
+                 "[tip] A Lootr chest you already opened looks different from a fresh one."]},
+      "es_es": {"title": "Particularidad: botín por jugador",
+        "text": ["[lead] [hl|Lootr] le da a cada jugador su propio botín de los cofres de mazmorras y estructuras.",
+                 "Abrir primero no le roba nada a nadie, así que explorar una ruina juntos está bien.",
+                 "[tip] Un cofre de Lootr que ya abriste se ve distinto de uno nuevo."]},
+      "sources": ["jar:lootr-neoforge-1.21.1-1.11.38.124.jar:META-INF/neoforge.mods.toml", "repo:docs/design/qol-parity.md"]
     },
     {
-      "key": "qol_teams_gifts",
-      "deps": [
-        "qol_teams_join_rules"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_teams_gifts", "deps": ["qol_teams_join_rules"], "type": "checkmark", "optional": true, "layout": {"x": 12, "y": -5.5, "size": 1.0, "shape": "pentagon"},
       "icon": "entrelumen:heart_of_heliodor",
-      "layout": {
-        "x": 12,
-        "y": -5.5,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Gifts Help, Progress Stays",
-        "Hand another team anything, even a finished prototype, and they can deliver it to their own Atlas. Progress cannot be gifted: arrivals, boss milestones and completed projects stay with the campaign that earned them.\n\nThe Heart of Heliodor only counts for the team whose member took it from the Sun Spirit."
-      ],
-      "es_es": [
-        "Regalos sí, progreso no",
-        "Podés darle cualquier cosa a otro equipo, incluso un prototipo terminado, y entregarlo en su propio Atlas. El progreso no se regala: las llegadas, los hitos de jefes y los proyectos completos quedan en la campaña que los ganó.\n\nEl Corazón de Heliodor sólo cuenta para el equipo cuyo integrante se lo sacó al Espíritu del Sol."
-      ],
-      "sources": [
-        "repo:docs/design/resource-balance.md",
-        "repo:docs/design/ark-altars.md",
-        "repo:docs/design/act-renumbering.md",
-        "note:reflects feature/acts-renumber, merged into main on 24/9 (Heart of Heliodor)"
-      ]
+      "en_us": {"title": "Gifts Help, Progress Stays",
+        "text": ["[lead] Hand another team anything, even a finished prototype, and they can deliver it to their own Atlas.",
+                 "[careful] Progress cannot be gifted: arrivals, boss milestones and completed projects stay with the campaign that earned them.",
+                 "The [item:entrelumen:heart_of_heliodor|Heart of Heliodor] only counts for the team whose member took it from the Sun Spirit."]},
+      "es_es": {"title": "Regalos sí, progreso no",
+        "text": ["[lead] Dale cualquier cosa a otro equipo, incluso un prototipo terminado, y lo entrega en su propio Atlas.",
+                 "[careful] El progreso no se regala: las llegadas, los hitos de jefes y los proyectos completos quedan en la campaña que los ganó.",
+                 "El [item:entrelumen:heart_of_heliodor|Corazón de Heliodor] sólo cuenta para el equipo cuyo integrante se lo sacó al Espíritu del Sol."]},
+      "sources": ["repo:docs/design/resource-balance.md", "repo:docs/design/ark-altars.md", "repo:docs/design/act-renumbering.md", "note:reflects feature/acts-renumber, merged into main on 24/9 (Heart of Heliodor)"]
     },
     {
-      "key": "qol_teams_ender_team",
-      "deps": [
-        "qol_teams_altars_claims"
-      ],
-      "type": "item",
-      "item": "enderstorage:ender_pouch",
-      "optional": true,
-      "layout": {
-        "x": 15,
-        "y": 3,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: a Team Frequency",
-        "From act III, &eEnder Storage&r shares contents between every chest, tank and pouch with the same three colors, across dimensions. Pick a team code, keep a supply chest at home and give each explorer a pouch.\n\nHow it works: the Storage chapter."
-      ],
-      "es_es": [
-        "Truco: una frecuencia de equipo",
-        "Desde el acto III, &eEnder Storage&r comparte el contenido entre todos los cofres, tanques y bolsas con los mismos tres colores, entre dimensiones. Elijan un código de equipo, dejen un cofre de suministros en casa y denle una bolsa a cada explorador.\n\nCómo funciona: capítulo de Almacenamiento."
-      ],
-      "sources": [
-        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js",
-        "repo:docs/design/qol-functional-decor-family.md",
-        "jar:EnderStorage-1.21.1-2.13.0.191.jar:assets/enderstorage/lang/en_us.json"
-      ]
+      "key": "qol_teams_ender_team", "deps": ["qol_teams_altars_claims"], "type": "item", "item": "enderstorage:ender_pouch", "optional": true, "layout": {"x": 15, "y": 3, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Tip: a Team Frequency",
+        "text": ["[tip] From act III, [hl|Ender Storage] shares contents between every chest, tank and [item:enderstorage:ender_pouch|pouch] with the same three colors, across dimensions.",
+                 "[li] Pick a team code",
+                 "[li] Keep a supply chest at home",
+                 "[li] Give each explorer a pouch",
+                 "How it works: [chapter:sector_storage|the Storage chapter]."]},
+      "es_es": {"title": "Truco: una frecuencia de equipo",
+        "text": ["[tip] Desde el acto III, [hl|Ender Storage] comparte el contenido entre todos los cofres, tanques y [item:enderstorage:ender_pouch|bolsas] con los mismos tres colores, entre dimensiones.",
+                 "[li] Elijan un código de equipo",
+                 "[li] Dejen un cofre de suministros en casa",
+                 "[li] Denle una bolsa a cada explorador",
+                 "Cómo funciona: [chapter:sector_storage|el capítulo de Almacenamiento]."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js", "repo:docs/design/qol-functional-decor-family.md", "jar:EnderStorage-1.21.1-2.13.0.191.jar:assets/enderstorage/lang/en_us.json"]
     },
     {
-      "key": "qol_teams_close",
-      "deps": [
-        "qol_teams_altars_claims",
-        "qol_teams_ender_team"
-      ],
-      "type": "checkmark",
+      "key": "qol_teams_close", "deps": ["qol_teams_altars_claims", "qol_teams_ender_team"], "type": "checkmark", "layout": {"x": 18, "y": 0, "size": 2.0, "shape": "hexagon"},
       "icon": "minecraft:bell",
-      "layout": {
-        "x": 18,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "A Team With a Home",
-        "Party created, land claimed, machines loaded, allies set. From here, the story moves at the speed of the whole team.\n\nWhich means at the speed of whoever is still sorting their inventory."
-      ],
-      "es_es": [
-        "Un equipo con casa",
-        "Grupo creado, terreno reclamado, máquinas cargadas y aliados definidos. Desde acá, la historia avanza a la velocidad de todo el equipo.\n\nO sea, a la velocidad del que todavía está ordenando el inventario."
-      ],
-      "sources": [
-        "repo:content/guides/README.md"
-      ]
+      "en_us": {"title": "A Team With a Home", "subtitle": "Which means the speed of whoever is still sorting inventory.",
+        "text": ["[lead] Party created, land claimed, machines loaded, allies set.",
+                 "From here, the story moves at the speed of the whole team."]},
+      "es_es": {"title": "Un equipo con casa", "subtitle": "O sea, la del que todavía está ordenando el inventario.",
+        "text": ["[lead] Grupo creado, terreno reclamado, máquinas cargadas y aliados definidos.",
+                 "Desde acá, la historia avanza a la velocidad de todo el equipo."]},
+      "sources": ["repo:content/guides/README.md"]
+    },
+    {
+      "key": "qol_teams_ping", "deps": ["qol_teams_party"], "type": "checkmark", "layout": {"x": 3, "y": -3.2, "size": 1.25, "shape": "circle"},
+      "icon": "minecraft:recovery_compass",
+      "en_us": {"title": "Ping Wheel: Mark a Place", "subtitle": "Point, don't type.",
+        "text": ["[lead] Aim, press [key:key.pingwheel.ping_location], and your party sees the spot.",
+                 "[li] It marks the block or creature you look at, up to [hl|1024] blocks away",
+                 "[li] The marker lasts [hl|7] seconds and shows its distance",
+                 "[li] Five pings in a row, then one more per second",
+                 "{page}",
+                 "[note] In a party, only your party sees your pings. Without one, every other player without a party does."]},
+      "es_es": {"title": "Ping Wheel: marcá un lugar", "subtitle": "Señalá, no escribas.",
+        "text": ["[lead] Apuntá, apretá [key:key.pingwheel.ping_location], y tu grupo ve el lugar.",
+                 "[li] Marca el bloque o la criatura que mirás, hasta [hl|1024] bloques de distancia",
+                 "[li] La marca dura [hl|7] segundos y muestra la distancia",
+                 "[li] Cinco marcas seguidas, y después una más por segundo",
+                 "{page}",
+                 "[note] En un grupo, sólo tu grupo ve tus marcas. Sin grupo, las ve todo otro jugador sin grupo."]},
+      "sources": ["repo:docs/design/mod-pingpong.md", "jar:Ping-Wheel-1.12.2-neoforge-1.21.1.jar:assets/pingwheel/lang/en_us.json", "jar:Ping-Wheel-1.12.2-neoforge-1.21.1.jar:nx/pingwheel/common/util/InputUtils.class", "jar:Ping-Wheel-1.12.2-neoforge-1.21.1.jar:nx/pingwheel/common/core/PingController.class", "jar:Ping-Wheel-1.12.2-neoforge-1.21.1.jar:nx/pingwheel/common/config/ClientConfig.class", "jar:Ping-Wheel-1.12.2-neoforge-1.21.1.jar:nx/pingwheel/common/config/ServerConfig.class", "jar:Ping-Wheel-1.12.2-neoforge-1.21.1.jar:nx/pingwheel/common/core/ServerCore.class", "jar:Ping-Wheel-1.12.2-neoforge-1.21.1.jar:nx/pingwheel/common/integration/TeamContextHandler.class"]
+    },
+    {
+      "key": "qol_teams_ping_channel", "deps": ["qol_teams_ping"], "type": "checkmark", "optional": true, "layout": {"x": 3, "y": -6.2, "size": 1.0, "shape": "diamond"},
+      "icon": "minecraft:name_tag",
+      "en_us": {"title": "Ping Wheel: Channels",
+        "text": ["[lead] Share a channel name to ping outside your party.",
+                 "[li] [hl|/pingwheel channel <name>] joins a channel: you only send and receive pings on the same one",
+                 "[li] [hl|/pingwheel channel] alone shows yours",
+                 "[li] [hl|/pingwheel config] opens the settings: volume, duration, size, item icons and the direction arrow",
+                 "{page}",
+                 "[note] Operators set the default with [hl|/pingwheel:server default_channel]: auto, team only, global or disabled.",
+                 "The settings key starts unassigned."]},
+      "es_es": {"title": "Ping Wheel: canales",
+        "text": ["[lead] Compartan un nombre de canal para marcar fuera del grupo.",
+                 "[li] [hl|/pingwheel channel <nombre>] entra a un canal: sólo enviás y recibís marcas en el mismo",
+                 "[li] [hl|/pingwheel channel] solo muestra el tuyo",
+                 "[li] [hl|/pingwheel config] abre la configuración: volumen, duración, tamaño, íconos de objetos y la flecha de dirección",
+                 "{page}",
+                 "[note] Los operadores fijan el predeterminado con [hl|/pingwheel:server default_channel]: automático, sólo equipo, global o desactivado.",
+                 "La tecla de la configuración arranca sin asignar."]},
+      "sources": ["repo:docs/design/mod-pingpong.md", "jar:Ping-Wheel-1.12.2-neoforge-1.21.1.jar:assets/pingwheel/lang/en_us.json", "jar:Ping-Wheel-1.12.2-neoforge-1.21.1.jar:nx/pingwheel/common/command/ClientCommandBuilder.class", "jar:Ping-Wheel-1.12.2-neoforge-1.21.1.jar:nx/pingwheel/common/command/ServerCommandBuilder.class", "jar:Ping-Wheel-1.12.2-neoforge-1.21.1.jar:nx/pingwheel/common/config/ChannelMode.class"]
+    },
+    {
+      "key": "qol_teams_revival", "deps": ["qol_teams_party"], "type": "checkmark", "layout": {"x": 0, "y": 3.2, "size": 1.25, "shape": "circle"},
+      "icon": "minecraft:totem_of_undying",
+      "en_us": {"title": "Hardcore Revival: Down, Not Out", "subtitle": "In co-op, a deadly hit is not the end.",
+        "text": ["[lead] A deadly hit knocks you down for [hl|two minutes] instead of killing you.",
+                 "[li] A teammate within [hl|3] blocks holds [key:key.use] for [hl|2] seconds to pick you up",
+                 "[li] You glow through walls so friends can find you",
+                 "[li] If nobody arrives in time, you die for real",
+                 "{page}",
+                 "You get up with half a heart, and Hunger and Weakness for a while.",
+                 "[careful] Lava and the void kill outright. A held [item:minecraft:totem_of_undying|Totem of Undying] still works as usual.",
+                 "[note] Alone, or as the only player online, nothing changes: a knockout would only delay death, so the pack turns it off."]},
+      "es_es": {"title": "Hardcore Revival: caído, no muerto", "subtitle": "En cooperativo, un golpe mortal no es el final.",
+        "text": ["[lead] Un golpe mortal te deja caído [hl|dos minutos] en vez de matarte.",
+                 "[li] Un compañero a [hl|3] bloques mantiene [key:key.use] durante [hl|2] segundos para levantarte",
+                 "[li] Brillás a través de las paredes para que tus amigos te encuentren",
+                 "[li] Si nadie llega a tiempo, morís de verdad",
+                 "{page}",
+                 "Te levantás con medio corazón, y con Hambre y Debilidad por un rato.",
+                 "[careful] La lava y el vacío matan de una. Un [item:minecraft:totem_of_undying|Tótem de la inmortalidad] en la mano sigue funcionando como siempre.",
+                 "[note] Solo, o siendo el único jugador conectado, no cambia nada: un knockout sólo demoraría la muerte, así que el pack lo apaga."]},
+      "sources": ["repo:pack/config/hardcorerevival-common.toml", "repo:docs/design/mod-pingpong.md", "jar:hardcorerevival-neoforge-1.21.1-21.1.22.jar:assets/hardcorerevival/lang/en_us.json", "jar:hardcorerevival-neoforge-1.21.1-21.1.22.jar:net/blay09/mods/hardcorerevival/config/HardcoreRevivalConfigData.class", "jar:hardcorerevival-neoforge-1.21.1-21.1.22.jar:data/hardcorerevival/tags/damage_type/bypasses_knockout.json", "jar:hardcorerevival-neoforge-1.21.1-21.1.22.jar:data/hardcorerevival/tags/item/passthrough_death_when_held.json"]
+    },
+    {
+      "key": "qol_teams_toy_chunk", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 17.2, "y": -7.7, "size": 1.5, "shape": "none"},
+      "icon": "minecraft:spyglass",
+      "en_us": {"title": "Measure a Chunk",
+        "text": ["[lead] Every square on the map is a chunk: [hl|16] by [hl|16] blocks, from bedrock to the sky.",
+                 "A claim takes a whole chunk at a time, however tall the tower."]},
+      "es_es": {"title": "Medí un chunk",
+        "text": ["[lead] Cada cuadrado del mapa es un chunk: [hl|16] por [hl|16] bloques, del lecho de roca al cielo.",
+                 "Un reclamo toma un chunk entero por vez, por alta que sea la torre."]},
+      "sources": ["jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json"]
+    },
+    {
+      "key": "qol_teams_toy_totem", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 12.6, "y": 8.2, "size": 1.5, "shape": "none"},
+      "icon": "minecraft:totem_of_undying",
+      "en_us": {"title": "Tap the Totem",
+        "text": ["[lead] The totem still gets there first: held, it beats a knockout to the punch.",
+                 "The Totem of Undying is the one item Hardcore Revival lets the death through for."]},
+      "es_es": {"title": "Tocá el tótem",
+        "text": ["[lead] El tótem sigue llegando primero: en la mano, se adelanta al knockout.",
+                 "El Tótem de la inmortalidad es el único ítem para el que Hardcore Revival deja pasar la muerte."]},
+      "sources": ["jar:hardcorerevival-neoforge-1.21.1-21.1.22.jar:data/hardcorerevival/tags/item/passthrough_death_when_held.json"]
     }
+  ],
+  "art": [
+    {"id": "title", "text": {"en_us": "Teams and Claims", "es_es": "Equipos y reclamos"}, "x": -3.2, "y": -10.9, "scale": 3, "align": "start", "tint": "#F2C14E"},
+    {"id": "bench", "frame": [-3.2, -9.5, 21.8, 11.7], "color": "#D9B98C", "alpha": 200, "thickness_px": 2.0, "fill": "#3A2C1E", "fill_alpha": 40, "corners": true, "reveal": "qol_teams_welcome", "sketch": true, "order": -9},
+    {"id": "plank_0", "picture": "minecraft:textures/block/spruce_planks.png", "x": -2.1, "y": 11.0, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_teams_welcome", "order": -7},
+    {"id": "plank_1", "picture": "minecraft:textures/block/spruce_planks.png", "x": 0.10000000000000009, "y": 11.0, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_teams_welcome", "order": -7},
+    {"id": "plank_2", "picture": "minecraft:textures/block/spruce_planks.png", "x": 2.3000000000000003, "y": 11.0, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_teams_welcome", "order": -7},
+    {"id": "plank_3", "picture": "minecraft:textures/block/spruce_planks.png", "x": 4.5, "y": 11.0, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_teams_welcome", "order": -7},
+    {"id": "plank_4", "picture": "minecraft:textures/block/spruce_planks.png", "x": 6.700000000000001, "y": 11.0, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_teams_welcome", "order": -7},
+    {"id": "plank_5", "picture": "minecraft:textures/block/spruce_planks.png", "x": 8.9, "y": 11.0, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_teams_welcome", "order": -7},
+    {"id": "plank_6", "picture": "minecraft:textures/block/spruce_planks.png", "x": 11.100000000000001, "y": 11.0, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_teams_welcome", "order": -7},
+    {"id": "plank_7", "picture": "minecraft:textures/block/spruce_planks.png", "x": 13.300000000000002, "y": 11.0, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_teams_welcome", "order": -7},
+    {"id": "plank_8", "picture": "minecraft:textures/block/spruce_planks.png", "x": 15.500000000000002, "y": 11.0, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_teams_welcome", "order": -7},
+    {"id": "plank_9", "picture": "minecraft:textures/block/spruce_planks.png", "x": 17.7, "y": 11.0, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_teams_welcome", "order": -7},
+    {"id": "plank_10", "picture": "minecraft:textures/block/spruce_planks.png", "x": 19.9, "y": 11.0, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_teams_welcome", "order": -7},
+    {"id": "paper", "frame": [-1.6, -8.8, 20.4, 8.8], "color": "#D9B98C", "alpha": 200, "thickness_px": 3.0, "fill": "#CDBB94", "fill_alpha": 70, "corners": false, "reveal": "qol_teams_welcome", "sketch": true, "order": -8},
+    {"id": "gv_0", "path": [[-1.6, -8.8], [-1.6, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gv_1", "path": [[0.6, -8.8], [0.6, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gv_2", "path": [[2.8, -8.8], [2.8, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gv_3", "path": [[5.0, -8.8], [5.0, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gv_4", "path": [[7.2, -8.8], [7.2, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gv_5", "path": [[9.4, -8.8], [9.4, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gv_6", "path": [[11.6, -8.8], [11.6, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gv_7", "path": [[13.8, -8.8], [13.8, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gv_8", "path": [[16.0, -8.8], [16.0, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gv_9", "path": [[18.2, -8.8], [18.2, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gv_10", "path": [[20.4, -8.8], [20.4, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gh_0", "path": [[-1.6, -8.8], [20.4, -8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gh_1", "path": [[-1.6, -6.6], [20.4, -6.6]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gh_2", "path": [[-1.6, -4.4], [20.4, -4.4]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gh_3", "path": [[-1.6, -2.2], [20.4, -2.2]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gh_4", "path": [[-1.6, 0.0], [20.4, 0.0]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gh_5", "path": [[-1.6, 2.2], [20.4, 2.2]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gh_6", "path": [[-1.6, 4.4], [20.4, 4.4]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gh_7", "path": [[-1.6, 6.6], [20.4, 6.6]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "gh_8", "path": [[-1.6, 8.8], [20.4, 8.8]], "color": "#E8DCB5", "alpha": 70, "width": 0.035, "order": -6},
+    {"id": "river", "path": [[-1.6, 7.6], [4.0, 7.0], [10.0, 8.1], [15.0, 7.3], [20.4, 7.9]], "sprite": "minecraft:block/water_still", "tint": "#3F76D6", "width": 1.0, "step": 0.85, "smooth": 3, "alpha": 200, "reveal": "qol_teams_welcome", "sketch": true, "order": -5},
+    {"id": "forest_a", "scatter": ["minecraft:textures/block/oak_leaves.png"], "region": [-1.4, -8.6, 2.2, -5.4], "count": 6, "size": [0.7, 1.0], "seed": 4, "tint": "#4F8F3E", "reveal": "qol_teams_welcome", "avoid": [[3, -6.2, 1.2]]},
+    {"id": "forest_b", "scatter": ["minecraft:textures/block/oak_leaves.png"], "region": [16.6, -4.0, 20.2, -1.2], "count": 6, "size": [0.7, 1.0], "seed": 9, "tint": "#4F8F3E", "reveal": "qol_teams_welcome", "avoid": [[18, 0, 1.5]]},
+    {"id": "home_claim", "frame": [2.8, 0.0, 9.4, 6.6], "color": "#E5533D", "alpha": 230, "thickness_px": 3.0, "fill": "#E5533D", "fill_alpha": 55, "corners": false, "reveal": "qol_teams_claims", "sketch": true, "order": -4},
+    {"id": "neigh_claim", "frame": [11.6, -8.8, 16.0, -4.4], "color": "#5FBF5A", "alpha": 230, "thickness_px": 3.0, "fill": "#5FBF5A", "fill_alpha": 55, "corners": false, "reveal": "qol_teams_allies", "sketch": true, "order": -4},
+    {"id": "out_claim", "frame": [16.0, 2.2, 20.4, 6.6], "color": "#5A8AE0", "alpha": 230, "thickness_px": 3.0, "fill": "#5A8AE0", "fill_alpha": 55, "corners": false, "reveal": "qol_teams_altars_claims", "sketch": true, "order": -4},
+    {"id": "forced_a", "frame": [2.8, 4.4, 5.0, 6.6], "color": "#F2B84B", "alpha": 230, "thickness_px": 2.0, "fill": "#F2B84B", "fill_alpha": 110, "corners": false, "reveal": "qol_teams_forceload", "order": -3},
+    {"id": "forced_b", "frame": [7.2, 4.4, 9.4, 6.6], "color": "#F2B84B", "alpha": 230, "thickness_px": 2.0, "fill": "#F2B84B", "fill_alpha": 110, "corners": false, "reveal": "qol_teams_forceload", "order": -3},
+    {"id": "flag_red_pole", "path": [[7.9, 4.65], [7.9, 3.15]], "color": "#5B4025", "width": 0.1, "reveal": "qol_teams_party", "order": -1},
+    {"id": "flag_red", "picture": "#E5533D", "x": 8.32, "y": 3.48, "w": 0.8, "h": 0.5, "reveal": "qol_teams_party", "order": 0},
+    {"id": "flag_green_pole", "path": [[14.8, -6.45], [14.8, -7.95]], "color": "#5B4025", "width": 0.1, "reveal": "qol_teams_allies", "order": -1},
+    {"id": "flag_green", "picture": "#5FBF5A", "x": 15.22, "y": -7.62, "w": 0.8, "h": 0.5, "reveal": "qol_teams_allies", "order": 0},
+    {"id": "flag_blue_pole", "path": [[18.4, 5.15], [18.4, 3.6500000000000004]], "color": "#5B4025", "width": 0.1, "reveal": "qol_teams_altars_claims", "order": -1},
+    {"id": "flag_blue", "picture": "#5A8AE0", "x": 18.82, "y": 3.9800000000000004, "w": 0.8, "h": 0.5, "reveal": "qol_teams_altars_claims", "order": 0},
+    {"id": "fence", "through": [[2.6, -0.2], [9.6, -0.2], [9.6, 6.8], [2.6, 6.8]], "closed": true, "color": "#7B5A3A", "width": 0.16, "alpha": 235, "reveal": "qol_teams_altars_claims", "order": -2},
+    {"id": "altar", "item": "entrelumen:terraform_altar", "x": 13.2, "y": 5.6, "size": 1.1, "reveal": "qol_teams_altars_claims"},
+    {"id": "no_altar_1", "path": [[12.5, 4.9], [13.9, 6.3]], "color": "#E5533D", "width": 0.13, "reveal": "qol_teams_altars_claims", "order": 0},
+    {"id": "no_altar_2", "path": [[12.5, 6.3], [13.9, 4.9]], "color": "#E5533D", "width": 0.13, "reveal": "qol_teams_altars_claims", "order": 0},
+    {"id": "tnt", "item": "minecraft:tnt", "x": 11.2, "y": 3.2, "size": 0.85, "reveal": "qol_teams_settings"},
+    {"id": "no_tnt_1", "path": [[10.6, 2.6], [11.8, 3.8]], "color": "#E5533D", "width": 0.11, "reveal": "qol_teams_settings", "order": 0},
+    {"id": "no_tnt_2", "path": [[10.6, 3.8], [11.8, 2.6]], "color": "#E5533D", "width": 0.11, "reveal": "qol_teams_settings", "order": 0},
+    {"id": "gift_trail", "path": [[9.5, -0.9], [10.7, -2.9], [11.7, -5.0]], "dots": "minecraft:textures/item/emerald.png", "size": 0.38, "step": 0.95, "reveal": "qol_teams_gifts"},
+    {"id": "chest", "item": "minecraft:chest", "x": 4.3, "y": 6.0, "size": 0.85, "reveal": "qol_teams_lootr"},
+    {"id": "freq_0", "picture": "#E9ECEC", "x": 14.3, "y": 1.3, "w": 0.55, "h": 0.55, "reveal": "qol_teams_ender_team", "order": -1},
+    {"id": "freq_1", "picture": "#F9801D", "x": 15.0, "y": 1.3, "w": 0.55, "h": 0.55, "reveal": "qol_teams_ender_team", "order": -1},
+    {"id": "freq_2", "picture": "#C74EBD", "x": 15.700000000000001, "y": 1.3, "w": 0.55, "h": 0.55, "reveal": "qol_teams_ender_team", "order": -1},
+    {"id": "ping_a_glow", "glow": [1.5, -1.8], "r": 1.0, "alpha": 190, "tint": "#FFD84A", "reveal": "qol_teams_ping"},
+    {"id": "ping_a", "picture": "#FFD84A", "x": 1.5, "y": -1.8, "w": 0.5, "h": 0.5, "rotation": 45, "reveal": "qol_teams_ping", "order": 1},
+    {"id": "ping_a_m", "text": {"en_us": "24m", "es_es": "24m"}, "x": 1.5, "y": -1.15, "scale": 1, "tint": "#2B2118", "reveal": "qol_teams_ping"},
+    {"id": "ping_b_glow", "glow": [14.6, -1.5], "r": 1.0, "alpha": 190, "tint": "#FFD84A", "reveal": "qol_teams_ping"},
+    {"id": "ping_b", "picture": "#FFD84A", "x": 14.6, "y": -1.5, "w": 0.5, "h": 0.5, "rotation": 45, "reveal": "qol_teams_ping", "order": 1},
+    {"id": "ping_b_m", "text": {"en_us": "24m", "es_es": "24m"}, "x": 14.6, "y": -0.85, "scale": 1, "tint": "#2B2118", "reveal": "qol_teams_ping"},
+    {"id": "ping_c_glow", "glow": [1.4, -6.0], "r": 1.0, "alpha": 190, "tint": "#FFD84A", "reveal": "qol_teams_ping_channel"},
+    {"id": "ping_c", "picture": "#FFD84A", "x": 1.4, "y": -6.0, "w": 0.5, "h": 0.5, "rotation": 45, "reveal": "qol_teams_ping_channel", "order": 1},
+    {"id": "ping_c_m", "text": {"en_us": "24m", "es_es": "24m"}, "x": 1.4, "y": -5.35, "scale": 1, "tint": "#2B2118", "reveal": "qol_teams_ping_channel"},
+    {"id": "down_glow", "glow": [1.4, 6.0], "r": 1.4, "alpha": 110, "tint": "#E5533D", "reveal": "qol_teams_revival"},
+    {"id": "down_head", "picture": "#C99A6B", "x": 0.55, "y": 6.0, "w": 0.5, "h": 0.5, "reveal": "qol_teams_revival", "order": 2},
+    {"id": "down_body", "picture": "#3A8DC9", "x": 1.25, "y": 6.0, "w": 0.95, "h": 0.5, "reveal": "qol_teams_revival", "order": 2},
+    {"id": "down_legs", "picture": "#3B3B8C", "x": 2.05, "y": 6.0, "w": 0.65, "h": 0.5, "reveal": "qol_teams_revival", "order": 2},
+    {"id": "clock", "text": {"en_us": "2:00", "es_es": "2:00"}, "x": 1.4, "y": 4.7, "scale": 2, "tint": "#E5533D", "reveal": "qol_teams_revival", "order": 6},
+    {"id": "rescue_ring", "path": [[2.75, 6.0], [2.3, 7.05], [1.4, 7.5], [0.5, 7.05], [0.05, 6.0], [0.5, 4.95], [1.4, 4.5], [2.3, 4.95]], "closed": true, "color": "#5A8AE0", "width": 0.07, "alpha": 210, "reveal": "qol_teams_revival", "order": -1},
+    {"id": "half_heart", "picture": "minecraft:textures/gui/sprites/hud/heart/half.png", "x": 1.4, "y": 5.35, "w": 0.45, "h": 0.45, "reveal": "qol_teams_revival", "order": 3},
+    {"id": "sil_0", "picture": "minecraft:textures/item/name_tag.png", "x": 0.6, "y": 9.9, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3},
+    {"id": "tool_0", "item": "minecraft:name_tag", "x": 0.6, "y": 9.9, "size": 1.4, "reveal": "qol_teams_party", "order": -2},
+    {"id": "sil_1", "picture": "minecraft:textures/item/compass_00.png", "x": 4.8, "y": 9.9, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3},
+    {"id": "tool_1", "item": "minecraft:compass", "x": 4.8, "y": 9.9, "size": 1.4, "reveal": "qol_teams_shared", "order": -2},
+    {"id": "sil_2", "picture": "minecraft:textures/item/map.png", "x": 9.0, "y": 9.9, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3},
+    {"id": "tool_2", "item": "minecraft:map", "x": 9.0, "y": 9.9, "size": 1.4, "reveal": "qol_teams_map_quirk", "order": -2},
+    {"id": "sil_3", "picture": "minecraft:textures/item/totem_of_undying.png", "x": 13.2, "y": 9.9, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3},
+    {"id": "tool_3", "item": "minecraft:totem_of_undying", "x": 13.2, "y": 9.9, "size": 1.4, "reveal": "qol_teams_revival", "order": -2},
+    {"id": "sil_4", "picture": "minecraft:textures/item/bell.png", "x": 17.4, "y": 9.9, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3},
+    {"id": "tool_4", "item": "minecraft:bell", "x": 17.4, "y": 9.9, "size": 1.4, "reveal": "qol_teams_close", "order": -2},
+    {"id": "chunk_hi", "frame": [18.2, -8.8, 20.4, -6.6000000000000005], "color": "#F2C14E", "alpha": 240, "thickness_px": 3.0, "fill": "#F2C14E", "fill_alpha": 60, "corners": false, "reveal": "qol_teams_toy_chunk", "order": -1},
+    {"id": "chunk_16a", "text": {"en_us": "16", "es_es": "16"}, "x": 19.3, "y": -7.700000000000001, "scale": 2, "tint": "#2B2118", "reveal": "qol_teams_toy_chunk"},
+    {"id": "totem_glow", "glow": [13.2, 9.9], "r": 2.0, "alpha": 200, "tint": "#FFE08A", "reveal": "qol_teams_toy_totem"},
+    {"id": "totem_sparks", "scatter": ["minecraft:textures/particle/flash.png"], "region": [12.0, 8.9, 14.4, 10.9], "count": 4, "size": [0.2, 0.35], "seed": 21, "tint": "#FFE08A", "reveal": "qol_teams_toy_totem"}
   ]
 }
