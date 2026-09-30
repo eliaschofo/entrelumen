@@ -74,7 +74,14 @@
     {"id": "subtitle", "text": {"en_us": "Rails and power", "es_es": "Vías y energía"}, "x": -24.299999999999997, "y": -18.5, "scale": 2, "tint": "#E8B04A", "align": "start", "order": 6},
     {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -29.799999999999997, "y": -20.2, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
     {"id": "emblem", "picture": "create:textures/gui/logo.png", "x": -29.799999999999997, "y": -20.2, "w": 3.2, "h": 3.2, "order": 1},
-    {"id": "whistle_steam", "scatter": ["minecraft:textures/particle/big_smoke_1.png", "minecraft:textures/particle/big_smoke_3.png", "minecraft:textures/particle/big_smoke_5.png", "minecraft:textures/particle/big_smoke_7.png"], "region": [-23.8, -8.2, -21.4, -5.2], "count": 6, "size": [0.5, 0.9], "alphas": [120, 200], "seed": 12, "reveal": "cgd_whistle", "order": -1}
+    {"id": "whistle_steam", "scatter": ["minecraft:textures/particle/big_smoke_1.png", "minecraft:textures/particle/big_smoke_3.png", "minecraft:textures/particle/big_smoke_5.png", "minecraft:textures/particle/big_smoke_7.png"], "region": [-23.8, -8.2, -21.4, -5.2], "count": 6, "size": [0.5, 0.9], "alphas": [120, 200], "seed": 12, "reveal": "cgd_whistle", "order": -1},
+    {"id": "cap_grind", "text": {"en_us": "Rail grinding", "es_es": "Patinar el riel"}, "x": -14.8, "y": -17.6, "scale": 2, "tint": "#F3E7C6", "align": "start"},
+    {"id": "grind_rail", "through": ["clg_grind_boots", "clg_grind", "clg_grind_sonic"], "sprite": "minecraft:block/rail", "width": 1.0, "step": 1.0, "turn": true, "grow": true, "sketch": true, "order": -5},
+    {"id": "grind_sparks", "scatter": "#FFC870", "region": [-13.4, -11.9, -9.6, -9.7], "count": 9, "size": [0.12, 0.28], "alphas": [200, 255], "seed": 3, "reveal": "clg_grind", "order": -2},
+    {"id": "grind_glow", "glow": [-11.5, -10.5], "r": 2.6, "tint": "#FFC870", "alpha": 110, "reveal": "clg_grind", "order": -4},
+    {"id": "f_grind_boots", "item": "create:copper_diving_boots", "x": -14.6, "y": -8.0, "size": 1.5, "reveal": "clg_grind_boots", "order": -3},
+    {"id": "grind_wind", "picture": "createrailgrinding:textures/mob_effect/railgrindboost.png", "x": -5.3, "y": -8.4, "w": 1.3, "h": 1.3, "reveal": "clg_grind_sonic", "order": -3},
+    {"id": "grind_skin", "picture": "createrailgrinding:textures/item/custom_diving_boots.png", "x": -5.1, "y": -12.6, "w": 1.3, "h": 1.3, "reveal": "clg_grind_skin", "order": -3}
   ],
   "quests": [
     {
@@ -946,6 +953,90 @@
         "text": ["[lead] Sale un tren; alguien tiene que tocar el silbato.",
                  "Sin premio: sólo el vapor."]},
       "sources": ["docs/design/quest-book-v3.md#presentación-v2-28-de-septiembre-de-2026"]
+    },
+    {
+      "key": "clg_grind_boots", "role": "side", "deps": ["clg_track"],
+      "task": {"item": "create:copper_diving_boots"},
+      "at": {"x": -16.5, "y": -8.0},
+      "en_us": {"title": "Boots for the rails", "subtitle": "Copper soles, andesite heels.",
+        "text": ["[lead] Diving boots already know how to grind a track; any other boots learn it from an enchantment.",
+                 "[li] [item:create:copper_diving_boots|Copper Diving Boots]: four copper ingots and two andesite alloy",
+                 "[li] [hl|Rail Rider]: a one-level enchantment for any boots, traded by villagers and found in loot chests"]},
+      "es_es": {"title": "Botas para el riel", "subtitle": "Suela de cobre, taco de andesita.",
+        "text": ["[lead] Las botas de buceo ya saben patinar una vía; cualquier otra bota lo aprende con un encantamiento.",
+                 "[li] [item:create:copper_diving_boots|Botas de Buceo de Cobre]: cuatro lingotes de cobre y dos de aleación de andesita",
+                 "[li] [hl|Rail Rider]: un encantamiento de un nivel para cualquier bota, que venden los aldeanos y guardan los cofres"]},
+      "sources": ["jar:createrailgrinding-1.2.2.jar:data/createrailgrinding/tags/item/railgrind_enchantable.json", "jar:createrailgrinding-1.2.2.jar:data/createrailgrinding/enchantment/railgrind_enchantment.json", "jar:createrailgrinding-1.2.2.jar:data/minecraft/tags/enchantment/tradeable.json", "jar:createrailgrinding-1.2.2.jar:data/minecraft/tags/enchantment/on_random_loot.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/appliances/copper_diving_boots.json"]
+    },
+    {
+      "key": "clg_grind", "role": "milestone", "deps": ["clg_grind_boots"],
+      "task": {"type": "advancement", "advancement": "createrailgrinding:railgrind_advancement", "icon": "create:copper_diving_boots"},
+      "at": {"x": -11.5, "y": -10.5},
+      "en_us": {"title": "Ride the rail", "subtitle": "The train is optional.",
+        "text": ["[lead] Boots on, click a track, and you are the train.",
+                 "[li] [icon:right_click] a track with an empty hand to start",
+                 "[li] Hold [key:key.createrailgrinding.grind_crouch] to accelerate",
+                 "[li] [key:key.createrailgrinding.grind_jump] leaps off; a charged jump goes farther",
+                 "[li] [icon:right_click] the track again to stop",
+                 "{page}",
+                 "[note] The catch key ships unbound in this pack: the empty-hand click does the same job. Bind [key:key.createrailgrinding.catch] if you would rather hold a key near the track."]},
+      "es_es": {"title": "Patinar por el riel", "subtitle": "El tren es opcional.",
+        "text": ["[lead] Con las botas puestas, un clic en la vía y el tren sos vos.",
+                 "[li] [icon:right_click] sobre una vía con la mano vacía para arrancar",
+                 "[li] Mantené [key:key.createrailgrinding.grind_crouch] para acelerar",
+                 "[li] [key:key.createrailgrinding.grind_jump] salta del riel; un salto cargado llega más lejos",
+                 "[li] [icon:right_click] otra vez sobre la vía para frenar",
+                 "{page}",
+                 "[note] La tecla de enganchar viene sin asignar en este pack: el clic con la mano vacía hace lo mismo. Asigná [key:key.createrailgrinding.catch] si preferís mantener una tecla cerca de la vía."]},
+      "sources": ["jar:createrailgrinding-1.2.2.jar:assets/createrailgrinding/lang/en_us.json#item.createrailgrinding.diving_boots.tooltip.behaviour1,behaviour2", "jar:createrailgrinding-1.2.2.jar:data/createrailgrinding/advancement/railgrind_advancement.json", "jar:createrailgrinding-1.2.2.jar:net/juniknytt/createrailgrinding/Config.class#railJumpCharge", "pack/config/entrelumen/client-preset.json#key_key.createrailgrinding.catch=unknown", "docs/design/mod-pingpong.md#ronda-6-279"]
+    },
+    {
+      "key": "clg_grind_sonic", "role": "side", "deps": ["clg_grind"],
+      "task": {"type": "advancement", "advancement": "createrailgrinding:railgrind_effect_advancement", "icon": "create:bar_of_chocolate"},
+      "at": {"x": -7.2, "y": -8.4},
+      "en_us": {"title": "Sonic Wind", "subtitle": "A chocolate bar with a turbo.",
+        "text": ["[lead] Eat a [item:create:bar_of_chocolate|Bar of Chocolate] and the rail gets faster, sharper and bouncier.",
+                 "[li] Speed, acceleration and jump strength go up while you grind",
+                 "[li] A bar is 250 mB of chocolate, compacted under a press"]},
+      "es_es": {"title": "Viento sónico", "subtitle": "Una barra de chocolate con turbo.",
+        "text": ["[lead] Comé una [item:create:bar_of_chocolate|Barra de chocolate] y el riel se vuelve más rápido, más filoso y más saltarín.",
+                 "[li] Suben la velocidad, la aceleración y la fuerza de salto mientras patinás",
+                 "[li] Una barra son 250 mB de chocolate, compactados bajo una prensa"]},
+      "sources": ["jar:createrailgrinding-1.2.2.jar:assets/createrailgrinding/lang/en_us.json#effect.createrailgrinding.railgrindboost.behaviour", "jar:createrailgrinding-1.2.2.jar:data/createrailgrinding/advancement/railgrind_effect_advancement.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/compacting/chocolate.json"]
+    },
+    {
+      "key": "clg_grind_elytra", "role": "tip", "deps": ["clg_grind"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -12.0, "y": -14.6},
+      "en_us": {"title": "Rail to wings",
+        "text": ["[tip] With an Elytra equipped, jumping off a rail opens your wings on its own. Ideal for a line that ends over a cliff."]},
+      "es_es": {"title": "Del riel a las alas",
+        "text": ["[tip] Con unos élitros puestos, saltar del riel abre las alas solo. Ideal para una vía que termina en un acantilado."]},
+      "sources": ["jar:createrailgrinding-1.2.2.jar:net/juniknytt/createrailgrinding/Config.class#autoDeployElytra=true"]
+    },
+    {
+      "key": "clg_grind_fall", "role": "secret", "deps": ["clg_grind"],
+      "task": {"type": "advancement", "advancement": "createrailgrinding:falldamage_negate_advancement", "icon": "create:netherite_diving_boots"},
+      "at": {"x": -16.0, "y": -13.0},
+      "en_us": {"title": "Caught by the rails", "subtitle": "Gravity lost that round.",
+        "text": ["[lead] A fall that should have ended you, and a track that caught it.",
+                 "Grabbing a track on the way down cancels a lethal fall: [icon:right_click] it, or use the catch key if you bound one."]},
+      "es_es": {"title": "Salvado por los rieles", "subtitle": "La gravedad perdió esa ronda.",
+        "text": ["[lead] Una caída que tendría que haberte matado, y una vía que la atajó.",
+                 "Agarrarte de una vía durante la caída anula el golpe mortal: [icon:right_click] sobre ella, o la tecla de enganchar si la asignaste."]},
+      "sources": ["jar:createrailgrinding-1.2.2.jar:data/createrailgrinding/advancement/falldamage_negate_advancement.json", "jar:createrailgrinding-1.2.2.jar:assets/createrailgrinding/lang/en_us.json#advancement.createrailgrinding.falldamage_negate_advancement.desc"]
+    },
+    {
+      "key": "clg_grind_skin", "role": "secret", "deps": ["clg_grind"],
+      "task": {"type": "advancement", "advancement": "createrailgrinding:custom_boots_advancement", "icon": "create:copper_diving_boots"},
+      "at": {"x": -7.0, "y": -12.6},
+      "en_us": {"title": "Gotta go fast", "subtitle": "Blue, spiky and late for something.",
+        "text": ["[lead] Rename grinding boots at an anvil to something a speedster would wear and they change skin.",
+                 "Names like [hl|Sonic Boots], [hl|Blue Blur] or [hl|Gotta Go Fast] work, on diving boots or on any boots with Rail Rider."]},
+      "es_es": {"title": "A todo gas", "subtitle": "Azul, con púas y apurado por algo.",
+        "text": ["[lead] Renombrá unas botas de patinar en un yunque con algo que llevaría un velocista y cambian de aspecto.",
+                 "Sirven nombres como [hl|Sonic Boots], [hl|Blue Blur] o [hl|Gotta Go Fast], en botas de buceo o en cualquier bota con Rail Rider."]},
+      "sources": ["jar:createrailgrinding-1.2.2.jar:net/juniknytt/createrailgrinding/cosmetic/CustomBootSkin.class#NAMES,hasMatchingName", "jar:createrailgrinding-1.2.2.jar:data/createrailgrinding/advancement/custom_boots_advancement.json"]
     }
   ]
 }
