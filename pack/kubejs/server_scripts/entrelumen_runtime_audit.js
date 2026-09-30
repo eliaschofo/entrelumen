@@ -341,11 +341,13 @@ const entrelumenAuditTargets = {
     "ae2wtlib:wireless_pattern_encoding_terminal",
     "ae2wtlib:wireless_universal_terminal",
     "aether:aechor_petal",
+    "aether:aerbunny_spawn_egg",
     "aether:aether_grass_block",
     "aether:aether_portal_frame",
     "aether:agility_cape",
     "aether:altar",
     "aether:ambrosium_shard",
+    "aether:ambrosium_torch",
     "aether:angelic_stone",
     "aether:black_moa_egg",
     "aether:blue_aercloud",
@@ -1111,6 +1113,7 @@ const entrelumenAuditTargets = {
     "croptopia:walnut",
     "croptopia:walnut_sapling",
     "deep_aether:aercloud_necklace",
+    "deep_aether:aerlavender",
     "deep_aether:aerwhale_saddle",
     "deep_aether:antidote",
     "deep_aether:bio_crystal",
@@ -5796,7 +5799,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "beb4bd80108478f7"
+  "signature": "2c86961c928d67a6"
 };
 
 ServerEvents.afterRecipes(event => {
