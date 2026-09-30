@@ -1,4 +1,4 @@
-"""Terra's hydroponic garden: the grow lamp (8 frames), the garden plan and the two garden blocks.
+"""Terra's hydroponic garden: the grow lamp (8 frames), the garden plan, the outlet and the core's pot.
 
 Native 16x16 grids, hand-placed texel by texel and mirror-symmetric left-right (Elias's canon); every
 grid is built from its left half and mirrored, so symmetry holds by construction.
@@ -8,13 +8,16 @@ grid is built from its left half and mirrored, so symmetry holds by construction
   core, tongues that flicker every frame) but upside down: it hangs from the hood and drips light onto
   the crops. Sunlight gold edged in leaf green, a pairing no luminosity uses. Eight frames, frametime 2.
 - terra_garden_plan (item): a hanging scroll between two copper rods; verdigris ink on parchment draws
-  the garden's front elevation (the roof, the four pillars, the stepped troughs, the sun).
-- hydroponic_trough (block): a verdigris copper tank; the side is a window onto water and hanging white
-  roots, the top is water with four net cups and their seedlings.
-- terra_garden_core (block): calcite and verdigris with a round lamp on the front: dark when the garden
-  is unbuilt, teal once the garden stands, sunlight gold while it grows.
+  the engine's front elevation (pistons and skylight, grilles and the crop in its pot, headlamps over the
+  green bed, the sump).
+- terra_garden_outlet (block): a cut-copper casing with a brass flange round a round port, where the
+  harvest leaves the engine.
+- terra_garden_core (block): the pot at the engine's heart, a sculpted model (art/models/block, written
+  here): an 8 x 6 x 8 copper body with a verdigris band and brass rivets, soil on top and a one-texel rim
+  that glows: dark verdigris while the engine is unbuilt, teal once it stands, and a green that breathes
+  (8 frames, emissive) while it grows. Its block entity draws the crop growing in the soil.
 
-    python art/authoring/draw_terra_garden.py            # write the grids
+    python art/authoring/draw_terra_garden.py            # write the grids and the core's models
     python art/authoring/draw_terra_garden.py --check    # compare with the repo
 """
 import argparse
@@ -98,169 +101,290 @@ def lamp_frames():
     return [mirror(LAMP_BODY + flame) for flame in LAMP_FLAMES]
 
 
+
 # ---- the garden plan -------------------------------------------------------------------------------
 
 PLAN_PAL = {
     'k': CU[0], 'c': CU[2], 'C': CU[4], 'D': CU[5],                # rods
-    'p': PARCH[2], 'P': PARCH[3], 'q': PARCH[4], 'Q': PARCH[5],    # paper (shadow to light)
+    'p': PARCH[2], 'q': PARCH[4], 'Q': PARCH[5],                   # paper (shadow to light)
     'i': VER[1], 'I': VER[3],                                       # verdigris ink
-    'y': STRAW[3],                                                  # the sun
+    'y': STRAW[3],                                                  # headlamps
+    'g': LEAF[4], 'G': LEAF[5],                                     # the crop and the green light
 }
+# The engine's front elevation in ink outlines: the head with its skylight, the banks down the sides, the
+# heart open to the front with the crop in its glowing pot over the green bed, a headlamp, the sump.
 PLAN = mirror([
     '.kcCCCCC',
     '..pqqqqq',
-    '..pQQQQy',
-    '..pQQQiQ',
-    '..pQQiQQ',
+    '..pQiiii',
+    '..pQiQII',
+    '..pQiiii',
     '..pQiQQQ',
-    '..piiiii',
-    '..piQQQQ',
-    '..piQQQI',
-    '..piQQII',
-    '..piQIII',
-    '..piIIII',
-    '..piiiii',
-    '..pqqqqq',
+    '..pQiQQg',
+    '..pQiQgg',
+    '..pQiQGG',
+    '..pQyQDD',
+    '..pQiGGG',
+    '..pQiiii',
+    '..pQiQiQ',
+    '..pQiiii',
     '.kcCCCCD',
     '........',
 ])
 
-# ---- the hydroponic trough -------------------------------------------------------------------------
 
-TROUGH_PAL = {
-    'k': VER[0], 'v': VER[1], 'V': VER[2], 'w': VER[3], 'W': VER[4], 'X': VER[5],
-    't': TEAL[1], 'T': TEAL[2], 'u': TEAL[3], 'U': TEAL[4], 'G': GLASS[4],
-    'r': PARCH[4], 'R': PARCH[5],
-    'l': LEAF[2], 'L': LEAF[4], 'M': LEAF[5],
-    'n': INK,
+# ---- the outlet ------------------------------------------------------------------------------------
+
+OUTLET_PAL = {
+    'k': CU[0], 'l': CU[1], 'c': CU[2], 'C': CU[3], 'D': CU[4], 'E': CU[5],   # cut copper casing
+    'b': BRASS[1], 'B': BRASS[3], 'Y': BRASS[4],                                # the brass flange
+    'n': INK, 'v': VER[1], 'V': VER[3],                                          # the port, verdigris
 }
-TROUGH_SIDE = mirror([
-    'wWWWWWWX',
-    'VwwwwwwW',
-    'vVVVVVVV',
-    'vwUGUuUU',
-    'vwuRuuRu',
-    'vwTrTTrT',
-    'vwTrTtrT',
-    'vwTrtTTt',
-    'vwtrtTTt',
-    'vwttrtTt',
-    'vwtttttt',
-    'vwtttttt',
-    'vVVVVVVV',
-    'vwWwwwww',
-    'vwwwwwww',
-    'kvvvvvvv',
-])
-_TROUGH_TOP_HALF = [
-    'wWWWWWWW',
-    'WVVVVVVV',
-    'WVuUuuuT',
-    'WVuVVVVu',
-    'WVuVMLVu',
-    'WVuVlLVT',
-    'WVTVVVVu',
-    'WVuTuUuT',
+_OUTLET_HALF = [
+    'kccccccc',
+    'cDDDDDDD',
+    'cDCCCCCC',
+    'cDCbbbbb',
+    'cDCbYBBB',
+    'cDCbBbbn',
+    'cDCbBnnn',
+    'cDCbBnvv',
 ]
-TROUGH_TOP = mirror(_TROUGH_TOP_HALF + _TROUGH_TOP_HALF[::-1])
-TROUGH_BOTTOM = mirror([
-    'kvvvvvvv',
-    'vVVVVVVV',
-    'vVwwwwww',
-    'vVwVVVVV',
-    'vVwVkkVV',
-    'vVwVkVVV',
-    'vVwVVVVV',
-    'vVwVVVVV',
-    'vVwVVVVV',
-    'vVwVVVVV',
-    'vVwVkVVV',
-    'vVwVkkVV',
-    'vVwVVVVV',
-    'vVwwwwww',
-    'vVVVVVVV',
-    'kvvvvvvv',
+OUTLET = mirror(_OUTLET_HALF + [
+    'cDCbBnvV',
+    'cDCbBnnn',
+    'cDCbBbbn',
+    'cDCbYBBB',
+    'cDCbbbbb',
+    'cDCCCCCC',
+    'cDDDDDDD',
+    'lccccccc',
 ])
 
 
-# ---- the garden core -------------------------------------------------------------------------------
+# ---- the core: a small pot with a green glow ------------------------------------------------------
 
-CORE_PAL = {
-    'k': VER[0], 'v': VER[1], 'V': VER[2], 'w': VER[3], 'W': VER[4], 'X': VER[5],
-    'a': CALCITE[0], 'b': CALCITE[1], 'c': CALCITE[2], 'd': CALCITE[3], 'e': CALCITE[4], 'f': CALCITE[5],
-    'n': INK, 'g': GLASS[0], 'G': GLASS[1],
-    'l': LEAF[2], 'L': LEAF[4],
-    't': TEAL[1], 'T': TEAL[2], 'u': TEAL[3], 'U': TEAL[4], 'Z': TEAL[5],
-    's': STRAW[2], 'S': STRAW[3], 'y': BRASS[5], 'Y': '#fffbe6', 'm': LEAF[3], 'M': LEAF[5],
+POT_PAL = {
+    'k': CU[0], 'l': CU[1], 'c': CU[2], 'C': CU[3], 'D': CU[4], 'E': CU[5],   # copper pot
+    'v': VER[1], 'V': VER[2], 'w': VER[3],                                       # its verdigris band
+    'Y': BRASS[4],                                                                # rivets
 }
-# The front: a round lamp in a verdigris ring on calcite, over a copper vent plate. The lens per state,
-# rows 3-11 (left halves): dark glass round a sleeping sprout; teal once the garden stands; sunlight
-# gold round a green sprout while it grows.
-_LENS = {
-    'unbuilt': ['bdeWVkkk', 'bdWVkggg', 'bdWkgggG', 'bdWkggGG', 'bdWkggGl', 'bdWkgGGl', 'bdWkggll', 'bdWVkggg', 'bdeWVkkk'],
-    'built':   ['bdeWVkkk', 'bdWVktTT', 'bdWktTuu', 'bdWkTuuU', 'bdWkTuUl', 'bdWkTuUl', 'bdWkTull', 'bdWVktTT', 'bdeWVkkk'],
-    'growing': ['bdeWVkkk', 'bdWVksSS', 'bdWksSyy', 'bdWkSyYY', 'bdWkSyYm', 'bdWkSyYm', 'bdWkSymM', 'bdWVksSS', 'bdeWVkkk'],
-}
+# The pot's side is 8 wide and 6 tall (1 texel a unit); the 16 x 16 texture holds it twice across and
+# twice down, so any face of the body maps its own 8 x 6 (or 8 x 8) window.
+_POT_TILE = [
+    'DEEEEEED',
+    'cDDDDDDc',
+    'vVwYYwVv',
+    'vVVVVVVv',
+    'cCCCCCCc',
+    'lccccccl',
+    'kllllllk',
+    'kkkkkkkk',
+]
+POT = [r + r for r in _POT_TILE] * 2
+
+SOIL_PAL = {'a': '#2a1a10', 'b': '#3b2616', 'c': '#4f341e', 'd': '#664528', 'g': LEAF[3]}
+_SOIL_TILE = [
+    'bcbbcbbc',
+    'cbdcbbcb',
+    'bbcbbdcb',
+    'cbbcgbbc',
+    'bdcbbcbb',
+    'cbbacbdb',
+    'bcbbcbbc',
+    'cbdbbcab',
+]
+SOIL = [r + r for r in _SOIL_TILE] * 2
+
+# The rim's glow: 8 frames that breathe from a low green to a bright one and back (frametime 3); dark
+# verdigris while the garden is unbuilt, teal once it stands.
+_GLOW_RAMP = [LEAF[2], LEAF[3], LEAF[4], LEAF[5], '#e2ffb8', LEAF[5], LEAF[4], LEAF[3]]
 
 
-def core_front(state):
-    return mirror(['bddddddd', 'bdeeeeee', 'bdeeWWWW'] + _LENS[state]
-                  + ['bdeeWWWW', 'bVVVVVVV', 'bVwnwwnw', 'avvvvvvv'])
+def glow(colour, edge):
+    """A 16 x 16 texture of one colour with a darker checker of texels, symmetric both ways."""
+    rows = []
+    for y in range(16):
+        rows.append(''.join('b' if (min(x, 15 - x) + min(y, 15 - y)) % 4 == 0 else 'a' for x in range(16)))
+    return {'a': colour, 'b': edge}, rows
 
-CORE_SIDE = mirror([
-    'bddddddd',
-    'bdeeeeee',
-    'bdefffff',
-    'bdeVVVVV',
-    'bdeVwwwl',
-    'bdeVwwLl',
-    'bdeVwwLl',
-    'bdeVwLll',
-    'bdeVwLlL',
-    'bdeVwwLl',
-    'bdeVwwwl',
-    'bdeVVVVV',
-    'bdeeeeee',
-    'bVVVVVVV',
-    'bVwnwwnw',
-    'avvvvvvv',
-])
-CORE_TOP = mirror([
-    'kvvvvvvv',
-    'vWwwwwww',
-    'vwXwwwww',
-    'vwwVVVVV',
-    'vwwVggGG',
-    'vwwVgGGZ',
-    'vwwVGGZU',
-    'vwwVGZUu',
-    'vwwVGZUu',
-    'vwwVGGZU',
-    'vwwVgGGZ',
-    'vwwVggGG',
-    'vwwVVVVV',
-    'vwXwwwww',
-    'vWwwwwww',
-    'kvvvvvvv',
-])
-CORE_BOTTOM = mirror([
-    'abbbbbbb',
-    'bcccccccc'[:8],
-    'bcdddddd',
-    'bcdccccc',
-    'bcdcbbbb',
-    'bcdcbccc',
-    'bcdcbcdd',
-    'bcdcbcdd',
-    'bcdcbcdd',
-    'bcdcbcdd',
-    'bcdcbccc',
-    'bcdcbbbb',
-    'bcdccccc',
-    'bcdddddd',
-    'bccccccc',
-    'abbbbbbb',
-])
+
+# ---- models (1 texel per 1/16 unit) ------------------------------------------------------------------
+
+EMISSIVE = {'block_light': 15, 'sky_light': 15, 'ambient_occlusion': False}
+
+
+def _box(frm, to, faces):
+    return {'from': list(frm), 'to': list(to), 'faces': faces}
+
+
+def _uv_faces(frm, to, tex, emissive=False, sides=('north', 'south', 'east', 'west', 'up', 'down')):
+    """Faces whose UVs span the element's own size: 1 texel per unit, nothing stretched."""
+    w, h, d = to[0] - frm[0], to[1] - frm[1], to[2] - frm[2]
+    size = {'north': (w, h), 'south': (w, h), 'east': (d, h), 'west': (d, h), 'up': (w, d), 'down': (w, d)}
+    out = {}
+    for s in sides:
+        u, v = size[s]
+        face = {'uv': [0, 0, u, v], 'texture': tex}
+        if emissive:
+            face['neoforge_data'] = dict(EMISSIVE)
+        out[s] = face
+    return out
+
+
+def core_model(glow_texture, shift=0):
+    """The pot: an 8 x 6 x 8 copper body with soil on top and a one-texel glowing rim above it, centred on
+    the model's x = 0 (the block's west edge: the engine's mirror plane, facing south), or shifted."""
+    x0, x1, z0, z1 = -4 + shift, 4 + shift, 4, 12
+    elements = [_box((x0, 0, z0), (x1, 6, z1), {**_uv_faces((x0, 0, z0), (x1, 6, z1), '#pot', sides=('north', 'south', 'east', 'west', 'down')),
+                                                  'up': {'uv': [0, 0, 8, 8], 'texture': '#soil'}})]
+    rim = [((x0, 6, z1 - 1), (x1, 7, z1)), ((x0, 6, z0), (x1, 7, z0 + 1)),
+           ((x0, 6, z0 + 1), (x0 + 1, 7, z1 - 1)), ((x1 - 1, 6, z0 + 1), (x1, 7, z1 - 1))]
+    for frm, to in rim:
+        elements.append(_box(frm, to, _uv_faces(frm, to, '#glow', emissive=glow_texture.endswith('_glow'))))
+    model = {'parent': 'minecraft:block/block', 'textures': {
+        'particle': 'entrelumen:block/terra_garden_core_pot', 'pot': 'entrelumen:block/terra_garden_core_pot',
+        'soil': 'entrelumen:block/terra_garden_core_soil', 'glow': 'entrelumen:block/' + glow_texture},
+        'elements': elements}
+    return model
+
+
+# ---- the Terralight crystal, its shard, its grounding rod and the lamp placed as a block -----------
+
+# Terralight green: a cool emerald-mint, not the leaf green of the lamp's halo nor any luminosity's ramp.
+MINT = ['#0c3326', '#185a40', '#2a8a5e', '#4cc085', '#94f0bb', '#e4fff0']
+# Crystal stages as thin spikes (Elias: «más finito»): (column offset from the axis, height), mirrored.
+_SPIKES = [
+    [(0, 5), (2, 3)],
+    [(0, 8), (2, 5), (4, 3)],
+    [(0, 11), (2, 8), (4, 5), (6, 3)],
+    [(0, 15), (2, 11), (4, 8), (6, 5)],
+]
+
+
+def crystal_stage(stage):
+    """A cross-model texture: thin needles rising from the bottom, the tallest on the axis (two texels wide),
+    the others one texel wide and leaning out a texel every three rows; each ends in a bright tip."""
+    grid = [['.'] * 16 for _ in range(16)]
+    for offset, height in _SPIKES[stage]:
+        for side in ((-1, 1) if offset else (0,)):
+            for k in range(height):
+                y = 15 - k
+                tip = k >= height - 2
+                c = ('f' if k == height - 1 else 'e') if tip else ('b' if k < 2 else ('d' if side <= 0 else 'c'))
+                if side == 0:
+                    grid[y][7] = c if tip else ('d' if k >= 2 else 'b')
+                    grid[y][8] = c if tip else ('c' if k >= 2 else 'b')
+                else:
+                    lean = k // 3
+                    x = (7 - offset - lean) if side < 0 else (8 + offset + lean)
+                    if 0 <= x < 16:
+                        grid[y][x] = c
+    return [''.join(r) for r in grid]
+
+
+CRYSTAL_PAL = {'a': MINT[0], 'b': MINT[1], 'c': MINT[2], 'd': MINT[3], 'e': MINT[4], 'f': MINT[5]}
+
+# The shard, 8 frames in the luminosities' language (dark outline, a ramp, a white-hot glint that runs up
+# its facets and a spark that blinks beside it), upright and mirrored in every frame.
+_SHARD = [
+    '.......a',
+    '......ab',
+    '......ac',
+    '.....abd',
+    '.....acd',
+    '....abcd',
+    '....acdd',
+    '...abcdd',
+    '...acddd',
+    '...abcdd',
+    '....acdd',
+    '....abcd',
+    '.....acd',
+    '.....abc',
+    '......ab',
+    '.......a',
+]
+
+
+def shard_frames():
+    frames = []
+    for f in range(8):
+        rows = [list(r) for r in _SHARD]
+        band = 13 - f * 2 if f < 7 else None          # the glint climbs two rows a frame, then rests
+        if band is not None:
+            for y in (band, band - 1):
+                if 0 <= y < 16:
+                    for x in range(8):
+                        if rows[y][x] in 'cd':
+                            rows[y][x] = 'e' if rows[y][x] == 'c' else 'f'
+        if f in (2, 6):                                  # a spark beside the shard
+            rows[3][2] = 'e'
+        if f == 4:
+            rows[11][1] = 'e'
+        frames.append(mirror([''.join(r) for r in rows]))
+    return frames
+
+
+SHARD_PAL = {'a': MINT[0], 'b': MINT[1], 'c': MINT[2], 'd': MINT[3], 'e': MINT[4], 'f': MINT[5]}
+
+# The grounding rod: one copper stick, 2 texels wide, with bronze collars; only columns 7-8 are mapped.
+ROD_PAL = {'k': CU[1], 'c': CU[3], 'C': CU[4], 'D': CU[5], 'b': BRASS[2], 'B': BRASS[4]}
+_ROD_COLUMN = ['DC', 'bB', 'Cc', 'Cc', 'Cc', 'bB', 'Cc', 'Cc', 'Cc', 'Cc', 'bB', 'Cc', 'Cc', 'Cc', 'bB', 'ck']
+
+
+def rod_rows():
+    return ['.......' + c + '.......' for c in _ROD_COLUMN]
+
+
+# The lamp as a block: a verdigris hood and a flame that breathes (4 frames).
+HOOD_PAL = {'k': VER[0], 'v': VER[1], 'V': VER[2], 'w': VER[3], 'W': VER[4]}
+_HOOD_TILE = ['WWWWWWWW', 'wwwwwwww', 'wVwVVwVw', 'VVVVVVVV', 'vVvvvvVv', 'vvvvvvvv', 'kvkvvkvk', 'kkkkkkkk']
+HOOD = [r + r for r in _HOOD_TILE] * 2
+_FLAME_RAMP = [(LEAF[4], STRAW[3]), (LEAF[5], BRASS[5]), ('#e2ffb8', '#fffbe6'), (LEAF[5], BRASS[5])]
+
+
+def lamp_flame(frame):
+    edge, core = _FLAME_RAMP[frame]
+    rows = []
+    for y in range(16):
+        rows.append(''.join('b' if max(abs(x - 7.5), abs(y - 7.5)) < 3 else 'a' for x in range(16)))
+    return {'a': edge, 'b': core}, rows
+
+
+def rod_model():
+    frm, to = (7, 0, 7), (9, 16, 9)
+    faces = {s: {'uv': [7, 0, 9, 16], 'texture': '#rod'} for s in ('north', 'south', 'east', 'west')}
+    faces['up'] = {'uv': [7, 0, 9, 2], 'texture': '#rod'}
+    faces['down'] = {'uv': [7, 14, 9, 16], 'texture': '#rod'}
+    return {'parent': 'minecraft:block/block', 'textures': {'particle': 'entrelumen:block/terralight_grounding_rod',
+            'rod': 'entrelumen:block/terralight_grounding_rod'}, 'elements': [_box(frm, to, faces)]}
+
+
+def lamp_block_model():
+    elements = [_box((7, 13, 7), (9, 16, 9), _uv_faces((7, 13, 7), (9, 16, 9), '#hood')),
+                _box((4, 8, 4), (12, 13, 12), _uv_faces((4, 8, 4), (12, 13, 12), '#hood')),
+                _box((5, 3, 5), (11, 8, 11), _uv_faces((5, 3, 5), (11, 8, 11), '#flame', emissive=True))]
+    return {'parent': 'minecraft:block/block', 'textures': {'particle': 'entrelumen:block/terra_grow_lamp_hood',
+            'hood': 'entrelumen:block/terra_grow_lamp_hood', 'flame': 'entrelumen:block/terra_grow_lamp_flame'},
+            'elements': elements}
+
+
+def crystal_model(stage):
+    return {'parent': 'minecraft:block/cross', 'render_type': 'minecraft:cutout',
+            'textures': {'cross': f'entrelumen:block/terralight_crystal_{stage}'}}
+
+
+def models():
+    """Block models by name (art/models/block/<name>.json) and the core's item model."""
+    out = {'terra_garden_core': core_model('terra_garden_core_glow_off'),
+           'terra_garden_core_built': core_model('terra_garden_core_glow_dim'),
+           'terra_garden_core_growing': core_model('terra_garden_core_glow'),
+           'terra_garden_core_item': core_model('terra_garden_core_glow', shift=8),
+           'terralight_grounding_rod': rod_model(), 'terra_grow_lamp': lamp_block_model()}
+    for stage in range(4):
+        out[f'terralight_crystal_{stage}'] = crystal_model(stage)
+    return out
 
 
 def grids():
@@ -269,36 +393,50 @@ def grids():
     for i, frame in enumerate(lamp_frames()):
         out[f'item/terra_grow_lamp__f{i}.txt'] = grid_text(LAMP_PAL, frame)
     out['item/terra_garden_plan.txt'] = grid_text(PLAN_PAL, PLAN)
-    out['block/hydroponic_trough.txt'] = grid_text(TROUGH_PAL, TROUGH_SIDE)
-    out['block/hydroponic_trough_top.txt'] = grid_text(TROUGH_PAL, TROUGH_TOP)
-    out['block/hydroponic_trough_bottom.txt'] = grid_text(TROUGH_PAL, TROUGH_BOTTOM)
-    for state in ('unbuilt', 'built', 'growing'):
-        name = 'terra_garden_core_front' + ('' if state == 'unbuilt' else '_' + state)
-        out[f'block/{name}.txt'] = grid_text(CORE_PAL, core_front(state))
-    out['block/terra_garden_core.txt'] = grid_text(CORE_PAL, CORE_SIDE)
-    out['block/terra_garden_core_top.txt'] = grid_text(CORE_PAL, CORE_TOP)
-    out['block/terra_garden_core_bottom.txt'] = grid_text(CORE_PAL, CORE_BOTTOM)
+    out['block/terra_garden_outlet.txt'] = grid_text(OUTLET_PAL, OUTLET)
+    out['block/terra_garden_core_pot.txt'] = grid_text(POT_PAL, POT)
+    out['block/terra_garden_core_soil.txt'] = grid_text(SOIL_PAL, SOIL)
+    for i, colour in enumerate(_GLOW_RAMP):
+        pal, rows = glow(colour, LEAF[1] if i in (0, 7) else LEAF[2])
+        out[f'block/terra_garden_core_glow__f{i}.txt'] = grid_text(pal, rows)
+    pal, rows = glow(VER[1], VER[0])
+    out['block/terra_garden_core_glow_off.txt'] = grid_text(pal, rows)
+    pal, rows = glow(TEAL[2], TEAL[1])
+    out['block/terra_garden_core_glow_dim.txt'] = grid_text(pal, rows)
+    for stage in range(4):
+        out[f'block/terralight_crystal_{stage}.txt'] = grid_text(CRYSTAL_PAL, crystal_stage(stage))
+    for i, frame in enumerate(shard_frames()):
+        out[f'item/terralight_shard__f{i}.txt'] = grid_text(SHARD_PAL, frame)
+    out['block/terralight_grounding_rod.txt'] = grid_text(ROD_PAL, rod_rows())
+    out['block/terra_grow_lamp_hood.txt'] = grid_text(HOOD_PAL, HOOD)
+    for i in range(4):
+        pal, rows = lamp_flame(i)
+        out[f'block/terra_grow_lamp_flame__f{i}.txt'] = grid_text(pal, rows)
     return out
 
 
 def main():
+    import json
     parser = argparse.ArgumentParser()
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
+    files = {os.path.join(GRIDS, rel): text for rel, text in grids().items()}
+    model_dir = os.path.join(ROOT, 'art', 'models', 'block')
+    for name, model in models().items():
+        files[os.path.join(model_dir, name + '.json')] = json.dumps(model, indent=1) + '\n'
     stale = []
-    for rel, text in grids().items():
-        path = os.path.join(GRIDS, rel)
+    for path, text in files.items():
         if args.check:
             if not os.path.exists(path) or open(path, encoding='utf-8').read() != text:
-                stale.append(rel)
+                stale.append(path)
             continue
         with open(path, 'w', encoding='utf-8', newline='\n') as f:
             f.write(text)
     if args.check:
-        assert not stale, f'stale grids: {stale}'
-        print(f'PASS: {len(grids())} Terra garden grids match draw_terra_garden.py')
+        assert not stale, f'stale: {stale}'
+        print(f'PASS: {len(files)} Terra garden grids and models match draw_terra_garden.py')
     else:
-        print(f'Wrote {len(grids())} grids')
+        print(f'Wrote {len(files)} grids and models')
 
 
 if __name__ == '__main__':

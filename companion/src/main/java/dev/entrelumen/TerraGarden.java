@@ -42,8 +42,9 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 /**
- * Terra's hydroponic garden (docs/design/terra-garden.md): the plan that projects the garden as a
- * ghost, the grow lamp that wakes a built garden, the core and the hydroponic trough, the core's block
+ * Terra's hydroponic garden (docs/design/terra-garden.md), a little engine with a pot at its heart: the
+ * plan that projects it as a ghost, the grow lamp that wakes a built one, the core (the pot) and the
+ * outlets the harvest leaves by, the core's block
  * entity and capability, the excluded-seeds tags and the two statistics the guide's quests count.
  */
 public final class TerraGarden {
@@ -121,14 +122,15 @@ public final class TerraGarden {
 
   public static final DeferredBlock<TerraGardenCoreBlock> CORE = BLOCKS.register("terra_garden_core",
       () -> new TerraGardenCoreBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WARPED_STEM).strength(3.5f, 6f)
-          .sound(SoundType.COPPER).requiresCorrectToolForDrops()
+          .sound(SoundType.DECORATED_POT).noOcclusion().requiresCorrectToolForDrops()
           .lightLevel(state -> switch (state.getValue(TerraGardenCoreBlock.GARDEN)) {
             case GROWING -> 13;
             case BUILT -> 7;
             case UNBUILT -> 0;
           })));
-  public static final DeferredBlock<Block> TROUGH = BLOCKS.register("hydroponic_trough",
-      () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.WARPED_STEM).strength(3f, 6f)
+  /** Where the harvest leaves the engine: it pushes into what touches it and lets pipes pull the core's store. */
+  public static final DeferredBlock<Block> OUTLET = BLOCKS.register("terra_garden_outlet",
+      () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(3f, 6f)
           .sound(SoundType.COPPER).requiresCorrectToolForDrops()));
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TerraGardenCoreEntity>> CORE_ENTITY =
       BLOCK_ENTITIES.register("terra_garden_core",
@@ -136,11 +138,24 @@ public final class TerraGarden {
 
   public static final DeferredItem<PlanItem> PLAN = ITEMS.register("terra_garden_plan",
       () -> new PlanItem(new Item.Properties().stacksTo(16).rarity(Rarity.RARE)));
+  /** The grow lamp placed as a block: the top of a Terralight crystal's column (Terralight). */
+  public static final DeferredBlock<Block> LAMP_BLOCK = BLOCKS.register("terra_grow_lamp",
+      () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).strength(1f)
+          .sound(SoundType.LANTERN).noOcclusion().lightLevel(state -> 12)) {
+        private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
+            Block.box(4, 8, 4, 12, 13, 12), Block.box(7, 13, 7, 9, 16, 9), Block.box(5, 3, 5, 11, 8, 11));
+
+        @Override
+        protected net.minecraft.world.phys.shapes.VoxelShape getShape(net.minecraft.world.level.block.state.BlockState state,
+            net.minecraft.world.level.BlockGetter level, BlockPos pos, net.minecraft.world.phys.shapes.CollisionContext context) {
+          return SHAPE;
+        }
+      });
   public static final DeferredItem<GrowLampItem> GROW_LAMP = ITEMS.register("terra_grow_lamp",
-      () -> new GrowLampItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+      () -> new GrowLampItem(LAMP_BLOCK.get(), new Item.Properties().stacksTo(16).rarity(Rarity.EPIC).fireResistant()));
   public static final DeferredItem<BlockItem> CORE_ITEM = ITEMS.register("terra_garden_core",
       () -> new CoreItem(CORE.get(), new Item.Properties().rarity(Rarity.RARE)));
-  public static final DeferredItem<BlockItem> TROUGH_ITEM = ITEMS.registerSimpleBlockItem("hydroponic_trough", TROUGH);
+  public static final DeferredItem<BlockItem> OUTLET_ITEM = ITEMS.registerSimpleBlockItem("terra_garden_outlet", OUTLET);
 
   /**
    * What the plan does on the client, set by the client setup ({@code client.TerraGardenClient}); a
@@ -161,6 +176,7 @@ public final class TerraGarden {
     COMPONENTS.register(bus);
     STATS.register(bus);
     bus.addListener(TerraGarden::capabilities);
+    net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(TerraGardenCoreEntity::onBlockBroken);
     bus.addListener((FMLCommonSetupEvent event) -> event.enqueueWork(() -> {
       Stats.CUSTOM.get(ACTIVATIONS.get(), StatFormatter.DEFAULT);
       Stats.CUSTOM.get(HARVESTS.get(), StatFormatter.DEFAULT);
@@ -169,6 +185,11 @@ public final class TerraGarden {
 
   private static void capabilities(RegisterCapabilitiesEvent event) {
     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, CORE_ENTITY.get(), (core, side) -> core.itemHandler());
+    // An outlet shows the store of the core whose standing engine it belongs to, and nothing otherwise.
+    event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, entity, side) -> {
+      TerraGardenCoreEntity core = TerraGardenCoreEntity.coreOfOutlet(level, pos);
+      return core == null ? null : core.itemHandler();
+    }, OUTLET.get());
   }
 
   /**
@@ -204,24 +225,21 @@ public final class TerraGarden {
   }
 
   /**
-   * Terra's grow lamp: right-click a built garden's core to wake it. Never used up, no durability; one
-   * lamp wakes any number of gardens, each once.
+   * Terra's grow lamp. On a built engine's pot it wakes the engine and goes into it (one lamp per engine;
+   * breaking any block of the engine gives it back). Anywhere else it is placed as a block, the top of a
+   * Terralight crystal's column.
    */
-  public static final class GrowLampItem extends Item {
-    public GrowLampItem(Properties properties) {
-      super(properties);
+  public static final class GrowLampItem extends BlockItem {
+    public GrowLampItem(Block block, Properties properties) {
+      super(block, properties);
     }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
       var level = context.getLevel();
       BlockPos pos = context.getClickedPos();
-      if (!(level.getBlockEntity(pos) instanceof TerraGardenCoreEntity core)) {
-        if (!level.isClientSide && context.getPlayer() != null)
-          context.getPlayer().displayClientMessage(Component.translatable("entrelumen.terra_garden.lamp_hint"), true);
-        return InteractionResult.PASS;
-      }
-      if (!level.isClientSide && context.getPlayer() instanceof ServerPlayer player) core.activate(player);
+      if (!(level.getBlockEntity(pos) instanceof TerraGardenCoreEntity core)) return super.useOn(context);
+      if (!level.isClientSide && context.getPlayer() instanceof ServerPlayer player) core.activate(player, context.getItemInHand());
       return InteractionResult.sidedSuccess(level.isClientSide);
     }
 

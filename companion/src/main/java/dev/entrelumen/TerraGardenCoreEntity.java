@@ -27,7 +27,8 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 /**
- * The core's state and work: its seed, whether a grow lamp woke it, and the store of what it made.
+ * The core's state and work: its seed, whether a grow lamp woke it (the lamp is then inside it: one per
+ * engine, given back when any block of the engine is broken), and the store of what it made.
  *
  * <p>Once a second of game time ({@link TerraGardenRules#BATCH_TICKS}) a woken core whose garden stands
  * rolls its crop's harvest {@link TerraGardenRules#SAMPLE_ROLLS} times, scales it to
@@ -98,8 +99,41 @@ public final class TerraGardenCoreEntity extends BlockEntity {
     boolean was = standing;
     standing = scan.complete();
     if (standing) rotation = scan.rotation();
+    // an awake engine that lost a block (to anything: a player, an explosion, a piston) gives its lamp back
+    if (awake && !standing && !scan.unloaded()) releaseLamp(level, scan.missing().isEmpty() ? worldPosition : scan.missing().getFirst());
     updateLook(level);
     if (was != standing) setChanged();
+  }
+
+  /** The lamp comes out as an item at {@code at}, and the engine sleeps until a lamp wakes it again. */
+  void releaseLamp(ServerLevel level, BlockPos at) {
+    if (!awake) return;
+    awake = false;
+    net.minecraft.world.level.block.Block.popResource(level, at, new ItemStack(TerraGarden.GROW_LAMP.get()));
+    if (!isRemoved() && level.getBlockEntity(worldPosition) == this) updateLook(level);
+    setChanged();
+  }
+
+  /**
+   * A player broke a block: if it belongs to an awake engine (at that engine's rotation), the lamp drops
+   * with it, right away. Other losses are caught by the engine's next check.
+   */
+  static void onBlockBroken(net.neoforged.neoforge.event.level.BlockEvent.BreakEvent event) {
+    if (!(event.getLevel() instanceof ServerLevel level)) return;
+    BlockPos pos = event.getPos();
+    ResourceLocation broken = normaliseId(BuiltInRegistries.BLOCK.getKey(event.getState().getBlock()));
+    for (var part : TerraGardenLayout.builtin().parts()) {
+      if (part.core() || !normaliseId(part.block()).equals(broken)) continue;
+      for (int r = 0; r < 4; r++) {
+        BlockPos core = pos.subtract(part.offset().rotate(TerraGardenLayout.rotation(r)));
+        if (level.isLoaded(core) && level.getBlockEntity(core) instanceof TerraGardenCoreEntity entity
+            && entity.awake && entity.rotation == r) {
+          entity.standing = false;
+          entity.releaseLamp(level, pos);
+          return;
+        }
+      }
+    }
   }
 
   private int preferredRotation() {
@@ -191,33 +225,66 @@ public final class TerraGardenCoreEntity extends BlockEntity {
     if (player != null) player.awardStat(TerraGarden.HARVESTS.get(), (int) Math.min(made, Integer.MAX_VALUE));
   }
 
-  /** Pushes the store into the inventories on every side, stack by stack, until they take no more. */
+  /** The outlets' world positions for the garden's rotation (none while it does not stand). */
+  List<BlockPos> outlets() {
+    List<BlockPos> out = new ArrayList<>();
+    if (!standing || rotation < 0) return out;
+    for (var part : TerraGardenLayout.builtin().parts())
+      if (part.block().equals(TerraGardenLayout.OUTLET))
+        out.add(TerraGardenLayout.world(worldPosition, rotation, part.offset()));
+    return out;
+  }
+
+  /**
+   * The core an outlet belongs to: the one whose standing engine, at its own rotation, puts an outlet at
+   * {@code pos}. At most eight candidates are looked at (two outlets, four rotations); never loads a chunk.
+   */
+  public static TerraGardenCoreEntity coreOfOutlet(net.minecraft.world.level.Level level, BlockPos pos) {
+    for (var part : TerraGardenLayout.builtin().parts()) {
+      if (!part.block().equals(TerraGardenLayout.OUTLET)) continue;
+      for (int r = 0; r < 4; r++) {
+        BlockPos core = pos.subtract(part.offset().rotate(TerraGardenLayout.rotation(r)));
+        if (level.isLoaded(core) && level.getBlockEntity(core) instanceof TerraGardenCoreEntity entity
+            && entity.standing && entity.rotation == r)
+          return entity;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Pushes the store out through the outlets into the inventories that touch them (not the engine's own
+   * blocks), stack by stack, until they take no more.
+   */
   void export(ServerLevel level) {
     if (store.isEmpty()) return;
     int budget = TerraGardenRules.EXPORT_INSERTS_PER_BATCH;
     boolean changed = false;
-    for (Direction direction : Direction.values()) {
-      if (store.isEmpty() || budget <= 0) break;
-      BlockPos target = worldPosition.relative(direction);
-      if (!level.isLoaded(target)) continue;
-      IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, target, direction.getOpposite());
-      if (handler == null) continue;
-      var entries = store.entrySet().iterator();
-      while (entries.hasNext() && budget > 0) {
-        var entry = entries.next();
-        long left = entry.getValue();
-        int max = entry.getKey().stack().getMaxStackSize();
-        while (left > 0 && budget > 0) {
-          budget--;
-          int size = (int) Math.min(left, max);
-          ItemStack rest = ItemHandlerHelper.insertItemStacked(handler, entry.getKey().stack().copyWithCount(size), false);
-          int moved = size - rest.getCount();
-          left -= moved;
-          if (moved > 0) changed = true;
-          if (moved < size) break;   // this neighbour takes no more of this item
+    var layout = TerraGardenLayout.builtin();
+    for (BlockPos outlet : outlets()) {
+      for (Direction direction : Direction.values()) {
+        if (store.isEmpty() || budget <= 0) break;
+        BlockPos target = outlet.relative(direction);
+        if (!level.isLoaded(target) || TerraGardenLayout.contains(layout, worldPosition, rotation, target)) continue;
+        IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, target, direction.getOpposite());
+        if (handler == null) continue;
+        var entries = store.entrySet().iterator();
+        while (entries.hasNext() && budget > 0) {
+          var entry = entries.next();
+          long left = entry.getValue();
+          int max = entry.getKey().stack().getMaxStackSize();
+          while (left > 0 && budget > 0) {
+            budget--;
+            int size = (int) Math.min(left, max);
+            ItemStack rest = ItemHandlerHelper.insertItemStacked(handler, entry.getKey().stack().copyWithCount(size), false);
+            int moved = size - rest.getCount();
+            left -= moved;
+            if (moved > 0) changed = true;
+            if (moved < size) break;   // this neighbour takes no more of this item
+          }
+          if (left <= 0) entries.remove();
+          else entry.setValue(left);
         }
-        if (left <= 0) entries.remove();
-        else entry.setValue(left);
       }
     }
     if (changed) setChanged();
@@ -235,7 +302,7 @@ public final class TerraGardenCoreEntity extends BlockEntity {
     if (!old.isEmpty() && !player.getInventory().add(old)) player.drop(old, false);
     status = status((ServerLevel) level);
     player.displayClientMessage(Component.translatable("entrelumen.terra_garden.seed_in", seed.getHoverName()), true);
-    setChanged();
+    seedChanged();
   }
 
   void takeSeed(ServerPlayer player) {
@@ -246,11 +313,11 @@ public final class TerraGardenCoreEntity extends BlockEntity {
     ItemStack old = seed;
     seed = ItemStack.EMPTY;
     if (!player.getInventory().add(old)) player.drop(old, false);
-    setChanged();
+    seedChanged();
   }
 
   /** The grow lamp's gesture: checks the garden now and wakes it when it stands. */
-  void activate(ServerPlayer player) {
+  void activate(ServerPlayer player, ItemStack lamp) {
     ServerLevel level = (ServerLevel) this.level;
     check(level);
     if (!standing) {
@@ -270,6 +337,7 @@ public final class TerraGardenCoreEntity extends BlockEntity {
       player.displayClientMessage(Component.translatable("entrelumen.terra_garden.already_awake"), true);
       return;
     }
+    lamp.consume(1, player);   // the lamp goes into the engine; breaking any of its blocks gives it back
     awake = true;
     waker = player.getUUID();
     nextBatch = level.getGameTime() + TerraGardenRules.BATCH_TICKS;
@@ -350,6 +418,37 @@ public final class TerraGardenCoreEntity extends BlockEntity {
     nextBatch = Long.MIN_VALUE;
     nextCheck = Long.MIN_VALUE;
     lastTick = Long.MIN_VALUE;
+  }
+
+  /** Saves and tells clients: the renderer draws the seed's crop in the pot. */
+  private void seedChanged() {
+    setChanged();
+    if (level != null && !level.isClientSide)
+      level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+  }
+
+  /** What clients get: the seed only (the store and the waker stay on the server). */
+  @Override
+  public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+    CompoundTag tag = new CompoundTag();
+    if (!seed.isEmpty()) tag.put("seed", seed.save(registries));
+    return tag;
+  }
+
+  @Override
+  public net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> getUpdatePacket() {
+    return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+  }
+
+  @Override
+  public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
+    seed = tag.contains("seed") ? ItemStack.parseOptional(registries, tag.getCompound("seed")) : ItemStack.EMPTY;
+  }
+
+  @Override
+  public void onDataPacket(net.minecraft.network.Connection connection,
+      net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket packet, HolderLookup.Provider registries) {
+    handleUpdateTag(packet.getTag(), registries);
   }
 
   // ---- saving ----------------------------------------------------------------------------------------
@@ -462,7 +561,7 @@ public final class TerraGardenCoreEntity extends BlockEntity {
       if (index != 0 || stack.isEmpty() || !seed.isEmpty() || !isItemValid(0, stack)) return stack;
       if (!simulate) {
         seed = stack.copyWithCount(1);
-        setChanged();
+        seedChanged();
       }
       return stack.copyWithCount(stack.getCount() - 1);
     }

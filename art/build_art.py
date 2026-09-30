@@ -42,14 +42,21 @@ ITEMS += list(ANIMATED) + sorted(HANDHELD) + ['luminous_helmet', 'luminous_chest
 ITEMS += ['signal_ember', 'terra_blueprint', 'route_seal', 'mother_seed', 'heliodor_crucible', 'voices_eyepiece',
           'forest_testimony', 'sun_key', 'sacred_flame', 'star_chart']
 # Terra's hydroponic garden (art/authoring/draw_terra_garden.py): the plan, the grow lamp (animated, frametime 2
-# like the luminosities) and two blocks, the trough (cube_bottom_top) and the core (orientable, three looks).
+# like the luminosities), the outlet (one cube) and the core's pot, a sculpted model (art/models/block) whose rim
+# glows (dark, teal, or a breathing green: 8 frames).
 ITEMS += ['terra_garden_plan']
 ANIMATED['terra_grow_lamp'] = 8
 ITEMS += ['terra_grow_lamp']
-TERRA_TROUGH = ('hydroponic_trough', 'hydroponic_trough_top', 'hydroponic_trough_bottom')
-TERRA_CORE_FRONTS = {'unbuilt': 'terra_garden_core_front', 'built': 'terra_garden_core_front_built',
-                     'growing': 'terra_garden_core_front_growing'}
-TERRA_CORE_FACES = ('terra_garden_core', 'terra_garden_core_top', 'terra_garden_core_bottom')
+TERRA_BLOCKS = ['terra_garden_outlet', 'terra_garden_core_pot', 'terra_garden_core_soil', 'terra_garden_core_glow',
+                'terra_garden_core_glow_off', 'terra_garden_core_glow_dim']
+# The Terralight crystal (four cross stages), its grounding rod and the lamp placed as a block; the shard shimmers
+# in 8 frames like the luminosities.
+ANIMATED['terralight_shard'] = 8
+ITEMS += ['terralight_shard']
+TERRA_BLOCKS += ['terralight_crystal_%d' % i for i in range(4)] + ['terralight_grounding_rod', 'terra_grow_lamp_hood',
+                                                                   'terra_grow_lamp_flame']
+TERRA_CORE_MODELS = {'unbuilt': 'terra_garden_core', 'built': 'terra_garden_core_built',
+                     'growing': 'terra_garden_core_growing'}
 ARMOR_LAYERS = ['luminous_layer_1', 'luminous_layer_2']   # 64x32 PNG sources in art/armor/
 COMPASS_DIMENSIONS = ['overworld', 'nether', 'end', 'aether', 'twilight', 'other']   # entrelumen:dimension 0..5
 # Enchanting shelves (cube_column: side + end) and the Atlas Library (cube_bottom_top).
@@ -72,7 +79,7 @@ ENVES_TEXTURES = ['enves_shrine_plinth', 'enves_shrine_bone', 'enves_shrine_bone
                   'enves_shrine_heart_dead', 'enves_brazier_bell', 'enves_brazier_bell_top', 'enves_brazier_embers',
                   'enves_brazier_ash', 'enves_brazier_flame', 'enves_mirror_glass', 'enves_mirror_bone', 'enves_mirror_foot',
                   'enves_glyph_top'] + ['enves_glyph_%d' % i for i in range(4)]
-ANIMATED_BLOCKS = {'enves_brazier_flame': 4}                   # frame grids <name>__f<N>.txt, like animated items
+ANIMATED_BLOCKS = {'enves_brazier_flame': 4, 'terra_garden_core_glow': 8, 'terra_grow_lamp_flame': 4}                   # frame grids <name>__f<N>.txt, like animated items
 FLAME_ANIMATION = {'animation': {'frametime': 3}}
 ENVES_MODELS = ['enves_shrine', 'enves_shrine_spent', 'enves_brazier', 'enves_brazier_lit', 'enves_mirror'] + [
     'enves_glyph_%d' % i for i in range(4)]
@@ -83,7 +90,7 @@ ENVES_STATES = {                                              # state -> (model,
     'enves_glyph': {'glyph=%d' % i: ('enves_glyph_%d' % i, 0) for i in range(4)},
 }
 BLOCKS += ENVES_TEXTURES
-BLOCKS += list(TERRA_TROUGH) + list(TERRA_CORE_FACES) + list(TERRA_CORE_FRONTS.values())
+BLOCKS += TERRA_BLOCKS
 
 COMPONENT_NAMES = {
     'calibration_frame': ('Calibration Frame', 'Marco de calibración'),
@@ -178,7 +185,7 @@ def expected():
         out[('pack', f'textures/{key}.png')] = data
         out[('mod', f'textures/{key}.png')] = data
         if key in strips:
-            anim = (FIRE_ANIMATION if key.startswith(('item/luminosity_', 'item/terra_grow_lamp'))
+            anim = (FIRE_ANIMATION if key.startswith(('item/luminosity_', 'item/terra_grow_lamp', 'item/terralight_shard'))
                     else FLAME_ANIMATION if key.startswith('block/') else ANIMATION)
             out[('pack', f'textures/{key}.png.mcmeta')] = js(anim)
             out[('mod', f'textures/{key}.png.mcmeta')] = js(anim)
@@ -243,30 +250,33 @@ def expected():
             out[(dest, f'models/block/{name}.json')] = js(model)
             out[(dest, f'models/item/{name}.json')] = js({'parent': 'entrelumen:block/' + name})
         out[('mod', f'blockstates/{name}.json')] = js({'variants': {'': {'model': 'entrelumen:block/' + name}}})
-    # Terra's garden: the trough is one cube; the core is orientable (its lamp on the front) with three looks.
-    side, top, bottom = TERRA_TROUGH
-    trough = js({'parent': 'minecraft:block/cube_bottom_top', 'textures': {
-        'side': 'entrelumen:block/' + side, 'top': 'entrelumen:block/' + top, 'bottom': 'entrelumen:block/' + bottom}})
+    # Terra's garden: the outlet is one cube; the core's pot is sculpted, drawn on the engine's mirror plane for a
+    # garden facing south and turned with the garden (south 0, west 90, north 180, east 270).
+    outlet = js({'parent': 'minecraft:block/cube_all', 'textures': {'all': 'entrelumen:block/terra_garden_outlet'}})
     for dest in ('pack', 'mod'):
-        out[(dest, 'models/block/hydroponic_trough.json')] = trough
-        out[(dest, 'models/item/hydroponic_trough.json')] = js({'parent': 'entrelumen:block/hydroponic_trough'})
-    out[('mod', 'blockstates/hydroponic_trough.json')] = js({'variants': {'': {'model': 'entrelumen:block/hydroponic_trough'}}})
-    side, top, bottom = TERRA_CORE_FACES
-    core_models = {}
-    for state, front in TERRA_CORE_FRONTS.items():
-        name = 'terra_garden_core' + ('' if state == 'unbuilt' else '_' + state)
-        core_models[state] = name
-        model = js({'parent': 'minecraft:block/orientable_with_bottom', 'textures': {
-            'front': 'entrelumen:block/' + front, 'side': 'entrelumen:block/' + side,
-            'top': 'entrelumen:block/' + top, 'bottom': 'entrelumen:block/' + bottom}})
+        out[(dest, 'models/block/terra_garden_outlet.json')] = outlet
+        out[(dest, 'models/item/terra_garden_outlet.json')] = js({'parent': 'entrelumen:block/terra_garden_outlet'})
+    out[('mod', 'blockstates/terra_garden_outlet.json')] = js({'variants': {'': {'model': 'entrelumen:block/terra_garden_outlet'}}})
+    for name in list(TERRA_CORE_MODELS.values()) + ['terra_garden_core_item']:
+        model = json.loads((ART / 'models/block' / f'{name}.json').read_text(encoding='utf-8'))
         for dest in ('pack', 'mod'):
-            out[(dest, f'models/block/{name}.json')] = model
+            out[(dest, f'models/block/{name}.json')] = js(model)
     for dest in ('pack', 'mod'):
-        out[(dest, 'models/item/terra_garden_core.json')] = js({'parent': 'entrelumen:block/terra_garden_core_growing'})
-    turns = {'north': 0, 'east': 90, 'south': 180, 'west': 270}
+        out[(dest, 'models/item/terra_garden_core.json')] = js({'parent': 'entrelumen:block/terra_garden_core_item'})
+    for name in ['terralight_grounding_rod', 'terra_grow_lamp'] + ['terralight_crystal_%d' % i for i in range(4)]:
+        model = json.loads((ART / 'models/block' / f'{name}.json').read_text(encoding='utf-8'))
+        for dest in ('pack', 'mod'):
+            out[(dest, f'models/block/{name}.json')] = js(model)
+    for dest in ('pack', 'mod'):
+        out[(dest, 'models/item/terralight_grounding_rod.json')] = js({'parent': 'entrelumen:block/terralight_grounding_rod'})
+    out[('mod', 'blockstates/terralight_grounding_rod.json')] = js({'variants': {'': {'model': 'entrelumen:block/terralight_grounding_rod'}}})
+    out[('mod', 'blockstates/terra_grow_lamp.json')] = js({'variants': {'': {'model': 'entrelumen:block/terra_grow_lamp'}}})
+    out[('mod', 'blockstates/terralight_crystal.json')] = js({'variants': {
+        f'stage={i}': {'model': f'entrelumen:block/terralight_crystal_{i}'} for i in range(4)}})
+    turns = {'south': 0, 'west': 90, 'north': 180, 'east': 270}
     out[('mod', 'blockstates/terra_garden_core.json')] = js({'variants': {
         f'facing={facing},garden={state}': dict({'model': 'entrelumen:block/' + model}, **({'y': y} if y else {}))
-        for facing, y in turns.items() for state, model in core_models.items()}})
+        for facing, y in turns.items() for state, model in TERRA_CORE_MODELS.items()}})
     return images, out, strips
 
 

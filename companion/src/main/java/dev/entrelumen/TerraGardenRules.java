@@ -12,33 +12,34 @@ import java.util.function.DoubleSupplier;
  * per-tick work. The batch clock is the level's game time, so a block-entity accelerator that ticks the
  * core more often in one game tick gains nothing.
  *
- * <p>The rate is set against the strongest per-block producer measured in the pinned JARs, More
- * Machine's ultimate planting factory with eight speed upgrades (nine operations a second, five wheat
- * each: 45 wheat a second per block). A garden's bounding box (7 x 9 x 7, 441 blocks) filled with those
- * factories and nothing else, no cables, power or pipes, would make 19,845 wheat a second; the garden
- * makes 32,768. Every other setup measured is far lower (the design doc has the table).
+ * <p>The rate is Elias's (29 September 2026): «con ganarle x20 a cualquier método endgame basta». The best
+ * single producer measured in the pinned JARs is More Machine's ultimate planting factory with eight speed
+ * upgrades: nine operations a second, five wheat each, 45 a second. A garden makes 20 times that: 900
+ * harvests a second, one wheat each. Every other setup measured is far lower (the design doc has the table).
  */
 public final class TerraGardenRules {
   /** One batch a second. */
   public static final int BATCH_TICKS = 20;
-  /** Harvests a second: 2^15. One harvest is one roll of the crop's loot table at full age. */
-  public static final long HARVESTS_PER_BATCH = 32_768;
+  /** Harvests a second: 20 times the ultimate planting factory. One harvest is one roll of the crop's loot table at full age. */
+  public static final long HARVESTS_PER_BATCH = 900;
+  /** How many times the garden outgrows the best single endgame producer. */
+  public static final int TIMES_THE_BEST = 20;
   /** Loot rolls actually made per batch; their sum is scaled to {@link #HARVESTS_PER_BATCH}. */
   public static final int SAMPLE_ROLLS = 16;
-  /** Items the core holds before it stops: 4,096 stacks of 64, about three batches of wheat. */
-  public static final long STORE_CAPACITY = 262_144;
+  /** Items the core holds before it stops: 256 stacks of 64, about six batches of wheat. */
+  public static final long STORE_CAPACITY = 16_384;
   /** Game ticks between two checks of the garden's blocks. */
   public static final int CHECK_TICKS = 100;
-  /** Stack insertions the core tries per batch when it exports, over all its neighbours. */
-  public static final int EXPORT_INSERTS_PER_BATCH = 8_192;
-  /** Output slots the core shows to pipes (its store, 64 items per slot). */
+  /** Stack insertions the core tries per batch when it exports, over all the outlets' neighbours. */
+  public static final int EXPORT_INSERTS_PER_BATCH = 1_024;
+  /** Output slots the core and its outlets show to pipes (the store, 64 items per slot). */
   public static final int OUTPUT_SLOTS = 64;
-  /** Harvests on a player's statistic for the big-numbers quest. */
-  public static final long MILESTONE_HARVESTS = 10_000_000L;
+  /** Harvests on a player's statistic for the big-numbers quest: about 18.5 minutes of one garden. */
+  public static final long MILESTONE_HARVESTS = 1_000_000L;
 
   // ---- the measured alternatives (docs/design/terra-garden.md, «Números») ------------------------
-  /** Garden bounding box: 7 wide, 9 tall (plinth to the rod on the dome), 7 deep. */
-  public static final int GARDEN_VOLUME = 7 * 9 * 7;
+  /** The engine's box: 4 x 4 x 4. */
+  public static final int GARDEN_VOLUME = 4 * 4 * 4;
   /** More Machine's ultimate planting factory, 8 speed upgrades: 9 processes x 1 op/s x 5 wheat. */
   public static final double PLANTING_FACTORY_WHEAT_PER_SECOND = 9 * (20.0 / 20.0) * 5;
   /** Botany Pots Tiers' mega hopper pot, wheat on the best soil, Efficiency X hoe: 5 rolls per 108 ticks. */
@@ -91,11 +92,6 @@ public final class TerraGardenRules {
     if (fullItems <= 0) return 0;
     if (keptItems >= fullItems) return harvests;
     return Math.multiplyExact(harvests, keptItems) / fullItems;
-  }
-
-  /** The planting-factory wall that fills the garden's box, wheat a second (an upper bound). */
-  public static double factoryWallWheatPerSecond() {
-    return GARDEN_VOLUME * PLANTING_FACTORY_WHEAT_PER_SECOND;
   }
 
   /** Harvests a second of the garden. */

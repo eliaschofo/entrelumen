@@ -28,8 +28,10 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 /**
- * The core of Terra's garden. It looks out of the garden's front (its lamp) and shows the garden's
- * state: {@code unbuilt}, {@code built} (every block in place, not yet woken) or {@code growing}.
+ * The core of Terra's garden: the small pot at the engine's heart. Its model draws the pot on the engine's
+ * mirror plane, half a block to the side of the core's own cell (to the west for a garden facing south,
+ * turned with it), and its rim glows with the garden's state: {@code unbuilt}, {@code built} (every block
+ * in place, not yet woken) or {@code growing}. Its block entity renderer draws the crop in the soil.
  *
  * <p>Gestures: a seed in the main hand goes in (the old one comes back); the grow lamp wakes the garden
  * (the lamp's own use); an empty hand reads the garden's state; crouching with an empty hand takes the
@@ -48,6 +50,19 @@ public final class TerraGardenCoreBlock extends HorizontalDirectionalBlock imple
   }
 
   public static final EnumProperty<Garden> GARDEN = EnumProperty.create("garden", Garden.class);
+
+  /** The pot, 8 x 7 x 8, for each facing: drawn for south, turned about the block's centre. */
+  private static final java.util.Map<Direction, net.minecraft.world.phys.shapes.VoxelShape> SHAPES = java.util.Map.of(
+      Direction.SOUTH, Block.box(-4, 0, 4, 4, 7, 12),
+      Direction.WEST, Block.box(4, 0, -4, 12, 7, 4),
+      Direction.NORTH, Block.box(12, 0, 4, 20, 7, 12),
+      Direction.EAST, Block.box(4, 0, 12, 12, 7, 20));
+
+  @Override
+  protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state, net.minecraft.world.level.BlockGetter level,
+      BlockPos pos, net.minecraft.world.phys.shapes.CollisionContext context) {
+    return SHAPES.get(state.getValue(FACING));
+  }
 
   public TerraGardenCoreBlock(Properties properties) {
     super(properties);
@@ -114,6 +129,15 @@ public final class TerraGardenCoreBlock extends HorizontalDirectionalBlock imple
       else core.report(serverPlayer);
     }
     return InteractionResult.sidedSuccess(level.isClientSide);
+  }
+
+  /** Broken while awake, the pot gives its lamp back (its seed and store stay on the dropped item). */
+  @Override
+  protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+    if (!state.is(newState.getBlock()) && level instanceof ServerLevel server
+        && level.getBlockEntity(pos) instanceof TerraGardenCoreEntity core)
+      core.releaseLamp(server, pos);
+    super.onRemove(state, level, pos, newState, movedByPiston);
   }
 
   @Override

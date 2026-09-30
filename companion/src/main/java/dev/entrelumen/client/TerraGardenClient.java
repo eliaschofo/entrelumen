@@ -29,8 +29,8 @@ import org.slf4j.Logger;
 
 /**
  * The plan's ghost: Terra's garden projected where the player right-clicks, through Patchouli's own
- * multiblock view (the «eye» Botania, Occultism and others use). Right-click a block: the garden appears
- * with its core on the spot a block would go and its front toward the player. Crouch and right-click on
+ * multiblock view (the «eye» Botania, Occultism and others use). Right-click a block: the engine appears
+ * with its sump on the spot a block would go and its front toward the player. Crouch and right-click on
  * the ghost: it goes away. That is all the plan does.
  *
  * <p>Patchouli (pinned 1.21.1-93) is an optional dependency declared in neoforge.mods.toml and reached
@@ -59,7 +59,9 @@ public final class TerraGardenClient {
     var minecraft = Minecraft.getInstance();
     var player = context.getPlayer();
     if (player == null || minecraft.level == null) return;
-    BlockPos spot = context.getClickedPos().relative(context.getClickedFace());
+    // the engine's sump goes where a block would; the core stands above it, in the heart
+    int lowest = TerraGardenLayout.builtin().parts().stream().mapToInt(p -> p.offset().getY()).min().orElse(0);
+    BlockPos spot = context.getClickedPos().relative(context.getClickedFace()).above(-lowest);
     if (player.isSecondaryUseActive()) {
       if (core != null && (spot.equals(core) || context.getClickedPos().equals(core)
           || TerraGardenLayout.contains(TerraGardenLayout.builtin(), core, rotation, context.getClickedPos())

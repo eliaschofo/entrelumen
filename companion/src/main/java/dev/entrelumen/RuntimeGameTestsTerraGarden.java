@@ -31,17 +31,19 @@ import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /**
- * Isolated GameTests for Terra's hydroponic garden (docs/design/terra-garden.md): the garden stands in
- * every rotation, the grow lamp wakes it and is never used up, one batch makes the documented harvest
- * and exports it, the excluded seeds and forbidden drops, and the stop when the store is full. The
+ * Isolated GameTests for Terra's hydroponic garden, the 4 x 4 x 4 engine (docs/design/terra-garden.md):
+ * it stands in every rotation, the grow lamp goes into it and comes back when a block breaks, one batch makes the documented
+ * harvest and the outlets export it, the excluded seeds and forbidden drops, and the stop when the store is full. The
  * fixture mod adds torchflower seeds to the exclusion tag and beetroot seeds to the forbidden drops, so
  * the vanilla-only server has something to refuse. Excluded from the distributable jar.
  */
 @GameTestHolder("entrelumen")
 @PrefixGameTestTemplate(false)
 public final class RuntimeGameTestsTerraGarden {
-  /** The garden's centre in the 11 x 12 x 11 plot; the core sits three blocks out along the front. */
-  private static final BlockPos CENTRE = new BlockPos(5, 1, 5);
+  /** Where the core (the pot) stands in the 11 x 12 x 11 plot: the engine's sump is two blocks below it. */
+  private static final BlockPos CENTRE = new BlockPos(5, 3, 5);
+  /** The outlet on the core's side of the mirror plane, relative to the core in the drawing (facing south). */
+  private static final BlockPos OUTLET = new BlockPos(0, -1, -2);
 
   private RuntimeGameTestsTerraGarden() {}
 
@@ -75,10 +77,9 @@ public final class RuntimeGameTestsTerraGarden {
     }
   }
 
-  /** The core's absolute position for a garden centred on {@link #CENTRE} at rotation {@code r}. */
+  /** The core's absolute position; the engine turns about it, and fits the plot in every rotation. */
   private static BlockPos corePos(GameTestHelper helper, int rotation) {
-    BlockPos centre = helper.absolutePos(CENTRE);
-    return centre.offset(new BlockPos(0, 0, 3).rotate(TerraGardenLayout.rotation(rotation)));
+    return helper.absolutePos(CENTRE);
   }
 
   /**
@@ -144,14 +145,13 @@ public final class RuntimeGameTestsTerraGarden {
           == TerraGardenCoreBlock.Garden.BUILT, "rotation " + r + ": the core does not show a built garden");
       helper.assertTrue(helper.getLevel().getBlockState(pos).getValue(TerraGardenCoreBlock.FACING)
           == TerraGardenLayout.front(r), "rotation " + r + ": the core does not look out of the front");
-      // one trough gone: the garden no longer stands
-      var trough = TerraGardenLayout.builtin().parts().stream().filter(p -> p.block().getPath().equals("hydroponic_trough"))
-          .findFirst().orElseThrow();
-      BlockPos hole = TerraGardenLayout.world(pos, r, trough.offset());
+      // one outlet gone: the garden no longer stands
+      BlockPos hole = TerraGardenLayout.world(pos, r, OUTLET);
+      helper.assertTrue(helper.getLevel().getBlockState(hole).is(TerraGarden.OUTLET.get()), "rotation " + r + ": no outlet where expected");
       helper.getLevel().setBlock(hole, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
       core.check(helper.getLevel());
-      helper.assertTrue(!core.standing(), "rotation " + r + " stands without a trough");
-      helper.getLevel().setBlock(hole, TerraGarden.TROUGH.get().defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+      helper.assertTrue(!core.standing(), "rotation " + r + " stands without an outlet");
+      helper.getLevel().setBlock(hole, TerraGarden.OUTLET.get().defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
       core.check(helper.getLevel());
       helper.assertTrue(core.standing(), "rotation " + r + " does not stand again once repaired");
       clear(helper, pos, r);
@@ -160,37 +160,54 @@ public final class RuntimeGameTestsTerraGarden {
   }
 
   @GameTest(template = "terra_garden_plot", timeoutTicks = 200)
-  public static void terraGrowLampWakesABuiltGardenAndIsNeverUsedUp(GameTestHelper helper) {
+  public static void terraGrowLampGoesIntoTheEngineAndComesBackWhenABlockBreaks(GameTestHelper helper) {
+    ServerLevel level = helper.getLevel();
     BlockPos pos = corePos(helper, 0);
-    helper.getLevel().setBlock(pos, TerraGarden.CORE.get().defaultBlockState(), Block.UPDATE_CLIENTS);
-    try (var session = new Session(helper, CENTRE.offset(0, 0, 5))) {
+    level.setBlock(pos, TerraGarden.CORE.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+    try (var session = new Session(helper, new BlockPos(5, 1, 10))) {
       var player = session.player;
-      var lamp = new ItemStack(TerraGarden.GROW_LAMP.get());
-      helper.assertTrue(lamp.getMaxStackSize() == 1 && !lamp.isDamageableItem() && lamp.getMaxDamage() == 0,
-          "The lamp stacks or has durability");
-      for (String recipe : java.util.List.of("terra_garden_plan_copy", "terra_garden_core", "hydroponic_trough"))
-        helper.assertTrue(helper.getLevel().getRecipeManager().byKey(TerraGarden.id(recipe)).isPresent(),
+      for (String recipe : java.util.List.of("terra_garden_plan_copy", "terra_garden_core", "terra_garden_outlet",
+          "terra_grow_lamp", "terralight_grounding_rod"))
+        helper.assertTrue(level.getRecipeManager().byKey(TerraGarden.id(recipe)).isPresent(),
             "The recipe entrelumen:" + recipe + " did not load");
-      // a lone core is not a garden: the lamp does nothing
-      useOn(player, pos, lamp);
-      helper.assertTrue(!core(helper, pos).awake(), "The lamp woke a core without its garden");
+      var lamps = new ItemStack(TerraGarden.GROW_LAMP.get(), 2);
+      // a lone core is not an engine: the lamp stays in the hand
+      useOn(player, pos, lamps);
+      helper.assertTrue(!core(helper, pos).awake() && player.getMainHandItem().getCount() == 2,
+          "A lamp went into a core without its engine");
       build(helper, 0, false);
-      useOn(player, pos, lamp);
+      useOn(player, pos, player.getMainHandItem());
       var core = core(helper, pos);
-      helper.assertTrue(core.awake() && core.standing(), "The lamp did not wake the built garden");
-      helper.assertTrue(helper.getLevel().getBlockState(pos).getValue(TerraGardenCoreBlock.GARDEN)
-          == TerraGardenCoreBlock.Garden.GROWING, "The woken core does not show a growing garden");
-      helper.assertTrue(player.getMainHandItem().is(TerraGarden.GROW_LAMP.get()) && player.getMainHandItem().getCount() == 1
-          && player.getMainHandItem().getDamageValue() == 0, "The lamp was used up or damaged");
-      helper.assertTrue(player.getStats().getValue(Stats.CUSTOM.get(TerraGarden.ACTIVATIONS.get())) == 1,
-          "The activation was not counted");
-      // the same lamp wakes a second garden: move the first one's core out and build another
-      clear(helper, pos, 0);
-      BlockPos second = build(helper, 2, false);
-      useOn(player, second, player.getMainHandItem());
-      helper.assertTrue(core(helper, second).awake(), "One lamp did not wake a second garden");
-      helper.assertTrue(player.getStats().getValue(Stats.CUSTOM.get(TerraGarden.ACTIVATIONS.get())) == 2,
-          "The second activation was not counted");
+      helper.assertTrue(core.awake() && core.standing(), "The lamp did not wake the built engine");
+      helper.assertTrue(player.getMainHandItem().getCount() == 1, "Waking the engine did not use the lamp up");
+      helper.assertTrue(level.getBlockState(pos).getValue(TerraGardenCoreBlock.GARDEN) == TerraGardenCoreBlock.Garden.GROWING,
+          "The woken pot does not glow");
+      helper.assertTrue(player.getStats().getValue(Stats.CUSTOM.get(TerraGarden.ACTIVATIONS.get())) == 1, "No activation counted");
+      // one lamp per engine: a second lamp stays in the hand
+      useOn(player, pos, player.getMainHandItem());
+      helper.assertTrue(player.getMainHandItem().getCount() == 1, "An awake engine took a second lamp");
+      // a player breaks a block of the engine: the block and the lamp drop right there
+      BlockPos grille = TerraGardenLayout.world(pos, 0, new BlockPos(-2, 0, 1));
+      helper.assertTrue(level.getBlockState(grille).is(net.minecraft.world.level.block.Blocks.WAXED_OXIDIZED_COPPER_GRATE),
+          "No grille where the drawing puts one");
+      player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_PICKAXE));
+      player.gameMode.destroyBlock(grille);
+      var box = new net.minecraft.world.phys.AABB(grille).inflate(1.5);
+      var drops = level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, box);
+      helper.assertTrue(drops.stream().anyMatch(e -> e.getItem().is(TerraGarden.GROW_LAMP.get())), "The lamp did not drop: " + drops);
+      helper.assertTrue(drops.stream().anyMatch(e -> e.getItem().is(Items.WAXED_OXIDIZED_COPPER_GRATE)), "The grille did not drop");
+      helper.assertTrue(!core.awake(), "The engine stayed awake without its lamp");
+      drops.forEach(net.minecraft.world.entity.Entity::discard);
+      // any other loss (here a block simply vanishing) gives the lamp back at the next check
+      level.setBlock(grille, net.minecraft.world.level.block.Blocks.WAXED_OXIDIZED_COPPER_GRATE.defaultBlockState(), Block.UPDATE_ALL);
+      useOn(player, pos, new ItemStack(TerraGarden.GROW_LAMP.get()));
+      helper.assertTrue(core.awake(), "The repaired engine did not take a new lamp");
+      BlockPos piston = TerraGardenLayout.world(pos, 0, new BlockPos(1, 1, 1));
+      level.setBlock(piston, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+      core.check(level);
+      var back = level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(4));
+      helper.assertTrue(!core.awake() && back.stream().anyMatch(e -> e.getItem().is(TerraGarden.GROW_LAMP.get())),
+          "A block lost without a player did not give the lamp back");
     }
     helper.succeed();
   }
@@ -199,9 +216,11 @@ public final class RuntimeGameTestsTerraGarden {
   public static void terraGardenMakesItsHarvestInOneBatchAndExports(GameTestHelper helper) {
     ServerLevel level = helper.getLevel();
     BlockPos pos = build(helper, 0, false);
-    BlockPos chestPos = pos.relative(Direction.SOUTH);
+    // behind the engine, touching an outlet from outside
+    BlockPos outletPos = TerraGardenLayout.world(pos, 0, OUTLET);
+    BlockPos chestPos = outletPos.relative(Direction.NORTH);
     level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), Block.UPDATE_ALL);
-    try (var session = new Session(helper, CENTRE.offset(0, 0, 5))) {
+    try (var session = new Session(helper, new BlockPos(5, 1, 10))) {
       var core = core(helper, pos);
       core.insertSeed(session.player, new ItemStack(Items.WHEAT_SEEDS));
       useOn(session.player, pos, new ItemStack(TerraGarden.GROW_LAMP.get()));
@@ -217,13 +236,19 @@ public final class RuntimeGameTestsTerraGarden {
         for (int slot = 0; slot < chest.getContainerSize(); slot++)
           if (chest.getItem(slot).is(Items.WHEAT)) chestWheat += chest.getItem(slot).getCount();
       long wheat = chestWheat + count(core, Items.WHEAT);
-      helper.assertTrue(chestWheat > 0, "Nothing went into the chest in front of the core");
+      helper.assertTrue(chestWheat > 0, "Nothing went out of the outlet into the chest behind the engine");
       helper.assertTrue(wheat == TerraGardenRules.HARVESTS_PER_BATCH,
           "Ripe wheat drops one wheat a harvest: expected " + TerraGardenRules.HARVESTS_PER_BATCH + ", got " + wheat);
       helper.assertTrue(count(core, Items.WHEAT_SEEDS) > TerraGardenRules.HARVESTS_PER_BATCH / 2,
           "Seeds should come at about 1.7 a harvest: " + count(core, Items.WHEAT_SEEDS));
       helper.assertTrue(session.player.getStats().getValue(Stats.CUSTOM.get(TerraGarden.HARVESTS.get()))
           == TerraGardenRules.HARVESTS_PER_BATCH, "The harvests were not credited to the waker");
+      // a pipe on an outlet reaches the core's store; an outlet of no engine offers nothing
+      var outletHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, outletPos, Direction.NORTH);
+      helper.assertTrue(outletHandler != null && !outletHandler.getStackInSlot(1).isEmpty(), "The outlet does not show the store");
+      level.setBlock(chestPos, TerraGarden.OUTLET.get().defaultBlockState(), Block.UPDATE_ALL);
+      helper.assertTrue(level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, Direction.UP) == null,
+          "A loose outlet offers a store");
       // a pipe can pull the store through the capability, and never the seed
       var handler = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, Direction.DOWN);
       helper.assertTrue(handler != null, "No item capability on the core");
@@ -241,7 +266,7 @@ public final class RuntimeGameTestsTerraGarden {
   public static void terraGardenRefusesExcludedSeedsAndForbiddenDrops(GameTestHelper helper) {
     ServerLevel level = helper.getLevel();
     BlockPos pos = build(helper, 1, false);
-    try (var session = new Session(helper, CENTRE.offset(5, 0, 0))) {
+    try (var session = new Session(helper, new BlockPos(10, 1, 5))) {
       var core = core(helper, pos);
       var torchflower = new ItemStack(Items.TORCHFLOWER_SEEDS, 3);
       helper.assertTrue(torchflower.is(TerraGarden.EXCLUDED_SEEDS), "The fixture did not exclude torchflower seeds");
@@ -270,7 +295,7 @@ public final class RuntimeGameTestsTerraGarden {
   public static void terraGardenStopsCleanlyWhenFull(GameTestHelper helper) {
     ServerLevel level = helper.getLevel();
     BlockPos pos = build(helper, 3, false);
-    try (var session = new Session(helper, CENTRE.offset(-5, 0, 0))) {
+    try (var session = new Session(helper, new BlockPos(0, 1, 5))) {
       var core = core(helper, pos);
       core.insertSeed(session.player, new ItemStack(Items.WHEAT_SEEDS));
       useOn(session.player, pos, new ItemStack(TerraGarden.GROW_LAMP.get()));
@@ -302,7 +327,7 @@ public final class RuntimeGameTestsTerraGarden {
     ServerLevel level = helper.getLevel();
     BlockPos pos = corePos(helper, 0);
     level.setBlock(pos, TerraGarden.CORE.get().defaultBlockState(), Block.UPDATE_ALL);
-    try (var session = new Session(helper, CENTRE.offset(0, 0, 5))) {
+    try (var session = new Session(helper, new BlockPos(5, 1, 10))) {
       var core = core(helper, pos);
       core.insertSeed(session.player, new ItemStack(Items.CARROT));
       core.fillStore(new ItemStack(Items.CARROT), 5_000);
