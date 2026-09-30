@@ -1016,3 +1016,43 @@ Detalle de diseño en [luminous-gear.md](luminous-gear.md#el-lingote-luminoso-ta
 3. **Receta:** el anillo de ocho esencias da un lingote; ninguna otra receta produce el lingote (el script luminoso informa `creations-loaded` sin `failed`).
 4. **Que no sea un atajo:** sin lingote no hay semilla; ninguna Luminosidad se obtiene de un cultivo, del anillo ni de un reciclaje; la semilla plantada en tierra de esencia de supremium crece y suelta esencia y la semilla de vuelta.
 5. **Cliente:** el nodo de la quest aparece en el cantero de supremium sólo con el lingote hecho, con la flor teñida; el texto en los dos idiomas.
+
+## Datos de mods con derechos reservados (30/9)
+
+El repositorio es público y su regla es no redistribuir contenido de mods que no lo permiten: se los nombra por ID o se escribe lo propio. `python tools/check_loot_tables.py --copies` marcaba 18 archivos de `pack/kubejs/data` idénticos o casi idénticos a datos de JARs «todos los derechos reservados» (ARR), escritos por `generate_family_balance.py`. Tras las rondas 5 a 7 la lista seguía siendo la misma. Ya no queda ninguno, y el chequeo es parte de `tools/test_family_balance.py` (`ReservedDataTest.test_no_pack_data_file_copies_a_mod_that_reserves_its_data`), así que una regresión rompe los tests.
+
+### Licencias leídas y qué se hizo
+
+La licencia sale de la metadata del JAR (`neoforge.mods.toml`) y, si era vaga, del `LICENSE` del repositorio del mod.
+
+| Archivos | Mod y licencia | Qué se hizo |
+|---|---|---|
+| `apotheosis/tier_augments/{haven,frontier,ascent,summit}/max_eterna.json` (4) | Apotheosis 8.7.0: «MIT License (code) / All Rights Reserved (assets)». El repositorio trae `LICENSE` (MIT) y `LICENSE_ASSETS` («All Rights Reserved»), sin decir a qué archivos aplica cada uno; estos datos son JSON generado por datagen. Dudoso, se trata como reservado | Cada archivo de Apotheosis queda como la condición `neoforge:false` sola. Nuestro augment propio, en `entrelumen/tier_augments/<tier>/max_eterna.json` (ID `entrelumen:<tier>/max_eterna`), lleva el valor completo (techo menos base): Haven −55, Frontier −25, Ascent −10. Summit (100) no necesita augment y Pinnacle nunca tuvo. Mecanismo leído en los JAR (`javap` de `DynamicRegistry` de Placebo y `TierAugmentRegistry`): el registro no tiene merge, pero lee todos los namespaces, `checkConditions` corre antes de decodificar (el stub no se parsea) y el tier aplica todos los augments que lista |
+| `createdeco/recipe/placard.json` | Create Deco 2.1.3: «All Rights Reserved» | Ya estaba deshabilitada (formato pre-1.21). Ahora es el stub `neoforge:false` sin cuerpo; sigue sin aportar receta |
+| `forbidden_arcanus/.../hephaestus_forge/ritual/eternal_stella.json` | Forbidden Arcanus 2.6.1: «All Rights Reserved» | Un ritual es un registro de datapack, no una receta de KubeJS, así que no hay `replaceInput`. El archivo del mod queda como stub y el ritual propio va en `entrelumen/forbidden_arcanus/hephaestus_forge/ritual/eternal_stella.json` (ID `entrelumen:eternal_stella`), escrito desde nuestra especificación (`ETERNAL_STELLA_RITUAL`) con el sello de contención como tercer pedestal. `--check` exige que el ritual nativo sea igual al nuestro sin el sello (`authored`) |
+| `irons_jewelry/loot_table/generate_jewelry_test_materials.json` | Iron's Jewelry 2.0.2: «All Rights Reserved» | Tabla de pruebas de desarrollo, ya deshabilitada y no esencial. Stub `neoforge:false` |
+| `malum/recipe/malum/spirit_repair/undergarden/{cloggrum,forgotten,froststeel,slingshot,utherium}.json` (5) | Malum 1.8.2: «All Rights Reserved» | Ya deshabilitadas (nombres de espíritu sin namespace). Ahora son stubs; siguen sin receta |
+| `malum/recipe/malum/spirit_repair/occultism/{gold,purple,red,white}_chalk.json` (4) | Malum: «All Rights Reserved» | Stub, más nuestras recetas en `pack/kubejs/server_scripts/entrelumen_malum_compat.js` (`event.custom` bajo el mismo ID, sólo con Occultism cargado), escritas desde las especificaciones de `tools/generate_malum_compat.py`. Ver [malum-compat.md](malum-compat.md) |
+| `malum/recipe/create/milling/grim_talc.json` | Malum: «All Rights Reserved» | Comparte 70% de sus hojas JSON con el original, debajo del umbral de 80% del chequeo, pero es el mismo caso: stub y receta propia en el mismo script (sólo con Create cargado) |
+| `minecraft/advancement/{give_quest_trader_trade,wander_add_map}.json` | Dungeons and Taverns 4.4.4: «LicenseRef-All-Rights-Reserved» | Ganchos ocultos del mod, ya deshabilitados (padre `minecraft:root` inexistente, función faltante) y no esenciales. Stub `neoforge:false` |
+
+Ningún archivo resultó permisivo, así que ninguno pasa a `THIRD_PARTY_NOTICES.md` como copia con crédito; el aviso lista los archivos propios que ocupan su lugar.
+
+### Cómo queda el generador
+
+- `disabled(path, why, stub=True)` escribe sólo `{"neoforge:conditions": [{"type": "neoforge:false"}]}`. NeoForge lee las condiciones de una receta, avance, tabla de botín o entrada de registro antes de decodificar el resto, así que el cuerpo del mod no hace falta (los archivos que ya iban deshabilitados con el cuerpo completo probaron eso: su error de códec nunca aparecía). Las recetas rotas de Ad Astra, Croptopia y demás mods abiertos conservan su cuerpo; `ARR_RECIPE_NAMESPACES` (`createdeco`, `malum`) fija cuáles de `PINGPONG_BROKEN_RECIPES` van como stub.
+- `authored(path, to, spec, field, value, ...)` deja el archivo del mod como stub y escribe la especificación propia en `to`. Falla si el archivo del JAR no es igual a la especificación sin su último elemento, si excede los pedestales o si un JAR ya trae `to`.
+- `eterna_override` devuelve el stub más el augment propio (sólo el stub a 100). Las guardas de `--check` (forma del augment de Apotheosis, otro augment que mueva `max_eterna`, tier sin augment) siguen igual.
+- El comportamiento no cambia: los techos de Eterna, el sello del ritual, las reparaciones de tiza y el molido del talco producen lo mismo que antes.
+
+### Lo que un test de runtime debe confirmar (diferido a la fase final)
+
+- **Apotheosis:** en cada World Tier, `apothic_enchanting:max_eterna` de un jugador vale 45, 75, 90, 100 y 100 (Haven a Pinnacle), con un solo modificador `entrelumen:<tier>/max_eterna` donde hay augment; el registro `tier_augments` no trae los IDs `apotheosis:<tier>/max_eterna`; el log no muestra errores de parseo de los stubs.
+- **Forbidden Arcanus:** el ritual `entrelumen:eternal_stella` aparece en la Fragua de Hefesto con 3 orbes xpetrificados, 1 fragmento de stellarita y 1 sello de contención sobre un diamante, cuesta 82 aureal, 1000 sangre y 1 alma, y entrega la Estela Eterna; el ritual `forbidden_arcanus:eternal_stella` no existe.
+- **Malum y Create:** las cuatro recetas de reparación de tizas y `malum:create/milling/grim_talc` existen una sola vez, sin aviso de ID duplicado, con las mismas entradas y salidas (`entrelumen_malum_audit.js` sigue siendo el recibo de RecipeManager); el Repair Pylon repara cada tiza con sus materiales y la muela da 6 harinas de hueso, 25% de tinte amarillo y 25% de 4 harinas.
+- **Stubs:** ningún error de datapack por `createdeco:placard`, las cinco reparaciones de Undergarden, la tabla de pruebas de Iron's Jewelry ni los dos avances de Dungeons and Taverns.
+
+### Pendiente de la misma familia (no se tocó)
+
+- Los scripts `entrelumen_*_balance.js` llevan en `Rows` el JSON completo de cada receta nativa editada (por ejemplo `reliquary:rending_gale` en `entrelumen_arcane_balance.js`), también las de mods ARR. `--copies` sólo mira `pack/kubejs/data`, así que no lo ve. Cambiarlo a `event.replaceInput`/`replaceOutput` reescribe `RUNTIME` y las comprobaciones de cada familia: decisión aparte.
+- `data/apotheosis/advancement/progression/{haven,frontier,ascent,summit}.json` (`campaign_tier`) conservan el `display` del avance de Apotheosis (33% a 67% de hojas compartidas, debajo del umbral). Con Apotheosis tratado como dudoso, el mismo criterio pediría reemplazarlos, pero el avance lleva el ID `apotheosis:progression/<tier>` y no se verificó si el mod lo consulta por ese ID; si lo hace, no puede pasar a otro namespace y quedaría un override mínimo sin `display`.

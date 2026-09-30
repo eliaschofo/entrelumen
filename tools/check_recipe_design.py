@@ -175,7 +175,7 @@ HITOS = {
         'entrelumen:atlas_library': 'biblioteca del Atlas',
         'mekanismgenerators:fission_reactor/port': 'reactor de fisión',
         'jamd:nether_portal_block': 'portal a la minería del Nether',
-        'forbidden_arcanus:forbidden_arcanus/hephaestus_forge/ritual/eternal_stella': 'herramientas irrompibles',
+        'entrelumen:forbidden_arcanus/hephaestus_forge/ritual/eternal_stella': 'herramientas irrompibles',
         'theurgy:crafting/shaped/sulfuric_flux_emitter': 'réplica alquímica',
     },
     'entrelumen:ark_bus': {
