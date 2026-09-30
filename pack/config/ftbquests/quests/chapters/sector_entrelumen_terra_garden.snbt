@@ -1,0 +1,1402 @@
+{
+  "id": "38827D13B40460E4",
+  "filename": "sector_entrelumen_terra_garden",
+  "group": "192C7E7D9BC8BCFF",
+  "order_index": 6,
+  "icon": {
+    "id": "entrelumen:terra_garden_plan"
+  },
+  "default_quest_shape": "square",
+  "default_min_width": 320,
+  "progression_mode": "flexible",
+  "autofocus_id": "67909AA49ADC7EDA",
+  "tags": [
+    "entrelumen_motif_farm"
+  ],
+  "quests": [
+    {
+      "id": "67909AA49ADC7EDA",
+      "x": -11.0,
+      "y": 2.5,
+      "shape": "hexagon",
+      "size": 2.0,
+      "preset": "el_entry",
+      "dependencies": [],
+      "tasks": [
+        {
+          "id": "0FA29C536A7173CC",
+          "type": "item",
+          "item": {
+            "id": "entrelumen:terra_garden_plan",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "73147B47173CC252",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_entry"
+      ],
+      "icon": {
+        "id": "entrelumen:terra_garden_plan"
+      }
+    },
+    {
+      "id": "5504BB8C80340D9E",
+      "x": -8.0,
+      "y": 2.5,
+      "shape": "circle",
+      "size": 0.75,
+      "preset": "el_info",
+      "dependencies": [
+        "67909AA49ADC7EDA"
+      ],
+      "tasks": [
+        {
+          "id": "768F601A7DF876C4",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_info"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "entrelumen:terra_garden_plan"
+      },
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "61D7CA7BFDFCA307",
+      "x": -5.0,
+      "y": 2.5,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "5504BB8C80340D9E"
+      ],
+      "tasks": [
+        {
+          "id": "752FD8A7080DF599",
+          "type": "item",
+          "item": {
+            "id": "entrelumen:terra_garden_core",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "0E6285AA58214E5B",
+          "type": "item",
+          "item": {
+            "id": "entrelumen:terra_garden_outlet",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "2DA62966DDF604CB",
+          "type": "item",
+          "item": {
+            "id": "entrelumen:terra_engine_casing",
+            "count": 1
+          },
+          "count": 10,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "27503521EF7910BD",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "entrelumen:terra_garden_core"
+      }
+    },
+    {
+      "id": "7475633B8C5837E8",
+      "x": -1.0,
+      "y": -3.4,
+      "shape": "heart",
+      "size": 2.0,
+      "preset": "el_milestone_farm",
+      "dependencies": [
+        "61D7CA7BFDFCA307"
+      ],
+      "tasks": [
+        {
+          "id": "6CDFE59CD7241B21",
+          "type": "stat",
+          "stat": "entrelumen:terra_garden_activations",
+          "value": 1,
+          "icon": {
+            "id": "entrelumen:terra_grow_lamp"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "23AB5FFD9466F773",
+          "type": "xp",
+          "xp": 30
+        },
+        {
+          "id": "4DB05E3D3029D4BE",
+          "type": "choice",
+          "table_id": 1056128395
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "entrelumen:terra_grow_lamp"
+      }
+    },
+    {
+      "id": "4C9AF92260DD52D4",
+      "x": 3.0,
+      "y": -2.4,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "7475633B8C5837E8"
+      ],
+      "tasks": [
+        {
+          "id": "6CD9D6F2DD00A8AB",
+          "type": "stat",
+          "stat": "entrelumen:terra_garden_harvests",
+          "value": 1,
+          "icon": {
+            "id": "minecraft:wheat"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "22250E2590C71671",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "minecraft:wheat"
+      }
+    },
+    {
+      "id": "1B72B33E302D5CE5",
+      "x": 7.0,
+      "y": 2.5,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "7475633B8C5837E8"
+      ],
+      "tasks": [
+        {
+          "id": "3B46291BC9551CB2",
+          "type": "item",
+          "item": {
+            "id": "entrelumen:terralight_grounding_rod",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "3FB2E623B4C0B165",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "entrelumen:terralight_grounding_rod"
+      }
+    },
+    {
+      "id": "467F80ACF9370100",
+      "x": 10.5,
+      "y": -1.4,
+      "shape": "heart",
+      "size": 2.0,
+      "preset": "el_milestone_farm",
+      "dependencies": [
+        "1B72B33E302D5CE5"
+      ],
+      "tasks": [
+        {
+          "id": "5C472D4AA226766D",
+          "type": "item",
+          "item": {
+            "id": "entrelumen:terralight_shard",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "75F9FD718D501210",
+          "type": "xp",
+          "xp": 30
+        },
+        {
+          "id": "0767D94DBD746EA0",
+          "type": "choice",
+          "table_id": 1056128395
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "entrelumen:terralight_shard"
+      }
+    },
+    {
+      "id": "65361E030E9BE815",
+      "x": 13.5,
+      "y": 2.5,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "467F80ACF9370100"
+      ],
+      "tasks": [
+        {
+          "id": "07274F9C006D12F8",
+          "type": "stat",
+          "stat": "entrelumen:terra_grow_lamps_crafted",
+          "value": 1,
+          "icon": {
+            "id": "entrelumen:terra_grow_lamp"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "08A9D1D37EC7C671",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "entrelumen:terra_grow_lamp"
+      }
+    },
+    {
+      "id": "0A35B7BEFCA60EFB",
+      "x": -1.0,
+      "y": -7.5,
+      "shape": "el_sunburst",
+      "size": 3.0,
+      "preset": "el_capstone",
+      "dependencies": [
+        "4C9AF92260DD52D4"
+      ],
+      "tasks": [
+        {
+          "id": "687760F1594CD16A",
+          "type": "stat",
+          "stat": "entrelumen:terra_garden_harvests",
+          "value": 1000000,
+          "icon": {
+            "id": "entrelumen:terra_garden_core"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "0D9342FCFC2930A0",
+          "type": "xp",
+          "xp": 75
+        },
+        {
+          "id": "61778A735E494761",
+          "type": "item",
+          "item": {
+            "id": "ftbquests:lootcrate",
+            "components": {
+              "ftbquests:loot_crate": "entrelumen_crate_5"
+            }
+          },
+          "count": 1
+        },
+        {
+          "id": "2D1F1D57DBBDE5EE",
+          "type": "command",
+          "auto": "invisible",
+          "command": "playsound minecraft:ui.toast.challenge_complete master {p} ~ ~ ~ 0.8 1",
+          "permission_level": 2,
+          "silent": true
+        }
+      ],
+      "tags": [
+        "entrelumen_capstone"
+      ],
+      "icon": {
+        "id": "entrelumen:terra_garden_core"
+      },
+      "progression_mode": "linear",
+      "hide_details_until_startable": true,
+      "hide_dependency_lines": false
+    },
+    {
+      "id": "76F1B0F2F86EEC8A",
+      "x": -14.0,
+      "y": 2.5,
+      "shape": "none",
+      "size": 1.5,
+      "preset": "el_decor_1p5",
+      "dependencies": [],
+      "tasks": [
+        {
+          "id": "5692EE507996E959",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_decor"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "minecraft:copper_bulb"
+      },
+      "disable_toast": true,
+      "hide_lock_icon": true,
+      "hide_dependency_lines": true,
+      "hide_dependent_lines": true
+    }
+  ],
+  "images": [
+    {
+      "id": "5D5A600855C6B93D",
+      "x": -7.8393,
+      "y": -9.0,
+      "width": 14.375,
+      "height": 1.125,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 6,
+      "text_h_align": "start",
+      "position_locked": true
+    },
+    {
+      "id": "58CF8461243FE9A8",
+      "x": -9.5,
+      "y": 2.5,
+      "width": 3.64,
+      "height": 0.1167,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 50,
+      "color": 13627353
+    },
+    {
+      "id": "09F259EF24F53F49",
+      "x": -6.5,
+      "y": 2.5,
+      "width": 3.64,
+      "height": 0.1167,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 50,
+      "color": 13627353
+    },
+    {
+      "id": "46E8B240FC820A7B",
+      "x": -10.75,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "5504BB8C80340D9E"
+    },
+    {
+      "id": "43DD9F86909AE8CE",
+      "x": -10.25,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "5504BB8C80340D9E"
+    },
+    {
+      "id": "643527C079B6869C",
+      "x": -9.75,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "5504BB8C80340D9E"
+    },
+    {
+      "id": "23728A47F6F62128",
+      "x": -9.25,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "5504BB8C80340D9E"
+    },
+    {
+      "id": "0BAA5870BC5DC29B",
+      "x": -8.75,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "5504BB8C80340D9E"
+    },
+    {
+      "id": "19E294386CA88FB0",
+      "x": -8.25,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "5504BB8C80340D9E"
+    },
+    {
+      "id": "6708F8E77E4C5D28",
+      "x": -7.75,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307"
+    },
+    {
+      "id": "3824A3110B5E6DFA",
+      "x": -7.25,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307"
+    },
+    {
+      "id": "24600D4F4847ACCF",
+      "x": -6.75,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307"
+    },
+    {
+      "id": "4E48C6319CD1C071",
+      "x": -6.25,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307"
+    },
+    {
+      "id": "325ECA65BBE76587",
+      "x": -5.75,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307"
+    },
+    {
+      "id": "14878D648ADD4596",
+      "x": -5.25,
+      "y": 2.5,
+      "width": 0.5833,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "minecraft:block/cut_copper",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307"
+    },
+    {
+      "id": "37285A7BACBC39DA",
+      "x": -2.5,
+      "y": 0.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_casing.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "7485B1DF36428244",
+      "x": -2.5,
+      "y": 0.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_casing.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307",
+      "alpha": 255
+    },
+    {
+      "id": "023A8E3A389A1F7B",
+      "x": -2.5,
+      "y": -1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_casing.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "7079A3A3B57102A8",
+      "x": -2.5,
+      "y": -1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_casing.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307",
+      "alpha": 255
+    },
+    {
+      "id": "18E6F3052DA65E27",
+      "x": -1.5,
+      "y": 0.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_core_front.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "155A24C67E18B392",
+      "x": -1.5,
+      "y": 0.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_core_front.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307",
+      "alpha": 255
+    },
+    {
+      "id": "61B0A477CB472690",
+      "x": -1.5,
+      "y": -1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_casing.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "7F2456CAFC4464A9",
+      "x": -1.5,
+      "y": -1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_casing.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307",
+      "alpha": 255
+    },
+    {
+      "id": "40A49C89EA17D988",
+      "x": -0.5,
+      "y": 0.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_casing.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "0657D178A8CFF0DF",
+      "x": -0.5,
+      "y": 0.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_casing.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307",
+      "alpha": 255
+    },
+    {
+      "id": "5F5C8D86C08A3834",
+      "x": -0.5,
+      "y": -1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_casing.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "132C8CCA98543C6C",
+      "x": -0.5,
+      "y": -1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_casing.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "61D7CA7BFDFCA307",
+      "alpha": 255
+    },
+    {
+      "id": "23D4AE466EEAC416",
+      "x": -1.9,
+      "y": -0.2,
+      "width": 2.1,
+      "height": 0.9333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_grille.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7475633B8C5837E8",
+      "alpha": 255
+    },
+    {
+      "id": "3051B18BA73D21C7",
+      "x": -2.55,
+      "y": -1.6,
+      "width": 0.5833,
+      "height": 0.7,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_brass.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7475633B8C5837E8",
+      "alpha": 255
+    },
+    {
+      "id": "1122FA5F4242393F",
+      "x": 0.05,
+      "y": -1.6,
+      "width": 0.5833,
+      "height": 0.7,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_engine_brass.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7475633B8C5837E8",
+      "alpha": 255
+    },
+    {
+      "id": "33A056A8A94D5057",
+      "x": -1.35,
+      "y": -1.6,
+      "width": 0.8167,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_garden_core_pot.png",
+      "order": -3,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "709252E39B253568",
+      "x": -1.35,
+      "y": -1.6,
+      "width": 0.8167,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_garden_core_pot.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7475633B8C5837E8",
+      "alpha": 255
+    },
+    {
+      "id": "6C3C4CCBAE9ACE87",
+      "x": -1.4,
+      "y": -2.3,
+      "width": 0.9333,
+      "height": 0.8167,
+      "rotation": 0.0,
+      "image": "minecraft:block/wheat_stage7",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "4C9AF92260DD52D4",
+      "alpha": 255
+    },
+    {
+      "id": "2FA83713A75A145B",
+      "x": -1.0,
+      "y": -1.3,
+      "width": 3.5,
+      "height": 3.5,
+      "rotation": 0.0,
+      "image": "minecraft:textures/particle/flash.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "7475633B8C5837E8",
+      "alpha": 170,
+      "color": 10219658
+    },
+    {
+      "id": "0E4DB3DC5E2E4E44",
+      "x": -1.0,
+      "y": 0.3,
+      "width": 6.0667,
+      "height": 6.0667,
+      "rotation": 0.0,
+      "image": "minecraft:textures/particle/flash.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "76F1B0F2F86EEC8A",
+      "alpha": 110,
+      "color": 16765562
+    },
+    {
+      "id": "7EA156F24C6752C6",
+      "x": 9.0,
+      "y": 1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "minecraft:block/dirt",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "41D70EC5AC0C8299",
+      "x": 9.0,
+      "y": 1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "minecraft:block/dirt",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "1B72B33E302D5CE5",
+      "alpha": 255
+    },
+    {
+      "id": "55282116E29AC782",
+      "x": 9.0,
+      "y": 0.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terralight_grounding_rod.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "611A8F2649656FAA",
+      "x": 9.0,
+      "y": 0.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terralight_grounding_rod.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "1B72B33E302D5CE5",
+      "alpha": 255
+    },
+    {
+      "id": "44FA0510ED574A10",
+      "x": 9.0,
+      "y": -1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "minecraft:block/oxidized_copper",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "4CCF6635D2E8D46E",
+      "x": 9.0,
+      "y": -1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "minecraft:block/oxidized_copper",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "1B72B33E302D5CE5",
+      "alpha": 255
+    },
+    {
+      "id": "63A650C452235F1B",
+      "x": 9.0,
+      "y": -2.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "minecraft:block/oxidized_copper",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "72E50DA78FE01B99",
+      "x": 9.0,
+      "y": -2.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "minecraft:block/oxidized_copper",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "1B72B33E302D5CE5",
+      "alpha": 255
+    },
+    {
+      "id": "060790DAC55EB0A3",
+      "x": 10.0,
+      "y": 0.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "minecraft:block/grass_block_side",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "4E1032902E4FAC5E",
+      "x": 10.0,
+      "y": 0.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "minecraft:block/grass_block_side",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "1B72B33E302D5CE5",
+      "alpha": 255
+    },
+    {
+      "id": "15118C124AA36919",
+      "x": 10.0,
+      "y": -2.0,
+      "width": 1.1667,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_grow_lamp_hood.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "2BC3C2B0F57FD039",
+      "x": 10.0,
+      "y": -2.0,
+      "width": 1.1667,
+      "height": 0.5833,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terra_grow_lamp_hood.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "1B72B33E302D5CE5",
+      "alpha": 255
+    },
+    {
+      "id": "6C14CBFD1BFDB6D4",
+      "x": 10.0,
+      "y": -1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terralight_crystal_3.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 36,
+      "color": 15260853
+    },
+    {
+      "id": "6121D655992D4339",
+      "x": 10.0,
+      "y": -1.0,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/block/terralight_crystal_3.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255
+    },
+    {
+      "id": "09DAA7CEE726F183",
+      "x": 10.5,
+      "y": -0.5,
+      "width": 3.2667,
+      "height": 3.2667,
+      "rotation": 0.0,
+      "image": "minecraft:textures/particle/flash.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 160,
+      "color": 9760955
+    },
+    {
+      "id": "5026B5D80FEA857C",
+      "x": 9.7953,
+      "y": -5.472,
+      "width": 0.1389,
+      "height": 0.1389,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "38D2F18E362529F8",
+      "x": 9.9628,
+      "y": -5.797,
+      "width": 0.1289,
+      "height": 0.1289,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "58F474A74E37CC6C",
+      "x": 10.1727,
+      "y": -5.1577,
+      "width": 0.1319,
+      "height": 0.1319,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "0381721C72A10143",
+      "x": 12.2898,
+      "y": -3.7928,
+      "width": 0.1341,
+      "height": 0.1341,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "1303FD7AC8339AF6",
+      "x": 8.6984,
+      "y": -5.2262,
+      "width": 0.1323,
+      "height": 0.1323,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "2D976F10C378ECD2",
+      "x": 9.077,
+      "y": -5.5877,
+      "width": 0.1149,
+      "height": 0.1149,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "5F657B02CB79B740",
+      "x": 8.9122,
+      "y": -4.0008,
+      "width": 0.1065,
+      "height": 0.1065,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "10EF2EEFDA4ABA55",
+      "x": 10.7575,
+      "y": -3.8335,
+      "width": 0.1281,
+      "height": 0.1281,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "1725BA84F71D7B3D",
+      "x": 10.3624,
+      "y": -2.768,
+      "width": 0.1186,
+      "height": 0.1186,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "5C72ED017A8F99EE",
+      "x": 11.296,
+      "y": -5.1457,
+      "width": 0.1335,
+      "height": 0.1335,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "5EA142AF0AFF0D3B",
+      "x": 11.4178,
+      "y": -4.9922,
+      "width": 0.1619,
+      "height": 0.1619,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "5AE042F1621CA3CF",
+      "x": 9.1598,
+      "y": -4.8028,
+      "width": 0.1587,
+      "height": 0.1587,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "52C04CFE7617E53D",
+      "x": 11.5583,
+      "y": -3.9944,
+      "width": 0.1546,
+      "height": 0.1546,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "6B99E5290518E7DB",
+      "x": 10.8775,
+      "y": -3.9704,
+      "width": 0.1253,
+      "height": 0.1253,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "467F80ACF9370100",
+      "alpha": 255,
+      "color": 10275312
+    },
+    {
+      "id": "4A6F28656E1E7E07",
+      "x": -1.4226,
+      "y": 4.6917,
+      "width": 0.9957,
+      "height": 0.9957,
+      "rotation": 0.0,
+      "image": "item:minecraft:potato",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    },
+    {
+      "id": "7A720192B7A24777",
+      "x": -3.285,
+      "y": 4.0373,
+      "width": 0.7113,
+      "height": 0.7113,
+      "rotation": 0.0,
+      "image": "item:minecraft:carrot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    },
+    {
+      "id": "3B64DA16D97468C9",
+      "x": 1.6369,
+      "y": 4.171,
+      "width": 0.8743,
+      "height": 0.8743,
+      "rotation": 0.0,
+      "image": "item:minecraft:beetroot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    },
+    {
+      "id": "48AF18BC48390934",
+      "x": 2.033,
+      "y": 4.3987,
+      "width": 1.042,
+      "height": 1.042,
+      "rotation": 0.0,
+      "image": "item:minecraft:beetroot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    },
+    {
+      "id": "578A45766C6BEAD7",
+      "x": 0.0913,
+      "y": 5.3676,
+      "width": 0.8832,
+      "height": 0.8832,
+      "rotation": 0.0,
+      "image": "item:minecraft:beetroot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    },
+    {
+      "id": "141A71EE893E8190",
+      "x": -4.4195,
+      "y": 5.0238,
+      "width": 0.7769,
+      "height": 0.7769,
+      "rotation": 0.0,
+      "image": "item:minecraft:beetroot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    },
+    {
+      "id": "6B547FE10B8CFD0F",
+      "x": -1.8116,
+      "y": 5.5046,
+      "width": 0.9649,
+      "height": 0.9649,
+      "rotation": 0.0,
+      "image": "item:minecraft:beetroot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    },
+    {
+      "id": "242FEFB383A3E9FD",
+      "x": -3.2326,
+      "y": 5.2359,
+      "width": 0.972,
+      "height": 0.972,
+      "rotation": 0.0,
+      "image": "item:minecraft:potato",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    },
+    {
+      "id": "5CBD0AF3E5293CC9",
+      "x": 2.2895,
+      "y": 4.5282,
+      "width": 0.941,
+      "height": 0.941,
+      "rotation": 0.0,
+      "image": "item:minecraft:beetroot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    },
+    {
+      "id": "00E5E8EC7B41A68D",
+      "x": -6.0402,
+      "y": 5.2504,
+      "width": 0.8491,
+      "height": 0.8491,
+      "rotation": 0.0,
+      "image": "item:minecraft:carrot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    },
+    {
+      "id": "6EA2F211BA65C173",
+      "x": -4.1478,
+      "y": 5.7498,
+      "width": 0.9447,
+      "height": 0.9447,
+      "rotation": 0.0,
+      "image": "item:minecraft:carrot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    },
+    {
+      "id": "6F4FD744E6F32441",
+      "x": 0.0596,
+      "y": 4.0304,
+      "width": 0.9643,
+      "height": 0.9643,
+      "rotation": 0.0,
+      "image": "item:minecraft:beetroot",
+      "order": -1,
+      "position_locked": true,
+      "dependency": "0A35B7BEFCA60EFB",
+      "alpha": 255
+    }
+  ]
+}
