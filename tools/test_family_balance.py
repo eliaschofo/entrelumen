@@ -182,8 +182,12 @@ class FamilyBalanceTest(unittest.TestCase):
                          [(s['id'], s['output']) for s in family['creations']])
         self.assertEqual(constants['Uncraftable'], family['uncraftable'])
         payload = json.dumps({'creations': [balance.creation_json(s) for s in family['creations']],
+                              'farmed': [balance.creation_json(s) for s in family['farmed']],
                               'uncraftable': family['uncraftable']}, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
         self.assertEqual(constants['CreationsSignature'], hashlib.sha256(payload.encode('utf-8')).hexdigest())
+        # Only the ingot has an authorised second producer, and the script names it.
+        self.assertEqual({r['id']: r['farmed'] for r in constants['Creations'] if r['farmed']},
+                         {balance.LUMINOUS_INGOT: ['entrelumen:luminous_ingot_from_essence']})
         for luminosity in balance.LUMINOSITY.values():
             self.assertIn(luminosity, constants['Uncraftable'])
         self.assertNotIn('native recipe absent', script)  # a creation-only family edits nothing
@@ -209,6 +213,33 @@ class FamilyBalanceTest(unittest.TestCase):
         for duplicator in ('create:creative_crate', 'ae2:creative_storage_cell', 'mekanism:creative_bin'):
             self.assertIn(duplicator, balance.FAMILIES['luminous']['uncraftable'])
             self.assertNotIn(duplicator, {s['output'] for s in specs})
+
+    def test_luminous_crop_grows_the_ingot_but_never_a_luminosity(self):
+        family = balance.FAMILIES['luminous']
+        balance.check_farmed_static('luminous')
+        (farmed,) = family['farmed']
+        self.assertEqual(balance.creation_json(farmed)['result'], {'id': balance.LUMINOUS_INGOT, 'count': 1})
+        # Eight essences for one ingot, the ratio of MA's rarest supremium ingots (netherite, draconium).
+        self.assertEqual(sum(row.count('E') for row in farmed['pattern']), 8)
+        self.assertNotIn(farmed['output'], balance.creation_inputs(farmed))
+        crop = json.loads(balance.LUMINOUS_CROP_FILE.read_text(encoding='utf-8'))
+        self.assertEqual(crop['ingredient'], {'item': balance.LUMINOUS_INGOT})  # the seed is paid with the ingot
+        self.assertEqual(crop['tier'], 'mysticalagriculture:5')
+        # No Luminosity has a crop or a farmed recipe.
+        for luminosity in balance.LUMINOSITY.values():
+            self.assertIn(luminosity, family['uncraftable'])
+            self.assertNotIn(luminosity, {balance.LUMINOUS_ESSENCE, balance.LUMINOUS_SEEDS})
+        crops = list(balance.LUMINOUS_CROP_FILE.parent.glob('*.json'))
+        self.assertEqual([c.stem for c in crops], [balance.LUMINOUS_CROP])
+        # Every recipe check refuses a drifted essence recipe or crop.
+        drifted = dict(farmed, pattern=['EEE', 'EEE', 'EEE'])
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': dict(family, farmed=[drifted])}):
+            with self.assertRaises(AssertionError):
+                balance.check_farmed_static('probe')
+        with unittest.mock.patch.object(balance, 'read', lambda path: dict(crop, ingredient={'item': 'minecraft:diamond'})
+                                        if path == balance.LUMINOUS_CROP_FILE else json.loads(path.read_text(encoding='utf-8-sig'))):
+            with self.assertRaises(AssertionError):
+                balance.check_farmed_static('luminous')
 
     def test_luminous_items_are_named_in_both_languages(self):
         lang = ROOT / 'companion/src/main/resources/assets/entrelumen/lang'

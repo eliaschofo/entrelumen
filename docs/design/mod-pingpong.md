@@ -971,3 +971,48 @@ Create Big Cannons, Brewin' and Chewin', Better Fusion Reactor, Mekanism Nuclear
   - `hardcorerevivaldownsandrescuesincoop`: con dos jugadores de prueba conectados, un golpe letal deja caído al primero, vivo; el segundo lo levanta por el camino de rescate del propio mod.
 - `tools/test_family_balance.py` suma los dos tests de arriba. Pasan las familias (14), el diseño de recetas, el lock de los dos lados y la compilación de las GameTests. Ninguno de los tres regala nada al primer ingreso.
 - El runtime entra en la misma cola que las rondas 5 y 6, diferida a la fase final de pruebas (Elias 29/9).
+
+## Balance del 29/9: varita del tiempo y semillas luminosas
+
+Rama `fix/wand-and-luminous-seeds`. Dos decisiones de Elias del 29 de septiembre.
+
+### Varita del tiempo de Just Dire Things: 32 veces menos efectiva
+
+Elias: «hacé que tenga mucha menos efectividad, tipo x32 menos efectivo». Hoy acelera un bloque hasta ×256.
+
+**Cómo lo expone el JAR** (`justdirethings-1.5.7.jar`, `Config.class` y `TimeWand.class`): es config de servidor, sin Java ni datos.
+
+- `time_wand.time_wand_max_multiplier`: 256 por defecto, potencia de dos (el validador exige `2^logBase2(n) == n`). Cada clic derecho sobre un bloque que tickea sube un paso (`TimeWandEntity.calculateAccelRate`: 2^n); pasado `logBase2(máximo)` el clic no hace nada. La aceleración dura 30 s (`REMAINING_TIME` 600).
+- Costo por paso, ya proporcional a la velocidad: `time_wand_rf_cost` 100 FE y `time_wand_fluid_cost` 0,5 mB por unidad de velocidad. No se tocaron.
+
+**Cambio:** `pack/defaultconfigs/justdirethings-server.toml` fija `time_wand_max_multiplier = 8`, o sea 256 ÷ 32. La varita queda en tres pasos, ×2, ×4 y ×8, en vez de ocho. «Un 32.º en cada nivel» no se puede leer al pie de la letra (el primer paso ×2 daría menos que ×1); el tope es lo que se divide por 32. Como el costo escala con la velocidad, llegar a ×8 cuesta 1.400 FE y 7 mB en total (200, 400 y 800 FE por clic), contra 51.000 FE y 255 mB hasta ×256.
+
+- Aplica a los mundos nuevos: NeoForge copia `defaultconfigs/` a `serverconfig/` al crear el mundo y no pisa uno existente. Un mundo previo se corrige a mano en `serverconfig/justdirethings-server.toml`.
+- El nodo `jdt_timewand` de la cadena de JDT decía «hasta 256×»; ahora dice 8× y aclara que el pack lo limita.
+
+**Otros aceleradores de JDT (sin tocar):** la varita es el único que acelera bloques ajenos. No hay antorcha del tiempo ni similar. Quedan tres perillas que no aceleran el mundo y que el pack deja nativas: `minimum_machine_tick_speed` (1: una máquina de JDT puede actuar en cada tick), `generator_t1_burn_speed_multiplier` y `pocket_gen_burn_speed_multiplier` (ambos aceleran sólo la quema de su propio combustible). Si se quiere frenar el ritmo de las máquinas, esa perilla es `minimum_machine_tick_speed`.
+
+**Para probar en el juego:** ver la lista al final de esta sección.
+
+### Semillas de Mystical Agriculture para el Lingote Luminoso
+
+Elias: «hacete unas semillas de luminosity INGOTS, las luminosidades NO, las luminosidades no tienen otro método de conseguir que no sea tradeándolas... pero los ingots de la armor y eso SÍ».
+
+Detalle de diseño en [luminous-gear.md](luminous-gear.md#el-lingote-luminoso-también-crece). Resumen:
+
+- **El único ingrediente de la armadura y el equipo luminoso es el Lingote Luminoso** (`entrelumen:luminous_ingot`; es también el material de Silent Gear). Las Luminosidades no tienen cultivo, ni receta: siguen siendo sólo trueque con los aldeanos de Solsticio.
+- **El JAR de Mystical Agriculture 8.0.27 no lee cultivos de JSON ni de datapack.** Declara sus cultivos en Java (`ModCrops`) y sólo su API de plugins (`IMysticalAgriculturePlugin`) permite agregar más. Ese plugin es Mystical Customization, del mismo autor (MIT, 49 KB), que lee `config/mysticalcustomization/crops/*.json`. Entra como mod nuevo, tomado de la instancia de referencia ATM10 con el SHA-1 de CurseForge verificado (familia `catalog/families/mystical-customization.json`; el lock pasa de 377 a 378). **Aprobado por Elias el 30/9** (vía el coordinador): es la forma nativa de cumplir el pedido, del mismo autor que MA, MIT y presente en ATM10. La alternativa descartada era un plugin Java en el companion compilado contra el JAR de MA.
+- **Cultivo:** `pack/config/mysticalcustomization/crops/luminous_ingot.json`, nivel 5 (supremium), tipo recurso, ingrediente el lingote, color `#F3E3B0` (el crema dorado del lingote). Nombre en `pack/resourcepacks/entrelumen/assets/mysticalcustomization/lang/{en_us,es_es}.json`.
+- **La semilla paga el lingote.** La infusión de semilla de MA (que el mod genera solo a partir del ingrediente) pide cuatro lingotes, cuatro esencias de supremium y una base de semilla de prosperidad; la receta con mesa de crafteo pide lo mismo. Nadie llega a la semilla sin haber forjado antes un lingote con sus seis Luminosidades.
+- **Esencia a lingote:** un anillo de ocho esencias da un lingote (`entrelumen:luminous_ingot_from_essence`), la razón de los supremium más caros de MA (netherita y draconio). Las aleaciones comunes de nivel 5 dan dos por ocho; el lingote luminoso es el mejor material del pack y queda con el 8:1.
+- **Texturas:** las del cultivo son las plantillas en blanco de MA para lingotes (`flower_ingot`, `essence_ingot` y la semilla en blanco), teñidas con el color del cultivo. No se dibujó arte nuevo; si Elias lo quiere propio, se cambia con las claves `textures` del JSON.
+- **Guardas:** el generador de la familia luminosa (`tools/generate_family_balance.py`) trata la receta de la esencia como la única segunda productora autorizada del lingote (sus salidas siguen siendo exclusivas) y verifica que el cultivo pague con el lingote, que el anillo sea de ocho y que ninguna Luminosidad tenga cultivo. `tools/check_guides.py` reconoce las semillas y esencias de los cultivos de esa carpeta.
+- **Quest:** nodo `ma_crop_luminous` en `sector_ma_essence` (Esencia, cantero de supremium, junto a diamante, esmeralda y netherita), con dependencia de `entrelumen_luminous_ingot`.
+
+### Qué debería confirmar una prueba en el juego (pendiente, sin servidor ni GameTests hoy)
+
+1. **Varita:** un mundo nuevo trae `serverconfig/justdirethings-server.toml` con `time_wand_max_multiplier = 8`; el tercer clic sobre un horno da ×8 y el cuarto no hace nada; el descuento de FE y de fluido del tiempo es 200/400/800 FE y 1/2/4 mB.
+2. **Cultivo:** el arranque cargó `mysticalcustomization` sin errores en el log (busca «Crops»); existen `mysticalagriculture:luminous_ingot_seeds` y `luminous_ingot_essence`, con nombre en inglés y en español y tinte crema; JEI/EMI muestran la semilla y su receta de infusión con cuatro lingotes, cuatro esencias de supremium y la base.
+3. **Receta:** el anillo de ocho esencias da un lingote; ninguna otra receta produce el lingote (el script luminoso informa `creations-loaded` sin `failed`).
+4. **Que no sea un atajo:** sin lingote no hay semilla; ninguna Luminosidad se obtiene de un cultivo, del anillo ni de un reciclaje; la semilla plantada en tierra de esencia de supremium crece y suelta esencia y la semilla de vuelta.
+5. **Cliente:** el nodo de la quest aparece en el cantero de supremium sólo con el lingote hecho, con la flor teñida; el texto en los dos idiomas.

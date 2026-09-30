@@ -194,6 +194,13 @@ def bundled(jar):
                         pass
 
 
+def custom_crop_items():
+    """Items of the Mystical Agriculture crops that pack/config/mysticalcustomization/crops declares. MA registers
+    them at load under its own namespace (<file name>_seeds and _essence), so no pinned JAR ships their models."""
+    crops = ROOT / 'pack' / 'config' / 'mysticalcustomization' / 'crops'
+    return {f'mysticalagriculture:{p.stem}_{kind}' for p in crops.glob('*.json') for kind in ('seeds', 'essence')}
+
+
 def registry():
     """Item-like ids known from item models and lang keys of every pinned JAR and the JARs they bundle, plus
     vanilla and the companion. Cached (outside the repository) per set of JAR paths, since reading 300+ JARs
@@ -215,6 +222,7 @@ def registry():
                 items, namespaces = set(c['items']), set(c['namespaces'])
                 comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / 'assets' / 'entrelumen'
                 items |= {'entrelumen:' + p.stem for p in (comp / 'models' / 'item').glob('*.json')}
+                items |= custom_crop_items()
                 _ITEMS = (items, namespaces | {'entrelumen', 'minecraft', 'c', 'neoforge'})
                 return _ITEMS
         except Exception:
@@ -253,6 +261,7 @@ def registry():
     comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / 'assets' / 'entrelumen'
     for p in (comp / 'models' / 'item').glob('*.json'):
         items.add('entrelumen:' + p.stem)
+    items |= custom_crop_items()
     namespaces |= {'entrelumen', 'minecraft', 'c', 'neoforge'}
     _ITEMS = (items, namespaces)
     return _ITEMS
