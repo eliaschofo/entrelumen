@@ -1,499 +1,557 @@
 {
- "chapter": "guide_magic_overview",
- "group": "magic",
- "act": "any",
- "icon": "ars_nouveau:source_gem",
- "emblem": "entrelumen:textures/item/living_matrix.png",
- "title": {
-  "en_us": "Magic in ENTRELUMEN",
-  "es_es": "Magia en ENTRELUMEN"
- },
- "subtitle": {
-  "en_us": "Which schools open in each act, and the Atlas components that tie them together.",
-  "es_es": "Qué escuelas se abren en cada acto y los componentes del Atlas que las atan."
- },
- "quests": [
-  {
-   "key": "magic_welcome",
-   "deps": [],
-   "type": "checkmark",
-   "icon": "ars_nouveau:source_gem",
-   "layout": {
-    "x": 0,
-    "y": 0,
-    "size": 2.0,
-    "shape": "hexagon"
-   },
-   "en_us": [
-    "Many schools, no walls",
-    "You can play the whole story leaning on a few schools. What ties them together are the Atlas components, story items made from magic materials: every team touches Ars Nouveau, Occultism, Malum, EvilCraft and Nature's Aura at least once.\n\nHeliodor ran on light. You'll run on whatever works."
-   ],
-   "es_es": [
-    "Muchas escuelas, ninguna pared",
-    "Podés jugar toda la historia apoyándote en unas pocas escuelas. Lo que las ata son los componentes del Atlas, ítems de la historia hechos con materiales mágicos: todo equipo toca Ars Nouveau, Occultism, Malum, EvilCraft y Nature's Aura al menos una vez.\n\nHeliodor funcionaba a luz. Vos, con lo que ande."
-   ],
-   "sources": [
-    "repo:docs/design/mod-integration.md",
-    "repo:docs/design/arcane-expansion-family.md",
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js"
-   ]
+  "chapter": "guide_magic_overview",
+  "group": "magic",
+  "act": "any",
+  "icon": "ars_nouveau:source_gem",
+  "emblem": "entrelumen:textures/item/living_matrix.png",
+  "title": {"en_us": "Magic in ENTRELUMEN", "es_es": "Magia en ENTRELUMEN"},
+  "subtitle": {
+    "en_us": "Which schools open in each act, and the Atlas components that tie them together.",
+    "es_es": "Qué escuelas se abren en cada acto y los componentes del Atlas que las atan."
   },
-  {
-   "key": "magic_schools",
-   "deps": [
-    "magic_welcome"
-   ],
-   "type": "checkmark",
-   "optional": true,
-   "icon": "minecraft:book",
-   "layout": {
-    "x": 0,
-    "y": -3,
-    "size": 1.0,
-    "shape": "circle"
-   },
-   "en_us": [
-    "Which school for what",
-    "Fights: Iron's Spells. Utility and automation: Ars Nouveau. Working spirits: Occultism. Alchemical ores: Theurgy. Growing the world: Nature's Aura. Souls: Malum. Dark forging: Forbidden and Arcanus. Blood and brooms: EvilCraft. Relics: Reliquary. Programmed spells: Psi. Blood circles: Mahou Tsukai. Gear: Apotheosis.\n\nMaster one or two; taste the rest."
-   ],
-   "es_es": [
-    "Qué escuela para qué",
-    "Peleas: Iron's Spells. Utilidad y automatización: Ars Nouveau. Espíritus que trabajan: Occultism. Menas alquímicas: Theurgy. Hacer crecer el mundo: Nature's Aura. Almas: Malum. Forja oscura: Forbidden and Arcanus. Sangre y escobas: EvilCraft. Reliquias: Reliquary. Hechizos programados: Psi. Círculos de sangre: Mahou Tsukai. Equipo: Apotheosis.\n\nDominá una o dos; probá el resto."
-   ],
-   "sources": [
-    "repo:docs/design/arcane-expansion-family.md",
-    "repo:docs/design/mod-integration.md",
-    "repo:docs/design/magic-automation-family.md"
-   ]
-  },
-  {
-   "key": "magic_act1",
-   "deps": [
-    "magic_welcome"
-   ],
-   "type": "checkmark",
-   "icon": "minecraft:enchanting_table",
-   "layout": {
-    "x": 3,
-    "y": 0,
-    "size": 1.0,
-    "shape": "circle"
-   },
-   "en_us": [
-    "Act I: the first sparks",
-    "No magic required yet, but doors are open: bookshelves take the table toward 30, Apotheosis starts at Haven, EvilCraft's dark ore shows up around redstone depth, and Artifacts turn up in chests.\n\nStock up on books, lapis and gold."
-   ],
-   "es_es": [
-    "Acto I: las primeras chispas",
-    "Todavía no se exige magia, pero hay puertas abiertas: las bibliotecas llevan la mesa hacia 30, Apotheosis arranca en Refugio, la mena oscura de EvilCraft aparece a la altura de la redstone y los Artifacts salen en cofres.\n\nJuntá libros, lapislázuli y oro."
-   ],
-   "sources": [
-    "repo:docs/design/apotheosis-family.md#Enchanting: four ENTRELUMEN shelves and a staged ladder",
-    "repo:docs/design/apotheosis-family.md#World Tiers follow the team campaign",
-    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Dark Ore",
-    "repo:docs/design/arcane-expansion-family.md"
-   ]
-  },
-  {
-   "key": "magic_act2",
-   "deps": [
-    "magic_act1"
-   ],
-   "type": "checkmark",
-   "icon": "ars_nouveau:novice_spell_book",
-   "layout": {
-    "x": 6,
-    "y": 0,
-    "size": 1.5,
-    "shape": "hexagon"
-   },
-   "en_us": [
-    "Act II: the magic act",
-    "Most schools open: Ars, Occultism, Nature's Aura, Iron's Spells, Forbidden and Arcanus, Theurgy, the first relics and EvilCraft's blood. The table reaches 45. The story asks for Ars: the Living Matrix, delivered to «Living Workshop»."
-   ],
-   "es_es": [
-    "Acto II: el acto de la magia",
-    "Se abren casi todas las escuelas: Ars, Occultism, Nature's Aura, Iron's Spells, Forbidden and Arcanus, Theurgy, las primeras reliquias y la sangre de EvilCraft. La mesa llega a 45. La historia pide Ars: la Matriz viva, para «Taller vivo»."
-   ],
-   "sources": [
-    "repo:docs/design/mod-integration.md",
-    "repo:docs/design/arcane-expansion-family.md",
-    "repo:docs/design/apotheosis-family.md#Enchanting: four ENTRELUMEN shelves and a staged ladder",
-    "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json#entrelumen.project.living_workshop"
-   ]
-  },
-  {
-   "key": "magic_living_matrix",
-   "deps": [
-    "magic_act2"
-   ],
-   "type": "item",
-   "item": "entrelumen:living_matrix",
-   "layout": {
-    "x": 6,
-    "y": 3,
-    "size": 1.0,
-    "shape": "diamond"
-   },
-   "en_us": [
-    "A Matrix for the Atlas",
-    "Two magebloom fibers and two Source Gems in a cross around a Calibration Frame. Beyond the Act II delivery, Matrices go into the Propagation Core (Act III) and the Ecosystem Capsule (Act IV): a steady Ars workshop pays off for a long time."
-   ],
-   "es_es": [
-    "Una Matriz para el Atlas",
-    "Dos fibras de magebloom y dos gemas fuente en cruz alrededor de un Marco de calibración. Además de la entrega del acto II, las Matrices van en el Núcleo de propagación (acto III) y en la Cápsula de ecosistema (acto IV): un taller de Ars estable rinde mucho tiempo."
-   ],
-   "sources": [
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#living_workshop",
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#nursery_protocol",
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#pollinator_treaty",
-    "repo:content/act_two.json"
-   ]
-  },
-  {
-   "key": "magic_act3",
-   "deps": [
-    "magic_act2"
-   ],
-   "type": "checkmark",
-   "icon": "psi:cad_assembler",
-   "layout": {
-    "x": 9,
-    "y": 0,
-    "size": 1.5,
-    "shape": "hexagon"
-   },
-   "en_us": [
-    "Act III: deeper magic",
-    "Psi and Mahou Tsukai arrive. Put Occultism's spirits to work and start Malum's soul research: Act IV needs both. The table reaches 60, the first spawner augments appear, and the World Tier rises to Frontier, invaders included.\n\nSalvage the affix gear you don't use."
-   ],
-   "es_es": [
-    "Acto III: magia más profunda",
-    "Llegan Psi y Mahou Tsukai. Poné a trabajar a los espíritus de Occultism y empezá la investigación de almas de Malum: el acto IV necesita las dos. La mesa llega a 60, aparecen los primeros aumentadores de spawner y el Nivel de mundo sube a Frontera, con invasores.\n\nReciclá el equipo con afijos que no uses."
-   ],
-   "sources": [
-    "repo:docs/design/mod-pingpong.md#Psi",
-    "repo:docs/design/mod-pingpong.md#Mahou Tsukai",
-    "repo:docs/design/apotheosis-family.md",
-    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js#psi:assembler"
-   ]
-  },
-  {
-   "key": "magic_act4",
-   "deps": [
-    "magic_act3"
-   ],
-   "type": "checkmark",
-   "icon": "entrelumen:spectral_lens",
-   "layout": {
-    "x": 12,
-    "y": 0,
-    "size": 1.5,
-    "shape": "hexagon"
-   },
-   "en_us": [
-    "Act IV: voices and seals",
-    "Magic supplies two key components: the Spectral Lens and the Containment Seal. They unlock Theurgy's transmutation, the Eternal Stella, shelves up to 90, the Act IV augments and, with a Horizon Chart, the Rending Gale. World Tier: Ascent."
-   ],
-   "es_es": [
-    "Acto IV: voces y sellos",
-    "La magia aporta dos componentes clave: la Lente espectral y el Sello de contención. Abren la transmutación de Theurgy, la Estela eterna, estantes hasta 90, los aumentadores del acto IV y, con una Carta de horizontes, el Rending Gale. Nivel de mundo: Ascenso."
-   ],
-   "sources": [
-    "repo:docs/design/act-four-recipes.md",
-    "repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js",
-    "repo:pack/kubejs/server_scripts/entrelumen_apotheosis_balance.js",
-    "repo:docs/design/apotheosis-family.md"
-   ]
-  },
-  {
-   "key": "magic_lens",
-   "deps": [
-    "magic_act4"
-   ],
-   "type": "item",
-   "item": "entrelumen:spectral_lens",
-   "layout": {
-    "x": 12,
-    "y": 3,
-    "size": 1.0,
-    "shape": "diamond"
-   },
-   "en_us": [
-    "The Spectral Lens",
-    "An Occultism attuned crystal, two Malum arcane spirits, a Create precision mechanism and a Calibration Frame. Deliver one to «Voices in the Glass» and keep making them: the Seal, reinforced machines, shelves and the Arcane Module use it.\n\nGlass that hears what isn't said."
-   ],
-   "es_es": [
-    "La Lente espectral",
-    "Un cristal sintonizado de Occultism, dos espíritus arcanos de Malum, un mecanismo de precisión de Create y un Marco de calibración. Entregá una en «Voces en el cristal» y seguí fabricando: la usan el Sello, máquinas reforzadas, estantes y el Módulo arcano.\n\nUn vidrio que escucha lo que no se dice."
-   ],
-   "sources": [
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#spectral_archive",
-    "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json#entrelumen.project.spectral_archive",
-    "repo:content/act_four.json",
-    "repo:pack/kubejs/data/entrelumen/recipe/lumen_shelf.json"
-   ]
-  },
-  {
-   "key": "magic_seal",
-   "deps": [
-    "magic_lens"
-   ],
-   "type": "item",
-   "item": "entrelumen:containment_seal",
-   "layout": {
-    "x": 12,
-    "y": 6,
-    "size": 1.0,
-    "shape": "diamond"
-   },
-   "en_us": [
-    "Seal of the dark schools",
-    "Two EvilCraft dark gems, two Malum Soulstained Steel and a Spectral Lens. Delivered to «A Vessel for Restless Memory», it gives your team an Altar of Time. It also gates the Eternal Stella, Theurgy's emitter, the fission reactor, the Burning augment and the Atlas Library."
-   ],
-   "es_es": [
-    "Sello de las escuelas oscuras",
-    "Dos gemas oscuras de EvilCraft, dos de Acero manchado de alma de Malum y una Lente espectral. Entregado en «Un recipiente para la memoria», le da a tu equipo un Altar del Tiempo. También abre la Estela eterna, el emisor de Theurgy, el reactor de fisión, el Aumentador ardiente y la Biblioteca del Atlas."
-   ],
-   "sources": [
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#sealed_memory",
-    "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json#entrelumen.project.sealed_memory",
-    "repo:content/act_four.json",
-    "repo:pack/kubejs/data/entrelumen/recipe/atlas_library.json",
-    "repo:pack/kubejs/data/entrelumen/recipe/augment_burning.json"
-   ]
-  },
-  {
-   "key": "magic_act5",
-   "deps": [
-    "magic_act4"
-   ],
-   "type": "checkmark",
-   "icon": "entrelumen:arcane_module",
-   "layout": {
-    "x": 15,
-    "y": 0,
-    "size": 1.5,
-    "shape": "hexagon"
-   },
-   "en_us": [
-    "Act V: the Ark",
-    "Two Ark pieces are magical: the Renewal Engine (Nature's Aura, farming and bees) and the Arcane Module (every dark school). The table reaches 100, the Atlas Library opens up, and at Summit tier Mythic loot and Godforged Pearls start to drop."
-   ],
-   "es_es": [
-    "Acto V: el Arca",
-    "Dos piezas del Arca son mágicas: el Motor de renovación (Nature's Aura, agricultura y abejas) y el Módulo arcano (todas las escuelas oscuras). La mesa llega a 100, se abre la Biblioteca del Atlas y, en el nivel Cumbre, empiezan a caer botín Mítico y Perlas forjadas por dioses."
-   ],
-   "sources": [
-    "repo:docs/design/act-renumbering.md",
-    "repo:docs/design/apotheosis-family.md",
-    "repo:docs/design/luminous-gear.md#godforged_pearl",
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#renewal_engine",
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#ark_arcana"
-   ]
-  },
-  {
-   "key": "magic_renewal",
-   "deps": [
-    "magic_act5"
-   ],
-   "type": "item",
-   "item": "entrelumen:renewal_engine",
-   "layout": {
-    "x": 15,
-    "y": 3,
-    "size": 1.0,
-    "shape": "diamond"
-   },
-   "en_us": [
-    "An engine that grows gardens",
-    "Two Ingots of the Skies, two imperium essences, two Ecosystem Capsules and two Propagation Cores. Deliver one to «Renewable Horizons»; more go into the Nature Module, Mekanism's SPS, the Mega pots and Act V augments.\n\nThe gardens come back, one engine at a time."
-   ],
-   "es_es": [
-    "Un motor que hace jardines",
-    "Dos Lingotes de los cielos, dos esencias de imperium, dos Cápsulas de ecosistema y dos Núcleos de propagación. Entregá uno en «Horizontes renovables»; otros van en el Módulo de naturaleza, el SPS de Mekanism, las macetas Mega y aumentadores del acto V.\n\nLos jardines vuelven, de a un motor."
-   ],
-   "sources": [
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#renewal_engine",
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#ark_nature",
-    "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json#entrelumen.project.renewal_engine",
-    "repo:pack/kubejs/data/entrelumen/recipe/horizon_shelf.json",
-    "repo:docs/design/luminous-gear.md"
-   ]
-  },
-  {
-   "key": "magic_arcane_module",
-   "deps": [
-    "magic_seal",
-    "magic_act5"
-   ],
-   "type": "item",
-   "item": "entrelumen:arcane_module",
-   "layout": {
-    "x": 15,
-    "y": 6,
-    "size": 1.0,
-    "shape": "diamond"
-   },
-   "en_us": [
-    "The Arcane Module",
-    "Two Spectral Lenses, two Containment Seals, an iesnium ingot and the Wither's nether star. In a complete Ark it resets an item's anvil penalty for books and XP, keeping enchantments, affixes and sockets. Iesnium needs Occultism's infused pickaxe: plan ahead."
-   ],
-   "es_es": [
-    "El Módulo arcano",
-    "Dos Lentes espectrales, dos Sellos de contención, un lingote de iesnium y la estrella del Nether del Wither. En un Arca completa vuelve a cero la penalidad de yunque de un ítem a cambio de libros y XP, conservando encantamientos, afijos y engarces. El iesnium pide el pico infundido de Occultism: planealo con tiempo."
-   ],
-   "sources": [
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#ark_arcana",
-    "repo:docs/design/arcane-library.md#Use",
-    "repo:docs/design/apotheosis-family.md#Ark arcane service"
-   ]
-  },
-  {
-   "key": "magic_act6",
-   "deps": [
-    "magic_act5"
-   ],
-   "type": "item",
-   "item": "entrelumen:luminosity_arcane",
-   "layout": {
-    "x": 18,
-    "y": 0,
-    "size": 1.5,
-    "shape": "hexagon"
-   },
-   "en_us": [
-    "Act VI: light made solid",
-    "Solsticio's villagers sell six Luminosities, one per discipline; violet Arcane is magic's. They make the Luminous ingot and the creative items: the Source Jar for Ars, the Blood Drop for EvilCraft, the bookshelf for Create: Enchantment Industry. World Tier: Pinnacle."
-   ],
-   "es_es": [
-    "Acto VI: la luz hecha sólida",
-    "Los aldeanos de Solsticio venden seis Luminosidades, una por disciplina; la violeta, Arcana, es la de la magia. Con ellas se hacen el lingote Luminoso y los ítems creativos: la Jarra de fuente para Ars, la Gota de sangre para EvilCraft, la biblioteca para Create: Enchantment Industry. Nivel de mundo: Pináculo."
-   ],
-   "sources": [
-    "repo:docs/design/luminous-gear.md",
-    "repo:pack/kubejs/data/entrelumen/recipe/luminous_ingot.json",
-    "repo:pack/kubejs/data/entrelumen/recipe/creative/evilcraft/creative_blood_drop.json",
-    "repo:docs/design/solsticio-commerce.md"
-   ]
-  },
-  {
-   "key": "magic_keys",
-   "deps": [
-    "magic_act1"
-   ],
-   "type": "checkmark",
-   "optional": true,
-   "icon": "minecraft:tripwire_hook",
-   "layout": {
-    "x": 3,
-    "y": -3,
-    "size": 1.0,
-    "shape": "diamond"
-   },
-   "en_us": [
-    "Where the magic keys went",
-    "Ars radial: F6. Iron's wheel: the key left of 1, cast: Alt+Q. Psi: Alt+F. Mahou Tsukai's circle: Alt+M. Occultism's satchel: Insert, ender bag: O. Apotheosis: Ctrl+T World Tiers, Ctrl+O radial mining, Shift+T link item. All changeable under Controls."
-   ],
-   "es_es": [
-    "Dónde quedaron las teclas",
-    "Radial de Ars: F6. Rueda de Iron's: la tecla a la izquierda del 1, lanzar: Alt+Q. Psi: Alt+F. Círculo de Mahou Tsukai: Alt+M. Morral de Occultism: Insert, bolsa de ender: O. Apotheosis: Ctrl+T Niveles de mundo, Ctrl+O minado radial, Shift+T enlazar ítem. Todas se cambian en Controles."
-   ],
-   "sources": [
-    "repo:pack/config/defaultoptions/keybindings.txt#key_key.ars_nouveau.selection_hud",
-    "repo:pack/config/defaultoptions/keybindings.txt#key_key.irons_spellbooks.spell_wheel",
-    "repo:pack/config/defaultoptions/keybindings.txt#key_psimisc.keybind",
-    "repo:pack/config/defaultoptions/keybindings.txt#key_key.drawMahoujin",
-    "repo:pack/config/defaultoptions/keybindings.txt#key_key.occultism.backpack",
-    "repo:pack/config/defaultoptions/keybindings.txt#key_key.apotheosis.open_world_tier_select"
-   ]
-  },
-  {
-   "key": "magic_removed",
-   "deps": [
-    "magic_act3"
-   ],
-   "type": "checkmark",
-   "optional": true,
-   "icon": "minecraft:barrier",
-   "layout": {
-    "x": 9,
-    "y": -3,
-    "size": 1.0,
-    "shape": "diamond"
-   },
-   "en_us": [
-    "Shortcuts the pack closed",
-    "Reliquary's Alkahestry Tome (item duplication) and its spawn-egg crafting, Apotheosis's spawner runes (copper augments replace them) and portable spawners. Everything else keeps its native recipe unless its chapter says otherwise.\n\nEvery school keeps its place in line."
-   ],
-   "es_es": [
-    "Atajos que el pack cerró",
-    "El Alkahestry Tome de Reliquary (duplicar ítems) y su crafteo de huevos, las runas de spawner de Apotheosis (las reemplazan los aumentadores de cobre) y los spawners portátiles. Todo lo demás mantiene su receta nativa salvo que su capítulo diga otra cosa.\n\nCada escuela respeta la fila."
-   ],
-   "sources": [
-    "repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js",
-    "repo:pack/kubejs/server_scripts/entrelumen_apotheosis_balance.js",
-    "repo:pack/config/apothic_spawners.cfg"
-   ]
-  },
-  {
-   "key": "magic_guides",
-   "deps": [
-    "magic_act2"
-   ],
-   "type": "checkmark",
-   "optional": true,
-   "icon": "minecraft:writable_book",
-   "layout": {
-    "x": 6,
-    "y": -3,
-    "size": 1.0,
-    "shape": "circle"
-   },
-   "en_us": [
-    "Every school has a book",
-    "Most guides craft from a book: Tattered Tome (Ars), Dictionary of Spirits (Occultism), Encyclopedia Arcana (Malum), Book of Natural Aura, Chronicle of Shadows (Apotheosis), Knowledge Compendium (Mahou Tsukai). EvilCraft's is chest loot, Psi's is cast onto a book, Reliquary uses EMI."
-   ],
-   "es_es": [
-    "Cada escuela tiene su libro",
-    "Casi todas las guías salen de un libro: Libreta Gastada (Ars), Diccionario de espíritus (Occultism), Encyclopedia Arcana (Malum), Libro del aura natural, Chronicle of Shadows (Apotheosis), Compendio del conocimiento (Mahou Tsukai). La de EvilCraft sale de cofres, la de Psi se lanza sobre un libro, Reliquary usa EMI."
-   ],
-   "sources": [
-    "repo:content/sectors/sector_ars_nouveau.json",
-    "repo:content/sectors/sector_occultism_rituals.json",
-    "repo:content/sectors/sector_malum.json",
-    "repo:content/sectors/sector_naturesaura.json",
-    "repo:content/sectors/sector_evilcraft.json",
-    "repo:content/sectors/sector_psi.json",
-    "repo:docs/design/mod-pingpong.md#Otras integraciones"
-   ]
-  },
-  {
-   "key": "magic_mastery",
-   "deps": [
-    "magic_act6",
-    "magic_arcane_module"
-   ],
-   "type": "checkmark",
-   "icon": "entrelumen:luminosity_arcane",
-   "layout": {
-    "x": 21,
-    "y": 0,
-    "size": 2.0,
-    "shape": "gear"
-   },
-   "en_us": [
-    "Magic that belongs to the story",
-    "Living Matrices from your Ars workshop, lenses and seals from the dark schools, a Renewal Engine that grows the world back and an Arcane Module that listens. Magic is half of what the Atlas asks for, and which half is yours to pick.\n\nThe light came back. Part of it was yours."
-   ],
-   "es_es": [
-    "Una magia que es historia",
-    "Matrices vivas de tu taller de Ars, lentes y sellos de las escuelas oscuras, un Motor de renovación que hace crecer el mundo y un Módulo arcano que escucha. La magia es la mitad de lo que pide el Atlas, y cuál mitad, la elegís vos.\n\nLa luz volvió. Una parte la trajiste vos."
-   ],
-   "sources": [
-    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
-    "repo:docs/design/luminous-gear.md"
-   ]
-  }
- ]
+  "quests": [
+    {
+      "key": "magic_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 5.0, "size": 2.0, "shape": "hexagon"},
+      "icon": "ars_nouveau:source_gem",
+      "en_us": {"title": "Many schools, no walls", "subtitle": "A sky, not a fence.",
+        "text": ["[lead] You can play the whole story leaning on a few schools.",
+                 "What ties them together are the Atlas components: story items made from magic materials. Every team touches these five at least once:",
+                 "[li] [chapter:sector_ars_nouveau|Ars Nouveau]",
+                 "[li] [chapter:sector_occultism_rituals|Occultism]",
+                 "[li] [chapter:sector_malum|Malum]",
+                 "[li] [chapter:sector_evilcraft|EvilCraft]",
+                 "[li] [chapter:sector_naturesaura|Nature's Aura]",
+                 "{page}",
+                 "Heliodor ran on light. You'll run on whatever works."]},
+      "es_es": {"title": "Muchas escuelas, ninguna pared", "subtitle": "Un cielo, no un cerco.",
+        "text": ["[lead] Podés jugar toda la historia apoyándote en unas pocas escuelas.",
+                 "Lo que las ata son los componentes del Atlas: ítems de la historia hechos con materiales mágicos. Todo equipo toca estas cinco al menos una vez:",
+                 "[li] [chapter:sector_ars_nouveau|Ars Nouveau]",
+                 "[li] [chapter:sector_occultism_rituals|Occultism]",
+                 "[li] [chapter:sector_malum|Malum]",
+                 "[li] [chapter:sector_evilcraft|EvilCraft]",
+                 "[li] [chapter:sector_naturesaura|Nature's Aura]",
+                 "{page}",
+                 "Heliodor funcionaba a luz. Vos, con lo que ande."]},
+      "sources": ["repo:docs/design/mod-integration.md", "repo:docs/design/arcane-expansion-family.md", "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js"]
+    },
+    {
+      "key": "magic_schools", "deps": ["magic_welcome"], "type": "checkmark", "optional": true, "layout": {"x": 0, "y": 1.4, "size": 1.0, "shape": "circle"},
+      "icon": "minecraft:book",
+      "en_us": {"title": "Which school for what", "subtitle": "Twelve stars, twelve habits.",
+        "text": ["[lead] Master one or two schools; taste the rest.",
+                 "[li] Fights: [chapter:sector_irons_spellbooks|Iron's Spells]",
+                 "[li] Utility and automation: [chapter:sector_ars_nouveau|Ars Nouveau]",
+                 "[li] Working spirits: [chapter:sector_occultism_spirits|Occultism]",
+                 "[li] Alchemical ores: [chapter:sector_theurgy|Theurgy]",
+                 "[li] Growing the world: [chapter:sector_naturesaura|Nature's Aura]",
+                 "[li] Souls: [chapter:sector_malum|Malum]",
+                 "{page}",
+                 "[li] Dark forging: [chapter:sector_forbidden_arcanus|Forbidden and Arcanus]",
+                 "[li] Blood and brooms: [chapter:sector_evilcraft|EvilCraft]",
+                 "[li] Relics: [chapter:sector_reliquary|Reliquary]",
+                 "[li] Programmed spells: [chapter:sector_psi|Psi]",
+                 "[li] Blood circles: [chapter:sector_mahou|Mahou Tsukai]",
+                 "[li] Gear: [chapter:sector_apotheosis_adventure|Apotheosis]"]},
+      "es_es": {"title": "Qué escuela para qué", "subtitle": "Doce estrellas, doce mañas.",
+        "text": ["[lead] Dominá una o dos escuelas; probá el resto.",
+                 "[li] Peleas: [chapter:sector_irons_spellbooks|Iron's Spells]",
+                 "[li] Utilidad y automatización: [chapter:sector_ars_nouveau|Ars Nouveau]",
+                 "[li] Espíritus que trabajan: [chapter:sector_occultism_spirits|Occultism]",
+                 "[li] Menas alquímicas: [chapter:sector_theurgy|Theurgy]",
+                 "[li] Hacer crecer el mundo: [chapter:sector_naturesaura|Nature's Aura]",
+                 "[li] Almas: [chapter:sector_malum|Malum]",
+                 "{page}",
+                 "[li] Forja oscura: [chapter:sector_forbidden_arcanus|Forbidden and Arcanus]",
+                 "[li] Sangre y escobas: [chapter:sector_evilcraft|EvilCraft]",
+                 "[li] Reliquias: [chapter:sector_reliquary|Reliquary]",
+                 "[li] Hechizos programados: [chapter:sector_psi|Psi]",
+                 "[li] Círculos de sangre: [chapter:sector_mahou|Mahou Tsukai]",
+                 "[li] Equipo: [chapter:sector_apotheosis_adventure|Apotheosis]"]},
+      "sources": ["repo:docs/design/arcane-expansion-family.md", "repo:docs/design/mod-integration.md", "repo:docs/design/magic-automation-family.md"]
+    },
+    {
+      "key": "magic_act1", "deps": ["magic_welcome"], "type": "checkmark", "layout": {"x": 5.5, "y": 1.6, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "icon": "minecraft:enchanting_table",
+      "en_us": {"title": "Act I: the first sparks", "subtitle": "Doors open, nobody asks yet.",
+        "text": ["[lead] No magic is required yet, but the doors are open.",
+                 "[li] Bookshelves take the enchanting table toward [hl|30]",
+                 "[li] [chapter:sector_apotheosis_adventure|Apotheosis] starts at Haven",
+                 "[li] EvilCraft's dark ore shows up around redstone depth",
+                 "[li] Artifacts turn up in chests",
+                 "[tip] Stock up on books, lapis and gold."]},
+      "es_es": {"title": "Acto I: las primeras chispas", "subtitle": "Puertas abiertas, nadie exige todavía.",
+        "text": ["[lead] Todavía no se exige magia, pero las puertas están abiertas.",
+                 "[li] Las bibliotecas llevan la mesa de encantamientos hacia [hl|30]",
+                 "[li] [chapter:sector_apotheosis_adventure|Apotheosis] arranca en Refugio",
+                 "[li] La mena oscura de EvilCraft aparece a la altura de la redstone",
+                 "[li] Los Artifacts salen en cofres",
+                 "[tip] Juntá libros, lapislázuli y oro."]},
+      "sources": ["repo:docs/design/apotheosis-family.md#Enchanting: four ENTRELUMEN shelves and a staged ladder", "repo:docs/design/apotheosis-family.md#World Tiers follow the team campaign", "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Dark Ore", "repo:docs/design/arcane-expansion-family.md"]
+    },
+    {
+      "key": "magic_act2", "deps": ["magic_act1"], "type": "checkmark", "layout": {"x": 11, "y": -0.7, "size": 1.5, "shape": "hexagon"}, "hide_lines": true,
+      "icon": "ars_nouveau:novice_spell_book",
+      "en_us": {"title": "Act II: the magic act", "subtitle": "The curtain goes up.",
+        "text": ["[lead] Most schools open at once.",
+                 "[li] Ars Nouveau, Occultism, Nature's Aura and Iron's Spells",
+                 "[li] Forbidden and Arcanus and Theurgy",
+                 "[li] The first relics and EvilCraft's blood",
+                 "[li] The table reaches [hl|45]",
+                 "The story asks for Ars: the [item:entrelumen:living_matrix|Living Matrix], delivered to «Living Workshop»."]},
+      "es_es": {"title": "Acto II: el acto de la magia", "subtitle": "Se levanta el telón.",
+        "text": ["[lead] Casi todas las escuelas se abren juntas.",
+                 "[li] Ars Nouveau, Occultism, Nature's Aura e Iron's Spells",
+                 "[li] Forbidden and Arcanus y Theurgy",
+                 "[li] Las primeras reliquias y la sangre de EvilCraft",
+                 "[li] La mesa llega a [hl|45]",
+                 "La historia pide Ars: la [item:entrelumen:living_matrix|Matriz viva], para «Taller vivo»."]},
+      "sources": ["repo:docs/design/mod-integration.md", "repo:docs/design/arcane-expansion-family.md", "repo:docs/design/apotheosis-family.md#Enchanting: four ENTRELUMEN shelves and a staged ladder", "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json#entrelumen.project.living_workshop"]
+    },
+    {
+      "key": "magic_living_matrix", "deps": ["magic_act2"], "type": "item", "item": "entrelumen:living_matrix", "layout": {"x": 11, "y": 2.5, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "A Matrix for the Atlas", "subtitle": "A cross around a frame.",
+        "text": ["[lead] Ars makes it, and the Atlas asks for it three times.",
+                 "[li] Two [item:ars_nouveau:magebloom_fiber|magebloom fibers] and two [item:ars_nouveau:source_gem|Source Gems], in a cross",
+                 "[li] Around a [item:entrelumen:calibration_frame|Calibration Frame]",
+                 "Beyond the act II delivery, Matrices go into the [item:entrelumen:propagation_core|Propagation Core] (act III) and the [item:entrelumen:ecosystem_capsule|Ecosystem Capsule] (act IV).",
+                 "[tip] A steady Ars workshop pays off for a long time."]},
+      "es_es": {"title": "Una Matriz para el Atlas", "subtitle": "Una cruz alrededor de un marco.",
+        "text": ["[lead] Ars la hace, y el Atlas la pide tres veces.",
+                 "[li] Dos [item:ars_nouveau:magebloom_fiber|fibras de magebloom] y dos [item:ars_nouveau:source_gem|gemas fuente], en cruz",
+                 "[li] Alrededor de un [item:entrelumen:calibration_frame|Marco de calibración]",
+                 "Además de la entrega del acto II, las Matrices van en el [item:entrelumen:propagation_core|Núcleo de propagación] (acto III) y en la [item:entrelumen:ecosystem_capsule|Cápsula de ecosistema] (acto IV).",
+                 "[tip] Un taller de Ars estable rinde mucho tiempo."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#living_workshop", "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#nursery_protocol", "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#pollinator_treaty", "repo:content/act_two.json"]
+    },
+    {
+      "key": "magic_act3", "deps": ["magic_act2"], "type": "checkmark", "layout": {"x": 16.5, "y": -1.9, "size": 1.5, "shape": "hexagon"}, "hide_lines": true,
+      "icon": "psi:cad_assembler",
+      "en_us": {"title": "Act III: deeper magic", "subtitle": "Frontier weather.",
+        "text": ["[lead] [chapter:sector_psi|Psi] and [chapter:sector_mahou|Mahou Tsukai] arrive.",
+                 "Start two things now, because act IV needs both:",
+                 "[li] Put [chapter:sector_occultism_spirits|Occultism]'s spirits to work",
+                 "[li] Start [chapter:sector_malum|Malum]'s soul research",
+                 "{page}",
+                 "[li] The table reaches [hl|60]",
+                 "[li] The first spawner augments appear",
+                 "[li] The World Tier rises to Frontier, invaders included",
+                 "[tip] Salvage the affix gear you don't use."]},
+      "es_es": {"title": "Acto III: magia más profunda", "subtitle": "Clima de Frontera.",
+        "text": ["[lead] Llegan [chapter:sector_psi|Psi] y [chapter:sector_mahou|Mahou Tsukai].",
+                 "Empezá dos cosas ya, porque el acto IV necesita las dos:",
+                 "[li] Poné a trabajar a los espíritus de [chapter:sector_occultism_spirits|Occultism]",
+                 "[li] Empezá la investigación de almas de [chapter:sector_malum|Malum]",
+                 "{page}",
+                 "[li] La mesa llega a [hl|60]",
+                 "[li] Aparecen los primeros aumentadores de spawner",
+                 "[li] El Nivel de mundo sube a Frontera, con invasores",
+                 "[tip] Reciclá el equipo con afijos que no uses."]},
+      "sources": ["repo:docs/design/mod-pingpong.md#Psi", "repo:docs/design/mod-pingpong.md#Mahou Tsukai", "repo:docs/design/apotheosis-family.md", "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js#psi:assembler"]
+    },
+    {
+      "key": "magic_act4", "deps": ["magic_act3"], "type": "checkmark", "layout": {"x": 22, "y": -1.9, "size": 1.5, "shape": "hexagon"}, "hide_lines": true,
+      "icon": "entrelumen:spectral_lens",
+      "en_us": {"title": "Act IV: voices and seals", "subtitle": "Two keys, five doors.",
+        "text": ["[lead] Magic supplies two key components: the [item:entrelumen:spectral_lens|Spectral Lens] and the [item:entrelumen:containment_seal|Containment Seal].",
+                 "They unlock:",
+                 "[li] [chapter:sector_theurgy|Theurgy]'s transmutation",
+                 "[li] The Eternal Stella",
+                 "[li] Shelves up to [hl|90]",
+                 "[li] The act IV augments",
+                 "[li] With a Horizon Chart, the Rending Gale",
+                 "[note] World Tier: Ascent."]},
+      "es_es": {"title": "Acto IV: voces y sellos", "subtitle": "Dos llaves, cinco puertas.",
+        "text": ["[lead] La magia aporta dos componentes clave: la [item:entrelumen:spectral_lens|Lente espectral] y el [item:entrelumen:containment_seal|Sello de contención].",
+                 "Abren:",
+                 "[li] La transmutación de [chapter:sector_theurgy|Theurgy]",
+                 "[li] La Estela eterna",
+                 "[li] Estantes hasta [hl|90]",
+                 "[li] Los aumentadores del acto IV",
+                 "[li] Con una Carta de horizontes, el Rending Gale",
+                 "[note] Nivel de mundo: Ascenso."]},
+      "sources": ["repo:docs/design/act-four-recipes.md", "repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js", "repo:pack/kubejs/server_scripts/entrelumen_apotheosis_balance.js", "repo:docs/design/apotheosis-family.md"]
+    },
+    {
+      "key": "magic_lens", "deps": ["magic_act4"], "type": "item", "item": "entrelumen:spectral_lens", "layout": {"x": 22, "y": 1.4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "The Spectral Lens", "subtitle": "Glass that hears what isn't said.",
+        "text": ["[lead] Deliver one to «Voices in the Glass», then keep making them.",
+                 "[li] An Occultism attuned crystal",
+                 "[li] Two Malum arcane spirits",
+                 "[li] A Create [item:create:precision_mechanism|precision mechanism]",
+                 "[li] A [item:entrelumen:calibration_frame|Calibration Frame]",
+                 "The Seal, reinforced machines, shelves and the Arcane Module all use it."]},
+      "es_es": {"title": "La Lente espectral", "subtitle": "Un vidrio que escucha lo que no se dice.",
+        "text": ["[lead] Entregá una en «Voces en el cristal» y seguí fabricando.",
+                 "[li] Un cristal sintonizado de Occultism",
+                 "[li] Dos espíritus arcanos de Malum",
+                 "[li] Un [item:create:precision_mechanism|mecanismo de precisión] de Create",
+                 "[li] Un [item:entrelumen:calibration_frame|Marco de calibración]",
+                 "La usan el Sello, máquinas reforzadas, estantes y el Módulo arcano."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#spectral_archive", "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json#entrelumen.project.spectral_archive", "repo:content/act_four.json", "repo:pack/kubejs/data/entrelumen/recipe/lumen_shelf.json"]
+    },
+    {
+      "key": "magic_seal", "deps": ["magic_lens"], "type": "item", "item": "entrelumen:containment_seal", "layout": {"x": 22, "y": 4.4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Seal of the dark schools", "subtitle": "Three altars, one lock.",
+        "text": ["[lead] Delivered to «A Vessel for Restless Memory», it gives your team an Altar of Time.",
+                 "[li] Two EvilCraft dark gems",
+                 "[li] Two Malum Soulstained Steel",
+                 "[li] A [item:entrelumen:spectral_lens|Spectral Lens]",
+                 "{page}",
+                 "It also gates the Eternal Stella, Theurgy's emitter, the fission reactor, the Burning augment and the Atlas Library."]},
+      "es_es": {"title": "Sello de las escuelas oscuras", "subtitle": "Tres altares, una cerradura.",
+        "text": ["[lead] Entregado en «Un recipiente para la memoria», le da a tu equipo un Altar del Tiempo.",
+                 "[li] Dos gemas oscuras de EvilCraft",
+                 "[li] Dos de Acero manchado de alma de Malum",
+                 "[li] Una [item:entrelumen:spectral_lens|Lente espectral]",
+                 "{page}",
+                 "También abre la Estela eterna, el emisor de Theurgy, el reactor de fisión, el Aumentador ardiente y la Biblioteca del Atlas."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#sealed_memory", "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json#entrelumen.project.sealed_memory", "repo:content/act_four.json", "repo:pack/kubejs/data/entrelumen/recipe/atlas_library.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_burning.json"]
+    },
+    {
+      "key": "magic_act5", "deps": ["magic_act4"], "type": "checkmark", "layout": {"x": 27.5, "y": -0.7, "size": 1.5, "shape": "hexagon"}, "hide_lines": true,
+      "icon": "entrelumen:arcane_module",
+      "en_us": {"title": "Act V: the Ark", "subtitle": "Two pieces, two hands.",
+        "text": ["[lead] Two Ark pieces are magical.",
+                 "[li] The [item:entrelumen:renewal_engine|Renewal Engine]: Nature's Aura, farming and bees",
+                 "[li] The [item:entrelumen:arcane_module|Arcane Module]: every dark school",
+                 "The table reaches [hl|100] and the Atlas Library opens up.",
+                 "[note] At Summit tier, Mythic loot and Godforged Pearls start to drop."]},
+      "es_es": {"title": "Acto V: el Arca", "subtitle": "Dos piezas, dos manos.",
+        "text": ["[lead] Dos piezas del Arca son mágicas.",
+                 "[li] El [item:entrelumen:renewal_engine|Motor de renovación]: Nature's Aura, agricultura y abejas",
+                 "[li] El [item:entrelumen:arcane_module|Módulo arcano]: todas las escuelas oscuras",
+                 "La mesa llega a [hl|100] y se abre la Biblioteca del Atlas.",
+                 "[note] En el nivel Cumbre, empiezan a caer botín Mítico y Perlas forjadas por dioses."]},
+      "sources": ["repo:docs/design/act-renumbering.md", "repo:docs/design/apotheosis-family.md", "repo:docs/design/luminous-gear.md#godforged_pearl", "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#renewal_engine", "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#ark_arcana"]
+    },
+    {
+      "key": "magic_renewal", "deps": ["magic_act5"], "type": "item", "item": "entrelumen:renewal_engine", "layout": {"x": 29.5, "y": 2.4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "An engine that grows gardens",
+        "text": ["[lead] One goes to «Renewable Horizons»; more feed four other builds.",
+                 "[li] Two Ingots of the Skies",
+                 "[li] Two imperium essences",
+                 "[li] Two [item:entrelumen:ecosystem_capsule|Ecosystem Capsules]",
+                 "[li] Two [item:entrelumen:propagation_core|Propagation Cores]",
+                 "{page}",
+                 "More go into the Nature Module, Mekanism's SPS, the Mega pots and act V augments.",
+                 "The gardens come back, one engine at a time."]},
+      "es_es": {"title": "Un motor que hace jardines",
+        "text": ["[lead] Uno va a «Horizontes renovables»; otros alimentan cuatro cosas más.",
+                 "[li] Dos Lingotes de los cielos",
+                 "[li] Dos esencias de imperium",
+                 "[li] Dos [item:entrelumen:ecosystem_capsule|Cápsulas de ecosistema]",
+                 "[li] Dos [item:entrelumen:propagation_core|Núcleos de propagación]",
+                 "{page}",
+                 "Otros van en el Módulo de naturaleza, el SPS de Mekanism, las macetas Mega y aumentadores del acto V.",
+                 "Los jardines vuelven, de a un motor."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#renewal_engine", "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#ark_nature", "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json#entrelumen.project.renewal_engine", "repo:pack/kubejs/data/entrelumen/recipe/horizon_shelf.json", "repo:docs/design/luminous-gear.md"]
+    },
+    {
+      "key": "magic_arcane_module", "deps": ["magic_seal", "magic_act5"], "type": "item", "item": "entrelumen:arcane_module", "layout": {"x": 26, "y": 4.4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "The Arcane Module", "subtitle": "Iesnium takes planning.",
+        "text": ["[lead] In a complete Ark, it resets an item's anvil penalty.",
+                 "It costs books and XP, and keeps enchantments, affixes and sockets.",
+                 "[li] Two [item:entrelumen:spectral_lens|Spectral Lenses]",
+                 "[li] Two [item:entrelumen:containment_seal|Containment Seals]",
+                 "[li] An iesnium ingot and the Wither's [item:minecraft:nether_star|nether star]",
+                 "[tip] Iesnium needs Occultism's infused pickaxe: plan ahead."]},
+      "es_es": {"title": "El Módulo arcano", "subtitle": "El iesnium pide planificación.",
+        "text": ["[lead] En un Arca completa vuelve a cero la penalidad de yunque de un ítem.",
+                 "Cuesta libros y XP, y conserva encantamientos, afijos y engarces.",
+                 "[li] Dos [item:entrelumen:spectral_lens|Lentes espectrales]",
+                 "[li] Dos [item:entrelumen:containment_seal|Sellos de contención]",
+                 "[li] Un lingote de iesnium y la [item:minecraft:nether_star|estrella del Nether] del Wither",
+                 "[tip] El iesnium pide el pico infundido de Occultism: planealo con tiempo."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#ark_arcana", "repo:docs/design/arcane-library.md#Use", "repo:docs/design/apotheosis-family.md#Ark arcane service"]
+    },
+    {
+      "key": "magic_act6", "deps": ["magic_act5"], "type": "item", "item": "entrelumen:luminosity_arcane", "layout": {"x": 33, "y": 1.6, "size": 1.5, "shape": "hexagon"}, "hide_lines": true,
+      "en_us": {"title": "Act VI: light made solid", "subtitle": "Six colors of light.",
+        "text": ["[lead] [chapter:guide_entrelumen_solsticio|Solsticio]'s villagers sell six Luminosities, one per discipline.",
+                 "Violet [item:entrelumen:luminosity_arcane|Arcane Luminosity] is magic's. They make the Luminous ingot and the creative items:",
+                 "[li] The Source Jar for Ars",
+                 "[li] The Blood Drop for EvilCraft",
+                 "[li] The bookshelf for Create: Enchantment Industry",
+                 "{page}",
+                 "[note] World Tier: Pinnacle."]},
+      "es_es": {"title": "Acto VI: la luz hecha sólida", "subtitle": "Seis colores de luz.",
+        "text": ["[lead] Los aldeanos de [chapter:guide_entrelumen_solsticio|Solsticio] venden seis Luminosidades, una por disciplina.",
+                 "La violeta, [item:entrelumen:luminosity_arcane|Luminosidad Arcana], es la de la magia. Con ellas se hacen el lingote Luminoso y los ítems creativos:",
+                 "[li] La Jarra de fuente para Ars",
+                 "[li] La Gota de sangre para EvilCraft",
+                 "[li] La biblioteca para Create: Enchantment Industry",
+                 "{page}",
+                 "[note] Nivel de mundo: Pináculo."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:pack/kubejs/data/entrelumen/recipe/luminous_ingot.json", "repo:pack/kubejs/data/entrelumen/recipe/creative/evilcraft/creative_blood_drop.json", "repo:docs/design/solsticio-commerce.md"]
+    },
+    {
+      "key": "magic_keys", "deps": ["magic_act1"], "type": "checkmark", "optional": true, "layout": {"x": 5.5, "y": 4.6, "size": 1.0, "shape": "diamond"},
+      "icon": "minecraft:tripwire_hook",
+      "en_us": {"title": "Where the magic keys went", "subtitle": "All of them can move.",
+        "text": ["[lead] Every school's shortcut, and all of them can be changed under Controls.",
+                 "[li] Ars radial: [key:key.ars_nouveau.selection_hud]",
+                 "[li] Iron's wheel: [key:key.irons_spellbooks.spell_wheel]; cast: [key:key.irons_spellbooks.spellbook_cast]",
+                 "[li] Psi: [key:psimisc.keybind]",
+                 "[li] Mahou Tsukai's circle: [key:key.drawMahoujin]",
+                 "{page}",
+                 "[li] Occultism's satchel: [key:key.occultism.backpack]; ender bag: [key:key.occultism.ender_bag]",
+                 "[li] Apotheosis: [key:key.apotheosis.open_world_tier_select] World Tiers, [key:key.apotheosis.toggle_radial_mining] radial mining, [key:key.apotheosis.link_item_to_chat] link item"]},
+      "es_es": {"title": "Dónde quedaron las teclas", "subtitle": "Todas se pueden mover.",
+        "text": ["[lead] El atajo de cada escuela, y todos se cambian en Controles.",
+                 "[li] Radial de Ars: [key:key.ars_nouveau.selection_hud]",
+                 "[li] Rueda de Iron's: [key:key.irons_spellbooks.spell_wheel]; lanzar: [key:key.irons_spellbooks.spellbook_cast]",
+                 "[li] Psi: [key:psimisc.keybind]",
+                 "[li] Círculo de Mahou Tsukai: [key:key.drawMahoujin]",
+                 "{page}",
+                 "[li] Morral de Occultism: [key:key.occultism.backpack]; bolsa de ender: [key:key.occultism.ender_bag]",
+                 "[li] Apotheosis: [key:key.apotheosis.open_world_tier_select] Niveles de mundo, [key:key.apotheosis.toggle_radial_mining] minado radial, [key:key.apotheosis.link_item_to_chat] enlazar ítem"]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt#key_key.ars_nouveau.selection_hud", "repo:pack/config/defaultoptions/keybindings.txt#key_key.irons_spellbooks.spell_wheel", "repo:pack/config/defaultoptions/keybindings.txt#key_psimisc.keybind", "repo:pack/config/defaultoptions/keybindings.txt#key_key.drawMahoujin", "repo:pack/config/defaultoptions/keybindings.txt#key_key.occultism.backpack", "repo:pack/config/defaultoptions/keybindings.txt#key_key.apotheosis.open_world_tier_select"]
+    },
+    {
+      "key": "magic_removed", "deps": ["magic_act3"], "type": "checkmark", "optional": true, "layout": {"x": 18.4, "y": 1.3, "size": 1.0, "shape": "diamond"},
+      "icon": "minecraft:barrier",
+      "en_us": {"title": "Shortcuts the pack closed", "subtitle": "Every school keeps its place in line.",
+        "text": ["[lead] A few shortcuts stay closed.",
+                 "[li] Reliquary's Alkahestry Tome (item duplication) and its spawn-egg crafting",
+                 "[li] Apotheosis's spawner runes: copper augments replace them",
+                 "[li] Portable spawners",
+                 "Everything else keeps its native recipe unless its chapter says otherwise."]},
+      "es_es": {"title": "Atajos que el pack cerró", "subtitle": "Cada escuela respeta la fila.",
+        "text": ["[lead] Unos pocos atajos quedan cerrados.",
+                 "[li] El Alkahestry Tome de Reliquary (duplicar ítems) y su crafteo de huevos",
+                 "[li] Las runas de spawner de Apotheosis: las reemplazan los aumentadores de cobre",
+                 "[li] Los spawners portátiles",
+                 "Todo lo demás mantiene su receta nativa salvo que su capítulo diga otra cosa."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js", "repo:pack/kubejs/server_scripts/entrelumen_apotheosis_balance.js", "repo:pack/config/apothic_spawners.cfg"]
+    },
+    {
+      "key": "magic_guides", "deps": ["magic_act2"], "type": "checkmark", "optional": true, "layout": {"x": 14.2, "y": 1.4, "size": 1.0, "shape": "circle"},
+      "icon": "minecraft:writable_book",
+      "en_us": {"title": "Every school has a book", "subtitle": "Most of them you can craft.",
+        "text": ["[lead] Most guides craft from a book.",
+                 "[li] [hl|Tattered Tome]: Ars Nouveau",
+                 "[li] [hl|Dictionary of Spirits]: Occultism",
+                 "[li] [hl|Encyclopedia Arcana]: Malum",
+                 "[li] [hl|Book of Natural Aura]: Nature's Aura",
+                 "[li] [hl|Chronicle of Shadows]: Apotheosis",
+                 "[li] [hl|Knowledge Compendium]: Mahou Tsukai",
+                 "{page}",
+                 "[li] EvilCraft's is chest loot",
+                 "[li] Psi's is cast onto a book",
+                 "[li] Reliquary uses EMI"]},
+      "es_es": {"title": "Cada escuela tiene su libro", "subtitle": "Casi todos se fabrican.",
+        "text": ["[lead] Casi todas las guías salen de un libro.",
+                 "[li] [hl|Libreta Gastada]: Ars Nouveau",
+                 "[li] [hl|Diccionario de espíritus]: Occultism",
+                 "[li] [hl|Encyclopedia Arcana]: Malum",
+                 "[li] [hl|Libro del aura natural]: Nature's Aura",
+                 "[li] [hl|Chronicle of Shadows]: Apotheosis",
+                 "[li] [hl|Compendio del conocimiento]: Mahou Tsukai",
+                 "{page}",
+                 "[li] La de EvilCraft sale de cofres",
+                 "[li] La de Psi se lanza sobre un libro",
+                 "[li] Reliquary usa EMI"]},
+      "sources": ["repo:content/sectors/sector_ars_nouveau.json", "repo:content/sectors/sector_occultism_rituals.json", "repo:content/sectors/sector_malum.json", "repo:content/sectors/sector_naturesaura.json", "repo:content/sectors/sector_evilcraft.json", "repo:content/sectors/sector_psi.json", "repo:docs/design/mod-pingpong.md#Otras integraciones"]
+    },
+    {
+      "key": "magic_mastery", "deps": ["magic_act6", "magic_arcane_module"], "type": "checkmark", "layout": {"x": 38.5, "y": 5.0, "size": 2.0, "shape": "gear"},
+      "icon": "entrelumen:luminosity_arcane",
+      "en_us": {"title": "Magic that belongs to the story",
+        "text": ["[lead] Magic is half of what the Atlas asks for, and which half is yours to pick.",
+                 "[li] [item:entrelumen:living_matrix|Living Matrices] from your Ars workshop",
+                 "[li] Lenses and seals from the dark schools",
+                 "[li] A [item:entrelumen:renewal_engine|Renewal Engine] that grows the world back",
+                 "[li] An [item:entrelumen:arcane_module|Arcane Module] that listens",
+                 "The light came back. Part of it was yours."]},
+      "es_es": {"title": "Una magia que es historia",
+        "text": ["[lead] La magia es la mitad de lo que pide el Atlas, y cuál mitad, la elegís vos.",
+                 "[li] [item:entrelumen:living_matrix|Matrices vivas] de tu taller de Ars",
+                 "[li] Lentes y sellos de las escuelas oscuras",
+                 "[li] Un [item:entrelumen:renewal_engine|Motor de renovación] que hace crecer el mundo",
+                 "[li] Un [item:entrelumen:arcane_module|Módulo arcano] que escucha",
+                 "La luz volvió. Una parte la trajiste vos."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js", "repo:docs/design/luminous-gear.md"]
+    },
+    {
+      "key": "magic_toy_star", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": -3.5, "y": -2.6, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:nether_star",
+      "en_us": {"title": "Make a Wish",
+        "text": ["[lead] One shooting star, right across the top of the sky.",
+                 "The pack does not guarantee wishes."]},
+      "es_es": {"title": "Pedir un deseo",
+        "text": ["[lead] Una estrella fugaz, justo por arriba del cielo.",
+                 "El pack no garantiza los deseos."]},
+      "sources": ["repo:docs/design/mod-integration.md"]
+    },
+    {
+      "key": "magic_toy_moon", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 36.5, "y": -1.6, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:clock",
+      "en_us": {"title": "Raise the Moon",
+        "text": ["[lead] A full moon over the far corner of the sky.",
+                 "Every sky is better with one."]},
+      "es_es": {"title": "Levantar la luna",
+        "text": ["[lead] Una luna llena en el rincón más lejano del cielo.",
+                 "Todo cielo queda mejor con una."]},
+      "sources": ["repo:docs/design/story-bible.md"]
+    }
+  ],
+  "presentation": 2,
+  "motif": "starlight",
+  "art": [
+    {"id": "title", "text": {"en_us": "Magic in ENTRELUMEN", "es_es": "Magia en ENTRELUMEN"}, "x": -5.4, "y": -12.0, "scale": 3, "tint": "#F3E7C6", "align": "start"},
+    {"id": "sky_frame", "frame": [-6.0, -13.0, 42.0, 9.6], "color": "#6F7FB0", "thickness_px": 2.0, "alpha": 200, "corners": true, "reveal": "magic_welcome", "sketch": true, "order": -10},
+    {"id": "stars_0_0", "picture": "forbidden_arcanus:textures/gui/research/background_stars.png", "x": 0, "y": -7.35, "w": 12, "h": 11.3, "alpha": 190, "reveal": "magic_welcome", "sketch": true, "order": -12},
+    {"id": "stars_0_1", "picture": "forbidden_arcanus:textures/gui/research/background_stars.png", "x": 0, "y": 3.95, "w": 12, "h": 11.3, "alpha": 190, "reveal": "magic_welcome", "sketch": true, "order": -12},
+    {"id": "stars_1_0", "picture": "forbidden_arcanus:textures/gui/research/background_stars.png", "x": 12, "y": -7.35, "w": 12, "h": 11.3, "alpha": 190, "reveal": "magic_welcome", "sketch": true, "order": -12},
+    {"id": "stars_1_1", "picture": "forbidden_arcanus:textures/gui/research/background_stars.png", "x": 12, "y": 3.95, "w": 12, "h": 11.3, "alpha": 190, "reveal": "magic_welcome", "sketch": true, "order": -12},
+    {"id": "stars_2_0", "picture": "forbidden_arcanus:textures/gui/research/background_stars.png", "x": 24, "y": -7.35, "w": 12, "h": 11.3, "alpha": 190, "reveal": "magic_welcome", "sketch": true, "order": -12},
+    {"id": "stars_2_1", "picture": "forbidden_arcanus:textures/gui/research/background_stars.png", "x": 24, "y": 3.95, "w": 12, "h": 11.3, "alpha": 190, "reveal": "magic_welcome", "sketch": true, "order": -12},
+    {"id": "stars_3_0", "picture": "forbidden_arcanus:textures/gui/research/background_stars.png", "x": 36, "y": -7.35, "w": 12, "h": 11.3, "alpha": 190, "reveal": "magic_welcome", "sketch": true, "order": -12},
+    {"id": "stars_3_1", "picture": "forbidden_arcanus:textures/gui/research/background_stars.png", "x": 36, "y": 3.95, "w": 12, "h": 11.3, "alpha": 190, "reveal": "magic_welcome", "sketch": true, "order": -12},
+    {"id": "galaxy", "picture": "theurgy:textures/gui/book/bg_nightsky.png", "x": 18, "y": -1.7, "w": 48, "h": 22.6, "alpha": 110, "reveal": "magic_act2", "order": -11},
+    {"id": "nebula", "picture": "theurgy:textures/gui/book/bg_nightsky2.png", "x": 18, "y": -1.7, "w": 48, "h": 22.6, "alpha": 85, "reveal": "magic_act5", "order": -11},
+    {"id": "ecliptic", "through": ["magic_welcome", "magic_act1", "magic_act2", "magic_act3", "magic_act4", "magic_act5", "magic_act6", "magic_mastery"], "dots": "#CFE3FF", "size": 0.14, "step": 0.55, "smooth": 3, "grow": true, "sketch": true, "alpha": 230, "order": -3},
+    {"id": "apotheosis_line0", "path": [[-2.0, -8.2], [-1.0, -8.9], [0.0, -9.5], [1.0, -10.2], [2.0, -10.8]], "color": "#FF8A3D", "width": 0.05, "alpha": 210, "grow": ["magic_act3", "magic_act4", "magic_act5", "magic_act6"], "sketch": {"color": "#FF8A3D", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "apotheosis_star0", "glow": [-2.0, -8.2], "r": 0.8, "tint": "#FF8A3D", "alpha": 255, "reveal": "magic_act1", "order": -3},
+    {"id": "apotheosis_star1", "glow": [-1.0, -8.9], "r": 0.62, "tint": "#FF8A3D", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "apotheosis_star2", "glow": [0.0, -9.5], "r": 0.62, "tint": "#FF8A3D", "alpha": 255, "reveal": "magic_act4", "order": -3},
+    {"id": "apotheosis_star3", "glow": [1.0, -10.2], "r": 0.62, "tint": "#FF8A3D", "alpha": 255, "reveal": "magic_act5", "order": -3},
+    {"id": "apotheosis_star4", "glow": [2.0, -10.8], "r": 0.62, "tint": "#FF8A3D", "alpha": 255, "reveal": "magic_act6", "order": -3},
+    {"id": "apotheosis_label", "text": {"en_us": "Apotheosis", "es_es": "Apotheosis"}, "x": 0, "y": -7.3500000000000005, "scale": 1.5, "tint": "#FF8A3D", "reveal": "magic_schools"},
+    {"id": "apotheosis_landmark", "item": "apotheosis:salvaging_table", "x": 0, "y": 7.0, "size": 1.2, "reveal": "magic_act1"},
+    {"id": "apotheosis_book", "picture": "minecraft:textures/item/writable_book.png", "x": 0.75, "y": 8.05, "w": 0.55, "h": 0.55, "tint": "#FF8A3D", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "evilcraft_line0", "path": [[5.6, -9.5], [6.5, -10.9], [7.4, -9.5], [7.2, -8.5], [6.5, -8.1], [5.8, -8.5], [5.6, -9.5]], "color": "#FF7A7A", "width": 0.05, "alpha": 210, "grow": ["magic_act1", "magic_act1", "magic_act2", "magic_seal", "magic_seal", "magic_act2"], "sketch": {"color": "#FF7A7A", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "evilcraft_star0", "glow": [6.5, -10.9], "r": 0.8, "tint": "#FF7A7A", "alpha": 255, "reveal": "magic_act1", "order": -3},
+    {"id": "evilcraft_star1", "glow": [7.4, -9.5], "r": 0.62, "tint": "#FF7A7A", "alpha": 255, "reveal": "magic_act1", "order": -3},
+    {"id": "evilcraft_star2", "glow": [7.2, -8.5], "r": 0.62, "tint": "#FF7A7A", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "evilcraft_star3", "glow": [6.5, -8.1], "r": 0.62, "tint": "#FF7A7A", "alpha": 255, "reveal": "magic_seal", "order": -3},
+    {"id": "evilcraft_star4", "glow": [5.8, -8.5], "r": 0.62, "tint": "#FF7A7A", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "evilcraft_star5", "glow": [5.6, -9.5], "r": 0.62, "tint": "#FF7A7A", "alpha": 255, "reveal": "magic_act1", "order": -3},
+    {"id": "evilcraft_label", "text": {"en_us": "EvilCraft", "es_es": "EvilCraft"}, "x": 6.5, "y": -7.3500000000000005, "scale": 1.5, "tint": "#FF7A7A", "reveal": "magic_schools"},
+    {"id": "evilcraft_landmark", "item": "evilcraft:blood_infuser", "x": 6.5, "y": 6.5, "size": 1.2, "reveal": "magic_act1"},
+    {"id": "evilcraft_book", "picture": "minecraft:textures/item/book.png", "x": 7.25, "y": 7.55, "w": 0.55, "h": 0.55, "tint": "#FF7A7A", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "ars_line0", "path": [[13, -10.7], [14.13, -10.05], [14.13, -8.75], [13, -8.1], [11.87, -8.75], [11.87, -10.05], [13, -10.7]], "color": "#C7A0F5", "width": 0.05, "alpha": 210, "grow": ["magic_act2", "magic_act2", "magic_act2", "magic_act2", "magic_living_matrix", "magic_living_matrix"], "sketch": {"color": "#C7A0F5", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "ars_line1", "path": [[14.13, -10.05], [13, -9.4], [11.87, -8.75]], "color": "#C7A0F5", "width": 0.05, "alpha": 210, "grow": ["magic_living_matrix", "magic_living_matrix"], "sketch": {"color": "#C7A0F5", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "ars_star0", "glow": [13, -10.7], "r": 0.8, "tint": "#C7A0F5", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "ars_star1", "glow": [14.13, -10.05], "r": 0.62, "tint": "#C7A0F5", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "ars_star2", "glow": [14.13, -8.75], "r": 0.62, "tint": "#C7A0F5", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "ars_star3", "glow": [13, -8.1], "r": 0.62, "tint": "#C7A0F5", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "ars_star4", "glow": [11.87, -8.75], "r": 0.62, "tint": "#C7A0F5", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "ars_star5", "glow": [11.87, -10.05], "r": 0.62, "tint": "#C7A0F5", "alpha": 255, "reveal": "magic_living_matrix", "order": -3},
+    {"id": "ars_star6", "glow": [13, -9.4], "r": 0.62, "tint": "#C7A0F5", "alpha": 255, "reveal": "magic_living_matrix", "order": -3},
+    {"id": "ars_label", "text": {"en_us": "Ars Nouveau", "es_es": "Ars Nouveau"}, "x": 13, "y": -7.3500000000000005, "scale": 1.5, "tint": "#C7A0F5", "reveal": "magic_schools"},
+    {"id": "ars_landmark", "item": "ars_nouveau:enchanting_apparatus", "x": 13, "y": 8.0, "size": 1.2, "reveal": "magic_act2"},
+    {"id": "ars_book", "picture": "minecraft:textures/item/book.png", "x": 13.75, "y": 9.05, "w": 0.55, "h": 0.55, "tint": "#C7A0F5", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "occultism_line0", "path": [[19.5, -10.9], [20.38, -8.19], [18.07, -9.86], [20.93, -9.86], [18.62, -8.19], [19.5, -10.9]], "color": "#CE8BFF", "width": 0.05, "alpha": 210, "grow": ["magic_act2", "magic_act2", "magic_lens", "magic_lens", "magic_act3"], "sketch": {"color": "#CE8BFF", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "occultism_star0", "glow": [19.5, -10.9], "r": 0.8, "tint": "#CE8BFF", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "occultism_star1", "glow": [20.93, -9.86], "r": 0.62, "tint": "#CE8BFF", "alpha": 255, "reveal": "magic_lens", "order": -3},
+    {"id": "occultism_star2", "glow": [20.38, -8.19], "r": 0.62, "tint": "#CE8BFF", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "occultism_star3", "glow": [18.62, -8.19], "r": 0.62, "tint": "#CE8BFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "occultism_star4", "glow": [18.07, -9.86], "r": 0.62, "tint": "#CE8BFF", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "occultism_label", "text": {"en_us": "Occultism", "es_es": "Occultism"}, "x": 19.5, "y": -7.3500000000000005, "scale": 1.5, "tint": "#CE8BFF", "reveal": "magic_schools"},
+    {"id": "occultism_landmark", "item": "occultism:golden_sacrificial_bowl", "x": 19.5, "y": 7.0, "size": 1.2, "reveal": "magic_act2"},
+    {"id": "occultism_book", "picture": "minecraft:textures/item/book.png", "x": 20.25, "y": 8.05, "w": 0.55, "h": 0.55, "tint": "#CE8BFF", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "naturesaura_line0", "path": [[26, -8.0], [26, -9.2], [26, -10.8]], "color": "#F0CC52", "width": 0.05, "alpha": 210, "grow": ["magic_act2", "magic_act2"], "sketch": {"color": "#F0CC52", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "naturesaura_line1", "path": [[24.8, -10.2], [26, -9.2], [27.2, -10.2]], "color": "#F0CC52", "width": 0.05, "alpha": 210, "grow": ["magic_renewal", "magic_renewal"], "sketch": {"color": "#F0CC52", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "naturesaura_star0", "glow": [26, -8.0], "r": 0.8, "tint": "#F0CC52", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "naturesaura_star1", "glow": [26, -9.2], "r": 0.62, "tint": "#F0CC52", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "naturesaura_star2", "glow": [26, -10.8], "r": 0.62, "tint": "#F0CC52", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "naturesaura_star3", "glow": [24.8, -10.2], "r": 0.62, "tint": "#F0CC52", "alpha": 255, "reveal": "magic_renewal", "order": -3},
+    {"id": "naturesaura_star4", "glow": [27.2, -10.2], "r": 0.62, "tint": "#F0CC52", "alpha": 255, "reveal": "magic_renewal", "order": -3},
+    {"id": "naturesaura_label", "text": {"en_us": "Nature's Aura", "es_es": "Nature's Aura"}, "x": 26, "y": -7.3500000000000005, "scale": 1.5, "tint": "#F0CC52", "reveal": "magic_schools"},
+    {"id": "naturesaura_landmark", "item": "naturesaura:ancient_sapling", "x": 26, "y": 7.0, "size": 1.2, "reveal": "magic_act2"},
+    {"id": "naturesaura_book", "picture": "minecraft:textures/item/book.png", "x": 26.75, "y": 8.05, "w": 0.55, "h": 0.55, "tint": "#F0CC52", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "irons_line0", "path": [[30.7, -8.2], [31.9, -9.0], [33.1, -9.8], [34.3, -10.6]], "color": "#8EC8FF", "width": 0.05, "alpha": 210, "grow": ["magic_act2", "magic_act2", "magic_act2"], "sketch": {"color": "#8EC8FF", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "irons_line1", "path": [[32.77, -10.3], [33.1, -9.8], [33.43, -9.3]], "color": "#8EC8FF", "width": 0.05, "alpha": 210, "grow": ["magic_act3", "magic_act3"], "sketch": {"color": "#8EC8FF", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "irons_star0", "glow": [30.7, -8.2], "r": 0.8, "tint": "#8EC8FF", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "irons_star1", "glow": [31.9, -9.0], "r": 0.62, "tint": "#8EC8FF", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "irons_star2", "glow": [33.1, -9.8], "r": 0.62, "tint": "#8EC8FF", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "irons_star3", "glow": [34.3, -10.6], "r": 0.62, "tint": "#8EC8FF", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "irons_star4", "glow": [32.77, -10.3], "r": 0.62, "tint": "#8EC8FF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "irons_star5", "glow": [33.43, -9.3], "r": 0.62, "tint": "#8EC8FF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "irons_label", "text": {"en_us": "Iron's Spells", "es_es": "Iron's Spells"}, "x": 32.5, "y": -7.3500000000000005, "scale": 1.5, "tint": "#8EC8FF", "reveal": "magic_schools"},
+    {"id": "irons_landmark", "item": "irons_spellbooks:arcane_anvil", "x": 32.5, "y": 8.0, "size": 1.2, "reveal": "magic_act2"},
+    {"id": "irons_book", "picture": "minecraft:textures/item/enchanted_book.png", "x": 33.25, "y": 9.05, "w": 0.55, "h": 0.55, "tint": "#8EC8FF", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "forbidden_line0", "path": [[3.3, -7.0], [4.05, -5.8], [3.9, -4.0], [2.7, -4.0], [2.55, -5.8], [3.3, -7.0]], "color": "#A99BFF", "width": 0.05, "alpha": 210, "grow": ["magic_act2", "magic_seal", "magic_seal", "magic_seal", "magic_act2"], "sketch": {"color": "#A99BFF", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "forbidden_star0", "glow": [3.3, -7.0], "r": 0.8, "tint": "#A99BFF", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "forbidden_star1", "glow": [4.05, -5.8], "r": 0.62, "tint": "#A99BFF", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "forbidden_star2", "glow": [3.9, -4.0], "r": 0.62, "tint": "#A99BFF", "alpha": 255, "reveal": "magic_seal", "order": -3},
+    {"id": "forbidden_star3", "glow": [2.7, -4.0], "r": 0.62, "tint": "#A99BFF", "alpha": 255, "reveal": "magic_seal", "order": -3},
+    {"id": "forbidden_star4", "glow": [2.55, -5.8], "r": 0.62, "tint": "#A99BFF", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "forbidden_label", "text": {"en_us": "Forbidden and Arcanus", "es_es": "Forbidden and Arcanus"}, "x": 3.3, "y": -3.3500000000000005, "scale": 1.5, "tint": "#A99BFF", "reveal": "magic_schools"},
+    {"id": "forbidden_landmark", "item": "forbidden_arcanus:arcane_crystal_obelisk", "x": 3.3, "y": 7.0, "size": 1.2, "reveal": "magic_act2"},
+    {"id": "forbidden_book", "picture": "minecraft:textures/item/book.png", "x": 4.05, "y": 8.05, "w": 0.55, "h": 0.55, "tint": "#A99BFF", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "theurgy_line0", "path": [[8.6, -4.3], [8.6, -5.9], [9.8, -7.0], [11.0, -5.9], [11.0, -4.3], [8.6, -4.3]], "color": "#EBCB4F", "width": 0.05, "alpha": 210, "grow": ["magic_act2", "magic_act4", "magic_act4", "magic_act4", "magic_act4"], "sketch": {"color": "#EBCB4F", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "theurgy_line1", "path": [[8.6, -5.9], [11.0, -5.9]], "color": "#EBCB4F", "width": 0.05, "alpha": 210, "grow": ["magic_act2"], "sketch": {"color": "#EBCB4F", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "theurgy_star0", "glow": [8.6, -5.9], "r": 0.8, "tint": "#EBCB4F", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "theurgy_star1", "glow": [11.0, -5.9], "r": 0.62, "tint": "#EBCB4F", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "theurgy_star2", "glow": [11.0, -4.3], "r": 0.62, "tint": "#EBCB4F", "alpha": 255, "reveal": "magic_act4", "order": -3},
+    {"id": "theurgy_star3", "glow": [8.6, -4.3], "r": 0.62, "tint": "#EBCB4F", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "theurgy_star4", "glow": [9.8, -7.0], "r": 0.62, "tint": "#EBCB4F", "alpha": 255, "reveal": "magic_act4", "order": -3},
+    {"id": "theurgy_label", "text": {"en_us": "Theurgy", "es_es": "Theurgy"}, "x": 9.8, "y": -3.3500000000000005, "scale": 1.5, "tint": "#EBCB4F", "reveal": "magic_schools"},
+    {"id": "theurgy_landmark", "item": "theurgy:calcination_oven", "x": 9.8, "y": 7.5, "size": 1.2, "reveal": "magic_act2"},
+    {"id": "theurgy_book", "picture": "minecraft:textures/item/book.png", "x": 10.55, "y": 8.55, "w": 0.55, "h": 0.55, "tint": "#EBCB4F", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "reliquary_line0", "path": [[16.3, -6.9], [16.3, -5.8], [16.3, -3.9]], "color": "#E3B955", "width": 0.05, "alpha": 210, "grow": ["magic_act2", "magic_act2"], "sketch": {"color": "#E3B955", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "reliquary_line1", "path": [[15.3, -5.8], [16.3, -5.8], [17.3, -5.8]], "color": "#E3B955", "width": 0.05, "alpha": 210, "grow": ["magic_act2", "magic_act2"], "sketch": {"color": "#E3B955", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "reliquary_star0", "glow": [16.3, -6.9], "r": 0.8, "tint": "#E3B955", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "reliquary_star1", "glow": [16.3, -5.8], "r": 0.62, "tint": "#E3B955", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "reliquary_star2", "glow": [16.3, -3.9], "r": 0.62, "tint": "#E3B955", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "reliquary_star3", "glow": [15.3, -5.8], "r": 0.62, "tint": "#E3B955", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "reliquary_star4", "glow": [17.3, -5.8], "r": 0.62, "tint": "#E3B955", "alpha": 255, "reveal": "magic_act2", "order": -3},
+    {"id": "reliquary_label", "text": {"en_us": "Reliquary", "es_es": "Reliquary"}, "x": 16.3, "y": -3.3500000000000005, "scale": 1.5, "tint": "#E3B955", "reveal": "magic_schools"},
+    {"id": "reliquary_landmark", "item": "reliquary:apothecary_cauldron", "x": 16.3, "y": 8.0, "size": 1.2, "reveal": "magic_act2"},
+    {"id": "reliquary_book", "picture": "minecraft:textures/item/book.png", "x": 17.05, "y": 9.05, "w": 0.55, "h": 0.55, "tint": "#E3B955", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "psi_line0", "path": [[22.8, -3.9], [22.8, -5.0], [22.8, -6.9]], "color": "#7FDBFF", "width": 0.05, "alpha": 210, "grow": ["magic_act3", "magic_act3"], "sketch": {"color": "#7FDBFF", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "psi_line1", "path": [[21.7, -6.8], [21.7, -5.7], [22.8, -5.0], [23.9, -5.7], [23.9, -6.8]], "color": "#7FDBFF", "width": 0.05, "alpha": 210, "grow": ["magic_act3", "magic_act3", "magic_act3", "magic_act3"], "sketch": {"color": "#7FDBFF", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "psi_star0", "glow": [22.8, -3.9], "r": 0.8, "tint": "#7FDBFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "psi_star1", "glow": [22.8, -5.0], "r": 0.62, "tint": "#7FDBFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "psi_star2", "glow": [22.8, -6.9], "r": 0.62, "tint": "#7FDBFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "psi_star3", "glow": [21.7, -6.8], "r": 0.62, "tint": "#7FDBFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "psi_star4", "glow": [21.7, -5.7], "r": 0.62, "tint": "#7FDBFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "psi_star5", "glow": [23.9, -5.7], "r": 0.62, "tint": "#7FDBFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "psi_star6", "glow": [23.9, -6.8], "r": 0.62, "tint": "#7FDBFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "psi_label", "text": {"en_us": "Psi", "es_es": "Psi"}, "x": 22.8, "y": -3.3500000000000005, "scale": 1.5, "tint": "#7FDBFF", "reveal": "magic_schools"},
+    {"id": "psi_landmark", "item": "psi:cad_assembler", "x": 22.8, "y": 6.5, "size": 1.2, "reveal": "magic_act3"},
+    {"id": "psi_book", "picture": "minecraft:textures/item/writable_book.png", "x": 23.55, "y": 7.55, "w": 0.55, "h": 0.55, "tint": "#7FDBFF", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "mahou_line0", "path": [[29.3, -6.9], [30.6, -4.65], [28.0, -4.65], [29.3, -6.9]], "color": "#F07266", "width": 0.05, "alpha": 210, "grow": ["magic_act3", "magic_act3", "magic_act3"], "sketch": {"color": "#F07266", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "mahou_line1", "path": [[30.6, -6.15], [29.3, -3.9], [28.0, -6.15], [30.6, -6.15]], "color": "#F07266", "width": 0.05, "alpha": 210, "grow": ["magic_act5", "magic_act5", "magic_act5"], "sketch": {"color": "#F07266", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "mahou_star0", "glow": [29.3, -6.9], "r": 0.8, "tint": "#F07266", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "mahou_star1", "glow": [30.6, -6.15], "r": 0.62, "tint": "#F07266", "alpha": 255, "reveal": "magic_act5", "order": -3},
+    {"id": "mahou_star2", "glow": [30.6, -4.65], "r": 0.62, "tint": "#F07266", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "mahou_star3", "glow": [29.3, -3.9], "r": 0.62, "tint": "#F07266", "alpha": 255, "reveal": "magic_act5", "order": -3},
+    {"id": "mahou_star4", "glow": [28.0, -4.65], "r": 0.62, "tint": "#F07266", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "mahou_star5", "glow": [28.0, -6.15], "r": 0.62, "tint": "#F07266", "alpha": 255, "reveal": "magic_act5", "order": -3},
+    {"id": "mahou_label", "text": {"en_us": "Mahou Tsukai", "es_es": "Mahou Tsukai"}, "x": 29.3, "y": -3.3500000000000005, "scale": 1.5, "tint": "#F07266", "reveal": "magic_schools"},
+    {"id": "mahou_landmark", "picture": "mahoutsukai:textures/item/mtguidebook.png", "x": 29.3, "y": 7.6, "w": 1.0, "h": 1.0, "reveal": "magic_act3"},
+    {"id": "mahou_book", "picture": "minecraft:textures/item/book.png", "x": 30.05, "y": 8.55, "w": 0.55, "h": 0.55, "tint": "#F07266", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "malum_line0", "path": [[34.1, -5.4], [35.0, -6.15], [36.6, -6.15], [37.5, -5.4]], "color": "#E07BFF", "width": 0.05, "alpha": 210, "grow": ["magic_act3", "magic_act3", "magic_act3"], "sketch": {"color": "#E07BFF", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "malum_line1", "path": [[37.5, -5.4], [36.6, -4.65], [35.0, -4.65], [34.1, -5.4]], "color": "#E07BFF", "width": 0.05, "alpha": 210, "grow": ["magic_lens", "magic_lens", "magic_lens"], "sketch": {"color": "#E07BFF", "alpha": 90, "width": 0.06}, "order": -4},
+    {"id": "malum_star0", "glow": [34.1, -5.4], "r": 0.8, "tint": "#E07BFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "malum_star1", "glow": [35.0, -6.15], "r": 0.62, "tint": "#E07BFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "malum_star2", "glow": [36.6, -6.15], "r": 0.62, "tint": "#E07BFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "malum_star3", "glow": [37.5, -5.4], "r": 0.62, "tint": "#E07BFF", "alpha": 255, "reveal": "magic_act3", "order": -3},
+    {"id": "malum_star4", "glow": [36.6, -4.65], "r": 0.62, "tint": "#E07BFF", "alpha": 255, "reveal": "magic_lens", "order": -3},
+    {"id": "malum_star5", "glow": [35.0, -4.65], "r": 0.62, "tint": "#E07BFF", "alpha": 255, "reveal": "magic_lens", "order": -3},
+    {"id": "malum_star6", "glow": [35.8, -5.4], "r": 0.62, "tint": "#E07BFF", "alpha": 255, "reveal": "magic_seal", "order": -3},
+    {"id": "malum_label", "text": {"en_us": "Malum", "es_es": "Malum"}, "x": 35.8, "y": -3.3500000000000005, "scale": 1.5, "tint": "#E07BFF", "reveal": "magic_schools"},
+    {"id": "malum_landmark", "item": "malum:spirit_altar", "x": 35.8, "y": 7.5, "size": 1.2, "reveal": "magic_act3"},
+    {"id": "malum_book", "picture": "minecraft:textures/item/enchanted_book.png", "x": 36.55, "y": 8.55, "w": 0.55, "h": 0.55, "tint": "#E07BFF", "alpha": 255, "reveal": "magic_guides", "order": -3},
+    {"id": "hills", "mosaic": [-6.0, 6.6], "cell": 0.5, "legend": {"A": "#1A2246", "X": "#0A0E1F"}, "rows": ["...............................................................................................A", "..............AA.......AAAAAA........................AAAAA.......AAA........................AAAX", "...........AAAXXAAAAAAAXXXXXXAA....................AAXXXXXAAAAAAAXXXAA.....................AXXXX", "AA........AXXXXXXXXXXXXXXXXXXXXA.......AAA........AXXXXXXXXXXXXXXXXXXXAA........AAAA.....AAXXXXX", "XXAA....AAXXXXXXXXXXXXXXXXXXXXXXAAAAAAAXXXAAAAAAAAXXXXXXXXXXXXXXXXXXXXXXAA...AAAXXXXAAAAAXXXXXXX", "XXXXAAAAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXAAAXXXXXXXXXXXXXXXXXXX"], "reveal": "magic_welcome", "order": -7},
+    {"id": "reliquary_closed0", "path": [[16.8, 7.6], [17.3, 8.1]], "color": "#FF5A4A", "width": 0.1, "reveal": "magic_removed", "order": 6},
+    {"id": "reliquary_closed1", "path": [[16.8, 8.1], [17.3, 7.6]], "color": "#FF5A4A", "width": 0.1, "reveal": "magic_removed", "order": 6},
+    {"id": "apotheosis_closed0", "path": [[0.5, 6.6], [1.0, 7.1]], "color": "#FF5A4A", "width": 0.1, "reveal": "magic_removed", "order": 6},
+    {"id": "apotheosis_closed1", "path": [[0.5, 7.1], [1.0, 6.6]], "color": "#FF5A4A", "width": 0.1, "reveal": "magic_removed", "order": 6},
+    {"id": "moon", "mosaic": [38.4, -10.9], "cell": 0.3, "legend": {"X": "#F4F7FF", "C": "#CDD6EA"}, "rows": ["....XXX....", "..XXXXXXX..", ".XXXXXXXXX.", ".XXXCXXXXX.", "XXXXXXXXXXX", "XXXXXXXCXXX", "XXXXXXXXXXX", ".XXXXXCXXX.", ".XXXXXXXXX.", "..XXXXXXX..", "....XXX...."], "reveal": "magic_toy_moon", "order": -3},
+    {"id": "moon_glow", "glow": [40.0, -9.25], "r": 3.6, "tint": "#DCE7FF", "alpha": 120, "reveal": "magic_toy_moon", "order": -8},
+    {"id": "shooting_0", "glow": [36.0, -10.5], "r": 0.85, "tint": "#FFFFFF", "alpha": 255, "reveal": "magic_toy_star", "order": -1},
+    {"id": "shooting_1", "glow": [34.5, -10.675], "r": 0.775, "tint": "#FFFFFF", "alpha": 230, "reveal": "magic_toy_star", "order": -1},
+    {"id": "shooting_2", "glow": [33.0, -10.85], "r": 0.7, "tint": "#FFFFFF", "alpha": 206, "reveal": "magic_toy_star", "order": -1},
+    {"id": "shooting_3", "glow": [31.5, -11.025], "r": 0.625, "tint": "#FFFFFF", "alpha": 181, "reveal": "magic_toy_star", "order": -1},
+    {"id": "shooting_4", "glow": [30.0, -11.2], "r": 0.55, "tint": "#FFFFFF", "alpha": 157, "reveal": "magic_toy_star", "order": -1},
+    {"id": "shooting_5", "glow": [28.5, -11.375], "r": 0.475, "tint": "#FFFFFF", "alpha": 133, "reveal": "magic_toy_star", "order": -1},
+    {"id": "shooting_6", "glow": [27.0, -11.55], "r": 0.4, "tint": "#FFFFFF", "alpha": 108, "reveal": "magic_toy_star", "order": -1},
+    {"id": "shooting_7", "glow": [25.5, -11.725], "r": 0.325, "tint": "#FFFFFF", "alpha": 84, "reveal": "magic_toy_star", "order": -1},
+    {"id": "shooting_8", "glow": [24.0, -11.9], "r": 0.25, "tint": "#FFFFFF", "alpha": 60, "reveal": "magic_toy_star", "order": -1}
+  ]
 }

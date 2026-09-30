@@ -4,478 +4,435 @@
   "act": "III",
   "icon": "minecraft:blaze_rod",
   "emblem": "minecraft:textures/item/blaze_rod.png",
-  "title": {
-    "en_us": "The Nether and the End",
-    "es_es": "El Nether y el End"
-  },
+  "title": {"en_us": "The Nether and the End", "es_es": "El Nether y el End"},
   "subtitle": {
     "en_us": "Two vanilla dimensions, rebuilt and crowded: what changes, what to look for and how to survive.",
     "es_es": "Dos dimensiones vanilla, rehechas y pobladas: qué cambia, qué buscar y cómo sobrevivir."
   },
+  "presentation": 2,
+  "motif": "cataclysm",
+  "medallion": {"x": -6.3, "y": 0.0},
+  "art": [
+    {"id": "title", "text": {"en_us": "The Nether and the End", "es_es": "El Nether y el End"}, "x": -8.0, "y": -12.3, "scale": 3, "align": "start", "tint": "#FF9A6A"},
+    {"id": "lbl_end", "text": {"en_us": "The End", "es_es": "El End"}, "x": 13.0, "y": -12.4, "scale": 2, "tint": "#C9B6FF"},
+    {"id": "lbl_over", "text": {"en_us": "Overworld", "es_es": "Superficie"}, "x": -8.0, "y": 3.1, "scale": 2, "align": "start", "tint": "#E8DCB5"},
+    {"id": "lbl_nether", "text": {"en_us": "The Nether", "es_es": "El Nether"}, "x": -8.0, "y": 11.5, "scale": 2, "align": "start", "tint": "#FF8A4A"},
+    {"id": "end_wash", "path": [[-9.0, -9.0], [28.0, -9.0]], "color": "#3B2A66", "alpha": 70, "width": 8.8, "order": -9},
+    {"id": "end_sky", "path": [[-9.0, -9.0], [28.0, -9.0]], "color": "#0B0718", "alpha": 175, "width": 8.8, "order": -8, "reveal": "netherend_end"},
+    {"id": "over_wash", "path": [[-9.0, -1.8], [28.0, -1.8]], "color": "#24345C", "alpha": 60, "width": 5.6, "order": -9},
+    {"id": "over_sky", "path": [[-9.0, -1.8], [28.0, -1.8]], "color": "#1C2A4E", "alpha": 130, "width": 5.6, "order": -8, "reveal": "netherend_welcome"},
+    {"id": "grass", "path": [[-9.0, 1.175], [28.0, 1.175]], "color": "#5F9440", "alpha": 210, "width": 0.35, "order": -7, "reveal": "netherend_welcome"},
+    {"id": "dirt", "path": [[-9.0, 1.625], [28.0, 1.625]], "color": "#6E4B2E", "alpha": 200, "width": 0.55, "order": -7, "reveal": "netherend_welcome"},
+    {"id": "crust", "path": [[-9.0, 2.9], [28.0, 2.9]], "color": "#43434A", "alpha": 190, "width": 2.0, "order": -7, "reveal": "netherend_welcome"},
+    {"id": "ground_line", "path": [[-9.0, 1.0], [28.0, 1.0]], "color": "#E8DCB5", "alpha": 70, "width": 0.07, "order": -6},
+    {"id": "nether_wash", "path": [[-9.0, 9.5], [28.0, 9.5]], "color": "#5A1E22", "alpha": 70, "width": 10.0, "order": -9},
+    {"id": "nether_bg", "path": [[-9.0, 9.5], [28.0, 9.5]], "color": "#260A0C", "alpha": 180, "width": 10.0, "order": -8, "reveal": "netherend_portal"},
+    {"id": "nether_roof", "path": [[-9.0, 4.2], [28.0, 4.2]], "color": "#6E2A30", "alpha": 220, "width": 0.6, "order": -7, "reveal": "netherend_portal"},
+    {"id": "roof_rock", "scatter": ["minecraft:textures/block/netherrack.png", "minecraft:textures/block/blackstone.png"], "region": [-8.8, 3.95, 27.8, 4.45], "count": 9, "size": [0.5, 0.65], "alphas": [140, 200], "seed": 21, "reveal": "netherend_portal", "order": -6},
+    {"id": "lava_wash", "path": [[-9.0, 13.3], [28.0, 13.3]], "color": "#FF5A1A", "alpha": 60, "width": 2.6, "order": -9},
+    {"id": "lava", "sprite": "minecraft:block/lava_still", "cells": [[-7.4, 13.3], [-4.2, 13.3], [-1.0, 13.3], [2.200000000000001, 13.3], [5.4, 13.3], [8.6, 13.3], [11.800000000000002, 13.3], [15.000000000000002, 13.3], [18.200000000000003, 13.3], [21.4, 13.3], [24.6, 13.3], [27.800000000000004, 13.3]], "w": 3.2, "h": 2.6, "alpha": 235, "order": -6, "reveal": "netherend_portal"},
+    {"id": "over_flowers", "scatter": ["minecraft:textures/block/poppy.png", "minecraft:textures/block/dandelion.png", "minecraft:textures/block/cornflower.png", "minecraft:textures/block/short_grass.png"], "region": [-8.5, 0.55, 27.5, 0.95], "count": 10, "size": [0.3, 0.45], "seed": 4, "reveal": "netherend_welcome", "avoid": [[0, 0, 1.4], [3.9, 0, 2.0], [7.6, 0.2, 0.9], [22.0, 0.3, 1.5], [-3.2, 0.2, 0.8]]},
+    {"id": "stars", "scatter": ["minecraft:textures/particle/spark_1.png", "minecraft:textures/particle/spark_3.png", "minecraft:textures/particle/glitter_2.png", "minecraft:textures/particle/glitter_5.png"], "region": [-8.8, -13.1, 27.8, -4.8], "count": 20, "size": [0.25, 0.5], "alphas": [45, 90], "seed": 8, "order": -7, "avoid": [[-1.5, -12.3, 7.6], [13.0, -12.4, 2.2]]},
+    {"id": "embers", "scatter": ["minecraft:textures/particle/flame.png", "minecraft:textures/particle/spark_0.png"], "region": [-8.8, 5.0, 27.8, 12.0], "count": 8, "size": [0.25, 0.45], "alphas": [40, 90], "seed": 11, "order": -7},
+    {"id": "obs_0", "picture": "minecraft:textures/block/obsidian.png", "x": 3.5, "y": -2.6, "w": 0.8, "h": 0.8, "reveal": "netherend_portal", "sketch": true, "order": -3},
+    {"id": "obs_1", "picture": "minecraft:textures/block/obsidian.png", "x": 4.3, "y": -2.6, "w": 0.8, "h": 0.8, "reveal": "netherend_portal", "sketch": true, "order": -3},
+    {"id": "obs_2", "picture": "minecraft:textures/block/obsidian.png", "x": 3.5, "y": 0.6, "w": 0.8, "h": 0.8, "reveal": "netherend_portal", "sketch": true, "order": -3},
+    {"id": "obs_3", "picture": "minecraft:textures/block/obsidian.png", "x": 4.3, "y": 0.6, "w": 0.8, "h": 0.8, "reveal": "netherend_portal", "sketch": true, "order": -3},
+    {"id": "obs_4", "picture": "minecraft:textures/block/obsidian.png", "x": 2.7, "y": -1.8, "w": 0.8, "h": 0.8, "reveal": "netherend_portal", "sketch": true, "order": -3},
+    {"id": "obs_5", "picture": "minecraft:textures/block/obsidian.png", "x": 2.7, "y": -1.0, "w": 0.8, "h": 0.8, "reveal": "netherend_portal", "sketch": true, "order": -3},
+    {"id": "obs_6", "picture": "minecraft:textures/block/obsidian.png", "x": 2.7, "y": -0.2, "w": 0.8, "h": 0.8, "reveal": "netherend_portal", "sketch": true, "order": -3},
+    {"id": "obs_7", "picture": "minecraft:textures/block/obsidian.png", "x": 5.1, "y": -1.8, "w": 0.8, "h": 0.8, "reveal": "netherend_portal", "sketch": true, "order": -3},
+    {"id": "obs_8", "picture": "minecraft:textures/block/obsidian.png", "x": 5.1, "y": -1.0, "w": 0.8, "h": 0.8, "reveal": "netherend_portal", "sketch": true, "order": -3},
+    {"id": "obs_9", "picture": "minecraft:textures/block/obsidian.png", "x": 5.1, "y": -0.2, "w": 0.8, "h": 0.8, "reveal": "netherend_portal", "sketch": true, "order": -3},
+    {"id": "portal_fill", "sprite": "minecraft:block/nether_portal", "cells": [[3.5, -1.8], [3.5, -1.0], [3.5, -0.2], [4.3, -1.8], [4.3, -1.0], [4.3, -0.2]], "w": 0.8, "h": 0.8, "alpha": 215, "reveal": "netherend_portal", "order": -4},
+    {"id": "portal_glow", "glow": [3.9, -1.0], "r": 3.0, "tint": "#B36BFF", "alpha": 90, "reveal": "netherend_portal"},
+    {"id": "shaft", "through": [[3.9, 1.0], [3.9, 2.9], [3.9, 4.7]], "sprite": "minecraft:block/nether_portal", "width": 0.9, "step": 0.9, "grow": ["netherend_portal", "netherend_portal"], "sketch": true, "order": -5},
+    {"id": "road_in", "through": ["netherend_welcome", "netherend_portal"], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.7, "step": 0.7, "grow": true, "sketch": true, "order": -6},
+    {"id": "pad", "mosaic": [2.7, 4.8], "cell": 0.8, "rows": ["BBB", ".B."], "legend": {"B": "minecraft:textures/block/blackstone.png"}, "reveal": "netherend_portal", "order": -3},
+    {"id": "way_nether", "item": "waystones:red_nether_bricks_waystone", "x": 2.95, "y": 4.35, "size": 0.85, "reveal": "netherend_waystones"},
+    {"id": "way_end", "item": "waystones:end_stone_waystone", "x": 11.35, "y": -7.55, "size": 0.85, "reveal": "netherend_waystones"},
+    {"id": "way_glow", "glow": [-3.2, 0.2], "r": 1.4, "tint": "#8FD6C8", "alpha": 110, "reveal": "netherend_waystones"},
+    {"id": "fort_box", "frame": [5.15, 4.9, 10.4, 7.9], "color": "#E8DCB5", "thickness_px": 1.0, "alpha": 70, "corners": false, "order": -6},
+    {"id": "fort", "mosaic": [5.15, 4.9], "cell": 0.75, "rows": ["N.N.N.N", "NNNNNNN", "NRN.NRN", "NNNNNNN"], "legend": {"N": "minecraft:textures/block/nether_bricks.png", "R": "minecraft:textures/block/red_nether_bricks.png"}, "reveal": "netherend_fortress", "order": -3},
+    {"id": "fort_glow", "glow": [8.0, 6.6], "r": 1.7, "tint": "#FFB04A", "alpha": 110, "reveal": "netherend_fortress"},
+    {"id": "bridge_f", "through": [[3.9, 4.7], [5.6, 5.5], "netherend_fortress"], "texture": "minecraft:textures/block/nether_bricks.png", "width": 0.55, "step": 0.8, "grow": true, "sketch": true, "order": -5},
+    {"id": "bridge_ba", "through": ["netherend_fortress", "netherend_bastion", "netherend_debris"], "texture": "minecraft:textures/block/polished_blackstone_bricks.png", "width": 0.5, "step": 0.8, "grow": true, "sketch": true, "order": -5},
+    {"id": "bast_box", "frame": [10.95, 4.9, 14.7, 7.9], "color": "#E8DCB5", "thickness_px": 1.0, "alpha": 70, "corners": false, "order": -6},
+    {"id": "bast", "mosaic": [10.95, 4.9], "cell": 0.75, "rows": ["B.B.B", "PGGGP", "PGBGP", "PPPPP"], "legend": {"B": "minecraft:textures/block/blackstone.png", "P": "minecraft:textures/block/polished_blackstone_bricks.png", "G": "minecraft:textures/block/gilded_blackstone.png"}, "reveal": "netherend_bastion", "order": -3},
+    {"id": "gold_a", "item": "minecraft:gold_block", "x": 11.05, "y": 8.35, "size": 0.55, "reveal": "netherend_bastion"},
+    {"id": "gold_b", "item": "minecraft:gold_block", "x": 13.35, "y": 8.35, "size": 0.55, "reveal": "netherend_bastion"},
+    {"id": "bast_glow", "glow": [12.2, 6.6], "r": 1.7, "tint": "#FFD24A", "alpha": 110, "reveal": "netherend_bastion"},
+    {"id": "debris_rock", "scatter": ["minecraft:textures/block/ancient_debris_side.png", "minecraft:textures/block/netherrack.png"], "region": [14.7, 5.3, 18.3, 8.5], "count": 7, "size": [0.5, 0.65], "seed": 33, "reveal": "netherend_debris", "avoid": [[16.4, 6.6, 0.9]], "order": -3},
+    {"id": "debris_glow", "glow": [16.4, 6.6], "r": 1.5, "tint": "#8A5A44", "alpha": 130, "reveal": "netherend_debris"},
+    {"id": "keep_box", "frame": [15.0, 8.6, 16.5, 11.0], "color": "#E8DCB5", "thickness_px": 1.0, "alpha": 70, "corners": false, "order": -6},
+    {"id": "keep_tower", "mosaic": [15.0, 9.0], "cell": 0.5, "rows": ["N.N", "NNN", "NRN", "NNN"], "legend": {"N": "minecraft:textures/block/nether_bricks.png", "R": "minecraft:textures/block/red_nether_bricks.png"}, "reveal": "netherend_keep", "order": -3},
+    {"id": "keep_skull", "item": "minecraft:skeleton_skull", "x": 15.75, "y": 8.55, "size": 0.5, "reveal": "netherend_keep"},
+    {"id": "struct_box", "frame": [11.2, 8.8, 12.7, 11.2], "color": "#E8DCB5", "thickness_px": 1.0, "alpha": 70, "corners": false, "order": -6},
+    {"id": "struct_towers", "mosaic": [11.2, 9.2], "cell": 0.5, "rows": ["B.B", "BBB", "BPB", "BBB"], "legend": {"B": "minecraft:textures/block/basalt_side.png", "P": "minecraft:textures/block/polished_blackstone_bricks.png"}, "reveal": "netherend_structures", "order": -3},
+    {"id": "camp", "item": "minecraft:soul_campfire", "x": 9.1, "y": 11.2, "size": 0.6, "reveal": "netherend_structures"},
+    {"id": "bridge_s", "through": ["netherend_fortress", [8.6, 8.3], "netherend_structures"], "texture": "minecraft:textures/block/basalt_side.png", "width": 0.45, "step": 0.8, "grow": true, "sketch": true, "order": -5},
+    {"id": "bridge_k", "through": ["netherend_structures", "netherend_keep"], "texture": "minecraft:textures/block/basalt_side.png", "width": 0.45, "step": 0.8, "grow": true, "sketch": true, "order": -5},
+    {"id": "chain", "through": [[3.9, 4.7], [4.15, 7.4], "netherend_boats"], "texture": "minecraft:textures/block/chain.png", "width": 0.35, "step": 0.8, "turn": true, "grow": true, "sketch": true, "order": -5},
+    {"id": "boat", "item": "fireproofboats:warped_boat", "x": 6.4, "y": 11.35, "size": 0.9, "reveal": "netherend_boats"},
+    {"id": "boat_glow", "glow": [5.4, 11.7], "r": 2.4, "tint": "#FF7A2A", "alpha": 110, "reveal": "netherend_boats"},
+    {"id": "forest_floor", "path": [[-5.0, 9.0], [-2.0, 9.0], [1.6, 9.0]], "texture": "minecraft:textures/block/warped_nylium.png", "width": 0.6, "step": 0.9, "reveal": "netherend_endermen", "sketch": true, "order": -5},
+    {"id": "w_trunk", "sprite": "minecraft:block/warped_stem", "cells": [[-3.9, 8.4], [-3.9, 7.8], [-3.9, 7.2]], "w": 0.6, "h": 0.6, "reveal": "netherend_endermen", "order": -3},
+    {"id": "w_crown", "picture": "minecraft:textures/block/warped_wart_block.png", "x": -3.9, "y": 6.3, "w": 1.9, "h": 1.0, "reveal": "netherend_endermen", "order": -3},
+    {"id": "w_trunk2", "sprite": "minecraft:block/warped_stem", "cells": [[-1.9, 8.4], [-1.9, 7.8]], "w": 0.6, "h": 0.6, "reveal": "netherend_endermen", "order": -3},
+    {"id": "w_crown2", "picture": "minecraft:textures/block/warped_wart_block.png", "x": -1.9, "y": 7.0, "w": 1.6, "h": 0.8, "reveal": "netherend_endermen", "order": -3},
+    {"id": "c_trunk", "sprite": "minecraft:block/crimson_stem", "cells": [[-6.3, 8.4], [-6.3, 7.8], [-6.3, 7.2]], "w": 0.6, "h": 0.6, "reveal": "netherend_endermen", "order": -3},
+    {"id": "c_crown", "picture": "minecraft:textures/block/nether_wart_block.png", "x": -6.3, "y": 6.3, "w": 1.9, "h": 1.0, "reveal": "netherend_endermen", "order": -3},
+    {"id": "enderman_eyes", "glow": [0.6, 7.5], "r": 1.4, "tint": "#D070FF", "alpha": 120, "reveal": "netherend_endermen"},
+    {"id": "ghast", "mosaic": [21.3, 7.6], "cell": 0.3, "rows": ["..WWWWW..", ".WWWWWWW.", "WWKWWWKWW", "WWWWWWWWW", "WWWMMMWWW", "WWWWWWWWW", "WWTWWWTWW", ".T.T.T.T."], "legend": {"W": "#F0EEF2", "K": "#3A3040", "M": "#6A5468", "T": "#D8D4DC"}, "reveal": "netherend_toy_ghast", "order": -2},
+    {"id": "fireball", "item": "minecraft:fire_charge", "x": 20.3, "y": 9.0, "size": 0.6, "reveal": "netherend_toy_ghast"},
+    {"id": "fireball_glow", "glow": [20.3, 9.0], "r": 1.2, "tint": "#FF7A2A", "alpha": 140, "reveal": "netherend_toy_ghast"},
+    {"id": "flint_sparks", "scatter": ["minecraft:textures/particle/spark_2.png", "minecraft:textures/particle/spark_4.png", "minecraft:textures/particle/flame.png"], "region": [2.3, -3.2, 5.6, 1.2], "count": 7, "size": [0.25, 0.4], "seed": 6, "tint": "#FFC060", "reveal": "netherend_toy_flint", "avoid": [[3.9, -1.0, 0.9]]},
+    {"id": "flint_glow", "glow": [3.9, -1.0], "r": 4.4, "tint": "#C48CFF", "alpha": 100, "reveal": "netherend_toy_flint"},
+    {"id": "eyes", "through": ["netherend_welcome", [1.8, -3.0], [3.9, -4.3], [6.0, -3.0], "netherend_stronghold"], "items": "minecraft:ender_eye", "size": 0.42, "step": 1.0, "smooth": 3, "grow": true, "sketch": true, "order": -2},
+    {"id": "room_box", "frame": [5.6, 1.5, 10.5, 3.6], "color": "#E8DCB5", "thickness_px": 1.0, "alpha": 70, "corners": false, "order": -6},
+    {"id": "room_fill", "picture": "#12101A", "x": 8.05, "y": 2.65, "w": 4.9, "h": 0.7, "reveal": "netherend_stronghold", "order": -4},
+    {"id": "room", "mosaic": [5.6, 1.5], "cell": 0.7, "rows": ["SCSSCSS", "S.....S", "SMSSSMS"], "legend": {"S": "minecraft:textures/block/stone_bricks.png", "C": "minecraft:textures/block/cracked_stone_bricks.png", "M": "minecraft:textures/block/mossy_stone_bricks.png"}, "reveal": "netherend_stronghold", "order": -3},
+    {"id": "frame_0", "item": "minecraft:end_portal_frame", "x": 8.0, "y": 2.7, "size": 0.7, "reveal": "netherend_stronghold"},
+    {"id": "frame_1", "item": "minecraft:end_portal_frame", "x": 8.9, "y": 2.7, "size": 0.7, "reveal": "netherend_stronghold"},
+    {"id": "frame_2", "item": "minecraft:end_portal_frame", "x": 9.8, "y": 2.7, "size": 0.7, "reveal": "netherend_stronghold"},
+    {"id": "room_glow", "glow": [8.9, 2.4], "r": 1.7, "tint": "#8CFFC0", "alpha": 120, "reveal": "netherend_stronghold"},
+    {"id": "beam", "through": [[8.9, 2.3], [8.9, -3.0], [8.9, -6.9]], "color": "#C6A6FF", "alpha": 150, "width": 0.28, "grow": ["netherend_stronghold", "netherend_end"], "sketch": true, "order": -5},
+    {"id": "beam_core", "through": [[8.9, 2.3], [8.9, -3.0], [8.9, -6.9]], "color": "#F4EAFF", "alpha": 170, "width": 0.1, "grow": ["netherend_stronghold", "netherend_end"], "order": -4},
+    {"id": "isle_main_line", "path": [[5.4, -7.1], [12.6, -7.1], [11.0, -5.5], [9.4, -3.9], [7.8, -3.9], [6.2, -5.5]], "color": "#E8DCB5", "alpha": 70, "width": 0.07, "order": -6, "closed": true},
+    {"id": "isle_main", "mosaic": [5.4, -7.1], "cell": 0.8, "rows": ["EEEEEEEEE", ".EEEEEEE.", "..EEEEE..", "....E...."], "legend": {"E": "minecraft:textures/block/end_stone.png", "B": "minecraft:textures/block/end_stone_bricks.png"}, "reveal": "netherend_end", "order": -3},
+    {"id": "fountain_l", "picture": "minecraft:textures/block/bedrock.png", "x": 8.3, "y": -7.45, "w": 0.6, "h": 0.6, "reveal": "netherend_end", "order": -2},
+    {"id": "fountain_l2", "picture": "minecraft:textures/block/bedrock.png", "x": 8.3, "y": -8.05, "w": 0.6, "h": 0.6, "reveal": "netherend_end", "order": -2},
+    {"id": "fountain_r", "picture": "minecraft:textures/block/bedrock.png", "x": 9.5, "y": -7.45, "w": 0.6, "h": 0.6, "reveal": "netherend_end", "order": -2},
+    {"id": "fountain_r2", "picture": "minecraft:textures/block/bedrock.png", "x": 9.5, "y": -8.05, "w": 0.6, "h": 0.6, "reveal": "netherend_end", "order": -2},
+    {"id": "end_glow", "glow": [8.9, -7.4], "r": 2.4, "tint": "#C6A6FF", "alpha": 120, "reveal": "netherend_end"},
+    {"id": "egg", "item": "minecraft:dragon_egg", "x": 8.9, "y": -8.35, "size": 0.7, "reveal": "netherend_end_city"},
+    {"id": "gate_1", "picture": "minecraft:textures/block/bedrock.png", "x": 11.2, "y": -7.4, "w": 0.6, "h": 0.6, "reveal": "netherend_end_city", "order": -2},
+    {"id": "gate_2", "picture": "minecraft:textures/block/bedrock.png", "x": 11.2, "y": -8.0, "w": 0.6, "h": 0.6, "reveal": "netherend_end_city", "order": -2},
+    {"id": "gate_3", "picture": "minecraft:textures/block/bedrock.png", "x": 11.2, "y": -8.6, "w": 0.6, "h": 0.6, "reveal": "netherend_end_city", "order": -2},
+    {"id": "gate_beam", "path": [[11.2, -9.0], [11.2, -12.0]], "color": "#E9D8FF", "alpha": 150, "width": 0.22, "reveal": "netherend_end_city", "order": -5},
+    {"id": "gate_glow", "glow": [11.2, -9.2], "r": 1.4, "tint": "#E9D8FF", "alpha": 130, "reveal": "netherend_end_city"},
+    {"id": "pearls", "through": [[11.2, -9.6], [12.9, -11.2], "netherend_end_city"], "items": "minecraft:ender_pearl", "size": 0.4, "step": 0.9, "smooth": 3, "grow": ["netherend_end_city", "netherend_end_city"], "sketch": true, "order": -2},
+    {"id": "isle_a_line", "path": [[13.2, -8.3], [18.8, -8.3], [17.6, -6.7], [16.0, -5.9], [14.4, -6.7]], "color": "#E8DCB5", "alpha": 70, "width": 0.07, "order": -6, "closed": true},
+    {"id": "isle_a", "mosaic": [13.2, -8.3], "cell": 0.8, "rows": ["EEEEEEE", ".EEEEE.", "..EEE.."], "legend": {"E": "minecraft:textures/block/end_stone.png", "B": "minecraft:textures/block/end_stone_bricks.png"}, "reveal": "netherend_end_city", "order": -3},
+    {"id": "city_t1", "mosaic": [16.4, -11.3], "cell": 0.6, "rows": ["QQ", "PP", "PP", "QQ", "PP"], "legend": {"Q": "minecraft:textures/block/purpur_pillar.png", "P": "minecraft:textures/block/purpur_block.png"}, "reveal": "netherend_end_city", "order": -3},
+    {"id": "city_t2", "mosaic": [18.0, -10.1], "cell": 0.6, "rows": ["QQ", "PP", "PP"], "legend": {"Q": "minecraft:textures/block/purpur_pillar.png", "P": "minecraft:textures/block/purpur_block.png"}, "reveal": "netherend_end_city", "order": -3},
+    {"id": "rod_1", "item": "minecraft:end_rod", "x": 17.0, "y": -11.75, "size": 0.55, "reveal": "netherend_end_city"},
+    {"id": "rod_2", "item": "minecraft:end_rod", "x": 18.6, "y": -10.55, "size": 0.55, "reveal": "netherend_end_city"},
+    {"id": "city_glow", "glow": [17.4, -10.0], "r": 2.2, "tint": "#E8B8FF", "alpha": 90, "reveal": "netherend_end_city"},
+    {"id": "isle_b_line", "path": [[19.8, -9.6], [23.4, -9.6], [22.2, -8.0], [21.0, -8.0]], "color": "#E8DCB5", "alpha": 70, "width": 0.07, "order": -6, "closed": true},
+    {"id": "isle_b", "mosaic": [19.8, -9.6], "cell": 0.8, "rows": ["EEEEE", ".EEE.", "..E.."], "legend": {"E": "minecraft:textures/block/end_stone.png", "B": "minecraft:textures/block/end_stone_bricks.png"}, "reveal": "netherend_end_more", "order": -3},
+    {"id": "chorus_0", "picture": "minecraft:textures/block/chorus_plant.png", "x": 19.95, "y": -9.9, "w": 0.6, "h": 0.6, "reveal": "netherend_end_more", "order": -2},
+    {"id": "chorus_0_0", "picture": "minecraft:textures/block/chorus_plant.png", "x": 19.95, "y": -10.5, "w": 0.6, "h": 0.6, "reveal": "netherend_end_more", "order": -2},
+    {"id": "chorus_top_0", "picture": "minecraft:textures/block/chorus_flower.png", "x": 19.95, "y": -11.1, "w": 0.6, "h": 0.6, "reveal": "netherend_end_more", "order": -2},
+    {"id": "chorus_1", "picture": "minecraft:textures/block/chorus_plant.png", "x": 21.95, "y": -9.9, "w": 0.6, "h": 0.6, "reveal": "netherend_end_more", "order": -2},
+    {"id": "chorus_1_0", "picture": "minecraft:textures/block/chorus_plant.png", "x": 21.95, "y": -10.5, "w": 0.6, "h": 0.6, "reveal": "netherend_end_more", "order": -2},
+    {"id": "chorus_1_1", "picture": "minecraft:textures/block/chorus_plant.png", "x": 21.95, "y": -11.1, "w": 0.6, "h": 0.6, "reveal": "netherend_end_more", "order": -2},
+    {"id": "chorus_top_1", "picture": "minecraft:textures/block/chorus_flower.png", "x": 21.95, "y": -11.7, "w": 0.6, "h": 0.6, "reveal": "netherend_end_more", "order": -2},
+    {"id": "enderman", "mosaic": [22.9, -11.4], "cell": 0.28, "rows": ["BBB", "EBE", "BBB", ".B.", "B.B", "B.B", "B.B"], "legend": {"B": "#150B22", "E": "#E070FF"}, "reveal": "netherend_end_more", "order": -2},
+    {"id": "isle_c_line", "path": [[23.6, -7.6], [27.2, -7.6], [26.0, -6.0], [24.8, -6.0]], "color": "#E8DCB5", "alpha": 70, "width": 0.07, "order": -6, "closed": true},
+    {"id": "isle_c", "mosaic": [23.6, -7.6], "cell": 0.8, "rows": ["EEEEE", ".EEE.", "..E.."], "legend": {"E": "minecraft:textures/block/end_stone.png", "B": "minecraft:textures/block/end_stone_bricks.png"}, "reveal": "netherend_lighthouse", "order": -3},
+    {"id": "lighthouse", "mosaic": [25.8, -10.6], "cell": 0.6, "rows": ["LL", "LL", "BB", "BB", "BB"], "legend": {"L": "minecraft:block/sea_lantern", "B": "minecraft:textures/block/end_stone_bricks.png"}, "reveal": "netherend_lighthouse", "order": -3},
+    {"id": "light_glow", "glow": [26.4, -10.3], "r": 3.0, "tint": "#BDEFFF", "alpha": 130, "reveal": "netherend_lighthouse"},
+    {"id": "road_nether", "through": ["netherend_debris", [19.6, 4.0], "netherend_mastery"], "color": "#FF9A4A", "alpha": 190, "width": 0.16, "smooth": 3, "grow": ["netherend_debris", "netherend_mastery"], "sketch": true, "order": -5},
+    {"id": "road_end", "through": ["netherend_end_more", [21.6, -5.2], "netherend_mastery"], "color": "#C6A6FF", "alpha": 190, "width": 0.16, "smooth": 3, "grow": ["netherend_end_more", "netherend_mastery"], "sketch": true, "order": -5},
+    {"id": "sun", "picture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 22.0, "y": -3.3, "w": 3.2, "h": 3.2, "reveal": "netherend_mastery", "order": -3},
+    {"id": "sun_glow", "glow": [22.0, -1.2], "r": 4.4, "tint": "#FFD98A", "alpha": 100, "reveal": "netherend_mastery"},
+    {"id": "pack_glow", "glow": [-2.2, -3.1], "r": 1.5, "tint": "#FFC060", "alpha": 120, "reveal": "netherend_pack"}
+  ],
   "quests": [
     {
-      "key": "netherend_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Familiar places, new rules",
-        "Both dimensions are far busier than vanilla: YUNG's rebuilds the big structures, Repurposed Structures, Dungeons and Taverns, Cataclysm, Friends and Foes and Hellish Trials add many more, and Enderman Overhaul fills them with biome endermen.\n\nThe compass sends you to a Nether fortress in act III and to the End in act V."
-      ],
-      "es_es": [
-        "Lugares conocidos, reglas nuevas",
-        "Las dos dimensiones están mucho más pobladas que en vanilla: YUNG's rehace las estructuras grandes, Repurposed Structures, Dungeons and Taverns, Cataclysm, Friends and Foes y Hellish Trials suman muchas más, y Enderman Overhaul las llena de endermen de bioma.\n\nLa brújula te manda a una fortaleza del Nether en el acto III y al End en el acto V."
-      ],
-      "sources": [
-        "repo:docs/design/exploration-structures-family.md",
-        "repo:content/compass_targets.json",
-        "repo:docs/design/mod-pingpong.md"
-      ]
+      "key": "netherend_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Familiar places, new rules", "subtitle": "Same portals, busier worlds.",
+        "text": ["[lead] Both dimensions are far busier than vanilla.",
+                 "[li] YUNG's rebuilds the big structures",
+                 "[li] Five more mods add many others",
+                 "[li] Enderman Overhaul fills them with biome endermen",
+                 "The [item:entrelumen:heliodor_compass|compass] sends you to a Nether fortress in act [hl|III] and to the End in act [hl|V].",
+                 "{page}",
+                 "The five: Repurposed Structures, Dungeons and Taverns, Cataclysm, Friends and Foes and Hellish Trials."]},
+      "es_es": {"title": "Lugares conocidos, reglas nuevas", "subtitle": "Los mismos portales, mundos más ocupados.",
+        "text": ["[lead] Las dos dimensiones están mucho más pobladas que en vanilla.",
+                 "[li] YUNG's rehace las estructuras grandes",
+                 "[li] Otros cinco mods suman muchas más",
+                 "[li] Enderman Overhaul las llena de endermen de bioma",
+                 "La [item:entrelumen:heliodor_compass|brújula] te manda a una fortaleza del Nether en el acto [hl|III] y al End en el acto [hl|V].",
+                 "{page}",
+                 "Los cinco: Repurposed Structures, Dungeons and Taverns, Cataclysm, Friends and Foes y Hellish Trials."]},
+      "sources": ["repo:docs/design/exploration-structures-family.md", "repo:content/compass_targets.json", "repo:docs/design/mod-pingpong.md"]
     },
     {
-      "key": "netherend_portal",
-      "deps": [
-        "netherend_welcome"
-      ],
-      "type": "dimension",
-      "dimension": "minecraft:the_nether",
+      "key": "netherend_portal", "deps": ["netherend_welcome"], "type": "dimension", "dimension": "minecraft:the_nether", "layout": {"x": 3.9, "y": -1.0, "size": 1.75, "shape": "diamond"}, "hide_lines": true,
       "icon": "minecraft:obsidian",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.75,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "We Need to Go Deeper",
-        "Build an obsidian frame and light it; Nether Portal Fix links the return portal to the one you came from.\n\nPack fire resistance, one piece of gold armor (piglins leave you alone), blocks to bridge and something to put out fires. The Nether does not do second chances."
-      ],
-      "es_es": [
-        "Tenemos que ir más profundo",
-        "Armá un marco de obsidiana y encendelo; Nether Portal Fix vincula el portal de vuelta con el que usaste.\n\nLlevá resistencia al fuego, una pieza de armadura de oro (los piglins te dejan en paz), bloques para hacer puentes y algo para apagar incendios. El Nether no da segundas oportunidades."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/story/enter_the_nether.json",
-        "jar:netherportalfix-neoforge-1.21.1-21.1.1.jar:META-INF/neoforge.mods.toml",
-        "repo:catalog/curated.json"
-      ]
+      "en_us": {"title": "We Need to Go Deeper",
+        "text": ["[lead] Build an [item:minecraft:obsidian|obsidian] frame and light it.",
+                 "Nether Portal Fix links the return portal to the one you came from. Pack for the trip:",
+                 "[li] Fire resistance",
+                 "[li] One piece of gold armor: piglins leave you alone",
+                 "[li] Blocks to bridge with",
+                 "[li] Something to put out fires",
+                 "The Nether does not do second chances."]},
+      "es_es": {"title": "Tenemos que ir más profundo",
+        "text": ["[lead] Armá un marco de [item:minecraft:obsidian|obsidiana] y encendelo.",
+                 "Nether Portal Fix vincula el portal de vuelta con el que usaste. Llevá para el viaje:",
+                 "[li] Resistencia al fuego",
+                 "[li] Una pieza de armadura de oro: los piglins te dejan en paz",
+                 "[li] Bloques para hacer puentes",
+                 "[li] Algo para apagar incendios",
+                 "El Nether no da segundas oportunidades."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/story/enter_the_nether.json", "jar:netherportalfix-neoforge-1.21.1-21.1.1.jar:META-INF/neoforge.mods.toml", "repo:catalog/curated.json"]
     },
     {
-      "key": "netherend_fortress",
-      "deps": [
-        "netherend_portal"
-      ],
-      "type": "item",
-      "item": "minecraft:blaze_rod",
-      "layout": {
-        "x": 6,
-        "y": 0,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "A blaze rod from a fortress",
-        "YUNG's Better Nether Fortresses makes them larger and themed. In act III the compass points to one and counts it done as soon as someone on your team carries a Blaze Rod.\n\nBlaze rods feed brewing, Powah and many mid-game recipes, and wither skeletons here drop the skulls for the Wither."
-      ],
-      "es_es": [
-        "Una vara de blaze de una fortaleza",
-        "YUNG's Better Nether Fortresses las hace más grandes y temáticas. En el acto III la brújula apunta a una y la da por cumplida apenas alguien de tu equipo lleva una Vara de blaze.\n\nLas varas de blaze alimentan pociones, Powah y muchas recetas de medio juego, y los esqueletos wither de acá sueltan los cráneos para el Wither."
-      ],
-      "sources": [
-        "repo:content/compass_targets.json",
-        "jar:YungsBetterNetherFortresses-1.21.1-NeoForge-3.1.5.jar:data/betterfortresses/worldgen/structure/fortress.json",
-        "repo:docs/design/exploration-structures-family.md"
-      ]
+      "key": "netherend_fortress", "deps": ["netherend_portal"], "type": "item", "item": "minecraft:blaze_rod", "layout": {"x": 8.0, "y": 6.6, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "A blaze rod from a fortress",
+        "text": ["[lead] YUNG's Better Nether Fortresses makes them larger and themed.",
+                 "In act [hl|III] the compass points to one and counts it done as soon as someone on your team carries a [item:minecraft:blaze_rod|Blaze Rod].",
+                 "Blaze rods feed brewing, Powah and many mid-game recipes. The wither skeletons here drop the skulls for the Wither."]},
+      "es_es": {"title": "Una vara de blaze de una fortaleza",
+        "text": ["[lead] YUNG's Better Nether Fortresses las hace más grandes y temáticas.",
+                 "En el acto [hl|III] la brújula apunta a una y la da por cumplida apenas alguien de tu equipo lleva una [item:minecraft:blaze_rod|Vara de blaze].",
+                 "Las varas de blaze alimentan pociones, Powah y muchas recetas de medio juego. Los esqueletos wither de acá sueltan los cráneos para el Wither."]},
+      "sources": ["repo:content/compass_targets.json", "jar:YungsBetterNetherFortresses-1.21.1-NeoForge-3.1.5.jar:data/betterfortresses/worldgen/structure/fortress.json", "repo:docs/design/exploration-structures-family.md"]
     },
     {
-      "key": "netherend_boats",
-      "deps": [
-        "netherend_portal"
-      ],
-      "type": "item",
-      "item": "fireproofboats:crimson_boat",
-      "optional": true,
-      "layout": {
-        "x": 3,
-        "y": -3,
-        "size": 0.85,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Crossing lava seas",
-        "Fireproof Boats adds crimson and warped boats that survive lava like their planks: cross lava oceans and scout the shores.\n\nOr go vanilla: saddle a strider and steer it with a warped fungus on a stick. Slower, but it has personality."
-      ],
-      "es_es": [
-        "Cruzar mares de lava",
-        "Fireproof Boats suma botes carmesí y distorsionados que resisten la lava como sus tablas: cruzá los océanos de lava y recorré las costas.\n\nO a la vanilla: ensillá un strider y dirigilo con un hongo distorsionado en un palo. Más lento, pero con personalidad."
-      ],
-      "sources": [
-        "jar:fireproofboats-1.21.1-1.0.4.jar:assets/fireproofboats/lang/en_us.json",
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/ride_strider.json"
-      ]
+      "key": "netherend_boats", "deps": ["netherend_portal"], "type": "item", "item": "fireproofboats:crimson_boat", "optional": true, "layout": {"x": 4.4, "y": 10.1, "size": 0.85, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "Crossing lava seas", "subtitle": "Slower boats have personality.",
+        "text": ["[lead] Fireproof Boats adds crimson and warped boats that survive lava like their planks.",
+                 "Cross lava oceans and scout the shores.",
+                 "[tip] Or go vanilla: saddle a strider and steer it with a warped fungus on a stick. Slower, but it has personality."]},
+      "es_es": {"title": "Cruzar mares de lava", "subtitle": "Los botes lentos tienen personalidad.",
+        "text": ["[lead] Fireproof Boats suma botes carmesí y distorsionados que resisten la lava como sus tablas.",
+                 "Cruzá los océanos de lava y recorré las costas.",
+                 "[tip] O a la vanilla: ensillá un strider y dirigilo con un hongo distorsionado en un palo. Más lento, pero con personalidad."]},
+      "sources": ["jar:fireproofboats-1.21.1-1.0.4.jar:assets/fireproofboats/lang/en_us.json", "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/ride_strider.json"]
     },
     {
-      "key": "netherend_structures",
-      "deps": [
-        "netherend_fortress"
-      ],
-      "type": "checkmark",
+      "key": "netherend_structures", "deps": ["netherend_fortress"], "type": "checkmark", "layout": {"x": 10.2, "y": 10.0, "size": 0.85, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:nether_bricks",
-      "layout": {
-        "x": 9,
-        "y": -3,
-        "size": 0.85,
-        "shape": "circle"
-      },
-      "en_us": [
-        "What else lives in the Nether",
-        "More places live in the Nether than the fortress and the bastion: Dungeons and Taverns' keeps, ports and camps, Repurposed Structures' cities and Hellish Trials' chambers are all in [chapter:sector_structures|Structures and exploration]. Add the Citadel of the Wildfire (Friends and Foes) and the Burning Arena and Soul Forge (Cataclysm)."
-      ],
-      "es_es": [
-        "Qué más hay en el Nether",
-        "En el Nether hay más lugares que la fortaleza y el bastión: los torreones, puertos y campamentos de Dungeons and Taverns, las ciudades de Repurposed Structures y las cámaras de Hellish Trials están en [chapter:sector_structures|Estructuras y exploración]. Sumá la Ciudadela del Wildfire (Friends and Foes) y la Arena Ardiente y la Forja de Almas (Cataclysm)."
-      ],
-      "sources": [
-        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/worldgen/structure/citadel.json",
-        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/burning_arena.json",
-        "repo:content/sectors/sector_structures.json (the Nether structures moved there)"
-      ]
+      "en_us": {"title": "What else lives in the Nether",
+        "text": ["[lead] More lives down here than a fortress and a bastion.",
+                 "In [chapter:sector_structures|Structures and exploration]:",
+                 "[li] Dungeons and Taverns' keeps, ports and camps",
+                 "[li] Repurposed Structures' cities",
+                 "[li] Hellish Trials' chambers",
+                 "Add the Citadel of the Wildfire (Friends and Foes) and the Burning Arena and Soul Forge (Cataclysm)."]},
+      "es_es": {"title": "Qué más hay en el Nether",
+        "text": ["[lead] Acá abajo hay más que una fortaleza y un bastión.",
+                 "En [chapter:sector_structures|Estructuras y exploración]:",
+                 "[li] Los torreones, puertos y campamentos de Dungeons and Taverns",
+                 "[li] Las ciudades de Repurposed Structures",
+                 "[li] Las cámaras de Hellish Trials",
+                 "Sumá la Ciudadela del Wildfire (Friends and Foes) y la Arena Ardiente y la Forja de Almas (Cataclysm)."]},
+      "sources": ["jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/worldgen/structure/citadel.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/burning_arena.json", "repo:content/sectors/sector_structures.json (the Nether structures moved there)"]
     },
     {
-      "key": "netherend_keep",
-      "deps": [
-        "netherend_structures"
-      ],
-      "type": "advancement",
-      "advancement": "nova_structures:nether/find_keep",
-      "optional": true,
+      "key": "netherend_keep", "deps": ["netherend_structures"], "type": "advancement", "advancement": "nova_structures:nether/find_keep", "optional": true, "layout": {"x": 14.2, "y": 10.2, "size": 1.0, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:skeleton_skull",
-      "layout": {
-        "x": 12,
-        "y": -3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Concrete Halls",
-        "Find a Dungeons and Taverns Nether Keep for Concrete Halls. Keeps and ports are skeleton strongholds; exploring every skeleton camp, tower, port, fortress and keep is Skull Collector.\n\nBathing in powder snow inside a keep is its own advancement, Cool Off. Somebody had a fun afternoon designing that."
-      ],
-      "es_es": [
-        "Salones de concreto",
-        "Encontrá un Fortín del Nether de Dungeons and Taverns para «Concrete Halls». Fortines y puertos son bastiones de esqueletos; explorar cada campamento, torre, puerto, fortaleza y fortín de esqueletos es «Skull Collector».\n\nBañarte en nieve polvo adentro de un fortín es un logro aparte, «Cool Off». Alguien se divirtió diseñando eso."
-      ],
-      "sources": [
-        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/find_keep.json",
-        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/find_nether_skeleton.json",
-        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/powder_snow_keep.json"
-      ]
+      "en_us": {"title": "Concrete Halls",
+        "text": ["[lead] Find a Dungeons and Taverns Nether Keep for the advancement.",
+                 "Keeps and ports are skeleton strongholds. Two more advancements:",
+                 "[li] Skull Collector: explore every skeleton camp, tower, port, fortress and keep",
+                 "[li] Cool Off: bathe in powder snow inside a keep",
+                 "Somebody had a fun afternoon designing that."]},
+      "es_es": {"title": "Salones de concreto",
+        "text": ["[lead] Encontrá un Fortín del Nether de Dungeons and Taverns para el logro.",
+                 "Fortines y puertos son bastiones de esqueletos. Dos logros más:",
+                 "[li] «Skull Collector»: explorar cada campamento, torre, puerto, fortaleza y fortín de esqueletos",
+                 "[li] «Cool Off»: bañarte en nieve polvo adentro de un fortín",
+                 "Alguien se divirtió diseñando eso."]},
+      "sources": ["jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/find_keep.json", "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/find_nether_skeleton.json", "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/powder_snow_keep.json"]
     },
     {
-      "key": "netherend_bastion",
-      "deps": [
-        "netherend_fortress"
-      ],
-      "type": "advancement",
-      "advancement": "minecraft:nether/find_bastion",
+      "key": "netherend_bastion", "deps": ["netherend_fortress"], "type": "advancement", "advancement": "minecraft:nether/find_bastion", "layout": {"x": 12.2, "y": 6.6, "size": 1.0, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:gilded_blackstone",
-      "layout": {
-        "x": 9,
-        "y": 0,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Bastions and piglins",
-        "Bastion remnants hold gold and netherite upgrade templates, with ancient debris nearby. Wear gold, do not open chests in sight of piglins, and watch for Piglin Brutes, which ignore gold entirely.\n\nDungeons and Taverns adds four more piglin places, for Hog Hunt."
-      ],
-      "es_es": [
-        "Bastiones y piglins",
-        "Los restos de bastión tienen oro y plantillas de mejora de netherite, con restos antiguos cerca. Llevá oro, no abras cofres a la vista de los piglins y cuidate de los Piglins brutos, que ignoran el oro por completo.\n\nDungeons and Taverns suma cuatro lugares piglin más, para «Hog Hunt»."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/find_bastion.json",
-        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/find_piglins.json"
-      ]
+      "en_us": {"title": "Bastions and piglins",
+        "text": ["[lead] Bastion remnants hold gold and netherite upgrade templates, with ancient debris nearby.",
+                 "Wear gold and do not open chests in sight of piglins.",
+                 "[careful] Piglin Brutes ignore gold entirely.",
+                 "Dungeons and Taverns adds [hl|four] more piglin places, for Hog Hunt."]},
+      "es_es": {"title": "Bastiones y piglins",
+        "text": ["[lead] Los restos de bastión tienen oro y plantillas de mejora de netherite, con restos antiguos cerca.",
+                 "Llevá oro y no abras cofres a la vista de los piglins.",
+                 "[careful] Los Piglins brutos ignoran el oro por completo.",
+                 "Dungeons and Taverns suma [hl|cuatro] lugares piglin más, para «Hog Hunt»."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/find_bastion.json", "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/find_piglins.json"]
     },
     {
-      "key": "netherend_debris",
-      "deps": [
-        "netherend_bastion"
-      ],
-      "type": "advancement",
-      "advancement": "minecraft:nether/obtain_ancient_debris",
+      "key": "netherend_debris", "deps": ["netherend_bastion"], "type": "advancement", "advancement": "minecraft:nether/obtain_ancient_debris", "layout": {"x": 16.4, "y": 6.6, "size": 1.0, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:ancient_debris",
-      "layout": {
-        "x": 12,
-        "y": 0,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Hidden in the Depths",
-        "Ancient debris hides low in the Nether and shrugs off explosions. Mine it with a diamond pickaxe, smelt it into scrap and combine with gold into netherite ingots.\n\nKeep your netherite gear: it is the base for Cataclysm's Ignitium and Cursium and for Luminous gear."
-      ],
-      "es_es": [
-        "Escondido en las profundidades",
-        "Los restos antiguos se esconden abajo en el Nether y aguantan explosiones. Picalos con pico de diamante, fundilos en chatarra y combinala con oro para hacer lingotes de netherite.\n\nGuardá tu equipo de netherite: es la base del Ignitium y el Cursium de Cataclysm y del equipo Luminoso."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/obtain_ancient_debris.json",
-        "repo:docs/design/luminous-gear.md"
-      ]
+      "en_us": {"title": "Hidden in the Depths",
+        "text": ["[lead] Ancient debris hides low in the Nether and shrugs off explosions.",
+                 "[li:minecraft:diamond_pickaxe] Mine it with a diamond pickaxe",
+                 "[li:minecraft:netherite_scrap] Smelt it into scrap",
+                 "[li:minecraft:netherite_ingot] Combine the scrap with gold into netherite ingots",
+                 "[tip] Keep your netherite gear: it is the base for Cataclysm's Ignitium and Cursium and for Luminous gear."]},
+      "es_es": {"title": "Escondido en las profundidades",
+        "text": ["[lead] Los restos antiguos se esconden abajo en el Nether y aguantan explosiones.",
+                 "[li:minecraft:diamond_pickaxe] Picalos con pico de diamante",
+                 "[li:minecraft:netherite_scrap] Fundilos en chatarra",
+                 "[li:minecraft:netherite_ingot] Combiná la chatarra con oro para hacer lingotes de netherite",
+                 "[tip] Guardá tu equipo de netherite: es la base del Ignitium y el Cursium de Cataclysm y del equipo Luminoso."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/obtain_ancient_debris.json", "repo:docs/design/luminous-gear.md"]
     },
     {
-      "key": "netherend_endermen",
-      "deps": [
-        "netherend_portal"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "netherend_endermen", "deps": ["netherend_portal"], "type": "checkmark", "optional": true, "layout": {"x": 0.6, "y": 7.5, "size": 0.85, "shape": "circle"}, "hide_lines": true,
       "icon": "endermanoverhaul:crimson_pearl",
-      "layout": {
-        "x": 6,
-        "y": 3,
-        "size": 0.85,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Nether endermen and food",
-        "Enderman Overhaul gives each Nether biome its own enderman: crimson ones drop pearls that grant Strength on teleport, warped ones Resistance, and soul sand valley ones a pearl that teleports a bound creature.\n\nMy Nether's Delight adds Nether cooking to Farmer's Delight: more variety for the pack's food system."
-      ],
-      "es_es": [
-        "Endermen y comida del Nether",
-        "Enderman Overhaul le da a cada bioma del Nether su enderman: el carmesí suelta perlas que dan Fuerza al teletransportarte, el distorsionado Resistencia, y el del valle de almas una perla que teletransporta a una criatura vinculada.\n\nMy Nether's Delight suma cocina del Nether a Farmer's Delight: más variedad para el sistema de comida del pack."
-      ],
-      "sources": [
-        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:assets/endermanoverhaul/lang/en_us.json",
-        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/crimson_forest_enderman.json",
-        "repo:docs/design/mod-pingpong.md"
-      ]
+      "en_us": {"title": "Nether endermen and food",
+        "text": ["[lead] Enderman Overhaul gives each Nether biome its own enderman.",
+                 "[li] Crimson: pearls that grant Strength on teleport",
+                 "[li] Warped: pearls that grant Resistance",
+                 "[li] Soul sand valley: a pearl that teleports a bound creature",
+                 "{page}",
+                 "My Nether's Delight adds Nether cooking to Farmer's Delight: more variety for the pack's food system."]},
+      "es_es": {"title": "Endermen y comida del Nether",
+        "text": ["[lead] Enderman Overhaul le da a cada bioma del Nether su propio enderman.",
+                 "[li] Carmesí: perlas que dan Fuerza al teletransportarte",
+                 "[li] Distorsionado: perlas que dan Resistencia",
+                 "[li] Valle de almas: una perla que teletransporta a una criatura vinculada",
+                 "{page}",
+                 "My Nether's Delight suma cocina del Nether a Farmer's Delight: más variedad para el sistema de comida del pack."]},
+      "sources": ["jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:assets/endermanoverhaul/lang/en_us.json", "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/crimson_forest_enderman.json", "repo:docs/design/mod-pingpong.md"]
     },
     {
-      "key": "netherend_stronghold",
-      "deps": [
-        "netherend_welcome"
-      ],
-      "type": "advancement",
-      "advancement": "minecraft:story/follow_ender_eye",
+      "key": "netherend_stronghold", "deps": ["netherend_welcome"], "type": "advancement", "advancement": "minecraft:story/follow_ender_eye", "layout": {"x": 7.6, "y": 0.2, "size": 1.0, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:ender_eye",
-      "layout": {
-        "x": 3,
-        "y": 6,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The stronghold",
-        "Eyes of Ender lead to the stronghold, rebuilt by YUNG's Better Strongholds. In act V the compass counts it done when your team reaches the End.\n\nBring spare eyes. They break at the worst moment."
-      ],
-      "es_es": [
-        "La fortaleza del End",
-        "Los ojos de ender llevan a la fortaleza, rehecha por YUNG's Better Strongholds. En el acto V la brújula la da por cumplida cuando tu equipo llega al End.\n\nLlevá ojos de repuesto. Se rompen en el peor momento."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/story/follow_ender_eye.json",
-        "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:data/minecraft/tags/worldgen/structure/eye_of_ender_located.json",
-        "repo:content/compass_targets.json"
-      ]
+      "en_us": {"title": "The stronghold",
+        "text": ["[lead] [item:minecraft:ender_eye|Eyes of Ender] lead to the stronghold, rebuilt by YUNG's Better Strongholds.",
+                 "In act [hl|V] the compass counts it done when your team reaches the End.",
+                 "[tip] Bring spare eyes. They break at the worst moment."]},
+      "es_es": {"title": "La fortaleza del End",
+        "text": ["[lead] Los [item:minecraft:ender_eye|ojos de ender] llevan a la fortaleza, rehecha por YUNG's Better Strongholds.",
+                 "En el acto [hl|V] la brújula la da por cumplida cuando tu equipo llega al End.",
+                 "[tip] Llevá ojos de repuesto. Se rompen en el peor momento."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/story/follow_ender_eye.json", "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:data/minecraft/tags/worldgen/structure/eye_of_ender_located.json", "repo:content/compass_targets.json"]
     },
     {
-      "key": "netherend_end",
-      "deps": [
-        "netherend_stronghold"
-      ],
-      "type": "dimension",
-      "dimension": "minecraft:the_end",
+      "key": "netherend_end", "deps": ["netherend_stronghold"], "type": "dimension", "dimension": "minecraft:the_end", "layout": {"x": 6.8, "y": -8.3, "size": 1.75, "shape": "diamond"}, "hide_lines": true,
       "icon": "minecraft:end_stone",
-      "layout": {
-        "x": 6,
-        "y": 6,
-        "size": 1.75,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "The End",
-        "YUNG's Better End Island rebuilds the central island and the Dragon arena; the fight itself is in the bosses chapter. After the Dragon, throw an ender pearl into an End Gateway to reach the outer islands (Remote Getaway)."
-      ],
-      "es_es": [
-        "El End",
-        "YUNG's Better End Island rehace la isla central y la arena del Dragón; la pelea está en el capítulo de jefes. Después del Dragón, tirá una perla de ender dentro de un Portal del End para llegar a las islas exteriores («Remote Getaway»)."
-      ],
-      "sources": [
-        "jar:YungsBetterEndIsland-1.21.1-NeoForge-3.1.2.jar:assets/betterendisland/lang/en_us.json",
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/enter_end_gateway.json",
-        "repo:content/compass_targets.json"
-      ]
+      "en_us": {"title": "The End",
+        "text": ["[lead] YUNG's Better End Island rebuilds the central island and the Dragon arena.",
+                 "The fight itself is in [chapter:guide_bosses|the bosses chapter].",
+                 "After the Dragon, throw an [item:minecraft:ender_pearl|ender pearl] into an End Gateway to reach the outer islands, for Remote Getaway."]},
+      "es_es": {"title": "El End",
+        "text": ["[lead] YUNG's Better End Island rehace la isla central y la arena del Dragón.",
+                 "La pelea está en [chapter:guide_bosses|el capítulo de jefes].",
+                 "Después del Dragón, tirá una [item:minecraft:ender_pearl|perla de ender] dentro de un Portal del End para llegar a las islas exteriores, para «Remote Getaway»."]},
+      "sources": ["jar:YungsBetterEndIsland-1.21.1-NeoForge-3.1.2.jar:assets/betterendisland/lang/en_us.json", "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/enter_end_gateway.json", "repo:content/compass_targets.json"]
     },
     {
-      "key": "netherend_end_city",
-      "deps": [
-        "netherend_end"
-      ],
-      "type": "advancement",
-      "advancement": "minecraft:end/find_end_city",
+      "key": "netherend_end_city", "deps": ["netherend_end"], "type": "advancement", "advancement": "minecraft:end/find_end_city", "layout": {"x": 14.5, "y": -8.9, "size": 1.0, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:purpur_block",
-      "layout": {
-        "x": 9,
-        "y": 6,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The City at the End of the Game",
-        "End cities rise on the outer islands, guarded by Shulkers whose Levitation can kill you when it wears off: carry slow falling or a water bucket. Their ships hide Elytra, and their chests hold good enchanted gear.\n\nLook up before you look down."
-      ],
-      "es_es": [
-        "La ciudad al final del juego",
-        "Las ciudades del End se levantan en las islas exteriores, custodiadas por Shulkers cuya Levitación te puede matar cuando se termina: llevá caída lenta o un balde de agua. Sus barcos esconden élitros y sus cofres, buen equipo encantado.\n\nMirá para arriba antes de mirar para abajo."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/find_end_city.json",
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/levitate.json"
-      ]
+      "en_us": {"title": "The City at the End of the Game",
+        "text": ["[lead] End cities rise on the outer islands, guarded by Shulkers.",
+                 "[careful] Shulker Levitation can kill you when it wears off: carry slow falling or a [item:minecraft:water_bucket|water bucket].",
+                 "Their ships hide [item:minecraft:elytra|Elytra], and their chests hold good enchanted gear.",
+                 "Look up before you look down."]},
+      "es_es": {"title": "La ciudad al final del juego",
+        "text": ["[lead] Las ciudades del End se levantan en las islas exteriores, custodiadas por Shulkers.",
+                 "[careful] La Levitación del Shulker te puede matar cuando se termina: llevá caída lenta o un [item:minecraft:water_bucket|balde de agua].",
+                 "Sus barcos esconden [item:minecraft:elytra|élitros] y sus cofres, buen equipo encantado.",
+                 "Mirá para arriba antes de mirar para abajo."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/find_end_city.json", "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/levitate.json"]
     },
     {
-      "key": "netherend_end_more",
-      "deps": [
-        "netherend_end_city"
-      ],
-      "type": "checkmark",
+      "key": "netherend_end_more", "deps": ["netherend_end_city"], "type": "checkmark", "layout": {"x": 21.0, "y": -10.2, "size": 0.85, "shape": "circle"},
       "icon": "minecraft:chorus_flower",
-      "layout": {
-        "x": 12,
-        "y": 6,
-        "size": 0.85,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The busy outer End",
-        "The End's other structures (the End Castle and its haunting, lone ships, Repurposed Structures' End set and Explorify's shipwreck) are in [chapter:sector_structures|Structures and exploration]. Cataclysm adds the Ruined Citadel and its Ender Guardian. Enderman Overhaul's End endermen drop Corrupted and Ancient Pearls, and End's Delight cooks it all."
-      ],
-      "es_es": [
-        "El End exterior poblado",
-        "Las otras estructuras del End (el Castillo del End y su fantasma, los barcos solitarios, el conjunto del End de Repurposed Structures y el naufragio de Explorify) están en [chapter:sector_structures|Estructuras y exploración]. Cataclysm suma la Ciudadela en Ruinas y su Guardián Ender. Los endermen del End de Enderman Overhaul sueltan Perlas corruptas y antiguas, y End's Delight lo cocina todo."
-      ],
-      "sources": [
-        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/ruined_citadel.json",
-        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:assets/endermanoverhaul/lang/en_us.json",
-        "repo:docs/design/mod-pingpong.md",
-        "repo:content/sectors/sector_structures.json (the End structures moved there)"
-      ]
+      "en_us": {"title": "The busy outer End",
+        "text": ["[lead] The outer End is busier than it looks.",
+                 "The End Castle and its haunting, lone ships, Repurposed Structures' End set and Explorify's shipwreck are in [chapter:sector_structures|Structures and exploration].",
+                 "{page}",
+                 "[li] Cataclysm adds the Ruined Citadel and its Ender Guardian",
+                 "[li] Enderman Overhaul's End endermen drop Corrupted and Ancient Pearls",
+                 "[li] End's Delight cooks it all"]},
+      "es_es": {"title": "El End exterior poblado",
+        "text": ["[lead] El End exterior está más ocupado de lo que parece.",
+                 "El Castillo del End y su fantasma, los barcos solitarios, el conjunto del End de Repurposed Structures y el naufragio de Explorify están en [chapter:sector_structures|Estructuras y exploración].",
+                 "{page}",
+                 "[li] Cataclysm suma la Ciudadela en Ruinas y su Guardián Ender",
+                 "[li] Los endermen del End de Enderman Overhaul sueltan Perlas corruptas y antiguas",
+                 "[li] End's Delight lo cocina todo"]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/ruined_citadel.json", "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:assets/endermanoverhaul/lang/en_us.json", "repo:docs/design/mod-pingpong.md", "repo:content/sectors/sector_structures.json (the End structures moved there)"]
     },
     {
-      "key": "netherend_lighthouse",
-      "deps": [
-        "netherend_end_more"
-      ],
-      "type": "advancement",
-      "advancement": "nova_structures:end/find_end_lighthouse",
-      "optional": true,
+      "key": "netherend_lighthouse", "deps": ["netherend_end_more"], "type": "advancement", "advancement": "nova_structures:end/find_end_lighthouse", "optional": true, "layout": {"x": 24.6, "y": -8.2, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:sea_lantern",
-      "layout": {
-        "x": 15,
-        "y": 6,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The Light at the End of the Game",
-        "Find a Dungeons and Taverns End Lighthouse: a fitting landmark for a pack about light, and a good spot for a waystone before exploring further.\n\nEven at the end of the world, someone left a light on."
-      ],
-      "es_es": [
-        "La luz al final del juego",
-        "Encontrá un Faro del End de Dungeons and Taverns: una referencia muy a tono con un pack sobre la luz, y un buen lugar para una waystone antes de seguir explorando.\n\nHasta en el fin del mundo alguien dejó una luz prendida."
-      ],
-      "sources": [
-        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/end/find_end_lighthouse.json"
-      ]
+      "en_us": {"title": "The Light at the End of the Game",
+        "text": ["[lead] Find a Dungeons and Taverns End Lighthouse.",
+                 "A fitting landmark for a pack about light, and a good spot for a waystone before exploring further.",
+                 "Even at the end of the world, someone left a light on."]},
+      "es_es": {"title": "La luz al final del juego",
+        "text": ["[lead] Encontrá un Faro del End de Dungeons and Taverns.",
+                 "Una referencia muy a tono con un pack sobre la luz, y un buen lugar para una waystone antes de seguir explorando.",
+                 "Hasta en el fin del mundo alguien dejó una luz prendida."]},
+      "sources": ["jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/end/find_end_lighthouse.json"]
     },
     {
-      "key": "netherend_waystones",
-      "deps": [
-        "netherend_welcome"
-      ],
-      "type": "checkmark",
+      "key": "netherend_waystones", "deps": ["netherend_welcome"], "type": "checkmark", "layout": {"x": -3.2, "y": 0.2, "size": 1.0, "shape": "rsquare"},
       "icon": "waystones:red_nether_bricks_waystone",
-      "layout": {
-        "x": 0,
-        "y": 3,
-        "size": 1.0,
-        "shape": "rsquare"
-      },
-      "en_us": [
-        "Waystones in other dimensions",
-        "Build a Nether waystone (red Nether bricks) and an End one (End stone bricks) near each portal. Warping between dimensions costs a flat amount of experience and saves the portal walk every time.\n\nWild waystones also generate in the Nether and the End."
-      ],
-      "es_es": [
-        "Waystones en otras dimensiones",
-        "Construí una waystone del Nether (ladrillos rojos del Nether) y una del End (ladrillos de piedra del End) cerca de cada portal. Viajar entre dimensiones cuesta una cantidad fija de experiencia y te ahorra la caminata hasta el portal.\n\nLas waystones salvajes también aparecen en el Nether y el End."
-      ],
-      "sources": [
-        "jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/red_nether_bricks_waystone.json",
-        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData.class",
-        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData$WorldGen.class"
-      ]
+      "en_us": {"title": "Waystones in other dimensions",
+        "text": ["[lead] Build one waystone beside each portal and skip the walk every time.",
+                 "[li] Nether: red Nether bricks",
+                 "[li] End: End stone bricks",
+                 "Warping between dimensions costs a flat amount of experience.",
+                 "[note] Wild waystones also generate in the Nether and the End."]},
+      "es_es": {"title": "Waystones en otras dimensiones",
+        "text": ["[lead] Construí una waystone junto a cada portal y ahorrate la caminata siempre.",
+                 "[li] Nether: ladrillos rojos del Nether",
+                 "[li] End: ladrillos de piedra del End",
+                 "Viajar entre dimensiones cuesta una cantidad fija de experiencia.",
+                 "[note] Las waystones salvajes también aparecen en el Nether y el End."]},
+      "sources": ["jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/red_nether_bricks_waystone.json", "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData.class", "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData$WorldGen.class"]
     },
     {
-      "key": "netherend_pack",
-      "deps": [
-        "netherend_welcome"
-      ],
-      "type": "checkmark",
+      "key": "netherend_pack", "deps": ["netherend_welcome"], "type": "checkmark", "layout": {"x": -2.2, "y": -3.1, "size": 1.0, "shape": "rsquare"},
       "icon": "entrelumen:heliodor_compass",
-      "layout": {
-        "x": 0,
-        "y": -3,
-        "size": 1.0,
-        "shape": "rsquare"
-      },
-      "en_us": [
-        "What ENTRELUMEN changes here",
-        "The compass visits a YUNG's fortress in act III (carry a blaze rod) and, in act V, the ocean monument, the stronghold and the End (kill the Dragon). The Wither is the only nether star source.\n\nDungeons and Taverns adds fortresses, ports and towers to the Nether, and the pack's measurements flag them as worth watching on a modest PC."
-      ],
-      "es_es": [
-        "Qué cambia ENTRELUMEN acá",
-        "La brújula visita una fortaleza de YUNG's en el acto III (llevá una vara de blaze) y, en el acto V, el monumento oceánico, la fortaleza del End y el End (matá al Dragón). El Wither es la única fuente de estrellas del Nether.\n\nDungeons and Taverns suma fortalezas, puertos y torres al Nether, y las mediciones del pack las marcan como algo a vigilar en una PC modesta."
-      ],
-      "sources": [
-        "repo:content/compass_targets.json",
-        "repo:docs/design/mod-pingpong.md",
-        "repo:docs/design/exploration-structures-family.md",
-        "repo:catalog/curated.json"
-      ]
+      "en_us": {"title": "What ENTRELUMEN changes here",
+        "text": ["[lead] The compass visits a fortress, then the End.",
+                 "[li] Act [hl|III]: a YUNG's fortress; carry a blaze rod",
+                 "[li] Act [hl|V]: the ocean monument, the stronghold and the End; kill the Dragon",
+                 "The Wither is the only nether star source.",
+                 "{page}",
+                 "[note] Dungeons and Taverns adds fortresses, ports and towers to the Nether, and the pack's measurements flag them as worth watching on a modest PC."]},
+      "es_es": {"title": "Qué cambia ENTRELUMEN acá",
+        "text": ["[lead] La brújula visita una fortaleza y después el End.",
+                 "[li] Acto [hl|III]: una fortaleza de YUNG's; llevá una vara de blaze",
+                 "[li] Acto [hl|V]: el monumento oceánico, la fortaleza del End y el End; matá al Dragón",
+                 "El Wither es la única fuente de estrellas del Nether.",
+                 "{page}",
+                 "[note] Dungeons and Taverns suma fortalezas, puertos y torres al Nether, y las mediciones del pack las marcan como algo a vigilar en una PC modesta."]},
+      "sources": ["repo:content/compass_targets.json", "repo:docs/design/mod-pingpong.md", "repo:docs/design/exploration-structures-family.md", "repo:catalog/curated.json"]
     },
     {
-      "key": "netherend_mastery",
-      "deps": [
-        "netherend_debris",
-        "netherend_end_more"
-      ],
-      "type": "checkmark",
+      "key": "netherend_mastery", "deps": ["netherend_debris", "netherend_end_more"], "type": "checkmark", "layout": {"x": 22.0, "y": 0.3, "size": 2.25, "shape": "pentagon"}, "hide_lines": true,
       "icon": "minecraft:end_crystal",
-      "layout": {
-        "x": 18,
-        "y": 3,
-        "size": 2.25,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Both ends of the world",
-        "Fortresses, bastions and keeps below; cities, lighthouses and citadels beyond the void.\n\nYou have seen both ends of the world. Heliodor is somewhere in between."
-      ],
-      "es_es": [
-        "Los dos extremos del mundo",
-        "Fortalezas, bastiones y fortines abajo; ciudades, faros y ciudadelas más allá del vacío.\n\nYa viste los dos extremos del mundo. Heliodor está en algún lugar del medio."
-      ],
-      "sources": [
-        "repo:docs/design/story-bible.md",
-        "repo:docs/design/quest-lore.md"
-      ]
+      "en_us": {"title": "Both ends of the world", "subtitle": "Below and beyond.",
+        "text": ["[lead] Fortresses, bastions and keeps below; cities, lighthouses and citadels beyond the void.",
+                 "You have seen both ends of the world. Heliodor is somewhere in between."]},
+      "es_es": {"title": "Los dos extremos del mundo", "subtitle": "Abajo y más allá.",
+        "text": ["[lead] Fortalezas, bastiones y fortines abajo; ciudades, faros y ciudadelas más allá del vacío.",
+                 "Ya viste los dos extremos del mundo. Heliodor está en algún lugar del medio."]},
+      "sources": ["repo:docs/design/story-bible.md", "repo:docs/design/quest-lore.md"]
+    },
+    {
+      "key": "netherend_toy_flint", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 1.5, "y": -1.7, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:flint_and_steel",
+      "en_us": {"title": "Flint and Steel",
+        "text": ["[lead] One spark and the frame remembers it is a door.",
+                 "In the world the portal needs a light of its own. In the book, a click will do."]},
+      "es_es": {"title": "Pedernal y acero",
+        "text": ["[lead] Una chispa y el marco se acuerda de que es una puerta.",
+                 "En el mundo el portal necesita su propia luz. En el libro alcanza con un clic."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/story/enter_the_nether.json"]
+    },
+    {
+      "key": "netherend_toy_ghast", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 24.8, "y": 6.3, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:ghast_tear",
+      "en_us": {"title": "Say Hi to the Ghast",
+        "text": ["[lead] It floats, it cries and its fireballs are not a greeting.",
+                 "Bounce one back for the advancement Return to Sender. In the book it just waves."]},
+      "es_es": {"title": "Saludá al Ghast",
+        "text": ["[lead] Flota, llora y sus bolas de fuego no son un saludo.",
+                 "Devolvele una para el logro «Return to Sender». En el libro sólo saluda."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/return_to_sender.json"]
     }
   ]
 }

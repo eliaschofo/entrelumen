@@ -63,6 +63,7 @@ their art (check_v2_refs); the image budget and the sketch-first warning count t
 Registry caches live outside the repository, one file per set of JARs, so worktrees with different
 locks do not rebuild each other's.
 """
+import atexit
 import hashlib
 import json
 import os
@@ -92,6 +93,7 @@ _ITEMS = None
 
 CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/item-registry.json')
 TEXTURE_CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/guide-emblems.json')
+TEXTURE_INDEX = Path('E:/Elias/Codex/Entrelumen-ssd/research/texture-index.json')
 EMBLEM = re.compile(r'^([a-z0-9_.-]+):(textures/(?:items?|blocks?)/[a-z0-9_./-]+\.png)$')
 _TEXTURES = None
 
@@ -126,10 +128,7 @@ def texture_info(ref):
         from PIL import Image
         with Image.open(comp) as im:
             return (im.width, im.height, comp.with_name(comp.name + '.mcmeta').exists())
-    lp = ROOT / 'catalog' / 'local-paths.json'
-    jars = sorted(json.loads(lp.read_text(encoding='utf-8')).values()) if lp.exists() else []
-    if VANILLA_JAR.exists():
-        jars.append(str(VANILLA_JAR))
+    jars = scanned_jars()
     texture_cache = signed_cache(TEXTURE_CACHE, jars, 1)
     if _TEXTURES is None:
         _TEXTURES = {'jars': jars, 'info': {}}
@@ -140,39 +139,92 @@ def texture_info(ref):
                     _TEXTURES = cached
             except Exception:
                 pass
+        atexit.register(_save_textures, texture_cache)
     if rel not in _TEXTURES['info']:
-        # One pass over the JARs for every emblem the guides name (plus this one).
+        # The index says which JAR holds it (the first in path order, as a scan would find), so only that one opens.
         import io
         from PIL import Image
-        wanted = {rel}
-        for path in GUIDES.glob('*.json'):
+        hit = texture_index()['files'].get(rel)
+        info = None
+        if hit:
             try:
-                mm = EMBLEM.match(json.loads(path.read_text(encoding='utf-8')).get('emblem', ''))
+                with zipfile.ZipFile(hit[0]) as z, Image.open(io.BytesIO(z.read(rel))) as im:
+                    info = [im.width, im.height, hit[1]]
             except Exception:
-                mm = None
-            if mm:
-                wanted.add(f'assets/{mm.group(1)}/{mm.group(2)}')
-        wanted -= set(_TEXTURES['info'])
-        for jar in jars:
-            if not wanted:
-                break
-            try:
-                with zipfile.ZipFile(jar) as z:
-                    names = set(z.namelist())
-                    for hit in wanted & names:
-                        with Image.open(io.BytesIO(z.read(hit))) as im:
-                            _TEXTURES['info'][hit] = [im.width, im.height, hit + '.mcmeta' in names]
-                    wanted -= names
-            except Exception:
-                continue
-        for miss in wanted:
-            _TEXTURES['info'][miss] = None
-        try:
-            write_cache(texture_cache, _TEXTURES)
-        except Exception:
-            pass
+                info = None
+        _TEXTURES['info'][rel] = info
+        _TEXTURES['dirty'] = True
     found = _TEXTURES['info'][rel]
     return tuple(found) if found else None
+
+
+def _save_textures(path):
+    """Write the texture sizes found in this run once, at exit, instead of once per new texture."""
+    if _TEXTURES and _TEXTURES.pop('dirty', False):
+        try:
+            write_cache(path, _TEXTURES)
+        except Exception:
+            pass
+
+
+def scanned_jars():
+    """The pinned JARs in path order, then vanilla's client JAR: the order every texture lookup scans them in."""
+    lp = ROOT / 'catalog' / 'local-paths.json'
+    jars = sorted(json.loads(lp.read_text(encoding='utf-8')).values()) if lp.exists() else []
+    if VANILLA_JAR.exists():
+        jars.append(str(VANILLA_JAR))
+    return jars
+
+
+_INDEX = None
+
+
+def texture_index():
+    """Every PNG under assets/ in the pinned JARs and vanilla ('files': path -> [jar, animated], the first JAR in
+    path order winning) and the block atlas sources they list ('singles', 'dirs'). One pass over the JARs, cached
+    outside the repository per set of JARs: opening ~380 JARs for every texture made a full run take an hour."""
+    global _INDEX
+    if _INDEX is None:
+        jars = scanned_jars()
+        cache = signed_cache(TEXTURE_INDEX, jars, 1)
+        if cache.exists():
+            try:
+                cached = json.loads(cache.read_text(encoding='utf-8'))
+                if cached.get('jars') == jars:
+                    _INDEX = cached
+            except Exception:
+                pass
+        if _INDEX is None:
+            files, singles, dirs = {}, set(), {'block', 'item'}
+            for jar in jars:
+                try:
+                    with zipfile.ZipFile(jar) as z:
+                        names = z.namelist()
+                        raw = z.read('assets/minecraft/atlases/blocks.json')                             if 'assets/minecraft/atlases/blocks.json' in names else None
+                except (OSError, zipfile.BadZipFile, KeyError):
+                    continue
+                present = set(names)
+                for name in names:
+                    if name.startswith('assets/') and name.endswith('.png') and name not in files:
+                        files[name] = [jar, name + '.mcmeta' in present]
+                if raw:
+                    try:
+                        sources = json.loads(raw).get('sources', [])
+                    except ValueError:
+                        sources = []
+                    for src in sources:
+                        kind = src.get('type', '').split(':')[-1]
+                        if kind == 'single':
+                            res = src['resource']
+                            singles.add(res if ':' in res else 'minecraft:' + res)
+                        elif kind == 'directory':
+                            dirs.add(src.get('source', ''))
+            _INDEX = {'jars': jars, 'files': files, 'singles': sorted(singles), 'dirs': sorted(dirs)}
+            try:
+                write_cache(cache, _INDEX)
+            except Exception:
+                pass
+    return _INDEX
 
 
 def bundled(jar):
@@ -1026,51 +1078,20 @@ def locked_mods():
     return _LOCKED
 
 
-_ATLAS = None
-
-
 def in_block_atlas(sprite):
     """Whether the block atlas stitches a sprite: vanilla's directory sources (block/, item/) or a single or
     directory source some pinned JAR lists in assets/minecraft/atlases/blocks.json."""
-    global _ATLAS
-    if _ATLAS is None:
-        singles, dirs = set(), {'block', 'item'}
-        lp = ROOT / 'catalog' / 'local-paths.json'
-        jars = sorted(json.loads(lp.read_text(encoding='utf-8')).values()) if lp.exists() else []
-        for jar in jars + ([str(VANILLA_JAR)] if VANILLA_JAR.exists() else []):
-            try:
-                with zipfile.ZipFile(jar) as z:
-                    raw = z.read('assets/minecraft/atlases/blocks.json')
-            except (KeyError, OSError, zipfile.BadZipFile):
-                continue
-            for src in json.loads(raw).get('sources', []):
-                kind = src.get('type', '').split(':')[-1]
-                if kind == 'single':
-                    res = src['resource']
-                    singles.add(res if ':' in res else 'minecraft:' + res)
-                elif kind == 'directory':
-                    dirs.add(src.get('source', ''))
-        _ATLAS = (singles, dirs)
-    singles, dirs = _ATLAS
+    index = texture_index()
     path = sprite.split(':', 1)[1]
-    return sprite in singles or any(path.startswith(d + '/') for d in dirs if d)
+    return sprite in index['singles'] or any(path.startswith(d + '/') for d in index['dirs'] if d)
 
 
 def any_texture(ref):
     ns, path = ref.split(':', 1)
     rel = f'assets/{ns}/{path}'
-    lp = ROOT / 'catalog' / 'local-paths.json'
-    jars = sorted(json.loads(lp.read_text(encoding='utf-8')).values()) if lp.exists() else []
-    for jar in jars + ([str(VANILLA_JAR)] if VANILLA_JAR.exists() else []):
-        if Path(jar).name.split('-')[0].lower().replace('_', '') not in ns.replace('_', '') and ns not in Path(jar).name.lower():
-            continue
-        try:
-            with zipfile.ZipFile(jar) as z:
-                if rel in z.namelist():
-                    return True
-        except Exception:
-            continue
-    for jar in jars:
+    if rel.endswith('.png'):
+        return rel in texture_index()['files']
+    for jar in scanned_jars():
         try:
             with zipfile.ZipFile(jar) as z:
                 if rel in z.namelist():
@@ -1097,7 +1118,7 @@ def check_reward_tables(errors):
             errors.append(f'reward table {name}: icon {spec["icon"]} not found')
 
 
-def image_budget(warnings, flt=''):
+def image_budget(warnings, flt=()):
     """Images of every compiled chapter: a warning above IMAGE_BUDGET or for a v2 chapter that does not start as a
     sketch; prints the book total and the heaviest chapters."""
     import generate_quests
@@ -1109,7 +1130,7 @@ def image_budget(warnings, flt=''):
             continue
         images = json.loads(text).get('images', [])
         counts[path.stem] = len(images)
-        if flt and flt not in path.stem:
+        if not picked(path.stem, flt):
             continue
         if len(images) > IMAGE_BUDGET:
             warnings.append(f'{path.stem}: {len(images)} images, over the budget of {IMAGE_BUDGET}: one large picture '
@@ -1126,13 +1147,18 @@ def image_budget(warnings, flt=''):
           + ', '.join(f'{name} {n}' for name, n in ranked[:3]))
 
 
+def picked(name, flt, *others):
+    """Whether a chapter matches the command line: no names means all of them; any name (a substring) picks it."""
+    return not flt or any(f in n for f in flt for n in (name,) + others)
+
+
 def main():
-    flt = sys.argv[1] if len(sys.argv) > 1 else ''
+    flt = tuple(sys.argv[1:])   # chapter names or substrings; several are allowed
     errors, chapters, keys, warnings = [], set(), set(), []
     total = 0
     files = sorted(GUIDES.glob('*.json'))
     for p in files:
-        if flt and flt not in p.stem:
+        if not picked(p.stem, flt):
             continue
         total += check_chapter(p, chapters, keys, errors)
         warnings += copy_warnings(p)
@@ -1148,7 +1174,7 @@ def main():
     for p in sector_files:
         all_keys |= {q['key'] for q in json.loads(p.read_text(encoding='utf-8'))['quests']}
     for p in sector_files:
-        if flt and flt not in p.stem:
+        if not picked(p.stem, flt):
             continue
         total += check_sector(p, errors, all_keys)
         warnings += quest_art.lint(json.loads(p.read_text(encoding='utf-8')))   # notes no player would see
@@ -1157,7 +1183,7 @@ def main():
     story = 0
     for name in generate_quests.CHAPTER_SOURCES:   # story chapters in presentation v2: their text and art
         data = json.loads((ROOT / 'content' / name).read_text(encoding='utf-8'))
-        if data.get('presentation', 1) < 2 or (flt and flt not in data['chapter'] and flt not in name):
+        if data.get('presentation', 1) < 2 or not picked(data['chapter'], flt, name):
             continue
         check_v2_refs(data, name, errors)
         warnings += quest_art.lint(data)

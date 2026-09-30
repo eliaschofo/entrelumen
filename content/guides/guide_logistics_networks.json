@@ -4,407 +4,431 @@
   "act": "III",
   "icon": "ae2:controller",
   "emblem": "ae2:textures/item/wireless_terminal.png",
-  "title": {
-    "en_us": "Storage Networks: AE2 or Refined Storage",
-    "es_es": "Redes de almacenamiento: AE2 o Refined Storage"
-  },
+  "title": {"en_us": "Storage Networks: AE2 or Refined Storage", "es_es": "Redes de almacenamiento: AE2 o Refined Storage"},
   "subtitle": {
     "en_us": "One terminal for everything you own: how the two networks differ, where the pack gates them, and how to start.",
     "es_es": "Una terminal para todo lo que tenés: en qué se diferencian las dos redes, dónde las escalona el pack y cómo empezar."
   },
   "quests": [
     {
-      "key": "logistics_networks_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "A Terminal That Knows Everything",
-        "A storage network turns items into data: insert once, then search, count, pull and autocraft from one terminal. The pack offers &eApplied Energistics 2&r and &eRefined Storage&r side by side, both complete; pick one per base.\n\nThe tech guides go deeper into autocrafting."
-      ],
-      "es_es": [
-        "Una terminal que sabe todo",
-        "Una red de almacenamiento convierte los ítems en datos: los metés una vez y después buscás, contás, sacás y autofabricás desde una terminal. El pack ofrece &eApplied Energistics 2&r y &eRefined Storage&r lado a lado, las dos completas; elegí una por base.\n\nLas guías técnicas profundizan en el autocrafteo."
-      ],
-      "sources": [
-        "repo:docs/design/mod-pingpong.md",
-        "repo:docs/research/reference-packs.md"
-      ]
+      "key": "logistics_networks_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "A Terminal That Knows Everything", "subtitle": "Search bar included.",
+        "text": ["[lead] A network turns items into data: insert once, then search, count, pull and autocraft from one terminal.",
+                 "[li] [chapter:sector_ae2_network|Applied Energistics 2] and [chapter:sector_rs|Refined Storage], side by side",
+                 "[li] Both are complete: pick one per base",
+                 "The tech chapters go deeper into autocrafting, like [chapter:sector_ae2_automation|AE2 · Automation]."]},
+      "es_es": {"title": "Una terminal que sabe todo", "subtitle": "Con buscador incluido.",
+        "text": ["[lead] Una red convierte los ítems en datos: los metés una vez y buscás, contás, sacás y autofabricás desde una terminal.",
+                 "[li] [chapter:sector_ae2_network|Applied Energistics 2] y [chapter:sector_rs|Refined Storage], lado a lado",
+                 "[li] Las dos están completas: elegí una por base",
+                 "Los capítulos técnicos profundizan en el autocrafteo, como [chapter:sector_ae2_automation|AE2 · Automatización]."]},
+      "sources": ["repo:docs/design/mod-pingpong.md", "repo:docs/research/reference-packs.md"]
     },
     {
-      "key": "logistics_networks_compare",
-      "deps": [
-        "logistics_networks_welcome"
-      ],
-      "type": "checkmark",
+      "key": "logistics_networks_compare", "deps": ["logistics_networks_welcome"], "type": "checkmark", "layout": {"x": 4, "y": 0, "size": 1.5, "shape": "diamond"},
       "icon": "minecraft:comparator",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.5,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "AE2 or RS?",
-        "&eAE2&r is deeper and more rewarding: cables carry limited &echannels&r (8 per normal cable, 32 per dense), so layout matters, and the pack has lots of add-ons for it. &eRefined Storage&r is simpler: no channels, just connect and power, faster to set up.\n\nBoth store items, fluids and, with Mekanism add-ons, chemicals, and both craft on request."
-      ],
-      "es_es": [
-        "¿AE2 o RS?",
-        "&eAE2&r es más profundo y gratificante: los cables llevan &ecanales&r limitados (8 por cable normal, 32 por denso), así que el diseño importa, y el pack le suma muchos complementos. &eRefined Storage&r es más simple: sin canales, conectar y dar energía, se arma más rápido.\n\nLas dos guardan ítems, fluidos y, con complementos de Mekanism, químicos, y las dos fabrican a pedido."
-      ],
-      "sources": [
-        "repo:docs/design/mod-pingpong.md",
-        "https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/channels",
-        "https://refinedmods.com/refined-storage/"
-      ]
+      "en_us": {"title": "AE2 or RS?", "subtitle": "Depth or speed.",
+        "text": ["[lead] AE2 rewards planning; Refined Storage rewards impatience.",
+                 "[li:ae2:certus_quartz_crystal] [hl|AE2]: deeper and more rewarding, with lots of add-ons in the pack",
+                 "[li:refinedstorage:1k_storage_disk] [hl|Refined Storage]: no channels, just connect and power; faster to set up",
+                 "{page}",
+                 "AE2 cables carry limited [hl|channels]: [hl|8] on a normal cable, [hl|32] on a dense one. Layout matters.",
+                 "Both store items, fluids and, with Mekanism add-ons, chemicals. Both craft on request."]},
+      "es_es": {"title": "¿AE2 o RS?", "subtitle": "Profundidad o rapidez.",
+        "text": ["[lead] AE2 premia la planificación; Refined Storage, la impaciencia.",
+                 "[li:ae2:certus_quartz_crystal] [hl|AE2]: más profundo y gratificante, con muchos complementos en el pack",
+                 "[li:refinedstorage:1k_storage_disk] [hl|Refined Storage]: sin canales, conectar y dar energía; se arma más rápido",
+                 "{page}",
+                 "Los cables de AE2 llevan [hl|canales] limitados: [hl|8] en el cable normal, [hl|32] en el denso. El diseño importa.",
+                 "Las dos guardan ítems, fluidos y, con complementos de Mekanism, químicos. Las dos fabrican a pedido."]},
+      "sources": ["repo:docs/design/mod-pingpong.md", "https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/channels", "https://refinedmods.com/refined-storage/"]
     },
     {
-      "key": "logistics_networks_gates",
-      "deps": [
-        "logistics_networks_compare"
-      ],
-      "type": "checkmark",
+      "key": "logistics_networks_gates", "deps": ["logistics_networks_compare"], "type": "checkmark", "layout": {"x": 8, "y": 0, "size": 1.0, "shape": "pentagon"},
       "icon": "entrelumen:routing_matrix",
-      "layout": {
-        "x": 3,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Pack Change: When Each Opens",
-        "Both networks enter in act III: the Refined Storage &eController&r takes a &eRouting Matrix&r and its &eAutocrafter&r a &eHandling Core&r, while AE2 needs its inscriber's &eLogic Processors&r, the same ones the Routing Matrix is made from.\n\nThe AE2 controller carries a Routing Matrix too, but a small AE2 network without a controller can start a little earlier."
-      ],
-      "es_es": [
-        "Cambio del pack: cuándo abren",
-        "Las dos redes entran en el acto III: el &eControlador&r de Refined Storage lleva una &eMatriz de distribución&r y su &eAutocrafter&r un &eNúcleo de manipulación&r, mientras AE2 necesita los &eProcesadores lógicos&r de su inscriptor, los mismos con que se hace la Matriz de distribución.\n\nEl controlador de AE2 también lleva una Matriz de distribución, pero una red chica de AE2 sin controlador puede arrancar un poco antes."
-      ],
-      "sources": [
-        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
-        "repo:content/integration-design.json",
-        "repo:docs/research/reference-packs.md"
-      ]
+      "en_us": {"title": "Pack Change: When Each Opens", "subtitle": "Act III, both doors.",
+        "text": ["[lead] Both networks open in act III, each asking for its own part.",
+                 "[li:entrelumen:routing_matrix] [hl|Refined Storage]: the [item:refinedstorage:controller|Controller] takes a [item:entrelumen:routing_matrix|Routing Matrix]",
+                 "[li:entrelumen:handling_core] Its [item:refinedstorage:autocrafter|Autocrafter] takes a [item:entrelumen:handling_core|Handling Core]",
+                 "[li:ae2:logic_processor] [hl|AE2]: the [item:ae2:inscriber|Inscriber]'s [item:ae2:logic_processor|Logic Processors]",
+                 "{page}",
+                 "The Routing Matrix is made from those same logic processors.",
+                 "[note] The [item:ae2:controller|AE2 Controller] carries a Routing Matrix too, but a small AE2 network without a controller can start a little earlier."]},
+      "es_es": {"title": "Cambio del pack: cuándo abren", "subtitle": "Acto III, las dos puertas.",
+        "text": ["[lead] Las dos redes abren en el acto III y cada una pide su propia pieza.",
+                 "[li:entrelumen:routing_matrix] [hl|Refined Storage]: el [item:refinedstorage:controller|Controlador] lleva una [item:entrelumen:routing_matrix|Matriz de distribución]",
+                 "[li:entrelumen:handling_core] Su [item:refinedstorage:autocrafter|Autocrafter] lleva un [item:entrelumen:handling_core|Núcleo de manipulación]",
+                 "[li:ae2:logic_processor] [hl|AE2]: los [item:ae2:logic_processor|Procesadores lógicos] del [item:ae2:inscriber|Inscriptor]",
+                 "{page}",
+                 "La Matriz de distribución se hace con esos mismos procesadores lógicos.",
+                 "[note] El [item:ae2:controller|controlador de AE2] también lleva una Matriz de distribución, pero una red chica de AE2 sin controlador puede arrancar un poco antes."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js", "repo:content/integration-design.json", "repo:docs/research/reference-packs.md"]
     },
     {
-      "key": "logistics_networks_ae2_meteor",
-      "deps": [
-        "logistics_networks_compare"
-      ],
-      "type": "item",
-      "item": "ae2:inscriber",
-      "layout": {
-        "x": 6,
-        "y": -3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "AE2 Step 1: a Meteorite",
-        "AE2 starts in a crater: meteorites hold a &eMysterious Cube&r with the four &einscriber presses&r (calculation, engineering, logic, silicon) and sky stone. Presses plus an &eInscriber&r print processors.\n\nCertus quartz grows from budding certus; charge it in a &eCharger&r and drop it with redstone and nether quartz in water for fluix."
-      ],
-      "es_es": [
-        "AE2 paso 1: un meteorito",
-        "AE2 empieza en un cráter: los meteoritos tienen un &eCubo misterioso&r con las cuatro &eprensas del inscriptor&r (cálculo, ingeniería, lógica, silicio) y piedra celeste. Prensas más un &eInscriptor&r imprimen procesadores.\n\nEl cuarzo de certus crece de certus en brote; cargalo en un &eCargador&r y tiralo con redstone y cuarzo del Nether al agua para obtener fluix."
-      ],
-      "sources": [
-        "https://guide.appliedenergistics.org/1.21.1/getting-started",
-        "jar:appliedenergistics2-19.2.17.jar:assets/ae2/lang/en_us.json"
-      ]
+      "key": "logistics_networks_ae2_meteor", "deps": ["logistics_networks_compare"], "type": "item", "item": "ae2:inscriber", "layout": {"x": 8, "y": -4, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "AE2 Step 1: a Meteorite", "subtitle": "Sky stone included.",
+        "text": ["[lead] AE2 starts in a crater: a meteorite hides the presses that print your processors.",
+                 "[li] A [item:ae2:mysterious_cube|Mysterious Cube] with the four inscriber presses: calculation, engineering, logic and silicon",
+                 "[li] Sky stone",
+                 "Presses plus an [item:ae2:inscriber|Inscriber] print processors.",
+                 "{page}",
+                 "[li:ae2:certus_quartz_crystal] Certus quartz grows from budding certus",
+                 "[li] Charge it in a [item:ae2:charger|Charger], then drop it in water with redstone and nether quartz for fluix"]},
+      "es_es": {"title": "AE2 paso 1: un meteorito", "subtitle": "Piedra celeste incluida.",
+        "text": ["[lead] AE2 empieza en un cráter: un meteorito esconde las prensas que imprimen tus procesadores.",
+                 "[li] Un [item:ae2:mysterious_cube|Cubo misterioso] con las cuatro prensas del inscriptor: cálculo, ingeniería, lógica y silicio",
+                 "[li] Piedra celeste",
+                 "Prensas más un [item:ae2:inscriber|Inscriptor] imprimen procesadores.",
+                 "{page}",
+                 "[li:ae2:certus_quartz_crystal] El cuarzo de certus crece de certus en brote",
+                 "[li] Cargalo en un [item:ae2:charger|Cargador] y tiralo al agua con redstone y cuarzo del Nether para obtener fluix"]},
+      "sources": ["https://guide.appliedenergistics.org/1.21.1/getting-started", "jar:appliedenergistics2-19.2.17.jar:assets/ae2/lang/en_us.json"]
     },
     {
-      "key": "logistics_networks_ae2_first",
-      "deps": [
-        "logistics_networks_ae2_meteor"
-      ],
-      "type": "item",
-      "item": "ae2:terminal",
-      "layout": {
-        "x": 9,
-        "y": -3,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "AE2 Step 2: a First Network",
-        "An &eME Drive&r with a &e1k storage cell&r, a &eterminal&r and power from an energy acceptor or a controller. Without a controller the network handles up to 8 channel devices; with a &eController&r and cables it grows far beyond.\n\nYour first terminal is the moment the chests start feeling old."
-      ],
-      "es_es": [
-        "AE2 paso 2: una primera red",
-        "Un &eME Drive&r con una &ecelda de 1k&r, una &eterminal&r y energía desde un aceptador o un controlador. Sin controlador la red maneja hasta 8 dispositivos con canal; con un &eControlador&r y cables crece mucho más.\n\nTu primera terminal es el momento en que los cofres empiezan a sentirse viejos."
-      ],
-      "sources": [
-        "https://guide.appliedenergistics.org/1.21.1/getting-started",
-        "https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/channels"
-      ]
+      "key": "logistics_networks_ae2_first", "deps": ["logistics_networks_ae2_meteor"], "type": "item", "item": "ae2:terminal", "layout": {"x": 12.5, "y": -4, "size": 1.25, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "AE2 Step 2: a First Network", "subtitle": "The chests start feeling old.",
+        "text": ["[lead] Drive, cell, terminal and power: that is already a network.",
+                 "[li:ae2:item_storage_cell_1k] An [item:ae2:drive|ME Drive] with a [item:ae2:item_storage_cell_1k|1k storage cell]",
+                 "[li] A [item:ae2:terminal|terminal]",
+                 "[li] Power from an [item:ae2:energy_acceptor|energy acceptor] or a [item:ae2:controller|controller]",
+                 "{page}",
+                 "Without a controller the network handles up to [hl|8] channel devices. With a controller and cables it grows far beyond."]},
+      "es_es": {"title": "AE2 paso 2: una primera red", "subtitle": "Los cofres empiezan a quedar viejos.",
+        "text": ["[lead] Drive, celda, terminal y energía: eso ya es una red.",
+                 "[li:ae2:item_storage_cell_1k] Un [item:ae2:drive|ME Drive] con una [item:ae2:item_storage_cell_1k|celda de 1k]",
+                 "[li] Una [item:ae2:terminal|terminal]",
+                 "[li] Energía desde un [item:ae2:energy_acceptor|aceptador de energía] o un [item:ae2:controller|controlador]",
+                 "{page}",
+                 "Sin controlador la red maneja hasta [hl|8] dispositivos con canal. Con un controlador y cables crece mucho más."]},
+      "sources": ["https://guide.appliedenergistics.org/1.21.1/getting-started", "https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/channels"]
     },
     {
-      "key": "logistics_networks_ae2_guide",
-      "deps": [
-        "logistics_networks_ae2_meteor"
-      ],
-      "type": "item",
-      "item": "ae2:guide",
-      "optional": true,
-      "layout": {
-        "x": 9,
-        "y": -5.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: AE2 Has Its Own Guide",
-        "AE2 ships an in-game guide with pictures and 3D scenes of every block: craft the &eGuide&r, or bind &eOpen Guide for Items&r in Controls to jump from any AE2 item to its page.\n\nRead it once; it saves ten forum threads."
-      ],
-      "es_es": [
-        "Truco: AE2 trae su guía",
-        "AE2 trae una guía en el juego con imágenes y escenas 3D de cada bloque: fabricá la &eGuía&r, o asigná &eOpen Guide for Items&r en Controles para saltar de cualquier ítem de AE2 a su página.\n\nLeela una vez; te ahorra diez foros."
-      ],
-      "sources": [
-        "jar:appliedenergistics2-19.2.17.jar:assets/ae2/lang/en_us.json",
-        "jar:guideme-21.1.17.jar:META-INF/neoforge.mods.toml"
-      ]
+      "key": "logistics_networks_ae2_guide", "deps": ["logistics_networks_ae2_meteor"], "type": "item", "item": "ae2:guide", "optional": true, "layout": {"x": 8, "y": -7.5, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Tip: AE2 Has Its Own Guide",
+        "text": ["[tip] AE2 ships an in-game guide with pictures and 3D scenes of every block.",
+                 "[li:ae2:guide] Craft the [item:ae2:guide|Guide]",
+                 "[li] Or bind [hl|Open Guide for Items] in Controls to jump from any AE2 item to its page",
+                 "Read it once; it saves ten forum threads."]},
+      "es_es": {"title": "Truco: AE2 trae su guía",
+        "text": ["[tip] AE2 trae una guía en el juego con imágenes y escenas 3D de cada bloque.",
+                 "[li:ae2:guide] Fabricá la [item:ae2:guide|Guía]",
+                 "[li] O asigná [hl|Open Guide for Items] en Controles para saltar de cualquier ítem de AE2 a su página",
+                 "Leela una vez; te ahorra diez foros."]},
+      "sources": ["jar:appliedenergistics2-19.2.17.jar:assets/ae2/lang/en_us.json", "jar:guideme-21.1.17.jar:META-INF/neoforge.mods.toml"]
     },
     {
-      "key": "logistics_networks_ae2_addons",
-      "deps": [
-        "logistics_networks_ae2_first"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "logistics_networks_ae2_addons", "deps": ["logistics_networks_ae2_first"], "type": "checkmark", "optional": true, "layout": {"x": 18.2, "y": -7.2, "size": 1.0, "shape": "circle"},
       "icon": "ae2:wireless_terminal",
-      "layout": {
-        "x": 12,
-        "y": -4.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "AE2 Add-ons in the Pack",
-        "&eMEGA Cells&r (much bigger cells), &eExtendedAE&r and &eAdvancedAE&r (better providers, interfaces and crafting), &eApplied Mekanistics&r (chemicals), &eAE2WTLib&r (a wireless universal terminal), &eME Requester&r (keeps chosen items in stock), &eAE2 Network Analyzer&r (see channels and cables) and &eArsEng&r (Ars Nouveau source on the network)."
-      ],
-      "es_es": [
-        "Complementos de AE2",
-        "&eMEGA Cells&r (celdas mucho más grandes), &eExtendedAE&r y &eAdvancedAE&r (mejores proveedores, interfaces y fabricación), &eApplied Mekanistics&r (químicos), &eAE2WTLib&r (una terminal inalámbrica universal), &eME Requester&r (mantiene en stock lo que elijas), &eAE2 Network Analyzer&r (ver canales y cables) y &eArsEng&r (la fuente de Ars Nouveau en la red)."
-      ],
-      "sources": [
-        "repo:catalog/curated.json"
-      ]
+      "en_us": {"title": "AE2 Add-ons in the Pack",
+        "text": ["[lead] Bigger cells, better crafting and a terminal in your pocket.",
+                 "[li:megacells:cell_component_1m] [hl|MEGA Cells]: much bigger cells",
+                 "[li] [hl|ExtendedAE] and [hl|AdvancedAE]: better providers, interfaces and crafting",
+                 "[li] [hl|AE2WTLib]: a wireless universal terminal",
+                 "{page}",
+                 "[li] [hl|Applied Mekanistics]: chemicals",
+                 "[li] [hl|ME Requester]: keeps chosen items in stock",
+                 "[li] [hl|AE2 Network Analyzer]: see channels and cables",
+                 "[li] [hl|ArsEng]: Ars Nouveau source on the network",
+                 "The details are in [chapter:sector_ae2_addons|AE2 · Addons]."]},
+      "es_es": {"title": "Complementos de AE2",
+        "text": ["[lead] Celdas más grandes, mejor fabricación y una terminal en el bolsillo.",
+                 "[li:megacells:cell_component_1m] [hl|MEGA Cells]: celdas mucho más grandes",
+                 "[li] [hl|ExtendedAE] y [hl|AdvancedAE]: mejores proveedores, interfaces y fabricación",
+                 "[li] [hl|AE2WTLib]: una terminal inalámbrica universal",
+                 "{page}",
+                 "[li] [hl|Applied Mekanistics]: químicos",
+                 "[li] [hl|ME Requester]: mantiene en stock lo que elijas",
+                 "[li] [hl|AE2 Network Analyzer]: ver canales y cables",
+                 "[li] [hl|ArsEng]: la fuente de Ars Nouveau en la red",
+                 "Los detalles están en [chapter:sector_ae2_addons|AE2 · Complementos]."]},
+      "sources": ["repo:catalog/curated.json"]
     },
     {
-      "key": "logistics_networks_rs_first",
-      "deps": [
-        "logistics_networks_compare"
-      ],
-      "type": "item",
-      "item": "refinedstorage:grid",
-      "layout": {
-        "x": 6,
-        "y": 3,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "RS: a First Network",
-        "A powered &eController&r, a &eDisk Drive&r with a storage disk and a &eGrid&r or &eCrafting Grid&r, joined by cables or touching. No channels: add as many devices as you like.\n\nThe controller takes a Routing Matrix here, so RS starts in act III."
-      ],
-      "es_es": [
-        "RS: una primera red",
-        "Un &eControlador&r con energía, un &eDisk Drive&r con un disco y una &eGrid&r o &eCrafting Grid&r, unidos por cables o tocándose. Sin canales: sumá todos los dispositivos que quieras.\n\nAcá el controlador lleva una Matriz de distribución, así que RS arranca en el acto III."
-      ],
-      "sources": [
-        "https://refinedmods.com/refined-storage/",
-        "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json",
-        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"
-      ]
+      "key": "logistics_networks_rs_first", "deps": ["logistics_networks_compare"], "type": "item", "item": "refinedstorage:grid", "layout": {"x": 8, "y": 4, "size": 1.25, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "RS: a First Network", "subtitle": "Just let them touch.",
+        "text": ["[lead] Controller, drive, grid: put them side by side and you have a network.",
+                 "[li] A powered [item:refinedstorage:controller|Controller]",
+                 "[li] A [item:refinedstorage:disk_drive|Disk Drive] with a storage disk",
+                 "[li] A [item:refinedstorage:grid|Grid] or [item:refinedstorage:crafting_grid|Crafting Grid]",
+                 "Join them with cables or let them touch. No channels: add as many devices as you like.",
+                 "{page}",
+                 "[note] The controller takes a Routing Matrix here, so RS starts in act III."]},
+      "es_es": {"title": "RS: una primera red", "subtitle": "Que se toquen y listo.",
+        "text": ["[lead] Controlador, drive, grid: ponelos uno al lado del otro y ya tenés una red.",
+                 "[li] Un [item:refinedstorage:controller|Controlador] con energía",
+                 "[li] Un [item:refinedstorage:disk_drive|Disk Drive] con un disco",
+                 "[li] Una [item:refinedstorage:grid|Grid] o [item:refinedstorage:crafting_grid|Crafting Grid]",
+                 "Unilos con cables o dejá que se toquen. Sin canales: sumá todos los dispositivos que quieras.",
+                 "{page}",
+                 "[note] Acá el controlador lleva una Matriz de distribución, así que RS arranca en el acto III."]},
+      "sources": ["https://refinedmods.com/refined-storage/", "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json", "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"]
     },
     {
-      "key": "logistics_networks_rs_more",
-      "deps": [
-        "logistics_networks_rs_first"
-      ],
-      "type": "item",
-      "item": "refinedstorage:crafting_grid",
-      "optional": true,
-      "layout": {
-        "x": 9,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "RS: Growing the Network",
-        "&eImporter&r and &eExporter&r move items in and out of machines, &eConstructor&r and &eDestructor&r place and break blocks, the &eDetector&r emits redstone by amount, a &eWireless Transmitter&r serves a wireless grid, &eNetwork Transmitter&r and &eReceiver&r link distant parts, and the &eAutocrafter&r runs &ePattern Grid&r patterns.\n\nRS Mekanism Integration adds chemicals."
-      ],
-      "es_es": [
-        "RS: hacer crecer la red",
-        "&eImporter&r y &eExporter&r meten y sacan ítems de las máquinas, &eConstructor&r y &eDestructor&r ponen y rompen bloques, el &eDetector&r emite redstone según la cantidad, un &eWireless Transmitter&r sirve una grid inalámbrica, &eNetwork Transmitter&r y &eReceiver&r unen partes lejanas y el &eAutocrafter&r ejecuta patrones de la &ePattern Grid&r.\n\nRS Mekanism Integration suma químicos."
-      ],
-      "sources": [
-        "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json",
-        "jar:refinedstorage-mekanism-integration-1.1.1.jar:META-INF/neoforge.mods.toml"
-      ]
+      "key": "logistics_networks_rs_more", "deps": ["logistics_networks_rs_first"], "type": "item", "item": "refinedstorage:crafting_grid", "optional": true, "layout": {"x": 12.5, "y": 4, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "RS: Growing the Network",
+        "text": ["[lead] Everything else in RS plugs onto the same network.",
+                 "[li] [item:refinedstorage:importer|Importer] and [item:refinedstorage:exporter|Exporter]: move items in and out of machines",
+                 "[li] [item:refinedstorage:constructor|Constructor] and [item:refinedstorage:destructor|Destructor]: place and break blocks",
+                 "[li] [item:refinedstorage:detector|Detector]: emits redstone by amount",
+                 "{page}",
+                 "[li] [item:refinedstorage:wireless_transmitter|Wireless Transmitter]: serves a wireless grid",
+                 "[li] [item:refinedstorage:network_transmitter|Network Transmitter] and [item:refinedstorage:network_receiver|Receiver]: link distant parts",
+                 "[li] [item:refinedstorage:autocrafter|Autocrafter]: runs [item:refinedstorage:pattern_grid|Pattern Grid] patterns",
+                 "RS Mekanism Integration adds chemicals."]},
+      "es_es": {"title": "RS: hacer crecer la red",
+        "text": ["[lead] Todo lo demás de RS se enchufa a la misma red.",
+                 "[li] [item:refinedstorage:importer|Importer] y [item:refinedstorage:exporter|Exporter]: meten y sacan ítems de las máquinas",
+                 "[li] [item:refinedstorage:constructor|Constructor] y [item:refinedstorage:destructor|Destructor]: ponen y rompen bloques",
+                 "[li] [item:refinedstorage:detector|Detector]: emite redstone según la cantidad",
+                 "{page}",
+                 "[li] [item:refinedstorage:wireless_transmitter|Wireless Transmitter]: sirve una grid inalámbrica",
+                 "[li] [item:refinedstorage:network_transmitter|Network Transmitter] y [item:refinedstorage:network_receiver|Receiver]: unen partes lejanas",
+                 "[li] [item:refinedstorage:autocrafter|Autocrafter]: ejecuta patrones de la [item:refinedstorage:pattern_grid|Pattern Grid]",
+                 "RS Mekanism Integration suma químicos."]},
+      "sources": ["jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json", "jar:refinedstorage-mekanism-integration-1.1.1.jar:META-INF/neoforge.mods.toml"]
     },
     {
-      "key": "logistics_networks_external",
-      "deps": [
-        "logistics_networks_ae2_first",
-        "logistics_networks_rs_first"
-      ],
-      "type": "checkmark",
+      "key": "logistics_networks_external", "deps": ["logistics_networks_ae2_first", "logistics_networks_rs_first"], "type": "checkmark", "layout": {"x": 18.5, "y": 0, "size": 1.5, "shape": "hexagon"}, "hide_lines": true,
       "icon": "functionalstorage:storage_controller",
-      "layout": {
-        "x": 12,
-        "y": 0,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Keep Your Drawers",
-        "No need to empty your chests: AE2's &eStorage Bus&r and RS's &eExternal Storage&r read any inventory they face, drawers and storage controllers included, and the terminal shows those items too.\n\nThe drawer wall joins the network without moving a single cobblestone."
-      ],
-      "es_es": [
-        "Conservá tus cajones",
-        "No hace falta vaciar tus cofres: el &eStorage Bus&r de AE2 y el &eExternal Storage&r de RS leen cualquier inventario al que apuntan, cajones y controladores incluidos, y la terminal también muestra esos ítems.\n\nLa pared de cajones se suma a la red sin mover ni una piedra."
-      ],
-      "sources": [
-        "https://guide.appliedenergistics.org/1.21.1/items-blocks-machines/storage_bus",
-        "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json"
-      ]
+      "en_us": {"title": "Keep Your Drawers", "subtitle": "Your drawers stay put.",
+        "text": ["[lead] Your chests and drawers join the network without being emptied.",
+                 "[li] AE2's [item:ae2:storage_bus|Storage Bus] and RS's [item:refinedstorage:external_storage|External Storage] read any inventory they face",
+                 "[li] Drawers and storage controllers included",
+                 "[li] The terminal shows those items too",
+                 "The drawer wall joins the network without moving a single cobblestone."]},
+      "es_es": {"title": "Conservá tus cajones", "subtitle": "Tus cajones no se mueven.",
+        "text": ["[lead] Tus cofres y cajones se suman a la red sin vaciarlos.",
+                 "[li] El [item:ae2:storage_bus|Storage Bus] de AE2 y el [item:refinedstorage:external_storage|External Storage] de RS leen cualquier inventario al que apuntan",
+                 "[li] Cajones y controladores incluidos",
+                 "[li] La terminal también muestra esos ítems",
+                 "La pared de cajones se suma a la red sin mover ni una piedra."]},
+      "sources": ["https://guide.appliedenergistics.org/1.21.1/items-blocks-machines/storage_bus", "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json"]
     },
     {
-      "key": "logistics_networks_autocraft",
-      "deps": [
-        "logistics_networks_external"
-      ],
-      "type": "item",
-      "item": "ae2:pattern_provider",
-      "layout": {
-        "x": 15,
-        "y": -2,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Autocrafting in One Paragraph",
-        "Encode a recipe into a &epattern&r, give the network somewhere to run it (an AE2 pattern provider with a molecular assembler or a machine, or an RS autocrafter) plus a crafting CPU in AE2, then ask the terminal for 64 of anything: it crafts the intermediate steps too.\n\nAct components are ordinary shaped recipes, so they autocraft like anything else."
-      ],
-      "es_es": [
-        "Autocrafteo en un párrafo",
-        "Guardá una receta en un &epatrón&r, dale a la red dónde ejecutarla (un proveedor de patrones de AE2 con un ensamblador molecular o una máquina, o un autocrafter de RS) y, en AE2, una CPU de fabricación; después pedile 64 de lo que sea a la terminal: también hace los pasos intermedios.\n\nLos componentes de acto son recetas con forma comunes, así que se autocraftean como cualquier cosa."
-      ],
-      "sources": [
-        "https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/autocrafting",
-        "repo:docs/design/ae2-autocrafting-cases.md",
-        "repo:content/integration-design.json"
-      ]
+      "key": "logistics_networks_autocraft", "deps": ["logistics_networks_external"], "type": "item", "item": "ae2:pattern_provider", "layout": {"x": 22.5, "y": -2.6, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "Autocrafting in One Paragraph", "subtitle": "Ask for 64, get 64.",
+        "text": ["[lead] Encode a recipe once, then ask the terminal for 64 of anything.",
+                 "[li] Encode it into a [hl|pattern]",
+                 "[li] Give the network somewhere to run it: an [item:ae2:pattern_provider|AE2 pattern provider] with a [item:ae2:molecular_assembler|molecular assembler] or a machine, or an [item:refinedstorage:autocrafter|RS autocrafter]",
+                 "[li] In AE2, add a [hl|crafting CPU]",
+                 "{page}",
+                 "It crafts the intermediate steps too.",
+                 "[note] Act components are ordinary shaped recipes, so they autocraft like anything else."]},
+      "es_es": {"title": "Autocrafteo en un párrafo", "subtitle": "Pedí 64, tené 64.",
+        "text": ["[lead] Guardá una receta una vez y pedile 64 de lo que sea a la terminal.",
+                 "[li] Guardala en un [hl|patrón]",
+                 "[li] Dale a la red dónde ejecutarla: un [item:ae2:pattern_provider|proveedor de patrones de AE2] con un [item:ae2:molecular_assembler|ensamblador molecular] o una máquina, o un [item:refinedstorage:autocrafter|autocrafter de RS]",
+                 "[li] En AE2, sumá una [hl|CPU de fabricación]",
+                 "{page}",
+                 "También hace los pasos intermedios.",
+                 "[note] Los componentes de acto son recetas con forma comunes, así que se autocraftean como cualquier cosa."]},
+      "sources": ["https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/autocrafting", "repo:docs/design/ae2-autocrafting-cases.md", "repo:content/integration-design.json"]
     },
     {
-      "key": "logistics_networks_mixing",
-      "deps": [
-        "logistics_networks_external"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "logistics_networks_mixing", "deps": ["logistics_networks_external"], "type": "checkmark", "optional": true, "layout": {"x": 22.5, "y": 2.6, "size": 1.0, "shape": "diamond"}, "hide_lines": true,
       "icon": "minecraft:chest",
-      "layout": {
-        "x": 15,
-        "y": 2,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Both Can Coexist",
-        "AE2 in one base and Refined Storage in another is fine, but they do not share storage directly: bridge them through an inventory both can read, like a drawer or chest.\n\nFor one team, one network is almost always easier."
-      ],
-      "es_es": [
-        "Particularidad: pueden convivir",
-        "AE2 en una base y Refined Storage en otra está bien, pero no comparten almacenamiento directamente: unilas con un inventario que las dos puedan leer, como un cajón o un cofre.\n\nPara un equipo, una sola red casi siempre es más fácil."
-      ],
-      "sources": [
-        "repo:docs/design/mod-pingpong.md"
-      ]
+      "en_us": {"title": "Quirk: Both Can Coexist", "subtitle": "A barrel makes a fine embassy.",
+        "text": ["[lead] AE2 in one base and Refined Storage in another is fine.",
+                 "They do not share storage directly: bridge them through an inventory both can read, like a drawer or chest.",
+                 "[tip] For one team, one network is almost always easier."]},
+      "es_es": {"title": "Particularidad: pueden convivir", "subtitle": "Un barril es buena embajada.",
+        "text": ["[lead] AE2 en una base y Refined Storage en otra está bien.",
+                 "No comparten almacenamiento directamente: unilas con un inventario que las dos puedan leer, como un cajón o un cofre.",
+                 "[tip] Para un equipo, una sola red casi siempre es más fácil."]},
+      "sources": ["repo:docs/design/mod-pingpong.md"]
     },
     {
-      "key": "logistics_networks_tip_channels",
-      "deps": [
-        "logistics_networks_ae2_first"
-      ],
-      "type": "item",
-      "item": "ae2:fluix_crystal",
-      "optional": true,
-      "layout": {
-        "x": 13.5,
-        "y": -6.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Channels Without Tears",
-        "Each AE2 device uses one channel; normal cables carry 8, dense ones 32, and each controller face feeds 32. Run dense cable as the backbone and branch with normal cable.\n\nA powered device that stops working probably ran out of channels. The Network Analyzer shows where."
-      ],
-      "es_es": [
-        "Truco: canales sin lágrimas",
-        "Cada dispositivo de AE2 usa un canal; el cable normal lleva 8, el denso 32, y cada cara del controlador alimenta 32. Usá cable denso como columna vertebral y ramificá con el normal.\n\nUn dispositivo con energía que deja de andar probablemente se quedó sin canales. El Network Analyzer muestra dónde."
-      ],
-      "sources": [
-        "https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/channels"
-      ]
+      "key": "logistics_networks_tip_channels", "deps": ["logistics_networks_ae2_first"], "type": "item", "item": "ae2:fluix_crystal", "optional": true, "layout": {"x": 12.5, "y": -7.5, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Tip: Channels Without Tears",
+        "text": ["[tip] Run dense cable as the backbone and branch with normal cable.",
+                 "[li] Each AE2 device uses [hl|1] channel",
+                 "[li] Normal cables carry [hl|8], dense ones [hl|32]",
+                 "[li] Each controller face feeds [hl|32]",
+                 "A powered device that stops working probably ran out of channels. The [hl|Network Analyzer] shows where."]},
+      "es_es": {"title": "Truco: canales sin lágrimas",
+        "text": ["[tip] Usá cable denso como columna vertebral y ramificá con el normal.",
+                 "[li] Cada dispositivo de AE2 usa [hl|1] canal",
+                 "[li] El cable normal lleva [hl|8], el denso [hl|32]",
+                 "[li] Cada cara del controlador alimenta [hl|32]",
+                 "Un dispositivo con energía que deja de andar probablemente se quedó sin canales. El [hl|Network Analyzer] muestra dónde."]},
+      "sources": ["https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/channels"]
     },
     {
-      "key": "logistics_networks_components_link",
-      "deps": [
-        "logistics_networks_autocraft",
-        "logistics_networks_mixing"
-      ],
-      "type": "checkmark",
+      "key": "logistics_networks_components_link", "deps": ["logistics_networks_autocraft", "logistics_networks_mixing"], "type": "checkmark", "layout": {"x": 26.5, "y": 0, "size": 1.0, "shape": "pentagon"}, "hide_lines": true,
       "icon": "entrelumen:inventory_sensor",
-      "layout": {
-        "x": 18,
-        "y": 0,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "The Network Feeds the Story",
-        "Several act components are made from network parts: the Routing Matrix from logic processors and a circuit board, the Habitation Charter from a calculation processor, the Inventory Sensor from LaserIO logic chips.\n\nA network that autocrafts processors makes acts III and V much lighter."
-      ],
-      "es_es": [
-        "La red alimenta la historia",
-        "Varios componentes de acto se hacen con piezas de redes: la Matriz de distribución con procesadores lógicos y una placa de circuito, la Carta de habitabilidad con un procesador de cálculo, el Sensor de inventario con chips lógicos de LaserIO.\n\nUna red que autofabrica procesadores aliviana mucho los actos III y V."
-      ],
-      "sources": [
-        "repo:content/integration-design.json"
-      ]
+      "en_us": {"title": "The Network Feeds the Story",
+        "text": ["[lead] Several act components are made from network parts.",
+                 "[li:entrelumen:routing_matrix] [item:entrelumen:routing_matrix|Routing Matrix]: logic processors and a circuit board",
+                 "[li:entrelumen:habitation_contract] [item:entrelumen:habitation_contract|Habitation Charter]: a calculation processor",
+                 "[li:entrelumen:inventory_sensor] [item:entrelumen:inventory_sensor|Inventory Sensor]: LaserIO logic chips",
+                 "A network that autocrafts processors makes acts III and V much lighter."]},
+      "es_es": {"title": "La red alimenta la historia",
+        "text": ["[lead] Varios componentes de acto se hacen con piezas de redes.",
+                 "[li:entrelumen:routing_matrix] [item:entrelumen:routing_matrix|Matriz de distribución]: procesadores lógicos y una placa de circuito",
+                 "[li:entrelumen:habitation_contract] [item:entrelumen:habitation_contract|Carta de habitabilidad]: un procesador de cálculo",
+                 "[li:entrelumen:inventory_sensor] [item:entrelumen:inventory_sensor|Sensor de inventario]: chips lógicos de LaserIO",
+                 "Una red que autofabrica procesadores aliviana mucho los actos III y V."]},
+      "sources": ["repo:content/integration-design.json"]
     },
     {
-      "key": "logistics_networks_close",
-      "deps": [
-        "logistics_networks_components_link"
-      ],
-      "type": "item",
-      "item": "ae2:item_storage_cell_1k",
-      "layout": {
-        "x": 21,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Everything in One Place",
-        "With a network, the whole base is one searchable inventory, and logistics becomes feeding machines instead of finding items.\n\nYou will never again lose a stack of iron in chest number forty."
-      ],
-      "es_es": [
-        "Todo en un solo lugar",
-        "Con una red, toda la base es un inventario donde se puede buscar, y la logística pasa a ser alimentar máquinas en vez de encontrar ítems.\n\nNunca más vas a perder una pila de hierro en el cofre número cuarenta."
-      ],
-      "sources": [
-        "repo:content/guides/README.md"
-      ]
+      "key": "logistics_networks_close", "deps": ["logistics_networks_components_link"], "type": "item", "item": "ae2:item_storage_cell_1k", "layout": {"x": 30.5, "y": 0, "size": 2.0, "shape": "hexagon"}, "hide_lines": true,
+      "en_us": {"title": "Everything in One Place", "subtitle": "Search, don't hunt.",
+        "text": ["[lead] The whole base is now one searchable inventory.",
+                 "Logistics stops being about finding items and starts being about feeding machines.",
+                 "You will never again lose a stack of iron in chest number forty."]},
+      "es_es": {"title": "Todo en un solo lugar", "subtitle": "Buscá, no rastrees.",
+        "text": ["[lead] Toda la base es ahora un inventario donde se puede buscar.",
+                 "La logística pasa a ser alimentar máquinas en vez de encontrar ítems.",
+                 "Nunca más vas a perder una pila de hierro en el cofre número cuarenta."]},
+      "sources": ["repo:content/guides/README.md"]
+    },
+    {
+      "key": "logistics_networks_toy_lever", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 3.6, "y": 3.6, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:lever",
+      "en_us": {"title": "Flip the Switch",
+        "text": ["[lead] One lever, two networks, every light on.",
+                 "Both racks glow at once: the drives, the terminal, the controller and the grid."]},
+      "es_es": {"title": "Tirar la palanca",
+        "text": ["[lead] Una palanca, dos redes, todas las luces prendidas.",
+                 "Los dos racks brillan a la vez: los drives, la terminal, el controlador y la grid."]},
+      "sources": ["repo:docs/design/mod-pingpong.md"]
+    },
+    {
+      "key": "logistics_networks_toy_search", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 30.5, "y": 4.7, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:iron_ingot",
+      "en_us": {"title": "Type \"iron\"",
+        "text": ["[lead] Four letters and every iron ingot lights up.",
+                 "Now imagine it with forty chests behind it."]},
+      "es_es": {"title": "Escribir «hierro»",
+        "text": ["[lead] Seis letras y cada lingote de hierro se ilumina.",
+                 "Ahora imaginalo con cuarenta cofres detrás."]},
+      "sources": ["repo:content/guides/README.md"]
     }
+  ],
+  "presentation": 2,
+  "motif": "ae2",
+  "art": [
+    {"id": "title", "text": {"en_us": "Storage Networks: AE2 or Refined Storage", "es_es": "Redes de almacenamiento: AE2 o Refined Storage"}, "x": -4.6, "y": -11.0, "scale": 3, "tint": "#F3E7C6", "align": "start"},
+    {"id": "ae2_panel", "frame": [5.4, -9.7, 21.0, -1.5], "color": "#7DA9D2", "thickness_px": 2.0, "alpha": 200, "fill": "#211B3D", "fill_alpha": 60, "corners": true, "reveal": "logistics_networks_compare", "sketch": true, "order": -8},
+    {"id": "ae2_label", "text": {"en_us": "Applied Energistics 2", "es_es": "Applied Energistics 2"}, "x": 5.9, "y": -9.0, "scale": 2, "tint": "#E2A3E3", "align": "start", "reveal": "logistics_networks_compare"},
+    {"id": "rs_panel", "frame": [5.4, 1.5, 21.0, 11.0], "color": "#7FA8C0", "thickness_px": 2.0, "alpha": 200, "fill": "#0F2530", "fill_alpha": 60, "corners": true, "reveal": "logistics_networks_compare", "sketch": true, "order": -8},
+    {"id": "rs_label", "text": {"en_us": "Refined Storage", "es_es": "Refined Storage"}, "x": 5.9, "y": 10.5, "scale": 2, "tint": "#56CAFF", "align": "start", "reveal": "logistics_networks_compare"},
+    {"id": "wall", "path": [[9.0, 0.0], [17.6, 0.0]], "texture": "minecraft:textures/block/polished_deepslate.png", "width": 0.5, "step": 0.5, "reveal": "logistics_networks_gates", "sketch": true, "order": -6},
+    {"id": "drawer_0", "picture": "functionalstorage:textures/block/oak_front_1.png", "x": 12.9, "y": 0.0, "w": 0.95, "h": 0.95, "reveal": "logistics_networks_external", "sketch": true, "order": -4},
+    {"id": "drawer_1", "picture": "functionalstorage:textures/block/oak_front_2.png", "x": 13.9, "y": 0.0, "w": 0.95, "h": 0.95, "reveal": "logistics_networks_external", "sketch": true, "order": -4},
+    {"id": "drawer_2", "picture": "functionalstorage:textures/block/oak_front_4.png", "x": 14.9, "y": 0.0, "w": 0.95, "h": 0.95, "reveal": "logistics_networks_external", "sketch": true, "order": -4},
+    {"id": "drawer_3", "picture": "functionalstorage:textures/block/oak_front_1.png", "x": 15.9, "y": 0.0, "w": 0.95, "h": 0.95, "reveal": "logistics_networks_external", "sketch": true, "order": -4},
+    {"id": "bus", "picture": "ae2:textures/part/storage_bus.png", "x": 14.4, "y": -1.0, "w": 0.8, "h": 0.8, "reveal": "logistics_networks_external", "order": -4},
+    {"id": "crater", "sprite": "ae2:block/sky_stone_block", "cells": [[6.4, -2.5], [7.4, -2.3], [8.4, -2.5], [9.4, -2.4]], "w": 0.95, "h": 0.95, "reveal": "logistics_networks_ae2_meteor", "sketch": true, "order": -5},
+    {"id": "cube", "sprite": "ae2:block/mysterious_cube_side", "x": 7.9, "y": -3.0, "w": 1.0, "h": 1.0, "reveal": "logistics_networks_ae2_meteor", "order": -4},
+    {"id": "cube_glow", "glow": [7.9, -3.0], "r": 2.0, "tint": "#E2A3E3", "alpha": 110, "reveal": "logistics_networks_ae2_meteor", "order": -8},
+    {"id": "cluster_a", "picture": "ae2:textures/block/quartz_cluster.png", "x": 6.3, "y": -3.6, "w": 0.9, "h": 0.9, "reveal": "logistics_networks_ae2_meteor", "order": -4},
+    {"id": "cluster_b", "picture": "ae2:textures/block/quartz_cluster.png", "x": 9.6, "y": -3.5, "w": 0.9, "h": 0.9, "reveal": "logistics_networks_ae2_meteor", "order": -4},
+    {"id": "certus", "picture": "ae2:textures/item/certus_quartz_crystal.png", "x": 6.6, "y": -4.8, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_ae2_meteor", "order": -4, "rotation": -20},
+    {"id": "press_0", "picture": "ae2:textures/item/calculation_processor_press.png", "x": 8.7, "y": -5.6, "w": 0.7, "h": 0.7, "reveal": "logistics_networks_ae2_meteor", "order": -4},
+    {"id": "press_1", "picture": "ae2:textures/item/engineering_processor_press.png", "x": 9.5, "y": -5.6, "w": 0.7, "h": 0.7, "reveal": "logistics_networks_ae2_meteor", "order": -4},
+    {"id": "press_2", "picture": "ae2:textures/item/logic_processor_press.png", "x": 10.3, "y": -5.6, "w": 0.7, "h": 0.7, "reveal": "logistics_networks_ae2_meteor", "order": -4},
+    {"id": "press_3", "picture": "ae2:textures/item/silicon_press.png", "x": 11.1, "y": -5.6, "w": 0.7, "h": 0.7, "reveal": "logistics_networks_ae2_meteor", "order": -4},
+    {"id": "guide_book", "picture": "ae2:textures/item/guide.png", "x": 9.4, "y": -7.5, "w": 0.9, "h": 0.9, "reveal": "logistics_networks_ae2_guide", "order": -4},
+    {"id": "c_ae2_trunk", "through": ["logistics_networks_compare", "logistics_networks_ae2_meteor"], "color": "#B7AEDD", "width": 0.3, "grow": true, "sketch": true, "order": -4},
+    {"id": "c_ae2_spine", "through": ["logistics_networks_ae2_meteor", "logistics_networks_ae2_first"], "color": "#B7AEDD", "width": 0.34, "grow": true, "sketch": true, "order": -4},
+    {"id": "c_ae2_bridge", "through": ["logistics_networks_ae2_first", [13.3, -2.1], [17.3, -2.1], "logistics_networks_external"], "color": "#B7AEDD", "width": 0.34, "grow": true, "sketch": true, "order": -4},
+    {"id": "pulse_ae2", "through": ["logistics_networks_ae2_first", [13.3, -2.1], [17.3, -2.1], "logistics_networks_external"], "dots": "#F4E9FF", "size": 0.2, "step": 0.9, "grow": true, "alpha": 255, "order": -2},
+    {"id": "drive", "picture": "ae2:textures/block/drive/drive_front.png", "x": 14.8, "y": -3.7, "w": 2.4, "h": 2.4, "reveal": "logistics_networks_ae2_first", "sketch": true, "order": -5},
+    {"id": "drive_glow", "glow": [14.8, -3.7], "r": 2.4, "tint": "#E2A3E3", "alpha": 100, "reveal": "logistics_networks_ae2_first", "order": -8},
+    {"id": "cell_0", "picture": "#7FE0FF", "x": 13.93, "y": -4.645, "w": 0.69, "h": 0.24, "alpha": 255, "reveal": "logistics_networks_ae2_first", "order": -3},
+    {"id": "cell_1", "picture": "#FF9FE8", "x": 15.13, "y": -4.645, "w": 0.69, "h": 0.24, "alpha": 255, "reveal": "logistics_networks_ae2_addons", "order": -3},
+    {"id": "cell_2", "picture": "#FFD27A", "x": 13.93, "y": -4.195, "w": 0.69, "h": 0.24, "alpha": 255, "reveal": "logistics_networks_ae2_addons", "order": -3},
+    {"id": "cell_3", "picture": "#9DE0A0", "x": 15.13, "y": -4.195, "w": 0.69, "h": 0.24, "alpha": 255, "reveal": "logistics_networks_ae2_addons", "order": -3},
+    {"id": "cell_4", "picture": "#B58AE8", "x": 13.93, "y": -3.745, "w": 0.69, "h": 0.24, "alpha": 255, "reveal": "logistics_networks_ae2_addons", "order": -3},
+    {"id": "c_drive_term", "path": [[16.0, -3.7], [16.75, -3.7]], "color": "#B7AEDD", "width": 0.3, "reveal": "logistics_networks_ae2_first", "order": -3},
+    {"id": "term_plate", "picture": "#8C8AA0", "x": 17.5, "y": -3.7, "w": 1.5, "h": 1.5, "alpha": 255, "reveal": "logistics_networks_ae2_first", "order": -4},
+    {"id": "term_glass", "picture": "#0D131B", "x": 17.5, "y": -3.7, "w": 1.2, "h": 1.2, "alpha": 255, "reveal": "logistics_networks_ae2_first", "order": -3},
+    {"id": "term_text", "picture": "ae2:textures/part/terminal_bright.png", "x": 17.5, "y": -3.7, "w": 1.2, "h": 1.2, "tint": "#8FE3FF", "alpha": 255, "reveal": "logistics_networks_ae2_first", "order": -2},
+    {"id": "acceptor", "picture": "ae2:textures/block/energy_acceptor.png", "x": 11.2, "y": -2.4, "w": 0.9, "h": 0.9, "reveal": "logistics_networks_ae2_first", "order": -4},
+    {"id": "thin", "path": [[13.7, -8.4], [15.5, -8.4]], "color": "#B7AEDD", "width": 0.28, "reveal": "logistics_networks_tip_channels", "order": -3},
+    {"id": "dense", "path": [[13.7, -7.3], [15.5, -7.3]], "color": "#8E63D0", "width": 0.6, "reveal": "logistics_networks_tip_channels", "order": -3},
+    {"id": "ch8", "text": {"en_us": "8", "es_es": "8"}, "x": 16.1, "y": -8.4, "scale": 2, "tint": "#F3E7C6", "reveal": "logistics_networks_tip_channels"},
+    {"id": "ch32", "text": {"en_us": "32", "es_es": "32"}, "x": 16.3, "y": -7.3, "scale": 2, "tint": "#F3E7C6", "reveal": "logistics_networks_tip_channels"},
+    {"id": "mega_1m", "picture": "megacells:textures/item/cell_component_1m.png", "x": 19.4, "y": -8.3, "w": 1.0, "h": 1.0, "reveal": "logistics_networks_ae2_addons", "order": -4},
+    {"id": "mega_4m", "picture": "megacells:textures/item/cell_component_4m.png", "x": 20.3, "y": -8.3, "w": 1.0, "h": 1.0, "reveal": "logistics_networks_ae2_addons", "order": -4},
+    {"id": "wireless", "picture": "ae2:textures/item/wireless_terminal.png", "x": 19.5, "y": -6.3, "w": 0.8, "h": 0.8, "reveal": "logistics_networks_ae2_addons", "order": -4},
+    {"id": "c_rs_trunk", "through": ["logistics_networks_compare", "logistics_networks_rs_first"], "color": "#7FC8E8", "width": 0.26, "grow": true, "sketch": true, "order": -4},
+    {"id": "c_rs_spine", "through": ["logistics_networks_rs_first", "logistics_networks_rs_more"], "color": "#7FC8E8", "width": 0.26, "grow": true, "sketch": true, "order": -4},
+    {"id": "c_rs_bridge", "through": ["logistics_networks_rs_first", [9.6, 2.3], [16.6, 2.3], "logistics_networks_external"], "color": "#7FC8E8", "width": 0.26, "grow": true, "sketch": true, "order": -4},
+    {"id": "pulse_rs", "through": ["logistics_networks_rs_first", [9.6, 2.3], [16.6, 2.3], "logistics_networks_external"], "dots": "#BDEBFF", "size": 0.2, "step": 0.9, "grow": true, "alpha": 255, "order": -2},
+    {"id": "rs_ctrl_off", "picture": "refinedstorage:textures/block/controller/off.png", "x": 6.55, "y": 6.9, "w": 2.1, "h": 2.1, "reveal": "logistics_networks_rs_first", "sketch": true, "order": -5},
+    {"id": "rs_ctrl_on", "picture": "refinedstorage:textures/block/controller/on.png", "x": 6.55, "y": 6.9, "w": 2.1, "h": 2.1, "reveal": "logistics_networks_rs_first", "order": -4},
+    {"id": "rs_ctrl_glow", "glow": [6.55, 6.9], "r": 2.4, "tint": "#15E0FF", "alpha": 80, "reveal": "logistics_networks_rs_first", "order": -8},
+    {"id": "rs_drive", "picture": "refinedstorage:textures/block/disk_drive/front.png", "x": 8.65, "y": 6.9, "w": 2.1, "h": 2.1, "reveal": "logistics_networks_rs_first", "sketch": true, "order": -5},
+    {"id": "rs_grid", "picture": "refinedstorage:textures/block/grid/front.png", "x": 10.75, "y": 6.9, "w": 2.1, "h": 2.1, "reveal": "logistics_networks_rs_first", "sketch": true, "order": -5},
+    {"id": "disk_0", "picture": "#56CAFF", "x": 7.863, "y": 6.113, "w": 0.656, "h": 0.263, "alpha": 255, "reveal": "logistics_networks_rs_first", "order": -3},
+    {"id": "disk_1", "picture": "#7FE0FF", "x": 8.781, "y": 6.113, "w": 0.656, "h": 0.263, "alpha": 255, "reveal": "logistics_networks_rs_first", "order": -3},
+    {"id": "disk_2", "picture": "#7FE0A8", "x": 7.863, "y": 6.506, "w": 0.656, "h": 0.263, "alpha": 255, "reveal": "logistics_networks_rs_more", "order": -3},
+    {"id": "disk_3", "picture": "#9DE0A0", "x": 8.781, "y": 6.506, "w": 0.656, "h": 0.263, "alpha": 255, "reveal": "logistics_networks_rs_more", "order": -3},
+    {"id": "rs_dev_0", "item": "refinedstorage:constructor", "x": 6.35, "y": 9.3, "size": 1.4, "reveal": "logistics_networks_rs_more"},
+    {"id": "rs_dev_1", "item": "refinedstorage:destructor", "x": 8.049999999999999, "y": 9.3, "size": 1.4, "reveal": "logistics_networks_rs_more"},
+    {"id": "rs_dev_2", "item": "refinedstorage:detector", "x": 9.75, "y": 9.3, "size": 1.4, "reveal": "logistics_networks_rs_more"},
+    {"id": "rs_dev_3", "item": "refinedstorage:wireless_transmitter", "x": 11.45, "y": 9.3, "size": 1.4, "reveal": "logistics_networks_rs_more"},
+    {"id": "rs_dev_4", "item": "refinedstorage:network_transmitter", "x": 13.149999999999999, "y": 9.3, "size": 1.4, "reveal": "logistics_networks_rs_more"},
+    {"id": "rs_dev_5", "item": "refinedstorage:network_receiver", "x": 14.85, "y": 9.3, "size": 1.4, "reveal": "logistics_networks_rs_more"},
+    {"id": "rs_dev_6", "item": "refinedstorage:autocrafter", "x": 16.549999999999997, "y": 9.3, "size": 1.4, "reveal": "logistics_networks_rs_more"},
+    {"id": "rs_shelf", "path": [[5.6, 10.05], [17.6, 10.05]], "color": "#7FA8C0", "width": 0.12, "alpha": 200, "reveal": "logistics_networks_rs_more", "sketch": true, "order": -6},
+    {"id": "base", "frame": [21.6, -6.6, 34.0, 6.6], "color": "#9AA6B0", "thickness_px": 2.0, "alpha": 170, "fill": "#1E2A38", "fill_alpha": 50, "corners": false, "reveal": "logistics_networks_external", "sketch": true, "order": -8},
+    {"id": "base_label", "text": {"en_us": "Your base", "es_es": "Tu base"}, "x": 22.2, "y": 6.0, "scale": 2, "tint": "#E8DCB5", "align": "start", "reveal": "logistics_networks_external"},
+    {"id": "c_sh_auto", "through": ["logistics_networks_external", "logistics_networks_autocraft"], "color": "#9DC3FF", "width": 0.34, "grow": true, "sketch": true, "order": -4},
+    {"id": "c_sh_mix", "through": ["logistics_networks_external", "logistics_networks_mixing"], "color": "#9DC3FF", "width": 0.34, "grow": true, "sketch": true, "order": -4},
+    {"id": "c_sh_link1", "through": ["logistics_networks_autocraft", "logistics_networks_components_link"], "color": "#9DC3FF", "width": 0.34, "grow": true, "sketch": true, "order": -4},
+    {"id": "c_sh_link2", "through": ["logistics_networks_mixing", "logistics_networks_components_link"], "color": "#9DC3FF", "width": 0.34, "grow": true, "sketch": true, "order": -4},
+    {"id": "c_sh_close", "through": ["logistics_networks_components_link", "logistics_networks_close"], "color": "#9DC3FF", "width": 0.5, "grow": true, "sketch": true, "order": -4},
+    {"id": "pat_ae2", "picture": "ae2:textures/item/crafting_pattern.png", "x": 22.0, "y": -5.3, "w": 0.8, "h": 0.8, "reveal": "logistics_networks_autocraft", "order": -4},
+    {"id": "pat_rs", "picture": "refinedstorage:textures/item/pattern/crafting.png", "x": 22.9, "y": -5.3, "w": 0.8, "h": 0.8, "reveal": "logistics_networks_autocraft", "order": -4},
+    {"id": "arrow_a", "path": [[23.6, -5.3], [24.6, -5.3]], "dots": "#E8DCB5", "size": 0.2, "step": 0.3, "reveal": "logistics_networks_autocraft", "order": -3},
+    {"id": "assembler", "picture": "ae2:textures/block/molecular_assembler.png", "x": 25.6, "y": -5.3, "w": 1.3, "h": 1.3, "reveal": "logistics_networks_autocraft", "sketch": true, "order": -5},
+    {"id": "autocrafter", "picture": "refinedstorage:textures/block/autocrafter/side.png", "x": 27.3, "y": -5.3, "w": 1.3, "h": 1.3, "reveal": "logistics_networks_autocraft", "sketch": true, "order": -5},
+    {"id": "arrow_b", "path": [[28.2, -5.3], [28.9, -5.3]], "dots": "#E8DCB5", "size": 0.2, "step": 0.3, "reveal": "logistics_networks_autocraft", "order": -3},
+    {"id": "x64", "text": {"en_us": "64", "es_es": "64"}, "x": 30.2, "y": -5.3, "scale": 4, "tint": "#E2A3E3", "bold": true, "reveal": "logistics_networks_autocraft"},
+    {"id": "barrel", "sprite": "minecraft:block/barrel_side", "x": 20.4, "y": 0.0, "w": 0.95, "h": 0.95, "reveal": "logistics_networks_mixing", "sketch": true, "order": -4},
+    {"id": "mix_ae2", "path": [[19.4, -1.4], [20.1, -0.6]], "dots": "#E2A3E3", "size": 0.16, "step": 0.28, "reveal": "logistics_networks_mixing", "order": -3},
+    {"id": "mix_rs", "path": [[19.4, 1.4], [20.1, 0.6]], "dots": "#56CAFF", "size": 0.16, "step": 0.28, "reveal": "logistics_networks_mixing", "order": -3},
+    {"id": "story_0", "picture": "entrelumen:textures/item/routing_matrix.png", "x": 25.2, "y": 2.4, "w": 0.8, "h": 0.8, "reveal": "logistics_networks_components_link", "order": -4},
+    {"id": "story_1", "picture": "entrelumen:textures/item/habitation_contract.png", "x": 26.1, "y": 2.4, "w": 0.8, "h": 0.8, "reveal": "logistics_networks_components_link", "order": -4},
+    {"id": "story_2", "picture": "entrelumen:textures/item/inventory_sensor.png", "x": 27.0, "y": 2.4, "w": 0.8, "h": 0.8, "reveal": "logistics_networks_components_link", "order": -4},
+    {"id": "screen", "frame": [27.7, -3.9, 33.3, 3.4], "color": "#8FE3FF", "thickness_px": 2.0, "alpha": 200, "fill": "#0D131B", "fill_alpha": 80, "corners": true, "reveal": "logistics_networks_components_link", "sketch": true, "order": -7},
+    {"id": "search_bar", "frame": [28.1, -3.6, 32.9, -2.95], "color": "#F3E7C6", "thickness_px": 1.0, "alpha": 160, "corners": false, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_0", "picture": "minecraft:textures/item/iron_ingot.png", "x": 28.5, "y": -2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_1", "picture": "minecraft:textures/item/coal.png", "x": 29.3, "y": -2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_2", "picture": "minecraft:textures/item/glowstone_dust.png", "x": 30.1, "y": -2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_3", "picture": "minecraft:textures/item/diamond.png", "x": 30.9, "y": -2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_4", "picture": "minecraft:textures/item/quartz.png", "x": 31.7, "y": -2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_5", "picture": "minecraft:textures/item/gold_ingot.png", "x": 32.5, "y": -2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_6", "picture": "minecraft:textures/item/emerald.png", "x": 28.5, "y": -1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_7", "picture": "minecraft:textures/item/raw_iron.png", "x": 29.3, "y": -1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_8", "picture": "minecraft:textures/item/redstone.png", "x": 30.1, "y": -1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_9", "picture": "minecraft:textures/item/iron_ingot.png", "x": 30.9, "y": -1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_10", "picture": "minecraft:textures/item/copper_ingot.png", "x": 31.7, "y": -1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_11", "picture": "minecraft:textures/item/lapis_lazuli.png", "x": 32.5, "y": -1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_12", "picture": "minecraft:textures/item/iron_ingot.png", "x": 28.5, "y": 1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_13", "picture": "minecraft:textures/item/coal.png", "x": 29.3, "y": 1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_14", "picture": "minecraft:textures/item/iron_ingot.png", "x": 30.1, "y": 1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_15", "picture": "minecraft:textures/item/diamond.png", "x": 30.9, "y": 1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_16", "picture": "minecraft:textures/item/quartz.png", "x": 31.7, "y": 1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_17", "picture": "minecraft:textures/item/gold_ingot.png", "x": 32.5, "y": 1.5, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_18", "picture": "minecraft:textures/item/emerald.png", "x": 28.5, "y": 2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_19", "picture": "minecraft:textures/item/raw_iron.png", "x": 29.3, "y": 2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_20", "picture": "minecraft:textures/item/redstone.png", "x": 30.1, "y": 2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_21", "picture": "minecraft:textures/item/iron_ingot.png", "x": 30.9, "y": 2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_22", "picture": "minecraft:textures/item/copper_ingot.png", "x": 31.7, "y": 2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "shelf_23", "picture": "minecraft:textures/item/lapis_lazuli.png", "x": 32.5, "y": 2.3, "w": 0.6, "h": 0.6, "reveal": "logistics_networks_close", "order": -4},
+    {"id": "screen_glow", "glow": [30.5, 0.0], "r": 4.5, "tint": "#8FE3FF", "alpha": 90, "reveal": "logistics_networks_close", "order": -8},
+    {"id": "toy_lit_ae2", "glow": [14.8, -3.7], "r": 2.6, "tint": "#E2A3E3", "alpha": 150, "reveal": "logistics_networks_toy_lever", "order": -3},
+    {"id": "toy_lit_term", "glow": [17.5, -3.7], "r": 2.0, "tint": "#8FE3FF", "alpha": 150, "reveal": "logistics_networks_toy_lever", "order": -3},
+    {"id": "toy_lit_rs", "glow": [6.55, 6.9], "r": 2.6, "tint": "#15E0FF", "alpha": 150, "reveal": "logistics_networks_toy_lever", "order": -3},
+    {"id": "toy_lit_grid", "glow": [10.75, 6.9], "r": 2.4, "tint": "#15E0FF", "alpha": 150, "reveal": "logistics_networks_toy_lever", "order": -3},
+    {"id": "typed", "text": {"en_us": "iron", "es_es": "hierro"}, "x": 28.5, "y": -3.28, "scale": 2, "tint": "#F3E7C6", "align": "start", "reveal": "logistics_networks_toy_search"},
+    {"id": "toy_iron_0", "glow": [28.5, -2.3], "r": 0.9, "tint": "#F3E7C6", "alpha": 190, "reveal": "logistics_networks_toy_search", "order": -3},
+    {"id": "toy_iron_1", "glow": [30.9, -1.5], "r": 0.9, "tint": "#F3E7C6", "alpha": 190, "reveal": "logistics_networks_toy_search", "order": -3},
+    {"id": "toy_iron_2", "glow": [30.1, 1.5], "r": 0.9, "tint": "#F3E7C6", "alpha": 190, "reveal": "logistics_networks_toy_search", "order": -3},
+    {"id": "toy_iron_3", "glow": [30.9, 2.3], "r": 0.9, "tint": "#F3E7C6", "alpha": 190, "reveal": "logistics_networks_toy_search", "order": -3}
   ]
 }

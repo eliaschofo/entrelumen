@@ -1,733 +1,454 @@
 {
   "chapter": "routes_of_exchange",
   "act": 3,
-  "title": {
-    "en_us": "III · Routes of Exchange",
-    "es_es": "III · Rutas de intercambio"
-  },
+  "title": {"en_us": "III · Routes of Exchange", "es_es": "III · Rutas de intercambio"},
   "subtitle": {
-    "en_us": [
-      "Under a broken glass dome a garden still blooms. Heliodor's routes started here and led to a capital no map shows."
-    ],
-    "es_es": [
-      "Bajo un domo de vidrio roto, un jardín todavía florece. Las rutas de Heliodor salían de acá y llevaban a una capital que ningún mapa muestra."
-    ]
+    "en_us": ["Under a broken glass dome a garden still blooms. Heliodor's routes started here and led to a capital no map shows."],
+    "es_es": ["Bajo un domo de vidrio roto, un jardín todavía florece. Las rutas de Heliodor salían de acá y llevaban a una capital que ningún mapa muestra."]
   },
   "autofocus": "exchange_welcome",
-  "milestones": [
-    "signal_exchange",
-    "nursery_protocol",
-    "distributed_power",
-    "measured_logistics",
-    "workshop_hands",
-    "nature_module",
-    "exchange_route"
-  ],
-  "layout_groups": {
-    "archive": {
-      "en_us": "The Greenhouse Dome",
-      "es_es": "El Invernadero-domo"
-    },
-    "signal": {
-      "en_us": "A shared language",
-      "es_es": "Un lenguaje compartido"
-    },
-    "nursery": {
-      "en_us": "Juan · Supplies that return",
-      "es_es": "Juan · Reservas que vuelven"
-    },
-    "power": {
-      "en_us": "Terra · Power in many places",
-      "es_es": "Terra · Energía repartida"
-    },
-    "logistics": {
-      "en_us": "Measure before moving",
-      "es_es": "Medir antes de mover"
-    },
-    "hands": {
-      "en_us": "A workshop within reach",
-      "es_es": "Un taller al alcance"
-    }
-  },
+  "milestones": ["signal_exchange", "nursery_protocol", "distributed_power", "measured_logistics", "workshop_hands", "nature_module", "exchange_route"],
+  "layout_groups": {"archive": {"en_us": "The Greenhouse Dome", "es_es": "El Invernadero-domo"}, "signal": {"en_us": "A shared language", "es_es": "Un lenguaje compartido"}, "nursery": {"en_us": "Juan · Supplies that return", "es_es": "Juan · Reservas que vuelven"}, "power": {"en_us": "Terra · Power in many places", "es_es": "Terra · Energía repartida"}, "logistics": {"en_us": "Measure before moving", "es_es": "Medir antes de mover"}, "hands": {"en_us": "A workshop within reach", "es_es": "Un taller al alcance"}},
   "quests": [
     {
-      "key": "exchange_welcome",
-      "deps": [
-        "crafts_archive"
-      ],
-      "layout": {
-        "group": "archive",
-        "x": 0,
-        "y": 0,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": true
-      },
-      "en_us": [
-        "The silence between workshops",
-        "Five projects rebuild Heliodor's routes: signal, nursery, power, logistics and hands. Each is a delivery in the Atlas, and the materials come first.\n\nUnder the Greenhouse Dome, Juan's trees still flower. His ledgers show food leaving here for every city, and above all for one: Solsticio."
-      ],
-      "es_es": [
-        "El silencio entre talleres",
-        "Cinco proyectos reconstruyen las rutas de Heliodor: señal, vivero, energía, logística y manos. Cada uno es una entrega en el Atlas, y primero van los materiales.\n\nBajo el Invernadero-domo, los árboles de Juan siguen floreciendo. Sus libros muestran comida que salía de acá hacia todas las ciudades, y sobre todo hacia una: Solsticio."
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "entrelumen:atlas"
+      "key": "exchange_welcome", "deps": ["crafts_archive"], "layout": {"group": "archive", "x": 0, "y": 0, "size": 0.75, "shape": "circle", "hide_dependent_lines": true}, "type": "checkmark", "optional": true,
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "The silence between workshops",
+        "text": ["[lead] Five projects rebuild Heliodor's routes: signal, nursery, power, logistics and hands.",
+                 "Each is a delivery in the Atlas, and the materials come first.",
+                 "{page}",
+                 "Under the Greenhouse Dome, Juan's trees still flower. His ledgers show food leaving here for every city, and above all for one: Solsticio."]},
+      "es_es": {"title": "El silencio entre talleres",
+        "text": ["[lead] Cinco proyectos reconstruyen las rutas de Heliodor: señal, vivero, energía, logística y manos.",
+                 "Cada uno se entrega en el Atlas, y primero van los materiales.",
+                 "{page}",
+                 "Bajo el Invernadero-domo, los árboles de Juan siguen floreciendo. Sus libros muestran comida que salía de acá hacia todas las ciudades, y sobre todo hacia una: Solsticio."]}
     },
     {
-      "key": "exchange_processors",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "signal",
-        "x": -4.5,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Presses from the fallen sky",
-        "Break a meteorite's mysterious cube without Silk Touch to get the four AE2 presses (a charged meteorite compass points to one), then print and assemble two logic processors in a powered Inscriber.\n\nHeliodor's routes spoke a language of circuits. The presses fell from the sky; Terra only learned to read them."
-      ],
-      "es_es": [
-        "Prensas del cielo caído",
-        "Rompé el cubo misterioso de un meteorito sin Toque de Seda para obtener las cuatro prensas de AE2 (una brújula de meteoritos cargada apunta a uno); después imprimí y armá dos procesadores lógicos en un inscriptor con energía.\n\nLas rutas de Heliodor hablaban un idioma de circuitos. Las prensas cayeron del cielo; Terra sólo aprendió a leerlas."
-      ],
-      "item": "ae2:logic_processor"
+      "key": "exchange_processors", "deps": ["exchange_welcome"], "layout": {"group": "signal", "x": -4.5, "y": 3, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "ae2:logic_processor",
+      "en_us": {"title": "Presses from the fallen sky",
+        "text": ["[lead] Print two [item:ae2:logic_processor|logic processors] for the routing matrix.",
+                 "Break a meteorite's mysterious cube without Silk Touch to get the four AE2 presses (a charged [item:ae2:meteorite_compass|meteorite compass] points to one), then print and assemble them in a powered [item:ae2:inscriber|Inscriber].",
+                 "{page}",
+                 "Heliodor's routes spoke a language of circuits. The presses fell from the sky; Terra only learned to read them."]},
+      "es_es": {"title": "Prensas del cielo caído",
+        "text": ["[lead] Imprimí dos [item:ae2:logic_processor|procesadores lógicos] para la matriz de distribución.",
+                 "Rompé el cubo misterioso de un meteorito sin Toque de Seda para obtener las cuatro prensas de AE2 (una [item:ae2:meteorite_compass|brújula de meteoritos] cargada apunta a uno); después imprimilos y armalos en un [item:ae2:inscriber|inscriptor] con energía.",
+                 "{page}",
+                 "Las rutas de Heliodor hablaban un idioma de circuitos. Las prensas cayeron del cielo; Terra sólo aprendió a leerlas."]}
     },
     {
-      "key": "exchange_pcb",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "signal",
-        "x": -4.5,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A board takes several benches",
-        "Assemble a PneumaticCraft PCB from an unassembled board, two capacitors and two transistors, following its guide for plastic, UV exposure, etching acid and pressures. The Amadron PCB blueprint costs eight emeralds.\n\nEvery route in Juan's ledgers has a board like this at each end, so either side could repair it."
-      ],
-      "es_es": [
-        "Una placa pasa por varias mesas",
-        "Armá un PCB de PneumaticCraft con una placa sin ensamblar, dos capacitores y dos transistores, siguiendo su guía para plástico, exposición UV, ácido de grabado y presiones. El plano de PCB de Amadron cuesta ocho esmeraldas.\n\nCada ruta de los libros de Juan tiene una placa así en cada punta, para que cualquiera de los dos lados pudiera arreglarla."
-      ],
-      "item": "pneumaticcraft:printed_circuit_board"
+      "key": "exchange_pcb", "deps": ["exchange_welcome"], "layout": {"group": "signal", "x": -4.5, "y": 4.5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "pneumaticcraft:printed_circuit_board",
+      "en_us": {"title": "A board takes several benches",
+        "text": ["[lead] Assemble a PneumaticCraft [item:pneumaticcraft:printed_circuit_board|PCB] from an unassembled board, two capacitors and two transistors.",
+                 "Follow its guide for plastic, UV exposure, etching acid and pressures. The Amadron PCB blueprint costs eight emeralds.",
+                 "{page}",
+                 "Every route in Juan's ledgers has a board like this at each end, so either side could repair it."]},
+      "es_es": {"title": "Una placa pasa por varias mesas",
+        "text": ["[lead] Armá un [item:pneumaticcraft:printed_circuit_board|PCB] de PneumaticCraft con una placa sin ensamblar, dos capacitores y dos transistores.",
+                 "Seguí su guía para plástico, exposición UV, ácido de grabado y presiones. El plano de PCB de Amadron cuesta ocho esmeraldas.",
+                 "{page}",
+                 "Cada ruta de los libros de Juan tiene una placa así en cada punta, para que cualquiera de los dos lados pudiera arreglarla."]}
     },
     {
-      "key": "exchange_palis",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "signal",
-        "x": -4.5,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A blue signal",
-        "Beam lapis into ordinary Palis crystals at the Atomic Reconstructor (40 energy each). Two go into a routing matrix, with two logic processors, a PCB and a calibration frame.\n\nBlue was the colour of Heliodor's routes. On the old maps, every blue line ends at the same blank spot."
-      ],
-      "es_es": [
-        "Una señal azul",
-        "Con el reconstructor atómico convertí lapislázuli en cristales de Palis común (40 de energía cada uno). Dos van a una matriz de distribución, con dos procesadores lógicos, un PCB y un marco de calibración.\n\nEl azul era el color de las rutas de Heliodor. En los mapas viejos, todas las líneas azules terminan en el mismo punto en blanco."
-      ],
-      "item": "actuallyadditions:palis_crystal"
+      "key": "exchange_palis", "deps": ["exchange_welcome"], "layout": {"group": "signal", "x": -4.5, "y": 6, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "actuallyadditions:palis_crystal",
+      "en_us": {"title": "A blue signal",
+        "text": ["[lead] Beam lapis into ordinary [item:actuallyadditions:palis_crystal|Palis crystals] at the [item:actuallyadditions:atomic_reconstructor|Atomic Reconstructor], [hl|40] energy each.",
+                 "Two go into a routing matrix, with two logic processors, a PCB and a calibration frame.",
+                 "{page}",
+                 "Blue was the colour of Heliodor's routes. On the old maps, every blue line ends at the same blank spot."]},
+      "es_es": {"title": "Una señal azul",
+        "text": ["[lead] Con el [item:actuallyadditions:atomic_reconstructor|reconstructor atómico] convertí lapislázuli en [item:actuallyadditions:palis_crystal|cristales de Palis] comunes, a [hl|40] de energía cada uno.",
+                 "Dos van a una matriz de distribución, con dos procesadores lógicos, un PCB y un marco de calibración.",
+                 "{page}",
+                 "El azul era el color de las rutas de Heliodor. En los mapas viejos, todas las líneas azules terminan en el mismo punto en blanco."]}
     },
     {
-      "key": "exchange_prudentium",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "nursery",
-        "x": -9,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Budget the first crystal",
-        "Four inferium around an infusion crystal make one prudentium; the crystal costs a diamond, four prosperity shards and four inferium. Budget eight additional inferium for two prudentium.\n\nJuan grew essences the way he grew wheat: planted, counted, never all at once."
-      ],
-      "es_es": [
-        "Presupuestar el primer cristal",
-        "Cuatro inferium alrededor de un cristal de infusión dan un prudentium; el cristal cuesta un diamante, cuatro fragmentos de prosperidad y cuatro inferium. Reservá otros ocho inferium para dos prudentium.\n\nJuan cultivaba esencias como cultivaba trigo: sembradas, contadas y nunca todas juntas."
-      ],
-      "item": "mysticalagriculture:prudentium_essence"
+      "key": "exchange_prudentium", "deps": ["exchange_welcome"], "layout": {"group": "nursery", "x": -9, "y": 3, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "mysticalagriculture:prudentium_essence",
+      "en_us": {"title": "Budget the first crystal",
+        "text": ["[lead] Four [item:mysticalagriculture:inferium_essence|inferium] around an infusion crystal make one [item:mysticalagriculture:prudentium_essence|prudentium].",
+                 "The [item:mysticalagriculture:infusion_crystal|crystal] costs a diamond, four prosperity shards and four inferium. Budget eight additional inferium for two prudentium.",
+                 "Juan grew essences the way he grew wheat: planted, counted, never all at once."]},
+      "es_es": {"title": "Presupuestar el primer cristal",
+        "text": ["[lead] Cuatro [item:mysticalagriculture:inferium_essence|inferium] alrededor de un cristal de infusión dan un [item:mysticalagriculture:prudentium_essence|prudentium].",
+                 "El [item:mysticalagriculture:infusion_crystal|cristal] cuesta un diamante, cuatro fragmentos de prosperidad y cuatro inferium. Reservá otros ocho inferium para dos prudentium.",
+                 "Juan cultivaba esencias como cultivaba trigo: sembradas, contadas y nunca todas juntas."]}
     },
     {
-      "key": "exchange_wax",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "nursery",
-        "x": -9,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Wax from an ordinary hive",
-        "Process ordinary Minecraft honeycomb into wax in a basic Productive Bees centrifuge (iron and a grindstone). Two wax, no special breeding.\n\nThe Greenhouse Dome still hums. Juan's bees outlived everyone who kept them."
-      ],
-      "es_es": [
-        "Cera de una colmena común",
-        "Procesá panal común de Minecraft en una centrífuga básica de Productive Bees (hierro y una afiladora) para obtener cera. Dos ceras, sin cría especial.\n\nEl Invernadero-domo todavía zumba. Las abejas de Juan sobrevivieron a todos los que las cuidaban."
-      ],
-      "item": "productivebees:wax"
+      "key": "exchange_wax", "deps": ["exchange_welcome"], "layout": {"group": "nursery", "x": -9, "y": 4.5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "productivebees:wax",
+      "en_us": {"title": "Wax from an ordinary hive",
+        "text": ["[lead] Process ordinary Minecraft honeycomb into [item:productivebees:wax|wax] in a basic Productive Bees [item:productivebees:centrifuge|centrifuge].",
+                 "The centrifuge takes iron and a grindstone. Two wax, no special breeding.",
+                 "The Greenhouse Dome still hums. Juan's bees outlived everyone who kept them."]},
+      "es_es": {"title": "Cera de una colmena común",
+        "text": ["[lead] Procesá panal común de Minecraft en una [item:productivebees:centrifuge|centrífuga] básica de Productive Bees para obtener [item:productivebees:wax|cera].",
+                 "La centrífuga lleva hierro y una afiladora. Dos ceras, sin cría especial.",
+                 "El Invernadero-domo todavía zumba. Las abejas de Juan sobrevivieron a todos los que las cuidaban."]}
     },
     {
-      "key": "exchange_living_reserve",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "nursery",
-        "x": -9,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "The old garden contributes",
-        "Make another living matrix (a calibration frame, two source gems and two magebloom fibers): the act II one was consumed. With two prudentium and two wax it becomes a propagation core.\n\nJuan's notes grow into B.'s garden bed: the two of them planned this greenhouse together."
-      ],
-      "es_es": [
-        "El jardín anterior aporta",
-        "Hacé otra matriz viva (un marco de calibración, dos gemas de fuente y dos fibras de flor mágica): la del acto II se consumió. Con dos prudentium y dos ceras forma un núcleo de propagación.\n\nLas notas de Juan se mezclan con el cantero de B.: este invernadero lo pensaron entre los dos."
-      ],
-      "item": "entrelumen:living_matrix"
+      "key": "exchange_living_reserve", "deps": ["exchange_welcome"], "layout": {"group": "nursery", "x": -9, "y": 6, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "entrelumen:living_matrix",
+      "en_us": {"title": "The old garden contributes",
+        "text": ["[lead] The act II [item:entrelumen:living_matrix|living matrix] was consumed: make another.",
+                 "It takes a calibration frame, two source gems and two magebloom fibers. With two prudentium and two wax it becomes a [item:entrelumen:propagation_core|propagation core].",
+                 "Juan's notes grow into B.'s garden bed: the two of them planned this greenhouse together."]},
+      "es_es": {"title": "El jardín anterior aporta",
+        "text": ["[lead] La [item:entrelumen:living_matrix|matriz viva] del acto II se consumió: hacé otra.",
+                 "Lleva un marco de calibración, dos gemas de fuente y dos fibras de flor mágica. Con dos prudentium y dos ceras forma un [item:entrelumen:propagation_core|núcleo de propagación].",
+                 "Las notas de Juan se mezclan con el cantero de B.: este invernadero lo pensaron entre los dos."]}
     },
     {
-      "key": "exchange_circuits",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "power",
-        "x": 4.5,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Osmium learns a signal",
-        "Infuse an osmium ingot with 20 redstone infusion in a powered Metallurgic Infuser to make a basic control circuit. A power regulator needs two.\n\nA small generator is enough. Heliodor spread its power thin on purpose, so no single failure could take everything."
-      ],
-      "es_es": [
-        "El osmio aprende una señal",
-        "Infundí un lingote de osmio con 20 de infusión de redstone en un infusor metalúrgico con energía para hacer un circuito de control básico. Un regulador de energía necesita dos.\n\nAlcanza con un generador chico. Heliodor repartía su energía a propósito, para que ninguna falla se llevara todo."
-      ],
-      "item": "mekanism:basic_control_circuit"
+      "key": "exchange_circuits", "deps": ["exchange_welcome"], "layout": {"group": "power", "x": 4.5, "y": 3, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "mekanism:basic_control_circuit",
+      "en_us": {"title": "Osmium learns a signal",
+        "text": ["[lead] A power regulator needs two [item:mekanism:basic_control_circuit|basic control circuits].",
+                 "For each, infuse an osmium ingot with [hl|20] redstone infusion in a powered [item:mekanism:metallurgic_infuser|Metallurgic Infuser].",
+                 "A small generator is enough. Heliodor spread its power thin on purpose, so no single failure could take everything."]},
+      "es_es": {"title": "El osmio aprende una señal",
+        "text": ["[lead] Un regulador de energía necesita dos [item:mekanism:basic_control_circuit|circuitos de control básicos].",
+                 "Para cada uno, infundí un lingote de osmio con [hl|20] de infusión de redstone en un [item:mekanism:metallurgic_infuser|infusor metalúrgico] con energía.",
+                 "Alcanza con un generador chico. Heliodor repartía su energía a propósito, para que ninguna falla se llevara todo."]}
     },
     {
-      "key": "exchange_steel",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "power",
-        "x": 4.5,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Steel without a giant furnace",
-        "Hammer a steel ingot into an Immersive Engineering steel plate; Mekanism's carbon infusion (enriched iron, steel dust, then smelting) is an early route to the ingot. Keep two plates.\n\nThe dome's frame is steel under copper. It held the glass up for years after the people were gone."
-      ],
-      "es_es": [
-        "Acero sin un horno enorme",
-        "Con el martillo de Immersive Engineering convertí un lingote de acero en placa; la infusión de carbono de Mekanism (hierro enriquecido, polvo de acero y después fundir) es una ruta temprana al lingote. Guardá dos placas.\n\nLa estructura del domo es acero bajo cobre. Sostuvo el vidrio años después de que la gente se fuera."
-      ],
-      "item": "immersiveengineering:plate_steel"
+      "key": "exchange_steel", "deps": ["exchange_welcome"], "layout": {"group": "power", "x": 4.5, "y": 4.5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "immersiveengineering:plate_steel",
+      "en_us": {"title": "Steel without a giant furnace",
+        "text": ["[lead] Hammer a steel ingot into an Immersive Engineering [item:immersiveengineering:plate_steel|steel plate]; keep two.",
+                 "Mekanism's carbon infusion (enriched iron, steel dust, then smelting) is an early route to the ingot.",
+                 "{page}",
+                 "The dome's frame is steel under copper. It held the glass up for years after the people were gone."]},
+      "es_es": {"title": "Acero sin un horno enorme",
+        "text": ["[lead] Con el martillo de Immersive Engineering convertí un lingote de acero en [item:immersiveengineering:plate_steel|placa de acero]; guardá dos.",
+                 "La infusión de carbono de Mekanism (hierro enriquecido, polvo de acero y después fundir) es una ruta temprana al lingote.",
+                 "{page}",
+                 "La estructura del domo es acero bajo cobre. Sostuvo el vidrio años después de que la gente se fuera."]}
     },
     {
-      "key": "exchange_coupler",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "power",
-        "x": 4.5,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A coupling, not a power plant",
-        "Rebuild an energy coupler (two Restonia crystals, an iron casing and two andesite alloys). With two circuits and two steel plates it makes a power regulator.\n\nThe same coupling Terra drew in the Sunken Workshop, now feeding a whole greenhouse."
-      ],
-      "es_es": [
-        "Un acople, no una central",
-        "Volvé a fabricar un acoplador de energía (dos cristales de Restonia, una carcasa de hierro y dos aleaciones de andesita). Con dos circuitos y dos placas de acero forma un regulador de energía.\n\nEl mismo acople que Terra dibujó en el Taller hundido, ahora alimentando un invernadero entero."
-      ],
-      "item": "entrelumen:energy_coupler"
+      "key": "exchange_coupler", "deps": ["exchange_welcome"], "layout": {"group": "power", "x": 4.5, "y": 6, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "entrelumen:energy_coupler",
+      "en_us": {"title": "A coupling, not a power plant",
+        "text": ["[lead] Rebuild an [item:entrelumen:energy_coupler|energy coupler]: two Restonia crystals, an iron casing and two andesite alloys.",
+                 "With two circuits and two steel plates it makes a [item:entrelumen:power_regulator|power regulator].",
+                 "The same coupling Terra drew in the Sunken Workshop, now feeding a whole greenhouse."]},
+      "es_es": {"title": "Un acople, no una central",
+        "text": ["[lead] Volvé a fabricar un [item:entrelumen:energy_coupler|acoplador de energía]: dos cristales de Restonia, una carcasa de hierro y dos aleaciones de andesita.",
+                 "Con dos circuitos y dos placas de acero forma un [item:entrelumen:power_regulator|regulador de energía].",
+                 "El mismo acople que Terra dibujó en el Taller hundido, ahora alimentando un invernadero entero."]}
     },
     {
-      "key": "exchange_menril",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "logistics",
-        "x": 0,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Read the tree before the shelf",
-        "Squeeze a Menril log for 1000 mB of resin, dry it in a Drying Basin into a crystallized Menril block, and craft the block into nine chunks. Keep two.\n\nJuan planted Menril along every route, so the roads themselves could keep count."
-      ],
-      "es_es": [
-        "Leer el árbol antes del estante",
-        "Exprimí un tronco de Menril para obtener 1000 mB de resina, secala en una cubeta de secado hasta formar un bloque cristalizado y desarmalo en nueve fragmentos. Guardá dos.\n\nJuan plantó Menril a lo largo de cada ruta, para que los caminos mismos llevaran la cuenta."
-      ],
-      "item": "integrateddynamics:crystalized_menril_chunk"
+      "key": "exchange_menril", "deps": ["exchange_welcome"], "layout": {"group": "logistics", "x": 0, "y": 3, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "integrateddynamics:crystalized_menril_chunk",
+      "en_us": {"title": "Read the tree before the shelf",
+        "text": ["[lead] Keep two [item:integrateddynamics:crystalized_menril_chunk|crystallized Menril chunks].",
+                 "Squeeze a Menril log for [hl|1000 mB] of resin, dry it in a Drying Basin into a crystallized Menril block, and craft the block into nine chunks.",
+                 "Juan planted Menril along every route, so the roads themselves could keep count."]},
+      "es_es": {"title": "Leer el árbol antes del estante",
+        "text": ["[lead] Guardá dos [item:integrateddynamics:crystalized_menril_chunk|fragmentos de Menril cristalizado].",
+                 "Exprimí un tronco de Menril para obtener [hl|1000 mB] de resina, secala en una cubeta de secado hasta formar un bloque cristalizado y desarmalo en nueve fragmentos.",
+                 "Juan plantó Menril a lo largo de cada ruta, para que los caminos mismos llevaran la cuenta."]}
     },
     {
-      "key": "exchange_chips",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "logistics",
-        "x": 0,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Bake the logic",
-        "Craft four raw LaserIO logic chips from a quartz block, clay balls, gold nuggets and redstone, and smelt them into finished chips. The sensor needs two.\n\nClay and gold, baked like bread. Some of Heliodor's best ideas came out of its kitchens."
-      ],
-      "es_es": [
-        "Cocinar la lógica",
-        "Fabricá cuatro chips lógicos crudos de LaserIO con un bloque de cuarzo, bolas de arcilla, pepitas de oro y redstone, y fundilos para terminarlos. El sensor necesita dos.\n\nArcilla y oro, horneados como pan. Algunas de las mejores ideas de Heliodor salieron de sus cocinas."
-      ],
-      "item": "laserio:logic_chip"
+      "key": "exchange_chips", "deps": ["exchange_welcome"], "layout": {"group": "logistics", "x": 0, "y": 4.5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "laserio:logic_chip",
+      "en_us": {"title": "Bake the logic",
+        "text": ["[lead] The sensor needs two finished [item:laserio:logic_chip|logic chips].",
+                 "Craft four raw LaserIO chips from a quartz block, clay balls, gold nuggets and redstone, and smelt them into finished ones.",
+                 "Clay and gold, baked like bread. Some of Heliodor's best ideas came out of its kitchens."]},
+      "es_es": {"title": "Cocinar la lógica",
+        "text": ["[lead] El sensor necesita dos [item:laserio:logic_chip|chips lógicos] terminados.",
+                 "Fabricá cuatro chips crudos de LaserIO con un bloque de cuarzo, bolas de arcilla, pepitas de oro y redstone, y fundilos para terminarlos.",
+                 "Arcilla y oro, horneados como pan. Algunas de las mejores ideas de Heliodor salieron de sus cocinas."]}
     },
     {
-      "key": "exchange_spare_matrix",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "logistics",
-        "x": 0,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A second matrix has a job",
-        "Make another routing matrix (two logic processors, a PCB, two Palis crystals and a calibration frame): the first went to A Shared Language. With two Menril chunks and two finished chips it makes an inventory sensor.\n\nA route that knows when it is full needs nobody shouting at it. Juan's ledgers say that took years to learn."
-      ],
-      "es_es": [
-        "La segunda matriz tiene trabajo",
-        "Hacé otra matriz de distribución (dos procesadores lógicos, un PCB, dos cristales de Palis y un marco de calibración): la primera fue a Un lenguaje compartido. Con dos fragmentos de Menril y dos chips terminados forma un sensor de inventario.\n\nUna ruta que sabe cuándo está llena no necesita que nadie le grite. Según los libros de Juan, aprender eso llevó años."
-      ],
-      "item": "entrelumen:routing_matrix"
+      "key": "exchange_spare_matrix", "deps": ["exchange_welcome"], "layout": {"group": "logistics", "x": 0, "y": 6, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "entrelumen:routing_matrix",
+      "en_us": {"title": "A second matrix has a job",
+        "text": ["[lead] The first [item:entrelumen:routing_matrix|routing matrix] went to A Shared Language: make another.",
+                 "It takes two logic processors, a PCB, two Palis crystals and a calibration frame. With two Menril chunks and two finished chips it makes an [item:entrelumen:inventory_sensor|inventory sensor].",
+                 "{page}",
+                 "A route that knows when it is full needs nobody shouting at it. Juan's ledgers say that took years to learn."]},
+      "es_es": {"title": "La segunda matriz tiene trabajo",
+        "text": ["[lead] La primera [item:entrelumen:routing_matrix|matriz de distribución] fue a Un lenguaje compartido: hacé otra.",
+                 "Lleva dos procesadores lógicos, un PCB, dos cristales de Palis y un marco de calibración. Con dos fragmentos de Menril y dos chips terminados forma un [item:entrelumen:inventory_sensor|sensor de inventario].",
+                 "{page}",
+                 "Una ruta que sabe cuándo está llena no necesita que nadie le grite. Según los libros de Juan, aprender eso llevó años."]}
     },
     {
-      "key": "exchange_modules",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "hands",
-        "x": 9,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Paper tells the hands",
-        "Craft six blank Modular Routers modules from paper, gold nuggets and redstone; keep two for the handling core and configure the rest for real jobs.\n\nIn Heliodor, instructions were written on paper first, and only then given to a machine."
-      ],
-      "es_es": [
-        "El papel le enseña a la mano",
-        "Fabricá seis módulos en blanco de Modular Routers con papel, pepitas de oro y redstone; guardá dos para el núcleo de manipulación y configurá el resto para trabajos reales.\n\nEn Heliodor, las instrucciones se escribían primero en papel y recién después se le daban a una máquina."
-      ],
-      "item": "modularrouters:blank_module"
+      "key": "exchange_modules", "deps": ["exchange_welcome"], "layout": {"group": "hands", "x": 9, "y": 3, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "modularrouters:blank_module",
+      "en_us": {"title": "Paper tells the hands",
+        "text": ["[lead] Craft six [item:modularrouters:blank_module|blank Modular Routers modules] from paper, gold nuggets and redstone.",
+                 "Keep two for the handling core and configure the rest for real jobs.",
+                 "In Heliodor, instructions were written on paper first, and only then given to a machine."]},
+      "es_es": {"title": "El papel le enseña a la mano",
+        "text": ["[lead] Fabricá seis [item:modularrouters:blank_module|módulos en blanco] de Modular Routers con papel, pepitas de oro y redstone.",
+                 "Guardá dos para el núcleo de manipulación y configurá el resto para trabajos reales.",
+                 "En Heliodor, las instrucciones se escribían primero en papel y recién después se le daban a una máquina."]}
     },
     {
-      "key": "exchange_mechanism",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "hands",
-        "x": 9,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Five careful passes",
-        "Start a Create precision mechanism with a gold plate, then deploy a small cogwheel, a large cogwheel and an iron nugget in order, five times (deployers need brass hands; see Ponder). The result is probabilistic: keep spare inputs.\n\nTerra's hand shows in every Heliodor mechanism: patient, repeatable, never quite trusting luck."
-      ],
-      "es_es": [
-        "Cinco pasadas cuidadosas",
-        "Empezá un mecanismo de precisión de Create con una placa de oro y aplicá en orden un engranaje chico, uno grande y una pepita de hierro, cinco veces (los desplegadores llevan manos de latón; mirá Ponder). El resultado es probabilístico: tené insumos de repuesto.\n\nLa mano de Terra se nota en cada mecanismo de Heliodor: paciente, repetible y sin confiar del todo en la suerte."
-      ],
-      "item": "create:precision_mechanism"
+      "key": "exchange_mechanism", "deps": ["exchange_welcome"], "layout": {"group": "hands", "x": 9, "y": 4.5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "create:precision_mechanism",
+      "en_us": {"title": "Five careful passes",
+        "text": ["[lead] Start a Create [item:create:precision_mechanism|precision mechanism] with a [item:create:golden_sheet|gold plate].",
+                 "Deploy a small cogwheel, a large cogwheel and an iron nugget in order, five times (deployers need brass hands; see Ponder).",
+                 "[careful] The result is probabilistic: keep spare inputs.",
+                 "{page}",
+                 "Terra's hand shows in every Heliodor mechanism: patient, repeatable, never quite trusting luck."]},
+      "es_es": {"title": "Cinco pasadas cuidadosas",
+        "text": ["[lead] Empezá un [item:create:precision_mechanism|mecanismo de precisión] de Create con una [item:create:golden_sheet|placa de oro].",
+                 "Aplicá en orden un engranaje chico, uno grande y una pepita de hierro, cinco veces (los desplegadores llevan manos de latón; mirá Ponder).",
+                 "[careful] El resultado es probabilístico: tené insumos de repuesto.",
+                 "{page}",
+                 "La mano de Terra se nota en cada mecanismo de Heliodor: paciente, repetible y sin confiar del todo en la suerte."]}
     },
     {
-      "key": "exchange_spare_regulator",
-      "deps": [
-        "exchange_welcome"
-      ],
-      "layout": {
-        "group": "hands",
-        "x": 9,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A regulator for the hands",
-        "Make a second power regulator (two basic circuits, two steel plates and an energy coupler); the first was delivered. With two blank modules and a precision mechanism it makes a handling core.\n\nHands that pass a part along and keep their tools: Juan's crews worked that way, from dome to dome."
-      ],
-      "es_es": [
-        "Un regulador para las manos",
-        "Hacé un segundo regulador de energía (dos circuitos básicos, dos placas de acero y un acoplador): el primero ya se entregó. Con dos módulos en blanco y un mecanismo de precisión forma un núcleo de manipulación.\n\nManos que pasan una pieza y se quedan con sus herramientas: así trabajaban las cuadrillas de Juan, de domo en domo."
-      ],
-      "item": "entrelumen:power_regulator"
+      "key": "exchange_spare_regulator", "deps": ["exchange_welcome"], "layout": {"group": "hands", "x": 9, "y": 6, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "entrelumen:power_regulator",
+      "en_us": {"title": "A regulator for the hands",
+        "text": ["[lead] The first [item:entrelumen:power_regulator|power regulator] was delivered: make a second.",
+                 "It takes two basic circuits, two steel plates and an energy coupler. With two blank modules and a precision mechanism it makes a [item:entrelumen:handling_core|handling core].",
+                 "{page}",
+                 "Hands that pass a part along and keep their tools: Juan's crews worked that way, from dome to dome."]},
+      "es_es": {"title": "Un regulador para las manos",
+        "text": ["[lead] El primer [item:entrelumen:power_regulator|regulador de energía] ya se entregó: hacé un segundo.",
+                 "Lleva dos circuitos básicos, dos placas de acero y un acoplador. Con dos módulos en blanco y un mecanismo de precisión forma un [item:entrelumen:handling_core|núcleo de manipulación].",
+                 "{page}",
+                 "Manos que pasan una pieza y se quedan con sus herramientas: así trabajaban las cuadrillas de Juan, de domo en domo."]}
     },
     {
-      "key": "exchange_signal_trial",
-      "deps": [
-        "exchange_processors",
-        "exchange_pcb",
-        "exchange_palis"
-      ],
-      "layout": {
-        "group": "signal",
-        "x": -4.5,
-        "y": 6.5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Label the destination",
-        "Optional: pick one workshop input, label its source, destination and spare stock, and send a small batch its receiver can recognise unaided.\n\nEvery crate in Juan's ledgers carries a destination. The ones bound for Solsticio carry a golden seal as well."
-      ],
-      "es_es": [
-        "Nombrar el destino",
-        "Opcional: elegí un insumo del taller, rotulá origen, destino y reserva, y mandá una tanda chica que quien la recibe pueda reconocer sin preguntar.\n\nCada caja de los libros de Juan lleva un destino. Las que iban a Solsticio llevan además un sello dorado."
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "entrelumen:atlas"
+      "key": "exchange_signal_trial", "deps": ["exchange_processors", "exchange_pcb", "exchange_palis"], "layout": {"group": "signal", "x": -4.5, "y": 7.5, "size": 0.75, "shape": "circle", "hide_dependent_lines": false}, "type": "checkmark", "optional": true,
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Label the destination",
+        "text": ["[lead] Optional: send a small batch its receiver can recognise unaided.",
+                 "Pick one workshop input and label its source, destination and spare stock.",
+                 "Every crate in Juan's ledgers carries a destination. The ones bound for Solsticio carry a golden seal as well."]},
+      "es_es": {"title": "Nombrar el destino",
+        "text": ["[lead] Opcional: mandá una tanda chica que quien la recibe pueda reconocer sin preguntar.",
+                 "Elegí un insumo del taller y rotulá origen, destino y reserva.",
+                 "Cada caja de los libros de Juan lleva un destino. Las que iban a Solsticio llevan además un sello dorado."]}
     },
     {
-      "key": "exchange_nursery_trial",
-      "deps": [
-        "exchange_prudentium",
-        "exchange_wax",
-        "exchange_living_reserve"
-      ],
-      "layout": {
-        "group": "nursery",
-        "x": -9,
-        "y": 6.5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Leave another harvest possible",
-        "Optional: harvest one crop batch and one ordinary hive batch, and keep back what each needs to produce again.\n\nJuan never shipped his last seed. 'The city can wait a week,' he wrote. 'The field cannot wait a year.'"
-      ],
-      "es_es": [
-        "Dejar posible otra cosecha",
-        "Opcional: cosechá una tanda del cultivo y otra de la colmena común, y guardá lo que cada una necesita para volver a producir.\n\nJuan nunca despachaba su última semilla. «La ciudad puede esperar una semana», escribió. «El campo no puede esperar un año»."
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "entrelumen:atlas"
+      "key": "exchange_nursery_trial", "deps": ["exchange_prudentium", "exchange_wax", "exchange_living_reserve"], "layout": {"group": "nursery", "x": -9, "y": 7.5, "size": 0.75, "shape": "circle", "hide_dependent_lines": false}, "type": "checkmark", "optional": true,
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Leave another harvest possible",
+        "text": ["[lead] Optional: harvest one crop batch and one ordinary hive batch.",
+                 "Keep back what each needs to produce again.",
+                 "Juan never shipped his last seed. 'The city can wait a week,' he wrote. 'The field cannot wait a year.'"]},
+      "es_es": {"title": "Dejar posible otra cosecha",
+        "text": ["[lead] Opcional: cosechá una tanda del cultivo y otra de la colmena común.",
+                 "Guardá lo que cada una necesita para volver a producir.",
+                 "Juan nunca despachaba su última semilla. «La ciudad puede esperar una semana», escribió. «El campo no puede esperar un año»."]}
     },
     {
-      "key": "exchange_power_trial",
-      "deps": [
-        "exchange_circuits",
-        "exchange_steel",
-        "exchange_coupler"
-      ],
-      "layout": {
-        "group": "power",
-        "x": 4.5,
-        "y": 6.5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Watch a whole batch",
-        "Optional: run a small infuser batch and compare its energy buffer before and after; keep spare fuel or a second source.\n\nHeliodor's glass roofs once caught the sun for machines like these. None of them ever ran on a single source."
-      ],
-      "es_es": [
-        "Observar una tanda completa",
-        "Opcional: hacé una tanda chica del infusor y compará su reserva de energía antes y después; tené combustible de repuesto o una segunda fuente.\n\nLos techos de vidrio de Heliodor atrapaban el sol para máquinas como estas. Ninguna dependía de una sola fuente."
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "entrelumen:atlas"
+      "key": "exchange_power_trial", "deps": ["exchange_circuits", "exchange_steel", "exchange_coupler"], "layout": {"group": "power", "x": 4.5, "y": 7.5, "size": 0.75, "shape": "circle", "hide_dependent_lines": false}, "type": "checkmark", "optional": true,
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Watch a whole batch",
+        "text": ["[lead] Optional: run a small infuser batch and compare its energy buffer before and after.",
+                 "Keep spare fuel or a second source.",
+                 "Heliodor's glass roofs once caught the sun for machines like these. None of them ever ran on a single source."]},
+      "es_es": {"title": "Observar una tanda completa",
+        "text": ["[lead] Opcional: hacé una tanda chica del infusor y compará su reserva de energía antes y después.",
+                 "Tené combustible de repuesto o una segunda fuente.",
+                 "Los techos de vidrio de Heliodor atrapaban el sol para máquinas como estas. Ninguna dependía de una sola fuente."]}
     },
     {
-      "key": "exchange_logistics_trial",
-      "deps": [
-        "exchange_menril",
-        "exchange_chips",
-        "exchange_spare_matrix"
-      ],
-      "layout": {
-        "group": "logistics",
-        "x": 0,
-        "y": 6.5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Stop before overflow",
-        "Optional: with Integrated Dynamics and Integrated Tunnels, or LaserIO, read a buffer and stop insertion at a small threshold, then watch it resume.\n\nEvery pipe in the greenhouse has a valve Juan could close by hand. He never trusted a store that could not say 'enough'."
-      ],
-      "es_es": [
-        "Detenerse antes del desborde",
-        "Opcional: con Integrated Dynamics e Integrated Tunnels, o con LaserIO, leé una reserva y cortá la inserción en un umbral chico; después mirá que reanude.\n\nTodas las cañerías del invernadero tienen una válvula que Juan podía cerrar a mano. Nunca confió en un depósito que no supiera decir «basta»."
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "entrelumen:atlas"
+      "key": "exchange_logistics_trial", "deps": ["exchange_menril", "exchange_chips", "exchange_spare_matrix"], "layout": {"group": "logistics", "x": 0, "y": 7.5, "size": 0.75, "shape": "circle", "hide_dependent_lines": false}, "type": "checkmark", "optional": true,
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Stop before overflow",
+        "text": ["[lead] Optional: read a buffer and stop insertion at a small threshold, then watch it resume.",
+                 "Use Integrated Dynamics and Integrated Tunnels, or LaserIO.",
+                 "Every pipe in the greenhouse has a valve Juan could close by hand. He never trusted a store that could not say 'enough'."]},
+      "es_es": {"title": "Detenerse antes del desborde",
+        "text": ["[lead] Opcional: leé una reserva y cortá la inserción en un umbral chico; después mirá que reanude.",
+                 "Usá Integrated Dynamics e Integrated Tunnels, o LaserIO.",
+                 "Todas las cañerías del invernadero tienen una válvula que Juan podía cerrar a mano. Nunca confió en un depósito que no supiera decir «basta»."]}
     },
     {
-      "key": "exchange_hands_trial",
-      "deps": [
-        "exchange_modules",
-        "exchange_mechanism",
-        "exchange_spare_regulator"
-      ],
-      "layout": {
-        "group": "hands",
-        "x": 9,
-        "y": 6.5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Thirty-two arrive together",
-        "Optional: move 32 ordinary items between containers with configured Modular Routers modules or a Create setup, and account for all of them at the other end.\n\nJuan counted crews the way he counted crates: everyone who left had to arrive."
-      ],
-      "es_es": [
-        "Treinta y dos llegan juntos",
-        "Opcional: mové 32 objetos comunes entre contenedores con módulos configurados de Modular Routers o un montaje de Create, y ubicalos a todos en el otro extremo.\n\nJuan contaba las cuadrillas igual que las cajas: todos los que salían tenían que llegar."
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "entrelumen:atlas"
+      "key": "exchange_hands_trial", "deps": ["exchange_modules", "exchange_mechanism", "exchange_spare_regulator"], "layout": {"group": "hands", "x": 9, "y": 7.5, "size": 0.75, "shape": "circle", "hide_dependent_lines": false}, "type": "checkmark", "optional": true,
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Thirty-two arrive together",
+        "text": ["[lead] Optional: move [hl|32] ordinary items between containers and account for all of them at the other end.",
+                 "Use configured Modular Routers modules or a Create setup.",
+                 "Juan counted crews the way he counted crates: everyone who left had to arrive."]},
+      "es_es": {"title": "Treinta y dos llegan juntos",
+        "text": ["[lead] Opcional: mové [hl|32] objetos comunes entre contenedores y ubicalos a todos en el otro extremo.",
+                 "Usá módulos configurados de Modular Routers o un montaje de Create.",
+                 "Juan contaba las cuadrillas igual que las cajas: todos los que salían tenían que llegar."]}
     },
     {
-      "key": "exchange_signal",
-      "deps": [
-        "crafts_archive"
-      ],
-      "layout": {
-        "group": "signal",
-        "x": -4.5,
-        "y": 10,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A Shared Language",
-        "Deliver one routing matrix to A Shared Language in the Atlas. It also gives you an Altar of Peace, which keeps hostile creatures from spawning around it.\n\nDifferent benches agree on a destination again. The Atlas voice, clearer now: 'Terra here. If you &kcan&r read this… the routes… still work.'"
-      ],
-      "es_es": [
-        "Un lenguaje compartido",
-        "Entregá una matriz de distribución en Un lenguaje compartido desde el Atlas. Además te da un Altar de Paz, que impide que aparezcan criaturas hostiles a su alrededor.\n\nMesas distintas vuelven a ponerse de acuerdo en un destino. La voz del Atlas, más clara: «Habla Terra. Si &kpodés&r leer esto… las rutas… todavía funcionan»."
-      ],
-      "milestone": "signal_exchange",
-      "icon": "entrelumen:routing_matrix"
+      "key": "exchange_signal", "deps": ["crafts_archive"], "layout": {"group": "signal", "x": -4.5, "y": 11, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false}, "milestone": "signal_exchange",
+      "icon": "entrelumen:routing_matrix",
+      "en_us": {"title": "A Shared Language",
+        "text": ["[lead] Deliver one [item:entrelumen:routing_matrix|routing matrix] to A Shared Language in the Atlas.",
+                 "It also gives you an [item:entrelumen:peace_altar|Altar of Peace], which keeps hostile creatures from spawning around it.",
+                 "{page}",
+                 "Different benches agree on a destination again. The Atlas voice, clearer now: 'Terra here. If you [glitch|can] read this… the routes… still work.'"]},
+      "es_es": {"title": "Un lenguaje compartido",
+        "text": ["[lead] Entregá una [item:entrelumen:routing_matrix|matriz de distribución] en Un lenguaje compartido desde el Atlas.",
+                 "Además te da un [item:entrelumen:peace_altar|Altar de Paz], que impide que aparezcan criaturas hostiles a su alrededor.",
+                 "{page}",
+                 "Mesas distintas vuelven a ponerse de acuerdo en un destino. La voz del Atlas, más clara: «Habla Terra. Si [glitch|podés] leer esto… las rutas… todavía funcionan»."]}
     },
     {
-      "key": "exchange_nursery",
-      "deps": [
-        "crafts_archive"
-      ],
-      "layout": {
-        "group": "nursery",
-        "x": -9,
-        "y": 10,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Seeds of Continuity",
-        "Deliver one propagation core to Seeds of Continuity in the Atlas. Bring the Mother Seed, from the Dome Greenhouse, as well. It gives you an Altar of Growth: crops around it grow much faster and yield more.\n\nJuan designed that altar to feed a Heliodor that never stopped growing. His greenhouse fed multitudes; now it can feed you."
-      ],
-      "es_es": [
-        "Semillas de continuidad",
-        "Entregá un núcleo de propagación en Semillas de continuidad desde el Atlas. Llevá también la Semilla Madre, del Invernadero-domo. Te da un Altar de Crecimiento: los cultivos a su alrededor crecen mucho más rápido y rinden más.\n\nJuan diseñó ese altar para alimentar a una Heliodor que no paraba de crecer. Su invernadero alimentó multitudes; ahora puede alimentarte a vos."
-      ],
-      "milestone": "nursery_protocol",
-      "icon": "entrelumen:propagation_core"
+      "key": "exchange_nursery", "deps": ["crafts_archive"], "layout": {"group": "nursery", "x": -9, "y": 11, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false}, "milestone": "nursery_protocol",
+      "icon": "entrelumen:propagation_core",
+      "en_us": {"title": "Seeds of Continuity",
+        "text": ["[lead] Deliver one [item:entrelumen:propagation_core|propagation core] to Seeds of Continuity in the Atlas.",
+                 "Bring the [item:entrelumen:mother_seed|Mother Seed], from the Dome Greenhouse, as well.",
+                 "It gives you an [item:entrelumen:growth_altar|Altar of Growth]: crops around it grow much faster and yield more.",
+                 "{page}",
+                 "Juan designed that altar to feed a Heliodor that never stopped growing. His greenhouse fed multitudes; now it can feed you."]},
+      "es_es": {"title": "Semillas de continuidad",
+        "text": ["[lead] Entregá un [item:entrelumen:propagation_core|núcleo de propagación] en Semillas de continuidad desde el Atlas.",
+                 "Llevá también la [item:entrelumen:mother_seed|Semilla Madre], del Invernadero-domo.",
+                 "Te da un [item:entrelumen:growth_altar|Altar de Crecimiento]: los cultivos a su alrededor crecen mucho más rápido y rinden más.",
+                 "{page}",
+                 "Juan diseñó ese altar para alimentar a una Heliodor que no paraba de crecer. Su invernadero alimentó multitudes; ahora puede alimentarte a vos."]}
     },
     {
-      "key": "exchange_power",
-      "deps": [
-        "crafts_archive"
-      ],
-      "layout": {
-        "group": "power",
-        "x": 4.5,
-        "y": 10,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Power without a Monolith",
-        "Deliver one power regulator to Power without a Monolith in the Atlas. Bring the Heliodor Crucible, from the Foundry Under the Lava, as well. Regulators are also what Create's advanced solar heating plates, energisers and motors ask for.\n\nTerra's drawing leaves room for many small suns instead of one great one. Someone wrote 'inefficient' across it, in gold ink."
-      ],
-      "es_es": [
-        "Energía a pequeña escala",
-        "Entregá un regulador de energía en Energía a pequeña escala desde el Atlas. Llevá también el Crisol de Heliodor, de la Fundición bajo la lava. Los reguladores son también lo que piden la placa solar avanzada, el energizador avanzado y el motor fuerte.\n\nEl dibujo de Terra deja lugar para muchos soles chicos en vez de uno grande. Alguien escribió encima «ineficiente», con tinta dorada."
-      ],
-      "milestone": "distributed_power",
-      "icon": "entrelumen:power_regulator"
+      "key": "exchange_power", "deps": ["crafts_archive"], "layout": {"group": "power", "x": 4.5, "y": 11, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false}, "milestone": "distributed_power",
+      "icon": "entrelumen:power_regulator",
+      "en_us": {"title": "Power without a Monolith",
+        "text": ["[lead] Deliver one [item:entrelumen:power_regulator|power regulator] to Power without a Monolith in the Atlas.",
+                 "Bring the [item:entrelumen:heliodor_crucible|Heliodor Crucible], from the Foundry Under the Lava, as well.",
+                 "Regulators are also what Create's advanced solar heating plates, energisers and motors ask for.",
+                 "{page}",
+                 "Terra's drawing leaves room for many small suns instead of one great one. Someone wrote 'inefficient' across it, in gold ink."]},
+      "es_es": {"title": "Energía a pequeña escala",
+        "text": ["[lead] Entregá un [item:entrelumen:power_regulator|regulador de energía] en Energía a pequeña escala desde el Atlas.",
+                 "Llevá también el [item:entrelumen:heliodor_crucible|Crisol de Heliodor], de la Fundición bajo la lava.",
+                 "Los reguladores son también lo que piden la placa solar avanzada, el energizador avanzado y el motor fuerte.",
+                 "{page}",
+                 "El dibujo de Terra deja lugar para muchos soles chicos en vez de uno grande. Alguien escribió encima «ineficiente», con tinta dorada."]}
     },
     {
-      "key": "exchange_logistics",
-      "deps": [
-        "crafts_archive",
-        "exchange_signal"
-      ],
-      "layout": {
-        "group": "logistics",
-        "x": 0,
-        "y": 10,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "When the Shelf is Full",
-        "Deliver one inventory sensor to When the Shelf is Full in the Atlas.\n\nA full shelf can warn before it jams. Juan's routes did; the orders from Solsticio never waited for the answer."
-      ],
-      "es_es": [
-        "Cuando el estante está lleno",
-        "Entregá un sensor de inventario en Cuando el estante está lleno desde el Atlas.\n\nUn estante lleno puede avisar antes de trabarse. Las rutas de Juan lo hacían; los pedidos de Solsticio nunca esperaban la respuesta."
-      ],
-      "milestone": "measured_logistics",
-      "icon": "entrelumen:inventory_sensor"
+      "key": "exchange_logistics", "deps": ["crafts_archive", "exchange_signal"], "layout": {"group": "logistics", "x": 0, "y": 11, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false}, "milestone": "measured_logistics",
+      "icon": "entrelumen:inventory_sensor",
+      "en_us": {"title": "When the Shelf is Full",
+        "text": ["[lead] Deliver one [item:entrelumen:inventory_sensor|inventory sensor] to When the Shelf is Full in the Atlas.",
+                 "A full shelf can warn before it jams. Juan's routes did; the orders from Solsticio never waited for the answer."]},
+      "es_es": {"title": "Cuando el estante está lleno",
+        "text": ["[lead] Entregá un [item:entrelumen:inventory_sensor|sensor de inventario] en Cuando el estante está lleno desde el Atlas.",
+                 "Un estante lleno puede avisar antes de trabarse. Las rutas de Juan lo hacían; los pedidos de Solsticio nunca esperaban la respuesta."]}
     },
     {
-      "key": "exchange_hands",
-      "deps": [
-        "crafts_archive",
-        "exchange_power"
-      ],
-      "layout": {
-        "group": "hands",
-        "x": 9,
-        "y": 10,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Small Hands, Large Workshops",
-        "Deliver one handling core to Small Hands, Large Workshops in the Atlas. It gives you an Altar of Levelling, which flattens or repairs the ground around it with the land's own blocks, free of materials.\n\nHeliodor levelled its terraces with this altar and planted every one. The fields went on; the people did not."
-      ],
-      "es_es": [
-        "Manos pequeñas, grandes talleres",
-        "Entregá un núcleo de manipulación en Manos pequeñas, grandes talleres desde el Atlas. Te da un Altar de Nivelación, que aplana o repara el terreno a su alrededor con los bloques del lugar, sin pedir materiales.\n\nHeliodor niveló sus terrazas con este altar y las sembró todas. Los campos siguieron; la gente no."
-      ],
-      "milestone": "workshop_hands",
-      "icon": "entrelumen:handling_core"
+      "key": "exchange_hands", "deps": ["crafts_archive", "exchange_power"], "layout": {"group": "hands", "x": 9, "y": 11, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false}, "milestone": "workshop_hands",
+      "icon": "entrelumen:handling_core",
+      "en_us": {"title": "Small Hands, Large Workshops",
+        "text": ["[lead] Deliver one [item:entrelumen:handling_core|handling core] to Small Hands, Large Workshops in the Atlas.",
+                 "It gives you an [item:entrelumen:terraform_altar|Altar of Levelling], which flattens or repairs the ground around it with the land's own blocks, free of materials.",
+                 "Heliodor levelled its terraces with this altar and planted every one. The fields went on; the people did not."]},
+      "es_es": {"title": "Manos pequeñas, grandes talleres",
+        "text": ["[lead] Entregá un [item:entrelumen:handling_core|núcleo de manipulación] en Manos pequeñas, grandes talleres desde el Atlas.",
+                 "Te da un [item:entrelumen:terraform_altar|Altar de Nivelación], que aplana o repara el terreno a su alrededor con los bloques del lugar, sin pedir materiales.",
+                 "Heliodor niveló sus terrazas con este altar y las sembró todas. Los campos siguieron; la gente no."]}
     },
     {
-      "key": "exchange_nature",
-      "deps": [
-        "crafts_archive"
-      ],
-      "milestone": "nature_module",
+      "key": "exchange_nature", "deps": ["crafts_archive"], "milestone": "nature_module", "layout": {"group": "hands", "x": 13.5, "y": 11, "size": 2.0, "shape": "hexagon"},
       "icon": "entrelumen:nature_module",
-      "en_us": [
-        "A module that breathes",
-        "Deliver one propagation core, eight moss blocks and four glistering melon slices to Nature Module in the Atlas. In its place in the Ark it gives your whole team Regeneration and half the hunger, anywhere, and a bookmarked compass marks your garden.\n\nJuan kept the greenhouse air warm through Heliodor's worst winter. He never asked the plants to grow faster; he asked them to last."
-      ],
-      "es_es": [
-        "Un módulo que respira",
-        "Entregá un núcleo de propagación, ocho bloques de musgo y cuatro rodajas de sandía reluciente en Módulo de naturaleza desde el Atlas. En su lugar del Arca le da a todo tu equipo Regeneración y la mitad de hambre, en cualquier lado, y una brújula anclada marca tu jardín.\n\nJuan mantuvo tibio el aire del invernadero en el peor invierno de Heliodor. Nunca les pidió a las plantas que crecieran más rápido; les pidió que duraran."
-      ],
-      "layout": {
-        "group": "hands",
-        "x": 13.5,
-        "y": 10,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
+      "en_us": {"title": "A module that breathes",
+        "text": ["[lead] Deliver to Nature Module in the Atlas:",
+                 "[li:entrelumen:propagation_core] One [item:entrelumen:propagation_core|propagation core]",
+                 "[li] Eight [item:minecraft:moss_block|moss blocks]",
+                 "[li:minecraft:glistering_melon_slice] Four [item:minecraft:glistering_melon_slice|glistering melon slices]",
+                 "In its place in the Ark it gives your whole team Regeneration and half the hunger, anywhere, and a bookmarked compass marks your garden.",
+                 "{page}",
+                 "Juan kept the greenhouse air warm through Heliodor's worst winter. He never asked the plants to grow faster; he asked them to last."]},
+      "es_es": {"title": "Un módulo que respira",
+        "text": ["[lead] Entregá en Módulo de naturaleza desde el Atlas:",
+                 "[li:entrelumen:propagation_core] Un [item:entrelumen:propagation_core|núcleo de propagación]",
+                 "[li] Ocho [item:minecraft:moss_block|bloques de musgo]",
+                 "[li:minecraft:glistering_melon_slice] Cuatro [item:minecraft:glistering_melon_slice|rodajas de sandía reluciente]",
+                 "En su lugar del Arca le da a todo tu equipo Regeneración y la mitad de hambre, en cualquier lado, y una brújula anclada marca tu jardín.",
+                 "{page}",
+                 "Juan mantuvo tibio el aire del invernadero en el peor invierno de Heliodor. Nunca les pidió a las plantas que crecieran más rápido; les pidió que duraran."]}
     },
     {
-      "key": "exchange_archive",
-      "deps": [
-        "exchange_signal",
-        "exchange_nursery",
-        "exchange_power",
-        "exchange_logistics",
-        "exchange_hands",
-        "exchange_nature"
-      ],
-      "layout": {
-        "group": "archive",
-        "x": 0,
-        "y": 14,
-        "size": 3.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Routes of Exchange",
-        "After the five projects, deliver three paper and one copper ingot to Exchange Route in the Atlas to close the act. Bring the Route Seal, from the Viaduct, as well.\n\nEvery route ends at Solsticio, the capital, and Solsticio is on no map. Terra's voice: 'Look up. The city &mfell&r… did not fall. It is &kstill&r… here.'"
-      ],
-      "es_es": [
-        "Rutas de intercambio",
-        "Después de los cinco proyectos, entregá tres papeles y un lingote de cobre en Ruta de intercambio desde el Atlas para cerrar el acto. Llevá también el Sello de Ruta, del Viaducto.\n\nTodas las rutas terminan en Solsticio, la capital, y Solsticio no figura en ningún mapa. La voz de Terra: «Mirá arriba. La ciudad &mcayó&r… no cayó. &kSigue&r… acá»."
-      ],
-      "milestone": "exchange_route",
-      "icon": "entrelumen:atlas"
+      "key": "exchange_archive", "deps": ["exchange_signal", "exchange_nursery", "exchange_power", "exchange_logistics", "exchange_hands", "exchange_nature"], "layout": {"group": "archive", "x": 0, "y": 15, "size": 3.0, "shape": "hexagon", "hide_dependent_lines": false}, "milestone": "exchange_route", "hide_lines": true,
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Routes of Exchange",
+        "text": ["[lead] After the five projects, deliver three paper and one copper ingot to Exchange Route in the Atlas to close the act.",
+                 "Bring the [item:entrelumen:route_seal|Route Seal], from the Viaduct, as well.",
+                 "{page}",
+                 "Every route ends at Solsticio, the capital, and Solsticio is on no map. Terra's voice: 'Look up. The city [strike|fell]… did not fall. It is [glitch|still]… here.'"]},
+      "es_es": {"title": "Rutas de intercambio",
+        "text": ["[lead] Después de los cinco proyectos, entregá tres papeles y un lingote de cobre en Ruta de intercambio desde el Atlas para cerrar el acto.",
+                 "Llevá también el [item:entrelumen:route_seal|Sello de Ruta], del Viaducto.",
+                 "{page}",
+                 "Todas las rutas terminan en Solsticio, la capital, y Solsticio no figura en ningún mapa. La voz de Terra: «Mirá arriba. La ciudad [strike|cayó]… no cayó. [glitch|Sigue]… acá»."]}
+    },
+    {
+      "key": "exchange_toy_caravan", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"group": "archive", "x": -9.6, "y": 15.4, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:bell",
+      "en_us": {"title": "Send the caravans",
+        "text": ["[lead] A caravan sets out on every road at once.",
+                 "Juan never let a road sit empty for long."]},
+      "es_es": {"title": "Mandar las caravanas",
+        "text": ["[lead] Sale una caravana por cada camino a la vez.",
+                 "Juan nunca dejaba un camino vacío mucho tiempo."]}
+    },
+    {
+      "key": "exchange_toy_bees", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"group": "archive", "x": 4.1, "y": -1.7, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:honeycomb",
+      "en_us": {"title": "The dome still hums",
+        "text": ["[lead] Juan's bees still work the dome.",
+                 "Nobody tends them. They tend the garden anyway."]},
+      "es_es": {"title": "El domo todavía zumba",
+        "text": ["[lead] Las abejas de Juan siguen trabajando el domo.",
+                 "Nadie las cuida. Igual ellas cuidan el jardín."]}
     }
-  ]
+  ],
+  "presentation": 2,
+  "art": [
+    {"id": "map", "picture": "#CDAE78", "x": 1.7999999999999998, "y": 6.500000000000001, "w": 27.6, "h": 22.200000000000003, "alpha": 62, "order": -14},
+    {"id": "map_edge", "frame": [-11.7, -4.3, 15.299999999999999, 17.3], "color": "#8A6A48", "thickness_px": 1.0, "alpha": 90, "order": -13},
+    {"id": "rose", "picture": "entrelumen:textures/item/heliodor_compass/overworld_16.png", "x": -10.4, "y": 16.1, "w": 1.6, "h": 1.6, "alpha": 80, "order": -12},
+    {"id": "dome", "path": [[-3.3, 0.9500000000000004], [-3.0488024572872465, -0.312855326804796], [-2.333452377915607, -1.3834523779156067], [-1.262855326804798, -2.0988024572872455], [-6.062001655779398e-16, -2.3499999999999996], [1.2628553268047968, -2.0988024572872455], [2.3334523779156062, -1.3834523779156072], [3.048802457287245, -0.3128553268047982], [3.3, 0.9499999999999992]], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.3, "step": 0.75, "sketch": true, "reveal": "exchange_welcome", "order": -8},
+    {"id": "rib_0", "path": [[-1.65, 0.9500000000000004], [-1.428941916244324, -0.6999999999999991], [-0.8250000000000007, -1.9078838324886467], [-3.031000827889699e-16, -2.3499999999999996], [0.8249999999999988, -1.907883832488649], [1.428941916244324, -0.6999999999999988], [1.65, 0.9499999999999992]], "texture": "minecraft:textures/block/oxidized_copper.png", "width": 0.14, "step": 0.9, "reveal": "exchange_steel", "order": -9},
+    {"id": "rib_1", "path": [[1.65, 0.9500000000000004], [1.428941916244324, -0.6999999999999991], [0.8250000000000007, -1.9078838324886467], [3.031000827889699e-16, -2.3499999999999996], [-0.8249999999999988, -1.907883832488649], [-1.428941916244324, -0.6999999999999988], [-1.65, 0.9499999999999992]], "texture": "minecraft:textures/block/oxidized_copper.png", "width": 0.14, "step": 0.9, "reveal": "exchange_steel", "order": -9},
+    {"id": "dome_base", "path": [[-3.5, 0.95], [3.5, 0.95]], "texture": "minecraft:textures/block/tuff_bricks.png", "width": 0.35, "step": 0.7, "sketch": true, "reveal": "exchange_welcome", "order": -8},
+    {"id": "dome_name", "lettering": {"en_us": "GREENHOUSE DOME ", "es_es": "INVERNADERO-DOMO"}, "path": [[-3.114715428343547, -1.3129732213260208], [-2.2629732213260216, -2.1647154283435466], [-1.189715428343548, -2.711567587736341], [-7.072335265075963e-16, -2.8999999999999995], [1.1897154283435467, -2.711567587736341], [2.2629732213260203, -2.1647154283435475], [3.1147154283435468, -1.3129732213260221]], "scale": 1, "tint": "#E8B04A", "reveal": "exchange_welcome"},
+    {"id": "shards", "scatter": "minecraft:textures/block/glass_pane_top.png", "region": [-3.6, 0.2, 3.6, 1.6], "count": 5, "size": [0.25, 0.4], "alphas": [60, 90], "seed": 21, "spin": true, "avoid": [[0, 0, 0.6]], "order": -7},
+    {"id": "pane_exchange_signal", "picture": "minecraft:textures/block/light_blue_stained_glass.png", "x": -2.35, "y": 0.05, "w": 0.95, "h": 0.95, "alpha": 170, "sketch": true, "reveal": "exchange_signal", "order": -7},
+    {"id": "pane_exchange_nursery", "picture": "minecraft:textures/block/light_blue_stained_glass.png", "x": -1.2, "y": -1.35, "w": 0.95, "h": 0.95, "alpha": 170, "sketch": true, "reveal": "exchange_nursery", "order": -7},
+    {"id": "pane_exchange_logistics", "picture": "minecraft:textures/block/light_blue_stained_glass.png", "x": 0.0, "y": -1.85, "w": 0.95, "h": 0.95, "alpha": 170, "sketch": true, "reveal": "exchange_logistics", "order": -7},
+    {"id": "pane_exchange_power", "picture": "minecraft:textures/block/light_blue_stained_glass.png", "x": 1.2, "y": -1.35, "w": 0.95, "h": 0.95, "alpha": 170, "sketch": true, "reveal": "exchange_power", "order": -7},
+    {"id": "pane_exchange_hands", "picture": "minecraft:textures/block/light_blue_stained_glass.png", "x": 2.35, "y": 0.05, "w": 0.95, "h": 0.95, "alpha": 170, "sketch": true, "reveal": "exchange_hands", "order": -7},
+    {"id": "garden_crop", "sprite": "minecraft:block/wheat_stage7", "cells": [[-2.2, 0.55], [-1.7, 0.55]], "w": 0.5, "h": 0.55, "reveal": "exchange_prudentium", "order": -6},
+    {"id": "garden_hive", "sprite": "minecraft:block/bee_nest_front_honey", "x": 1.8, "y": 0.55, "w": 0.5, "h": 0.5, "reveal": "exchange_wax", "order": -6},
+    {"id": "garden_trees", "sprite": "minecraft:block/flowering_azalea_side", "cells": [[-1.0, 0.45], [1.0, 0.45]], "w": 0.7, "h": 0.7, "reveal": "exchange_living_reserve", "order": -6},
+    {"id": "mother_seed", "picture": "entrelumen:textures/item/mother_seed.png", "x": 0, "y": -0.95, "w": 0.6, "h": 0.6, "reveal": "exchange_nursery", "order": -5},
+    {"id": "mother_glow", "glow": [0, -0.95], "r": 1.1, "alpha": 170, "reveal": "exchange_nursery"},
+    {"id": "bees", "scatter": "minecraft:textures/item/honeycomb.png", "region": [1.2, -1.6, 3.4, 0.4], "count": 4, "size": [0.22, 0.32], "seed": 5, "reveal": "exchange_toy_bees", "avoid": [[1.2, -1.35, 0.55], [2.35, 0.05, 0.55], [0, 0, 0.5]], "order": -4},
+    {"id": "route_nursery", "through": [[-3.0, 1.05], [-6.6, 2.0], "exchange_prudentium", "exchange_wax", "exchange_living_reserve", "exchange_nursery_trial", "exchange_nursery"], "grow": true, "sketch": true, "order": -6, "sprite": "minecraft:block/vine", "tint": "#5E9E3A", "width": 0.5, "step": 0.8, "turn": true},
+    {"id": "route_signal", "through": [[-2.2, 1.1], "exchange_processors", "exchange_pcb", "exchange_palis", "exchange_signal_trial", "exchange_signal"], "grow": true, "sketch": true, "order": -6, "dots": "#5A8DEB", "size": 0.17, "step": 0.6},
+    {"id": "route_logistics", "through": ["exchange_welcome", "exchange_menril", "exchange_chips", "exchange_spare_matrix", "exchange_logistics_trial", "exchange_logistics"], "grow": true, "sketch": true, "order": -6, "dots": "#66D9EF", "size": 0.15, "step": 0.6},
+    {"id": "route_power", "through": [[2.2, 1.1], "exchange_circuits", "exchange_steel", "exchange_coupler", "exchange_power_trial", "exchange_power"], "grow": true, "sketch": true, "order": -6, "texture": "minecraft:textures/block/cut_copper.png", "width": 0.16, "step": 0.8},
+    {"id": "route_hands", "through": [[3.0, 1.05], [6.6, 2.0], "exchange_modules", "exchange_mechanism", "exchange_spare_regulator", "exchange_hands_trial", "exchange_hands"], "grow": true, "sketch": true, "order": -6, "texture": "minecraft:textures/block/rail.png", "width": 0.55, "step": 0.75, "turn": true},
+    {"id": "town_nursery", "picture": "minecraft:textures/map/decorations/plains_village.png", "x": -10.3, "y": 10.15, "w": 0.7, "h": 0.7, "reveal": "exchange_nursery", "order": -3},
+    {"id": "altar_growth", "picture": "entrelumen:textures/block/growth_altar_top.png", "x": -7.7, "y": 10.15, "w": 0.7, "h": 0.7, "reveal": "exchange_nursery", "order": -3},
+    {"id": "town_signal", "picture": "minecraft:textures/map/decorations/snowy_village.png", "x": -5.8, "y": 10.15, "w": 0.7, "h": 0.7, "reveal": "exchange_signal", "order": -3},
+    {"id": "altar_peace", "picture": "entrelumen:textures/block/peace_altar_top.png", "x": -3.2, "y": 10.15, "w": 0.7, "h": 0.7, "reveal": "exchange_signal", "order": -3},
+    {"id": "town_logistics", "picture": "minecraft:textures/map/decorations/taiga_village.png", "x": 1.3, "y": 10.15, "w": 0.7, "h": 0.7, "reveal": "exchange_logistics", "order": -3},
+    {"id": "town_power", "picture": "minecraft:textures/map/decorations/desert_village.png", "x": 3.2, "y": 10.15, "w": 0.7, "h": 0.7, "reveal": "exchange_power", "order": -3},
+    {"id": "foundry", "sprite": "minecraft:block/lava_still", "x": 5.85, "y": 10.35, "w": 0.8, "h": 0.45, "reveal": "exchange_power", "order": -3},
+    {"id": "crucible", "picture": "entrelumen:textures/item/heliodor_crucible.png", "x": 5.85, "y": 9.85, "w": 0.55, "h": 0.55, "reveal": "exchange_power", "order": -2},
+    {"id": "town_hands", "picture": "minecraft:textures/map/decorations/savanna_village.png", "x": 10.3, "y": 10.15, "w": 0.7, "h": 0.7, "reveal": "exchange_hands", "order": -3},
+    {"id": "altar_levelling", "picture": "entrelumen:textures/block/terraform_altar_top.png", "x": 7.7, "y": 10.15, "w": 0.7, "h": 0.7, "reveal": "exchange_hands", "order": -3},
+    {"id": "garden_moss", "sprite": "minecraft:block/moss_block", "x": 13.5, "y": 12.35, "w": 2.2, "h": 0.35, "sketch": true, "reveal": "exchange_nature", "order": -4},
+    {"id": "garden_melons", "picture": "minecraft:textures/item/glistering_melon_slice.png", "x": 14.6, "y": 9.95, "w": 0.55, "h": 0.55, "reveal": "exchange_nature", "order": -3},
+    {"id": "garden_berries", "sprite": "minecraft:block/sweet_berry_bush_stage3", "cells": [[13.9, 11.85], [14.6, 11.85]], "w": 0.55, "h": 0.55, "reveal": "exchange_nature", "order": -3},
+    {"id": "road_signal_logistics", "through": ["exchange_signal", "exchange_logistics"], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.45, "step": 0.6, "grow": true, "sketch": true, "order": -7},
+    {"id": "road_power_hands", "through": ["exchange_power", "exchange_hands"], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.45, "step": 0.6, "grow": true, "sketch": true, "order": -7},
+    {"id": "road_nature", "through": ["exchange_hands", "exchange_nature"], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.45, "step": 0.6, "grow": ["exchange_nature"], "sketch": true, "order": -7},
+    {"id": "river", "path": [[-11.6, 8.85], [-7.0, 8.45], [-3.0, 8.9], [0.0, 8.6], [4.0, 8.35], [8.5, 8.85], [15.2, 8.5]], "smooth": 2, "sprite": "minecraft:block/water_still", "tint": "#3F76E4", "width": 0.55, "step": 1.3, "reveal": "exchange_welcome", "order": -9},
+    {"id": "viaduct", "path": [[-1.1, 8.6], [1.1, 8.6]], "texture": "minecraft:textures/block/tuff_bricks.png", "width": 0.42, "step": 0.55, "sketch": true, "reveal": "exchange_archive", "order": -4},
+    {"id": "viaduct_piers", "sprite": "minecraft:block/tuff_bricks", "cells": [[-0.8, 9.05], [0.8, 9.05]], "w": 0.28, "h": 0.55, "sketch": true, "reveal": "exchange_archive", "order": -5},
+    {"id": "to_capital_exchange_nursery", "through": ["exchange_nursery", "exchange_archive"], "dots": "#5A8DEB", "size": 0.13, "step": 0.8, "grow": ["exchange_nursery"], "sketch": {"color": "#5A8DEB", "alpha": 70}, "order": -5},
+    {"id": "to_capital_exchange_signal", "through": ["exchange_signal", "exchange_archive"], "dots": "#5A8DEB", "size": 0.13, "step": 0.8, "grow": ["exchange_signal"], "sketch": {"color": "#5A8DEB", "alpha": 70}, "order": -5},
+    {"id": "to_capital_exchange_logistics", "through": ["exchange_logistics", "exchange_archive"], "dots": "#5A8DEB", "size": 0.13, "step": 0.8, "grow": ["exchange_logistics"], "sketch": {"color": "#5A8DEB", "alpha": 70}, "order": -5},
+    {"id": "to_capital_exchange_power", "through": ["exchange_power", "exchange_archive"], "dots": "#5A8DEB", "size": 0.13, "step": 0.8, "grow": ["exchange_power"], "sketch": {"color": "#5A8DEB", "alpha": 70}, "order": -5},
+    {"id": "to_capital_exchange_hands", "through": ["exchange_hands", "exchange_archive"], "dots": "#5A8DEB", "size": 0.13, "step": 0.8, "grow": ["exchange_hands"], "sketch": {"color": "#5A8DEB", "alpha": 70}, "order": -5},
+    {"id": "to_capital_exchange_nature", "through": ["exchange_nature", "exchange_archive"], "dots": "#5A8DEB", "size": 0.13, "step": 0.8, "grow": ["exchange_nature"], "sketch": {"color": "#5A8DEB", "alpha": 70}, "order": -5},
+    {"id": "blank_spot", "picture": "#F3EBD2", "x": 0, "y": 15.4, "w": 4.6, "h": 3.2, "alpha": 40, "order": -11},
+    {"id": "capital_seal", "picture": "entrelumen:textures/item/route_seal.png", "x": 1.85, "y": 16.35, "w": 0.7, "h": 0.7, "reveal": "exchange_archive", "order": -2},
+    {"id": "capital_name", "lettering": {"en_us": "SOLSTICIO", "es_es": "SOLSTICIO"}, "path": [[-2.3, 16.75], [0, 17.25], [2.3, 16.75]], "scale": 1, "tint": "#E8B04A", "reveal": "exchange_archive"},
+    {"id": "caravan_0", "picture": "minecraft:textures/item/chest_minecart.png", "x": -8.45, "y": 9.55, "w": 0.5, "h": 0.5, "reveal": "exchange_toy_caravan", "order": -1},
+    {"id": "caravan_1", "picture": "minecraft:textures/item/chest_minecart.png", "x": -3.95, "y": 9.55, "w": 0.5, "h": 0.5, "reveal": "exchange_toy_caravan", "order": -1},
+    {"id": "caravan_2", "picture": "minecraft:textures/item/chest_minecart.png", "x": 0.55, "y": 9.6, "w": 0.5, "h": 0.5, "reveal": "exchange_toy_caravan", "order": -1},
+    {"id": "caravan_3", "picture": "minecraft:textures/item/chest_minecart.png", "x": 5.05, "y": 9.55, "w": 0.5, "h": 0.5, "reveal": "exchange_toy_caravan", "order": -1},
+    {"id": "caravan_4", "picture": "minecraft:textures/item/chest_minecart.png", "x": 9.55, "y": 9.55, "w": 0.5, "h": 0.5, "reveal": "exchange_toy_caravan", "order": -1},
+    {"id": "caravan_5", "picture": "minecraft:textures/item/chest_minecart.png", "x": 11.8, "y": 11.4, "w": 0.5, "h": 0.5, "reveal": "exchange_toy_caravan", "order": -1}
+  ],
+  "book": {"panels": false}
 }

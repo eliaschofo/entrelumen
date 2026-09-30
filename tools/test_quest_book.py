@@ -339,7 +339,7 @@ class QuestBook(unittest.TestCase):
         # Guides link like sectors (28/9): a paragraph with [quest:key|text] or [chapter:name|text] becomes a
         # rich-text line whose click opens the target; other paragraphs keep their & codes as plain text.
         desc = self.lang['en_us'][f"quest.{stable_id('quest:qol_inventory_welcome')}.quest_desc"]
-        self.assertTrue(desc[0].startswith('Big pack'))
+        self.assertIn('Big pack', desc[0])
         link = json.loads(desc[-1])[2]
         self.assertEqual(link['clickEvent'], {'action': 'change_page', 'value': stable_id('quest:qol_inventory_magnet')})
         desc = self.lang['es_es'][f"quest.{stable_id('quest:qol_world_close')}.quest_desc"]
@@ -352,12 +352,13 @@ class QuestBook(unittest.TestCase):
                 guide_lines(bad, 'en_us', ctx, 't')
         keys = {q['key'] for g in self.guides + self.sectors for q in g['quests']}
         names = {g['chapter'] for g in self.guides} | self.sector_names
-        for lang, target, error in (('es_es', 'qol_inventory_sort', 'EN and ES link'),
+        for lang, target, error in (('es_es', 'qol_inventory_sort', 'EN and ES link|differ between languages'),
                                     (None, 'no_such_quest', 'unknown quest')):
             guide = copy.deepcopy(next(g for g in self.guides if g['chapter'] == 'guide_qol_inventory'))
             welcome = next(q for q in guide['quests'] if q['key'] == 'qol_inventory_welcome')
             for code in ([lang] if lang else LOCALES):
-                welcome[code][1] = welcome[code][1].replace('qol_inventory_magnet', target)
+                # Presentation v2 (30/9): the link sits in one of the quest's text paragraphs.
+                welcome[code]['text'] = [p.replace('qol_inventory_magnet', target) for p in welcome[code]['text']]
             with self.subTest(target=target), self.assertRaisesRegex(AssertionError, error):
                 generate_guide(guide, 'x', 0, self.book, {l: {} for l in LOCALES}, set(), keys, names)
 

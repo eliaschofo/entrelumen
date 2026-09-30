@@ -283,11 +283,13 @@ class GuidesAndStory(unittest.TestCase):
     def test_chapters_that_do_not_opt_in_carry_nothing_of_v2(self):
         import copy
         import quest_v2
-        v1 = [c for c in self.guides + self.story if c.get("presentation", 1) < 2]
-        self.assertTrue(v1)
-        for data in v1:
-            self.assertFalse(quest_v2.enabled(data))
-        data = copy.deepcopy(next(c for c in self.guides if c.get("presentation", 1) < 2))
+        # Every guide and story chapter is in presentation v2 since 30/9, so the v1 side is a made-up guide.
+        for data in self.guides + self.story:
+            if data.get("presentation", 1) < 2:
+                self.assertFalse(quest_v2.enabled(data))
+        data = {"chapter": "guide_v1", "quests": [{"key": "v1_quest", "en_us": ["Title", "Plain &etext&r."],
+                                                   "es_es": ["Título", "Texto &eplano&r."]}]}
+        self.assertFalse(quest_v2.enabled(copy.deepcopy(data)))
         for change in ({"art": []}, {"motif": "travel"}):
             with self.subTest(change=change), self.assertRaises(AssertionError):
                 quest_v2.enabled({**data, **change})

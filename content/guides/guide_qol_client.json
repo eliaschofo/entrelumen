@@ -4,407 +4,393 @@
   "act": "any",
   "icon": "minecraft:redstone_torch",
   "emblem": "minecraft:textures/item/clock_00.png",
-  "title": {
-    "en_us": "Performance, Sound and Screen",
-    "es_es": "Rendimiento, sonido y pantalla"
-  },
+  "title": {"en_us": "Performance, Sound and Screen", "es_es": "Rendimiento, sonido y pantalla"},
   "subtitle": {
     "en_us": "Settings that keep a 300-mod pack smooth, quiet when you want it and readable.",
     "es_es": "Ajustes para que un pack de 300 mods ande fluido, callado cuando querés y legible."
   },
+  "presentation": 2,
+  "motif": "gadgets",
   "quests": [
     {
-      "key": "qol_client_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "A Heavy Pack on a Normal PC",
-        "ENTRELUMEN is meant to run on ordinary PCs: it ships with rendering and memory optimizations and a cautious first profile, and leaves you room to tune.\n\nThree hundred mods, one potato-friendly start."
-      ],
-      "es_es": [
-        "Un pack pesado en una PC normal",
-        "ENTRELUMEN está pensado para andar en PCs comunes: trae optimizaciones de renderizado y memoria y un perfil inicial prudente, y te deja margen para ajustar.\n\nTrescientos mods y un arranque apto para PC papa."
-      ],
-      "sources": [
-        "repo:pack/config/entrelumen/client-preset.json",
-        "repo:docs/design/story-bible.md"
-      ]
+      "key": "qol_client_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "A Heavy Pack on a Normal PC", "subtitle": "Three hundred mods, one potato-friendly start.",
+        "text": ["[lead] Built to run on ordinary PCs, not just the good ones.",
+                 "It ships with rendering and memory optimizations and a cautious first profile, and leaves you room to tune."]},
+      "es_es": {"title": "Un pack pesado en una PC normal", "subtitle": "Trescientos mods y un arranque apto para PC papa.",
+        "text": ["[lead] Pensado para PCs comunes, no sólo para las buenas.",
+                 "Trae optimizaciones de renderizado y memoria y un perfil inicial prudente, y te deja margen para ajustar."]},
+      "sources": ["repo:pack/config/entrelumen/client-preset.json", "repo:docs/design/story-bible.md"]
     },
     {
-      "key": "qol_client_optimizers",
-      "deps": [
-        "qol_client_welcome"
-      ],
-      "type": "checkmark",
+      "key": "qol_client_optimizers", "deps": ["qol_client_welcome"], "type": "checkmark", "layout": {"x": 3, "y": 0, "size": 1.5, "shape": "square"},
       "icon": "minecraft:clock",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "What Is Already Optimized",
-        "Already in: &eSodium&r (a faster renderer with its own video pages), &eImmediatelyFast&r (text, items and HUD), &eModernFix&r and &eFerriteCore&r (loading and memory), &eAllTheLeaks&r (leak fixes for long sessions) and &eAI Improvements&r (lighter mob thinking on the server).\n\nAnother optimizer on top usually brings conflicts, not frames."
-      ],
-      "es_es": [
-        "Lo que ya viene optimizado",
-        "Ya vienen: &eSodium&r (un renderizador más rápido con sus propias páginas de video), &eImmediatelyFast&r (texto, ítems y HUD), &eModernFix&r y &eFerriteCore&r (carga y memoria), &eAllTheLeaks&r (fugas de memoria en sesiones largas) y &eAI Improvements&r (mobs que piensan más liviano en el servidor).\n\nOtro optimizador encima suele traer conflictos, no cuadros."
-      ],
-      "sources": [
-        "repo:catalog/curated.json",
-        "repo:docs/design/small-qol-family.md",
-        "repo:docs/design/qol-functional-decor-family.md"
-      ]
+      "en_us": {"title": "What Is Already Optimized",
+        "text": ["[lead] Six optimizers already ship with the pack.",
+                 "[li] [hl|Sodium]: faster rendering, with its own video pages",
+                 "[li] [hl|ImmediatelyFast]: text, items and HUD",
+                 "[li] [hl|ModernFix] and [hl|FerriteCore]: loading and memory",
+                 "[li] [hl|AllTheLeaks]: leak fixes for long sessions",
+                 "[li] [hl|AI Improvements]: lighter mob thinking on the server",
+                 "{page}",
+                 "[careful] Another optimizer on top usually brings conflicts, not frames."]},
+      "es_es": {"title": "Lo que ya viene optimizado",
+        "text": ["[lead] El pack ya trae seis optimizadores.",
+                 "[li] [hl|Sodium]: renderizado más rápido, con sus propias páginas de video",
+                 "[li] [hl|ImmediatelyFast]: texto, ítems y HUD",
+                 "[li] [hl|ModernFix] y [hl|FerriteCore]: carga y memoria",
+                 "[li] [hl|AllTheLeaks]: arreglos de fugas para sesiones largas",
+                 "[li] [hl|AI Improvements]: mobs que piensan más liviano en el servidor",
+                 "{page}",
+                 "[careful] Otro optimizador encima suele traer conflictos, no cuadros."]},
+      "sources": ["repo:catalog/curated.json", "repo:docs/design/small-qol-family.md", "repo:docs/design/qol-functional-decor-family.md"]
     },
     {
-      "key": "qol_client_first_profile",
-      "deps": [
-        "qol_client_optimizers"
-      ],
-      "type": "checkmark",
+      "key": "qol_client_first_profile", "deps": ["qol_client_optimizers"], "type": "checkmark", "layout": {"x": 6, "y": -2.5, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:spyglass",
-      "layout": {
-        "x": 6,
-        "y": -2.5,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "The First Profile",
-        "A new profile starts at render distance &e10&r, simulation &e6&r, a &e120 FPS&r cap without VSync, fast graphics, no clouds, fewer particles, no entity shadows, entity distance 75%, darkness and screen effects at half, GUI scale 3.\n\nA safe start, not a rule: raise render distance first, since simulation distance costs the server far more."
-      ],
-      "es_es": [
-        "El primer perfil",
-        "Un perfil nuevo arranca con distancia de renderizado &e10&r, simulación &e6&r, tope de &e120 FPS&r sin VSync, gráficos rápidos, sin nubes, partículas reducidas, sin sombras de entidades, distancia de entidades al 75%, oscuridad y efectos de pantalla a la mitad y escala de GUI 3.\n\nUn comienzo seguro, no una regla: subí primero el renderizado, porque la simulación pesa mucho más en el servidor."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/options.txt",
-        "repo:pack/config/entrelumen/client-preset.json",
-        "repo:docs/design/automatic-client-defaults.md"
-      ]
+      "en_us": {"title": "The First Profile",
+        "text": ["[lead] A new profile starts modest on purpose: a safe start, not a rule.",
+                 "[li] Render distance [hl|10], simulation distance [hl|6]",
+                 "[li] Cap of [hl|120 FPS], VSync off, fast graphics",
+                 "[li] No clouds, fewer particles, no entity shadows",
+                 "[li] Entity distance [hl|75%], darkness and screen effects at half",
+                 "[li] GUI scale [hl|3]",
+                 "{page}",
+                 "[tip] Raise render distance first: simulation distance costs the server far more."]},
+      "es_es": {"title": "El primer perfil",
+        "text": ["[lead] Un perfil nuevo arranca modesto a propósito: un comienzo seguro, no una regla.",
+                 "[li] Renderizado [hl|10], simulación [hl|6]",
+                 "[li] Tope de [hl|120 FPS], sin VSync, gráficos rápidos",
+                 "[li] Sin nubes, partículas reducidas, sin sombras de entidades",
+                 "[li] Distancia de entidades al [hl|75%], oscuridad y efectos de pantalla a la mitad",
+                 "[li] Escala de GUI [hl|3]",
+                 "{page}",
+                 "[tip] Subí primero el renderizado: la simulación pesa mucho más en el servidor."]},
+      "sources": ["repo:pack/config/defaultoptions/options.txt", "repo:pack/config/entrelumen/client-preset.json", "repo:docs/design/automatic-client-defaults.md"]
     },
     {
-      "key": "qol_client_sodium",
-      "deps": [
-        "qol_client_optimizers"
-      ],
-      "type": "checkmark",
-      "layout": {
-        "x": 6,
-        "y": 0,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Sodium's Video Settings",
-        "Options, Video Settings opens Sodium's pages (General, Quality, Performance, Advanced) plus pages other mods add. Hover any option to read what it does and what it costs.\n\nOn a weak PC: lower render distance, keep particles decreased and leave the performance options alone."
-      ],
-      "es_es": [
-        "Las opciones de video de Sodium",
-        "Opciones, Configuración de video abre las páginas de Sodium (General, Calidad, Rendimiento, Avanzado) más las que suman otros mods. Pasá el mouse por cualquier opción para leer qué hace y cuánto cuesta.\n\nEn una PC modesta: bajá el renderizado, dejá las partículas reducidas y no toques las opciones de rendimiento."
-      ],
-      "sources": [
-        "jar:sodium-neoforge-0.8.13+mc1.21.1.jar:META-INF/neoforge.mods.toml"
-      ]
+      "key": "qol_client_sodium", "deps": ["qol_client_optimizers"], "type": "checkmark", "layout": {"x": 6, "y": 0, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "Sodium's Video Settings",
+        "text": ["[lead] Options, Video Settings opens Sodium's pages, and every option explains itself.",
+                 "[li] General, Quality, Performance and Advanced, plus pages other mods add",
+                 "[li] Hover any option to read what it does and what it costs",
+                 "{page}",
+                 "[tip] On a weak PC: lower render distance, keep particles decreased and leave the performance options alone."]},
+      "es_es": {"title": "Las opciones de video de Sodium",
+        "text": ["[lead] Opciones, Configuración de video abre las páginas de Sodium, y cada opción se explica sola.",
+                 "[li] General, Calidad, Rendimiento y Avanzado, más las páginas que suman otros mods",
+                 "[li] Pasá el mouse por una opción para leer qué hace y cuánto cuesta",
+                 "{page}",
+                 "[tip] En una PC modesta: bajá el renderizado, dejá las partículas reducidas y no toques las opciones de rendimiento."]},
+      "sources": ["jar:sodium-neoforge-0.8.13+mc1.21.1.jar:META-INF/neoforge.mods.toml"]
     },
     {
-      "key": "qol_client_dynlights",
-      "deps": [
-        "qol_client_sodium"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_client_dynlights", "deps": ["qol_client_sodium"], "type": "checkmark", "optional": true, "layout": {"x": 9, "y": -2.5, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:lantern",
-      "layout": {
-        "x": 9,
-        "y": -2.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Dynamic Lights",
-        "&eLambDynamicLights&r makes held torches, lanterns and glowing items light your surroundings, and lights up burning or glowing entities. Its page sits in Sodium's video settings, where you can lower it or turn it off.\n\nSolsticio's luminous gear shines with it too. Obviously."
-      ],
-      "es_es": [
-        "Luces dinámicas",
-        "&eLambDynamicLights&r hace que las antorchas, faroles e ítems brillantes que tenés en la mano iluminen alrededor, y alumbra entidades en llamas o brillantes. Su página está en las opciones de video de Sodium, donde podés bajarlo o apagarlo.\n\nEl equipo luminoso de Solsticio también brilla con esto. Obvio."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "jar:lambdynamiclights-4.8.11+1.21.1.jar:META-INF/neoforge.mods.toml"
-      ]
+      "en_us": {"title": "Dynamic Lights", "subtitle": "Solsticio's luminous gear shines with it. Obviously.",
+        "text": ["[lead] Carry a torch and the world around you lights up.",
+                 "[hl|LambDynamicLights] lights your surroundings from held torches, lanterns and glowing items, and from burning or glowing entities.",
+                 "Its page sits in Sodium's video settings, where you can lower it or turn it off."]},
+      "es_es": {"title": "Luces dinámicas", "subtitle": "El equipo luminoso de Solsticio también brilla. Obvio.",
+        "text": ["[lead] Llevá una antorcha y el mundo alrededor se ilumina.",
+                 "[hl|LambDynamicLights] ilumina alrededor con antorchas, faroles e ítems brillantes en la mano, y con entidades en llamas o brillantes.",
+                 "Su página está en las opciones de video de Sodium, donde podés bajarlo o apagarlo."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "jar:lambdynamiclights-4.8.11+1.21.1.jar:META-INF/neoforge.mods.toml"]
     },
     {
-      "key": "qol_client_muffler",
-      "deps": [
-        "qol_client_sodium"
-      ],
-      "type": "checkmark",
+      "key": "qol_client_muffler", "deps": ["qol_client_sodium"], "type": "checkmark", "layout": {"x": 9, "y": 0, "size": 1.25, "shape": "circle"},
       "icon": "minecraft:note_block",
-      "layout": {
-        "x": 9,
-        "y": 0,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Silence the Factory",
-        "&eExtreme Sound Muffler&r adds a &eMuffler&r button to your inventory that lists nearby sounds: lower or mute any, for the whole world or only inside an &eanchor&r area around your machines. Right-drag the button if it covers something.\n\nLeave combat sounds on. They are the ones that keep you alive."
-      ],
-      "es_es": [
-        "Silenciá la fábrica",
-        "&eExtreme Sound Muffler&r agrega un botón &eMuffler&r al inventario con los sonidos cercanos: bajá o silenciá cualquiera, para todo el mundo o sólo dentro de un área &eancla&r alrededor de tus máquinas. Arrastrá el botón con clic derecho si tapa algo.\n\nDejá los sonidos de combate. Son los que te mantienen vivo."
-      ],
-      "sources": [
-        "jar:ExtremeSoundMuffler-3.56_NeoForge-1.21.jar:assets/extremesoundmuffler/lang/en_us.json"
-      ]
+      "en_us": {"title": "Silence the Factory",
+        "text": ["[lead] Turn any sound down, or off, without touching the master volume.",
+                 "[hl|Extreme Sound Muffler] adds a [hl|Muffler] button to your inventory that lists nearby sounds.",
+                 "[li] Lower or mute any sound for the whole world",
+                 "[li] Or only inside an [hl|anchor] area around your machines",
+                 "{page}",
+                 "[tip] Right-drag the button if it covers something.",
+                 "[careful] Leave combat sounds on. They are the ones that keep you alive."]},
+      "es_es": {"title": "Silenciá la fábrica",
+        "text": ["[lead] Bajá o silenciá cualquier sonido sin tocar el volumen general.",
+                 "[hl|Extreme Sound Muffler] agrega un botón [hl|Muffler] al inventario con los sonidos cercanos.",
+                 "[li] Bajá o silenciá cualquiera, para todo el mundo",
+                 "[li] O sólo dentro de un área [hl|ancla] alrededor de tus máquinas",
+                 "{page}",
+                 "[tip] Arrastrá el botón con clic derecho si tapa algo.",
+                 "[careful] Dejá los sonidos de combate. Son los que te mantienen vivo."]},
+      "sources": ["jar:ExtremeSoundMuffler-3.56_NeoForge-1.21.jar:assets/extremesoundmuffler/lang/en_us.json"]
     },
     {
-      "key": "qol_client_toasts",
-      "deps": [
-        "qol_client_sodium"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_client_toasts", "deps": ["qol_client_sodium"], "type": "checkmark", "optional": true, "layout": {"x": 9, "y": 2.5, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:bread",
-      "layout": {
-        "x": 9,
-        "y": 2.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Fewer Pop-ups",
-        "&eToast Control&r handles the top-right notifications: recipe unlocks, advancements and tutorial hints. &eF10&r clears the ones on screen, and its settings block whole kinds.\n\nYou miss nothing important: quests and the Atlas speak in their own screens and in chat."
-      ],
-      "es_es": [
-        "Menos carteles",
-        "&eToast Control&r maneja las notificaciones de arriba a la derecha: recetas desbloqueadas, logros y pistas del tutorial. &eF10&r borra las que están en pantalla, y su configuración bloquea tipos enteros.\n\nNo te perdés nada importante: las quests y el Atlas hablan en sus propias pantallas y en el chat."
-      ],
-      "sources": [
-        "jar:ToastControl-1.21.1-9.0.1.jar:assets/toastcontrol/lang/en_us.json",
-        "repo:pack/config/defaultoptions/keybindings.txt"
-      ]
+      "en_us": {"title": "Fewer Pop-ups",
+        "text": ["[lead] Mute recipe unlocks, advancements and tutorial hints, and miss nothing that matters.",
+                 "[hl|Toast Control] handles the top-right notifications, and its settings block whole kinds.",
+                 "[tip] Press [key:key.toastcontrol.clear] to clear the ones on screen.",
+                 "{page}",
+                 "[note] Quests and the Atlas speak in their own screens and in chat, so no toast carries anything important."]},
+      "es_es": {"title": "Menos carteles",
+        "text": ["[lead] Silenciá recetas, logros y pistas del tutorial, y no te perdés nada importante.",
+                 "[hl|Toast Control] maneja las notificaciones de arriba a la derecha, y su configuración bloquea tipos enteros.",
+                 "[tip] Apretá [key:key.toastcontrol.clear] para borrar las que están en pantalla.",
+                 "{page}",
+                 "[note] Las quests y el Atlas hablan en sus propias pantallas y en el chat, así que ningún cartel trae algo importante."]},
+      "sources": ["jar:ToastControl-1.21.1-9.0.1.jar:assets/toastcontrol/lang/en_us.json", "repo:pack/config/defaultoptions/keybindings.txt"]
     },
     {
-      "key": "qol_client_hud",
-      "deps": [
-        "qol_client_muffler"
-      ],
-      "type": "checkmark",
+      "key": "qol_client_hud", "deps": ["qol_client_muffler"], "type": "checkmark", "layout": {"x": 12, "y": -1.5, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:golden_apple",
-      "layout": {
-        "x": 12,
-        "y": -1.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "A HUD That Scales",
-        "Health and armor grow far past vanilla here: Spice of Life adds hearts for food variety and late armor passes 20. &eColorful Hearts&r stacks extra hearts in colored rows and &eOverloaded Armor Bar&r does the same for armor, so the HUD never swallows the screen.\n\n&eNot Enough Animations&r adds eating and map animations; purely cosmetic."
-      ],
-      "es_es": [
-        "Un HUD que escala",
-        "La vida y la armadura crecen mucho más que en vanilla: Spice of Life suma corazones por variar la comida y la armadura tardía pasa los 20. &eColorful Hearts&r apila los corazones extra en filas de colores y &eOverloaded Armor Bar&r hace lo mismo con la armadura, así el HUD nunca se come la pantalla.\n\n&eNot Enough Animations&r suma animaciones de comer y de mapas; puramente cosmético."
-      ],
-      "sources": [
-        "repo:docs/design/qol-functional-decor-family.md",
-        "repo:pack/defaultconfigs/solcarrot-server.toml"
-      ]
+      "en_us": {"title": "A HUD That Scales",
+        "text": ["[lead] Health and armor grow far past vanilla, and the HUD stacks them so it never swallows the screen.",
+                 "[li] Spice of Life adds hearts for food variety, and late armor passes [hl|20]",
+                 "[li] [hl|Colorful Hearts] stacks extra hearts in colored rows",
+                 "[li] [hl|Overloaded Armor Bar] does the same for armor",
+                 "{page}",
+                 "[hl|Not Enough Animations] adds eating and map animations; purely cosmetic."]},
+      "es_es": {"title": "Un HUD que escala",
+        "text": ["[lead] La vida y la armadura crecen mucho más que en vanilla, y el HUD las apila para no comerse la pantalla.",
+                 "[li] Spice of Life suma corazones por variar la comida, y la armadura tardía pasa los [hl|20]",
+                 "[li] [hl|Colorful Hearts] apila los corazones extra en filas de colores",
+                 "[li] [hl|Overloaded Armor Bar] hace lo mismo con la armadura",
+                 "{page}",
+                 "[hl|Not Enough Animations] suma animaciones de comer y de mapas; puramente cosmético."]},
+      "sources": ["repo:docs/design/qol-functional-decor-family.md", "repo:pack/defaultconfigs/solcarrot-server.toml"]
     },
     {
-      "key": "qol_client_worlds",
-      "deps": [
-        "qol_client_muffler"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_client_worlds", "deps": ["qol_client_muffler"], "type": "checkmark", "optional": true, "layout": {"x": 12, "y": 1.5, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:name_tag",
-      "layout": {
-        "x": 12,
-        "y": 1.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Protect Your Save",
-        "&eCherished Worlds&r lets you mark a world as a favorite: it stays at the top of the list and resists accidental deletion. &eSimple Backups&r makes automatic ZIP copies and announces them in chat.\n\nRestore a backup only with the game or server closed. Future you will thank you."
-      ],
-      "es_es": [
-        "Cuidá tu partida",
-        "&eCherished Worlds&r te deja marcar un mundo como favorito: queda arriba de la lista y protegido contra borrados accidentales. &eSimple Backups&r hace copias ZIP automáticas y lo avisa en el chat.\n\nRestaurá una copia sólo con el juego o el servidor cerrados. Tu yo del futuro te lo agradece."
-      ],
-      "sources": [
-        "jar:cherishedworlds-neoforge-10.1.1+1.21.1.jar:assets/cherishedworlds/lang/en_us.json",
-        "jar:SimpleBackups-1.21-4.0.30.jar:assets/simplebackups/lang/en_us.json",
-        "repo:docs/design/backup-consistency.md"
-      ]
+      "en_us": {"title": "Protect Your Save", "subtitle": "Future you will thank you.",
+        "text": ["[lead] Mark a world as a favorite and keep automatic backups.",
+                 "[li] [hl|Cherished Worlds]: a favorite stays at the top of the list and resists accidental deletion",
+                 "[li] [hl|Simple Backups]: automatic ZIP copies, announced in chat",
+                 "[careful] Restore a backup only with the game or server closed."]},
+      "es_es": {"title": "Cuidá tu partida", "subtitle": "Tu yo del futuro te lo agradece.",
+        "text": ["[lead] Marcá un mundo como favorito y guardá copias automáticas.",
+                 "[li] [hl|Cherished Worlds]: el favorito queda arriba de la lista y protegido contra borrados accidentales",
+                 "[li] [hl|Simple Backups]: copias ZIP automáticas, avisadas en el chat",
+                 "[careful] Restaurá una copia sólo con el juego o el servidor cerrados."]},
+      "sources": ["jar:cherishedworlds-neoforge-10.1.1+1.21.1.jar:assets/cherishedworlds/lang/en_us.json", "jar:SimpleBackups-1.21-4.0.30.jar:assets/simplebackups/lang/en_us.json", "repo:docs/design/backup-consistency.md"]
     },
     {
-      "key": "qol_client_solsticio_motes",
-      "deps": [
-        "qol_client_hud"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_client_solsticio_motes", "deps": ["qol_client_hud"], "type": "checkmark", "optional": true, "layout": {"x": 15, "y": -3, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:glowstone_dust",
-      "layout": {
-        "x": 15,
-        "y": -3,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Solsticio's Motes of Light",
-        "The drifting motes in Solsticio are client-side and follow your particle setting: halved on Decreased, gone on Minimal.\n\nFiner controls live in the ENTRELUMEN client config; the Solsticio chapter has them."
-      ],
-      "es_es": [
-        "Las motas de luz de Solsticio",
-        "Las motas que flotan en Solsticio son sólo del cliente y siguen tu ajuste de partículas: a la mitad en Reducidas, ninguna en Mínimas.\n\nLos controles finos están en la configuración de cliente de ENTRELUMEN; el capítulo de Solsticio los tiene."
-      ],
-      "sources": [
-        "repo:companion/src/main/java/dev/entrelumen/Solsticio.java",
-        "repo:docs/design/solsticio.md"
-      ]
+      "en_us": {"title": "Solsticio's Motes of Light",
+        "text": ["[lead] The drifting motes in Solsticio follow your particle setting.",
+                 "They are client-side: halved on [hl|Decreased], gone on [hl|Minimal].",
+                 "Finer controls live in the ENTRELUMEN client config; [chapter:guide_entrelumen_solsticio|the Solsticio chapter] has them."]},
+      "es_es": {"title": "Las motas de luz de Solsticio",
+        "text": ["[lead] Las motas que flotan en Solsticio siguen tu ajuste de partículas.",
+                 "Son sólo del cliente: a la mitad en [hl|Reducidas], ninguna en [hl|Mínimas].",
+                 "Los controles finos están en la configuración de cliente de ENTRELUMEN; [chapter:guide_entrelumen_solsticio|el capítulo de Solsticio] los tiene."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/Solsticio.java", "repo:docs/design/solsticio.md"]
     },
     {
-      "key": "qol_client_spark",
-      "deps": [
-        "qol_client_hud",
-        "qol_client_worlds"
-      ],
-      "type": "checkmark",
+      "key": "qol_client_spark", "deps": ["qol_client_hud", "qol_client_worlds"], "type": "checkmark", "layout": {"x": 15, "y": 0, "size": 1.25, "shape": "diamond"},
       "icon": "minecraft:blaze_powder",
-      "layout": {
-        "x": 15,
-        "y": 0,
-        "size": 1.25,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Find the Lag",
-        "When the game or server stutters, &espark&r says why: an operator runs &e/spark profiler&r, reproduces the lag and stops it to see which mod or machine eats the time; &e/spark tps&r shows server ticks per second.\n\nCheck the obvious first: item piles, giant farms in loaded chunks, too many force-loaded chunks."
-      ],
-      "es_es": [
-        "Truco: encontrá el lag",
-        "Si el juego o el servidor se traba, &espark&r te dice por qué: un operador corre &e/spark profiler&r, reproduce el lag y lo detiene para ver qué mod o máquina se come el tiempo; &e/spark tps&r muestra los ticks por segundo.\n\nRevisá lo obvio primero: montañas de ítems, granjas gigantes en chunks cargados, demasiados chunks forzados."
-      ],
-      "sources": [
-        "jar:spark-1.10.124-neoforge.jar:META-INF/neoforge.mods.toml",
-        "https://spark.lucko.me/docs/Command-Usage"
-      ]
+      "en_us": {"title": "Tip: Find the Lag",
+        "text": ["[tip] When the game or server stutters, spark says why.",
+                 "[li] An operator runs [hl|/spark profiler], reproduces the lag and stops it to see which mod or machine eats the time",
+                 "[li] [hl|/spark tps] shows server ticks per second",
+                 "{page}",
+                 "Check the obvious first: item piles, giant farms in loaded chunks, too many force-loaded chunks."]},
+      "es_es": {"title": "Truco: encontrá el lag",
+        "text": ["[tip] Cuando el juego o el servidor se traba, spark te dice por qué.",
+                 "[li] Un operador corre [hl|/spark profiler], reproduce el lag y lo detiene para ver qué mod o máquina se come el tiempo",
+                 "[li] [hl|/spark tps] muestra los ticks por segundo del servidor",
+                 "{page}",
+                 "Revisá lo obvio primero: montañas de ítems, granjas gigantes en chunks cargados, demasiados chunks forzados."]},
+      "sources": ["jar:spark-1.10.124-neoforge.jar:META-INF/neoforge.mods.toml", "https://spark.lucko.me/docs/Command-Usage"]
     },
     {
-      "key": "qol_client_tip_items",
-      "deps": [
-        "qol_client_worlds"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_client_tip_items", "deps": ["qol_client_worlds"], "type": "checkmark", "optional": true, "layout": {"x": 15, "y": 3, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:hopper",
-      "layout": {
-        "x": 15,
-        "y": 3,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: The Floor Is Not Storage",
-        "Every dropped item is an entity the server must tick, and farms that spill their output are the classic cause of lag. Collect with hoppers, Item Collectors or machine outputs, void overflow with a Trash Can, and let Clumps merge experience orbs."
-      ],
-      "es_es": [
-        "Truco: el piso no es depósito",
-        "Cada ítem tirado es una entidad que el servidor tiene que procesar, y las granjas que tiran su producción al piso son la causa clásica de lag. Juntá con tolvas, Colectores de ítems o salidas de máquinas, eliminá el sobrante con una papelera y dejá que Clumps junte los orbes de experiencia."
-      ],
-      "sources": [
-        "repo:docs/design/qol-functional-decor-family.md"
-      ]
+      "en_us": {"title": "Tip: The Floor Is Not Storage",
+        "text": ["[tip] Every dropped item is an entity the server must tick.",
+                 "Farms that spill their output are the classic cause of lag. Instead:",
+                 "[li] Collect with [item:minecraft:hopper|hoppers], Item Collectors or machine outputs",
+                 "[li] Void the overflow with a Trash Can",
+                 "[li] Let Clumps merge experience orbs"]},
+      "es_es": {"title": "Truco: el piso no es depósito",
+        "text": ["[tip] Cada ítem tirado es una entidad que el servidor tiene que procesar.",
+                 "Las granjas que tiran su producción al piso son la causa clásica de lag. En cambio:",
+                 "[li] Juntá con [item:minecraft:hopper|tolvas], Colectores de ítems o salidas de máquinas",
+                 "[li] Eliminá el sobrante con una papelera",
+                 "[li] Dejá que Clumps junte los orbes de experiencia"]},
+      "sources": ["repo:docs/design/qol-functional-decor-family.md"]
     },
     {
-      "key": "qol_client_menus",
-      "deps": [
-        "qol_client_optimizers"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_client_menus", "deps": ["qol_client_optimizers"], "type": "checkmark", "optional": true, "layout": {"x": 3, "y": 3, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:painting",
-      "layout": {
-        "x": 3,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Pack Menus and Loading Screen",
-        "FancyMenu and Drippy Loading Screen dress up the title and loading screens without touching your settings.\n\nAt a very high GUI scale a button may fall off screen: drop the scale to 3 or 2."
-      ],
-      "es_es": [
-        "Menús y pantalla de carga",
-        "FancyMenu y Drippy Loading Screen visten la pantalla de título y la de carga sin tocar tus ajustes.\n\nCon una escala de GUI muy alta algún botón puede quedar fuera de pantalla: bajala a 3 o 2."
-      ],
-      "sources": [
-        "repo:docs/design/menu-identity.md",
-        "jar:fancymenu_neoforge_3.9.12_MC_1.21.1.jar:META-INF/neoforge.mods.toml"
-      ]
+      "en_us": {"title": "Pack Menus and Loading Screen",
+        "text": ["[lead] The title and loading screens are dressed up, and your settings stay untouched.",
+                 "[hl|FancyMenu] and [hl|Drippy Loading Screen] handle the look.",
+                 "[careful] At a very high GUI scale a button may fall off screen: drop the scale to 3 or 2."]},
+      "es_es": {"title": "Menús y pantalla de carga",
+        "text": ["[lead] La pantalla de título y la de carga están vestidas, y tus ajustes quedan como estaban.",
+                 "[hl|FancyMenu] y [hl|Drippy Loading Screen] se ocupan del aspecto.",
+                 "[careful] Con una escala de GUI muy alta algún botón puede quedar fuera de pantalla: bajala a 3 o 2."]},
+      "sources": ["repo:docs/design/menu-identity.md", "jar:fancymenu_neoforge_3.9.12_MC_1.21.1.jar:META-INF/neoforge.mods.toml"]
     },
     {
-      "key": "qol_client_gui_scale",
-      "deps": [
-        "qol_client_menus"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_client_gui_scale", "deps": ["qol_client_menus"], "type": "checkmark", "optional": true, "layout": {"x": 3, "y": 5.5, "size": 1.0, "shape": "diamond"},
       "icon": "entrelumen:atlas",
-      "layout": {
-        "x": 6,
-        "y": 4.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: GUI Scale and Big Screens",
-        "Many modded screens are wider than vanilla ones (the Atlas is 300 by 210 GUI units), so at a high GUI scale in a small window they may not fit.\n\nIf a screen looks cut off, lower the GUI scale in Options, Video Settings."
-      ],
-      "es_es": [
-        "Particularidad: escala de GUI",
-        "Muchas pantallas de mods son más anchas que las de vanilla (el Atlas mide 300 por 210 unidades de GUI), así que con una escala alta en una ventana chica pueden no entrar.\n\nSi una pantalla aparece cortada, bajá la escala de GUI en Opciones, Configuración de video."
-      ],
-      "sources": [
-        "repo:docs/design/atlas-interface-review.md",
-        "repo:docs/design/atlas-readability.md"
-      ]
+      "en_us": {"title": "Quirk: GUI Scale and Big Screens",
+        "text": ["[lead] Many modded screens are wider than vanilla ones.",
+                 "The [item:entrelumen:atlas|Atlas] is [hl|300] by [hl|210] GUI units, so at a high GUI scale in a small window it may not fit.",
+                 "[tip] If a screen looks cut off, lower the GUI scale in Options, Video Settings."]},
+      "es_es": {"title": "Particularidad: escala de GUI",
+        "text": ["[lead] Muchas pantallas de mods son más anchas que las de vanilla.",
+                 "El [item:entrelumen:atlas|Atlas] mide [hl|300] por [hl|210] unidades de GUI, así que con una escala alta en una ventana chica puede no entrar.",
+                 "[tip] Si una pantalla aparece cortada, bajá la escala de GUI en Opciones, Configuración de video."]},
+      "sources": ["repo:docs/design/atlas-interface-review.md", "repo:docs/design/atlas-readability.md"]
     },
     {
-      "key": "qol_client_close",
-      "deps": [
-        "qol_client_spark"
-      ],
-      "type": "checkmark",
+      "key": "qol_client_close", "deps": ["qol_client_spark"], "type": "checkmark", "layout": {"x": 18, "y": 0, "size": 2.0, "shape": "hexagon"},
       "icon": "minecraft:jukebox",
-      "layout": {
-        "x": 18,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Smooth and Quiet",
-        "Play the way your PC likes: the story never needs a jetpack, a huge render distance or chunk-loading.\n\nA quiet factory is a happy factory. Or at least a muffled one."
-      ],
-      "es_es": [
-        "Fluido y tranquilo",
-        "Jugá como le guste a tu PC: la historia nunca pide jetpack, gran distancia de renderizado ni cargar chunks.\n\nUna fábrica callada es una fábrica feliz. O por lo menos una amordazada."
-      ],
-      "sources": [
-        "repo:docs/design/story-bible.md"
-      ]
+      "en_us": {"title": "Smooth and Quiet", "subtitle": "A quiet factory is a happy factory. Or at least a muffled one.",
+        "text": ["[lead] Play the way your PC likes.",
+                 "The story never needs a jetpack, a huge render distance or chunk-loading."]},
+      "es_es": {"title": "Fluido y tranquilo", "subtitle": "Fábrica callada, fábrica feliz. O por lo menos amordazada.",
+        "text": ["[lead] Jugá como le guste a tu PC.",
+                 "La historia nunca pide jetpack, gran distancia de renderizado ni cargar chunks."]},
+      "sources": ["repo:docs/design/story-bible.md"]
+    },
+    {
+      "key": "qol_client_dynamic_fps", "deps": ["qol_client_first_profile"], "type": "checkmark", "layout": {"x": 9, "y": -4.7, "size": 1.0, "shape": "circle"},
+      "icon": "minecraft:repeater",
+      "en_us": {"title": "Dynamic FPS", "subtitle": "The game naps when you look away.",
+        "text": ["[lead] Click out of the window and the game throttles itself.",
+                 "[li] Unfocused: capped at [hl|15 FPS], volume at [hl|25%]",
+                 "[li] Mouse over the window but not focused: [hl|60 FPS]",
+                 "[li] Minimized: no rendering and no sound",
+                 "Click back in and it returns to normal.",
+                 "{page}",
+                 "[note] The mod's own unfocused cap is 1 FPS; the pack raises it to 15.",
+                 "[careful] With the window focused but no movement, looking or mouse for [hl|5 minutes], the game drops to [hl|10 FPS] until you move again.",
+                 "Controls has two unassigned keys under Dynamic FPS: one forces the background mode, one switches the mod off."]},
+      "es_es": {"title": "Dynamic FPS", "subtitle": "El juego se echa una siesta cuando mirás para otro lado.",
+        "text": ["[lead] Hacé clic fuera de la ventana y el juego se frena solo.",
+                 "[li] Sin foco: tope de [hl|15 FPS], volumen al [hl|25%]",
+                 "[li] Mouse sobre la ventana pero sin foco: [hl|60 FPS]",
+                 "[li] Minimizado: no dibuja ni suena",
+                 "Volvé a hacer clic adentro y todo vuelve a la normalidad.",
+                 "{page}",
+                 "[note] El tope del propio mod sin foco es 1 FPS; el pack lo sube a 15.",
+                 "[careful] Con la ventana en foco pero sin moverte, mirar ni tocar el mouse durante [hl|5 minutos], el juego baja a [hl|10 FPS] hasta que te movés de nuevo.",
+                 "En Controles hay dos teclas sin asignar bajo Dynamic FPS: una fuerza el modo de segundo plano y otra apaga el mod."]},
+      "sources": ["repo:pack/config/dynamic_fps.json", "repo:docs/design/mod-pingpong.md", "jar:dynamic-fps-3.11.4+minecraft-1.21.0-neoforge.jar:assets/dynamic_fps/data/default_config.json", "jar:dynamic-fps-3.11.4+minecraft-1.21.0-neoforge.jar:assets/dynamic_fps/lang/en_us.json"]
+    },
+    {
+      "key": "qol_client_iris", "deps": ["qol_client_sodium"], "type": "checkmark", "optional": true, "layout": {"x": 6, "y": 3, "size": 1.0, "shape": "diamond"},
+      "icon": "minecraft:prismarine_crystals",
+      "en_us": {"title": "Shaders with Iris", "subtitle": "Off until you bring a pack.",
+        "text": ["[lead] Iris loads shader packs, and the pack ships with none: shaders start off.",
+                 "[li] Drop a shader pack (zip or folder) in the [hl|shaderpacks] folder",
+                 "[li] Options, Video Settings, [hl|Shader Packs...]: pick it and switch shaders on",
+                 "[careful] Shaders can cost many frames on a modest PC.",
+                 "{page}",
+                 "Lower the shadow distance first: Iris itself says it can significantly increase performance.",
+                 "[note] The pack sets shaders off once, in Iris's own config, so your choice survives pack updates.",
+                 "Its keys (reload, toggle, pack screen) start unassigned: bind them in Controls if you want them.",
+                 "Until a pack is in, the switch reads [hl|Shaders: No Packs Present]."]},
+      "es_es": {"title": "Shaders con Iris", "subtitle": "Apagado hasta que traigas un pack.",
+        "text": ["[lead] Iris carga shader packs, y el pack no trae ninguno: los shaders arrancan apagados.",
+                 "[li] Poné un shader pack (zip o carpeta) en la carpeta [hl|shaderpacks]",
+                 "[li] Opciones, Configuración de video, [hl|Shader Packs...]: elegilo y prendé los shaders",
+                 "[careful] Los shaders pueden costar muchos cuadros en una PC modesta.",
+                 "{page}",
+                 "Bajá primero la distancia de sombras: el propio Iris dice que puede subir el rendimiento de forma significativa.",
+                 "[note] El pack deja los shaders apagados una sola vez, en la configuración propia de Iris, así que tu elección sobrevive a las actualizaciones.",
+                 "Sus teclas (recargar, alternar, pantalla de packs) arrancan sin asignar: asignalas en Controles si las querés.",
+                 "Mientras no haya un pack, el interruptor dice [hl|Shaders: No hay Packs]."]},
+      "sources": ["repo:pack/config/defaultoptions/extra/config/iris.properties", "repo:pack/config/defaultoptions/keybindings.txt", "repo:docs/design/mod-pingpong.md", "jar:iris-neoforge-1.8.14-beta.1+mc1.21.1.jar:assets/iris/lang/en_us.json", "jar:iris-neoforge-1.8.14-beta.1+mc1.21.1.jar:assets/iris/lang/es_es.json"]
+    },
+    {
+      "key": "qol_client_toy_tap", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": -1.4, "y": 2.6, "size": 1.5, "shape": "none"},
+      "icon": "minecraft:comparator",
+      "en_us": {"title": "Tap the Meter",
+        "text": ["[lead] An old bench habit: tap the glass and see if the needle sticks.",
+                 "Yours will not: the cap is [hl|120 FPS] with VSync off, and no tap raises it. A faster monitor? The cap is a slider in Video Settings."]},
+      "es_es": {"title": "Golpeá el medidor",
+        "text": ["[lead] Vieja costumbre de taller: golpear el vidrio a ver si la aguja se traba.",
+                 "La tuya no se traba: el tope es de [hl|120 FPS] sin VSync, y ningún golpe lo sube. ¿Un monitor más rápido? El tope es un slider en Configuración de video."]},
+      "sources": ["repo:pack/config/entrelumen/client-preset.json", "repo:pack/config/defaultoptions/options.txt"]
+    },
+    {
+      "key": "qol_client_toy_lamp", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 18.6, "y": 3.6, "size": 1.5, "shape": "none"},
+      "icon": "minecraft:lantern",
+      "en_us": {"title": "Flip On the Bench Lamp",
+        "text": ["[lead] One click and the bench has light, the trick a [item:minecraft:lantern|lantern] pulls in your hand with dynamic lights.",
+                 "Same rule as the real thing: lower it or turn it off from Sodium's video settings."]},
+      "es_es": {"title": "Prendé la lámpara del banco",
+        "text": ["[lead] Un clic y el banco tiene luz, el truco que hace un [item:minecraft:lantern|farol] en tu mano con las luces dinámicas.",
+                 "Misma regla que en serio: bajala o apagala desde las opciones de video de Sodium."]},
+      "sources": ["jar:lambdynamiclights-4.8.11+1.21.1.jar:META-INF/neoforge.mods.toml", "repo:docs/design/luminous-gear.md"]
     }
+  ],
+  "art": [
+    {"id": "title", "text": {"en_us": "Performance, Sound and Screen", "es_es": "Rendimiento, sonido y pantalla"}, "x": -2.2, "y": -11.6, "scale": 3, "align": "start", "tint": "#F2C14E"},
+    {"id": "bench", "frame": [-3.0, -5.6, 21.4, 9.2], "color": "#D9B98C", "alpha": 200, "thickness_px": 2.0, "fill": "#3A2C1E", "fill_alpha": 40, "corners": true, "reveal": "qol_client_welcome", "sketch": true, "order": -8},
+    {"id": "plank_0", "picture": "minecraft:textures/block/spruce_planks.png", "x": -2.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "plank_1", "picture": "minecraft:textures/block/spruce_planks.png", "x": 0.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "plank_2", "picture": "minecraft:textures/block/spruce_planks.png", "x": 2.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "plank_3", "picture": "minecraft:textures/block/spruce_planks.png", "x": 4.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "plank_4", "picture": "minecraft:textures/block/spruce_planks.png", "x": 6.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "plank_5", "picture": "minecraft:textures/block/spruce_planks.png", "x": 8.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "plank_6", "picture": "minecraft:textures/block/spruce_planks.png", "x": 10.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "plank_7", "picture": "minecraft:textures/block/spruce_planks.png", "x": 12.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "plank_8", "picture": "minecraft:textures/block/spruce_planks.png", "x": 14.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "plank_9", "picture": "minecraft:textures/block/spruce_planks.png", "x": 16.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "plank_10", "picture": "minecraft:textures/block/spruce_planks.png", "x": 18.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "plank_11", "picture": "minecraft:textures/block/spruce_planks.png", "x": 20.0, "y": 8.7, "w": 2.0, "h": 1.0, "alpha": 210, "reveal": "qol_client_welcome", "order": -7},
+    {"id": "p_frames", "frame": [-2.4, -10.7, 6.7, -6.3], "color": "#D9B98C", "alpha": 210, "thickness_px": 2.0, "fill": "#2B2118", "fill_alpha": 110, "corners": true, "reveal": "qol_client_welcome", "sketch": true, "order": -6},
+    {"id": "l_frames", "text": {"en_us": "Frames", "es_es": "Cuadros"}, "x": -2.0, "y": -10.05, "scale": 2, "align": "start", "tint": "#E8DCB5"},
+    {"id": "readout", "text": {"en_us": "120", "es_es": "120"}, "x": 6.3, "y": -10.05, "scale": 3, "align": "end", "tint": "#7FD65C", "reveal": "qol_client_first_profile"},
+    {"id": "led_0", "picture": "#E5533D", "x": -1.3, "y": -8.0, "w": 0.68, "h": 1.25, "reveal": "qol_client_welcome", "sketch": true, "order": -4},
+    {"id": "led_1", "picture": "#E5533D", "x": -0.30000000000000004, "y": -8.0, "w": 0.68, "h": 1.25, "reveal": "qol_client_optimizers", "sketch": true, "order": -4},
+    {"id": "led_2", "picture": "#F2B84B", "x": 0.7, "y": -8.0, "w": 0.68, "h": 1.25, "reveal": "qol_client_first_profile", "sketch": true, "order": -4},
+    {"id": "led_3", "picture": "#F2B84B", "x": 1.7, "y": -8.0, "w": 0.68, "h": 1.25, "reveal": "qol_client_sodium", "sketch": true, "order": -4},
+    {"id": "led_4", "picture": "#F2B84B", "x": 2.7, "y": -8.0, "w": 0.68, "h": 1.25, "reveal": "qol_client_dynamic_fps", "sketch": true, "order": -4},
+    {"id": "led_5", "picture": "#7FD65C", "x": 3.7, "y": -8.0, "w": 0.68, "h": 1.25, "reveal": "qol_client_spark", "sketch": true, "order": -4},
+    {"id": "led_6", "picture": "#7FD65C", "x": 4.7, "y": -8.0, "w": 0.68, "h": 1.25, "reveal": "qol_client_tip_items", "sketch": true, "order": -4},
+    {"id": "led_7", "picture": "#7FD65C", "x": 5.7, "y": -8.0, "w": 0.68, "h": 1.25, "reveal": "qol_client_close", "sketch": true, "order": -4},
+    {"id": "p_sound", "frame": [7.4, -10.7, 15.4, -6.3], "color": "#D9B98C", "alpha": 210, "thickness_px": 2.0, "fill": "#2B2118", "fill_alpha": 110, "corners": true, "reveal": "qol_client_welcome", "sketch": true, "order": -6},
+    {"id": "l_sound", "text": {"en_us": "Sound", "es_es": "Sonido"}, "x": 7.8, "y": -10.05, "scale": 2, "align": "start", "tint": "#E8DCB5"},
+    {"id": "track_0", "path": [[9.1, -8.85], [9.1, -6.95]], "color": "#1B130D", "width": 0.18, "reveal": "qol_client_welcome", "sketch": true, "order": -4},
+    {"id": "knob_0", "picture": "#F2C14E", "x": 9.1, "y": -7.45, "w": 0.85, "h": 0.42, "reveal": "qol_client_muffler", "sketch": true, "order": -3},
+    {"id": "fader_icon_0", "picture": "minecraft:textures/block/furnace_front_on.png", "x": 9.1, "y": -9.45, "w": 0.62, "h": 0.62, "reveal": "qol_client_muffler"},
+    {"id": "track_1", "path": [[10.9, -8.85], [10.9, -6.95]], "color": "#1B130D", "width": 0.18, "reveal": "qol_client_welcome", "sketch": true, "order": -4},
+    {"id": "knob_1", "picture": "#F2C14E", "x": 10.9, "y": -7.8, "w": 0.85, "h": 0.42, "reveal": "qol_client_toasts", "sketch": true, "order": -3},
+    {"id": "fader_icon_1", "picture": "minecraft:textures/item/bread.png", "x": 10.9, "y": -9.45, "w": 0.62, "h": 0.62, "reveal": "qol_client_toasts"},
+    {"id": "track_2", "path": [[12.7, -8.85], [12.7, -6.95]], "color": "#1B130D", "width": 0.18, "reveal": "qol_client_welcome", "sketch": true, "order": -4},
+    {"id": "knob_2", "picture": "#F2C14E", "x": 12.7, "y": -7.6, "w": 0.85, "h": 0.42, "reveal": "qol_client_dynamic_fps", "sketch": true, "order": -3},
+    {"id": "fader_icon_2", "picture": "minecraft:textures/item/clock_00.png", "x": 12.7, "y": -9.45, "w": 0.62, "h": 0.62, "reveal": "qol_client_dynamic_fps"},
+    {"id": "track_3", "path": [[14.5, -8.85], [14.5, -6.95]], "color": "#1B130D", "width": 0.18, "reveal": "qol_client_welcome", "sketch": true, "order": -4},
+    {"id": "knob_3", "picture": "#F2C14E", "x": 14.5, "y": -8.7, "w": 0.85, "h": 0.42, "reveal": "qol_client_muffler", "sketch": true, "order": -3},
+    {"id": "fader_icon_3", "picture": "minecraft:textures/item/iron_sword.png", "x": 14.5, "y": -9.45, "w": 0.62, "h": 0.62, "reveal": "qol_client_muffler"},
+    {"id": "p_screen", "frame": [15.9, -10.7, 22.9, -6.3], "color": "#D9B98C", "alpha": 210, "thickness_px": 2.0, "fill": "#2B2118", "fill_alpha": 110, "corners": true, "reveal": "qol_client_welcome", "sketch": true, "order": -6},
+    {"id": "l_screen", "text": {"en_us": "Screen", "es_es": "Pantalla"}, "x": 16.3, "y": -10.05, "scale": 2, "align": "start", "tint": "#E8DCB5"},
+    {"id": "bezel", "frame": [16.55, -9.68, 22.3, -6.6], "color": "#8A8F98", "alpha": 230, "thickness_px": 3.0, "corners": false, "reveal": "qol_client_welcome", "sketch": true, "order": -3},
+    {"id": "landscape", "mosaic": [16.65, -9.6], "cell": 0.37, "rows": ["sssssssssssssss", "sscccsssssuusss", "ssssssssssuusss", "ssssmssssssmsss", "sssmmmssssmmmss", "hhmmmmhhhhmmmhh", "gglgggglgggwwgg", "ggtggggtgggwwgg"], "reveal": "qol_client_hud", "order": -2, "legend": {"s": "#8EC5F0", "c": "#F4F8FF", "u": "#FFE08A", "m": "#7F8FA0", "h": "#5E9A4A", "g": "#4F8A3C", "t": "#6B4A2B", "l": "#2F6B2C", "d": "#7B5A3A", "w": "#3F76D6"}},
+    {"id": "wash_0", "picture": "#FFC15A", "x": 19.425, "y": -9.1, "w": 5.55, "h": 1.0, "alpha": 70, "reveal": "qol_client_iris", "order": 1},
+    {"id": "wash_1", "picture": "#FF8A5A", "x": 19.425, "y": -8.1, "w": 5.55, "h": 1.0, "alpha": 55, "reveal": "qol_client_iris", "order": 1},
+    {"id": "wash_2", "picture": "#1E5F8A", "x": 19.425, "y": -7.1, "w": 5.55, "h": 1.0, "alpha": 75, "reveal": "qol_client_iris", "order": 1},
+    {"id": "sun_glow", "glow": [20.5, -8.85], "r": 1.7, "alpha": 200, "reveal": "qol_client_iris"},
+    {"id": "ray_0", "path": [[20.3, -8.6], [18.2, -6.75]], "color": "#FFF1B0", "width": 0.2, "alpha": 60, "reveal": "qol_client_iris", "order": 2},
+    {"id": "ray_1", "path": [[20.8, -8.5], [19.6, -6.75]], "color": "#FFF1B0", "width": 0.2, "alpha": 60, "reveal": "qol_client_iris", "order": 2},
+    {"id": "ray_2", "path": [[20.0, -8.6], [17.2, -7.2]], "color": "#FFF1B0", "width": 0.2, "alpha": 60, "reveal": "qol_client_iris", "order": 2},
+    {"id": "sparkle", "scatter": ["minecraft:textures/particle/flash.png"], "region": [20.6, -7.4, 21.5, -6.7], "count": 3, "size": [0.18, 0.3], "seed": 11, "reveal": "qol_client_iris", "tint": "#FFFFFF"},
+    {"id": "sil_0", "picture": "minecraft:textures/item/clock_00.png", "x": 0.0, "y": 7.6, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3},
+    {"id": "tool_0", "item": "minecraft:clock", "x": 0.0, "y": 7.6, "size": 1.4, "reveal": "qol_client_optimizers", "order": -2},
+    {"id": "sil_1", "picture": "minecraft:textures/block/note_block.png", "x": 4.6, "y": 7.6, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3},
+    {"id": "tool_1", "item": "minecraft:note_block", "x": 4.6, "y": 7.6, "size": 1.4, "reveal": "qol_client_muffler", "order": -2},
+    {"id": "sil_2", "picture": "minecraft:textures/item/spyglass.png", "x": 9.2, "y": 7.6, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3},
+    {"id": "tool_2", "item": "minecraft:spyglass", "x": 9.2, "y": 7.6, "size": 1.4, "reveal": "qol_client_spark", "order": -2},
+    {"id": "sil_3", "picture": "minecraft:textures/item/painting.png", "x": 13.8, "y": 7.6, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3},
+    {"id": "tool_3", "item": "minecraft:painting", "x": 13.8, "y": 7.6, "size": 1.4, "reveal": "qol_client_menus", "order": -2},
+    {"id": "sil_4", "picture": "minecraft:textures/item/lantern.png", "x": 18.2, "y": 7.6, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3},
+    {"id": "tool_4", "item": "minecraft:lantern", "x": 18.2, "y": 7.6, "size": 1.4, "reveal": "qol_client_dynlights", "order": -2},
+    {"id": "lamp_glow_0", "glow": [18.6, 3.6], "r": 3.0, "alpha": 90, "tint": "#FFC46B", "reveal": "qol_client_toy_lamp"},
+    {"id": "lamp_glow_1", "glow": [15.6, 5.6], "r": 2.4, "alpha": 90, "tint": "#FFC46B", "reveal": "qol_client_toy_lamp"},
+    {"id": "lamp_glow_2", "glow": [12.6, 6.6], "r": 2.2, "alpha": 90, "tint": "#FFC46B", "reveal": "qol_client_toy_lamp"},
+    {"id": "tap_glow", "glow": [2.7, -8.0], "r": 3.0, "alpha": 110, "tint": "#FFF1B0", "reveal": "qol_client_toy_tap"}
   ]
 }

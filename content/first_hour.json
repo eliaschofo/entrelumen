@@ -1,696 +1,446 @@
 {
   "chapter": "a_light_among_ruins",
   "act": 1,
-  "title": {
-    "en_us": "I · A Light Among Ruins",
-    "es_es": "I · Una luz entre ruinas"
-  },
+  "title": {"en_us": "I · A Light Among Ruins", "es_es": "I · Una luz entre ruinas"},
   "subtitle": {
-    "en_us": [
-      "You wake beside a ruin of Heliodor with empty hands. A compass is waiting for you, and so is an Atlas."
-    ],
-    "es_es": [
-      "Despertás al lado de una ruina de Heliodor, con las manos vacías. Te espera una brújula, y también un Atlas."
-    ]
+    "en_us": ["You wake beside a ruin of Heliodor with empty hands. A compass is waiting for you, and so is an Atlas."],
+    "es_es": ["Despertás al lado de una ruina de Heliodor, con las manos vacías. Te espera una brújula, y también un Atlas."]
   },
   "quests": [
     {
-      "key": "arrival",
-      "deps": [],
-      "type": "checkmark",
-      "optional": true,
+      "key": "arrival", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 0, "y": 0, "group": "shelter", "shape": "circle", "size": 0.75, "hide_dependent_lines": false},
       "icon": "entrelumen:atlas",
-      "en_us": [
-        "Waking among ruins",
-        "Use the pedestal at the heart of the ruin to take the Heliodor Compass, then pick a nearby site with water, wood and room to grow.\n\nTuff cut by machines, copper veins gone dark, gardens that kept growing with nobody to tend them. Whoever lived here left all at once."
-      ],
-      "es_es": [
-        "Despertar entre ruinas",
-        "Usá el pedestal del centro de la ruina para tomar la Brújula de Heliodor y elegí cerca un sitio con agua, madera y espacio para crecer.\n\nToba cortada a máquina, vetas de cobre apagadas, jardines que siguieron creciendo sin nadie que los cuidara. Quien vivía acá se fue de golpe."
-      ],
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "group": "shelter",
-        "shape": "circle",
-        "size": 0.75,
-        "hide_dependent_lines": false
-      }
+      "en_us": {"title": "Waking among ruins",
+        "text": ["[lead] The pedestal at the heart of the ruin holds the [item:entrelumen:heliodor_compass|Heliodor Compass]: take it first.",
+                 "Then pick a site nearby with water, wood and room to grow.",
+                 "Tuff cut by machines, copper veins gone dark, gardens that kept growing with nobody to tend them. Whoever lived here left all at once."]},
+      "es_es": {"title": "Despertar entre ruinas",
+        "text": ["[lead] El pedestal del centro de la ruina guarda la [item:entrelumen:heliodor_compass|Brújula de Heliodor]: tomala primero.",
+                 "Después elegí cerca un sitio con agua, madera y espacio para crecer.",
+                 "Toba cortada a máquina, vetas de cobre apagadas, jardines que siguieron creciendo sin nadie que los cuidara. Quien vivía acá se fue de golpe."]}
     },
     {
-      "key": "workbench",
-      "deps": [
-        "arrival"
-      ],
-      "item": "minecraft:crafting_table",
-      "en_us": [
-        "Somewhere to begin",
-        "Craft a crafting table. Before spending materials, check a recipe's uses in the recipe viewer.\n\nThe ruin kept its stones, not its tools. Whatever Heliodor knew, you start again from wood."
-      ],
-      "es_es": [
-        "Un sitio para empezar",
-        "Fabricá una mesa de trabajo. Antes de gastar materiales, mirá recetas y usos en el visor de recetas.\n\nLa ruina conservó sus piedras, no sus herramientas. Lo que sabía Heliodor, vos lo empezás de nuevo con madera."
-      ],
-      "layout": {
-        "x": 0,
-        "y": 1.5,
-        "group": "shelter",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "workbench", "deps": ["arrival"], "item": "minecraft:crafting_table", "layout": {"x": 0, "y": 1.5, "group": "shelter", "shape": "square", "size": 1.0, "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Somewhere to begin",
+        "text": ["[lead] Craft a [item:minecraft:crafting_table|crafting table].",
+                 "Before spending materials, check a recipe's uses in the recipe viewer.",
+                 "The ruin kept its stones, not its tools. Whatever Heliodor knew, you start again from wood."]},
+      "es_es": {"title": "Un sitio para empezar",
+        "text": ["[lead] Fabricá una [item:minecraft:crafting_table|mesa de trabajo].",
+                 "Antes de gastar materiales, mirá recetas y usos en el visor de recetas.",
+                 "La ruina conservó sus piedras, no sus herramientas. Lo que sabía Heliodor, vos lo empezás de nuevo con madera."]}
     },
     {
-      "key": "stone_tools",
-      "deps": [
-        "workbench"
-      ],
-      "item": "minecraft:stone_pickaxe",
-      "en_us": [
-        "Read the stone",
-        "Make a stone pickaxe. Check the block overlay before mining an unfamiliar ore: tool tier matters.\n\nThe ruin's tuff was cut with machines, not chisels. Some day you will need that kind of precision too."
-      ],
-      "es_es": [
-        "Leer la piedra",
-        "Fabricá un pico de piedra. Mirá la información del bloque antes de picar una mena desconocida: el nivel de herramienta importa.\n\nLa toba de la ruina se cortó con máquinas, no con cinceles. Algún día vas a necesitar esa precisión."
-      ],
-      "layout": {
-        "x": 1.5,
-        "y": 3,
-        "group": "shelter",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "stone_tools", "deps": ["workbench"], "item": "minecraft:stone_pickaxe", "layout": {"x": 1.5, "y": 3, "group": "shelter", "shape": "square", "size": 1.0, "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Read the stone",
+        "text": ["[lead] Make a [item:minecraft:stone_pickaxe|stone pickaxe].",
+                 "Check the block overlay before mining an unfamiliar ore: tool tier matters.",
+                 "The ruin's tuff was cut with machines, not chisels. Some day you will need that kind of precision too."]},
+      "es_es": {"title": "Leer la piedra",
+        "text": ["[lead] Fabricá un [item:minecraft:stone_pickaxe|pico de piedra].",
+                 "Mirá la información del bloque antes de picar una mena desconocida: el nivel de herramienta importa.",
+                 "La toba de la ruina se cortó con máquinas, no con cinceles. Algún día vas a necesitar esa precisión."]}
     },
     {
-      "key": "recipe_favourites",
-      "deps": [
-        "workbench"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "recipe_favourites", "deps": ["workbench"], "type": "checkmark", "optional": true, "layout": {"x": -3.25, "y": 1.5, "group": "qol", "shape": "circle", "size": 0.75, "hide_dependent_lines": false},
       "icon": "minecraft:paper",
-      "en_us": [
-        "A recipe worth keeping",
-        "Bookmark a recipe you plan to make next in the recipe viewer (its keys are listed in Controls) and remove finished ones so the list stays useful.\n\nA short list of what comes next: that is how Heliodor's workshops started every morning."
-      ],
-      "es_es": [
-        "Una receta para guardar",
-        "Guardá en favoritos del visor una receta que pienses fabricar (sus teclas están en Controles) y sacá las terminadas para que la lista siga sirviendo.\n\nUna lista corta de lo que sigue: así empezaban la mañana los talleres de Heliodor."
-      ],
-      "layout": {
-        "x": -3.25,
-        "y": 1.5,
-        "group": "qol",
-        "shape": "circle",
-        "size": 0.75,
-        "hide_dependent_lines": false
-      }
+      "en_us": {"title": "A recipe worth keeping",
+        "text": ["[lead] Keep your next recipe one click away.",
+                 "Bookmark it in the recipe viewer (its keys are listed in Controls) and remove finished ones so the list stays useful.",
+                 "A short list of what comes next: that is how Heliodor's workshops started every morning."]},
+      "es_es": {"title": "Una receta para guardar",
+        "text": ["[lead] Tené la próxima receta a un clic.",
+                 "Guardala en favoritos del visor (sus teclas están en Controles) y sacá las terminadas para que la lista siga sirviendo.",
+                 "Una lista corta de lo que sigue: así empezaban la mañana los talleres de Heliodor."]}
     },
     {
-      "key": "storage",
-      "deps": [
-        "workbench"
-      ],
-      "item": "minecraft:chest",
-      "en_us": [
-        "A shelf for tomorrow",
-        "Make a chest. Keep your next project's materials apart, and try the sorting and matching-deposit controls on ordinary items.\n\nAmong the loose pages, a copper seal with a golden A: 'Council inventory. Everything is recorded.' Somebody here counted everything."
-      ],
-      "es_es": [
-        "Un estante para mañana",
-        "Fabricá un cofre. Separá los materiales del próximo proyecto y probá ordenar y depositar coincidentes con objetos comunes.\n\nEntre las páginas sueltas, un sello de cobre con una A dorada: «Inventario del Consejo. Todo se registra». Alguien acá lo contaba todo."
-      ],
-      "layout": {
-        "x": -1.5,
-        "y": 3,
-        "group": "shelter",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "storage", "deps": ["workbench"], "item": "minecraft:chest", "layout": {"x": -1.5, "y": 3, "group": "shelter", "shape": "square", "size": 1.0, "hide_dependent_lines": false},
+      "en_us": {"title": "A shelf for tomorrow",
+        "text": ["[lead] Make a [item:minecraft:chest|chest].",
+                 "Keep your next project's materials apart, and try the sorting and matching-deposit controls on ordinary items.",
+                 "Among the loose pages, a copper seal with a golden A: 'Council inventory. Everything is recorded.' Somebody here counted everything."]},
+      "es_es": {"title": "Un estante para mañana",
+        "text": ["[lead] Fabricá un [item:minecraft:chest|cofre].",
+                 "Separá los materiales del próximo proyecto y probá ordenar y depositar coincidentes con objetos comunes.",
+                 "Entre las páginas sueltas, un sello de cobre con una A dorada: «Inventario del Consejo. Todo se registra». Alguien acá lo contaba todo."]}
     },
     {
-      "key": "furnace",
-      "deps": [
-        "stone_tools"
-      ],
-      "item": "minecraft:furnace",
-      "en_us": [
-        "Heat with a purpose",
-        "Build a furnace and smelt or cook a useful batch; prepare the inputs before lighting it.\n\nSupply, transform, collect: Heliodor ran whole cities on that pattern, fed by the sun instead of coal."
-      ],
-      "es_es": [
-        "Calor con propósito",
-        "Construí un horno y fundí o cociná una tanda útil; prepará los ingredientes antes de encenderlo.\n\nAbastecer, transformar, recoger: Heliodor movía ciudades enteras con ese patrón, alimentado por el sol en vez de carbón."
-      ],
-      "layout": {
-        "x": 0.75,
-        "y": 4.5,
-        "group": "shelter",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "furnace", "deps": ["stone_tools"], "item": "minecraft:furnace", "layout": {"x": 0.75, "y": 4.5, "group": "shelter", "shape": "square", "size": 1.0, "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Heat with a purpose",
+        "text": ["[lead] Build a [item:minecraft:furnace|furnace] and smelt or cook a useful batch.",
+                 "Prepare the inputs before lighting it.",
+                 "Supply, transform, collect: Heliodor ran whole cities on that pattern, fed by the sun instead of coal."]},
+      "es_es": {"title": "Calor con propósito",
+        "text": ["[lead] Construí un [item:minecraft:furnace|horno] y fundí o cociná una tanda útil.",
+                 "Prepará los ingredientes antes de encenderlo.",
+                 "Abastecer, transformar, recoger: Heliodor movía ciudades enteras con ese patrón, alimentado por el sol en vez de carbón."]}
     },
     {
-      "key": "light",
-      "deps": [
-        "stone_tools"
-      ],
-      "item": "minecraft:torch",
-      "count": 8,
-      "en_us": [
-        "The edge of the dark",
-        "Prepare eight torches and light the path between your entrance, water and workshop before you go underground.\n\nA loose page carries a blessing, signed with a single letter: 'May the light find you at home. —B.'"
-      ],
-      "es_es": [
-        "El borde de la oscuridad",
-        "Prepará ocho antorchas e iluminá el camino entre la entrada, el agua y el taller antes de bajar.\n\nUna página suelta trae una bendición, firmada con una sola letra: «Que la luz te encuentre en casa. —B.»"
-      ],
-      "layout": {
-        "x": 2.25,
-        "y": 4.5,
-        "group": "shelter",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "light", "deps": ["stone_tools"], "item": "minecraft:torch", "count": 8, "layout": {"x": 2.25, "y": 4.5, "group": "shelter", "shape": "square", "size": 1.0, "hide_dependent_lines": false},
+      "en_us": {"title": "The edge of the dark",
+        "text": ["[lead] Prepare eight [item:minecraft:torch|torches].",
+                 "Light the path between your entrance, water and workshop before you go underground.",
+                 "A loose page carries a blessing, signed with a single letter: 'May the light find you at home. —B.'"]},
+      "es_es": {"title": "El borde de la oscuridad",
+        "text": ["[lead] Prepará ocho [item:minecraft:torch|antorchas].",
+                 "Iluminá el camino entre la entrada, el agua y el taller antes de bajar.",
+                 "Una página suelta trae una bendición, firmada con una sola letra: «Que la luz te encuentre en casa. —B.»"]}
     },
     {
-      "key": "bed",
-      "deps": [
-        "storage"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "bed", "deps": ["storage"], "type": "checkmark", "optional": true, "layout": {"x": -3.25, "y": 3, "group": "qol", "shape": "circle", "size": 0.75, "hide_dependent_lines": false},
       "icon": "minecraft:red_bed",
-      "en_us": [
-        "A return address",
-        "Place and use a bed once you can get wool safely; keep the respawn space clear and tell your companions where it is.\n\nIn the ruin, nobody switched the lights off. Whoever lived there meant to come back that same night."
-      ],
-      "es_es": [
-        "Una dirección de regreso",
-        "Colocá y usá una cama cuando consigas lana sin riesgo; dejá libre el lugar de reaparición y avisale a tu equipo dónde está.\n\nEn la ruina nadie apagó las luces. Quien vivía ahí pensaba volver esa misma noche."
-      ],
-      "layout": {
-        "x": -3.25,
-        "y": 3,
-        "group": "qol",
-        "shape": "circle",
-        "size": 0.75,
-        "hide_dependent_lines": false
-      }
+      "en_us": {"title": "A return address",
+        "text": ["[lead] Sleep once where you want to wake up again.",
+                 "Place and use a [item:minecraft:red_bed|bed] once you can get wool safely; keep the respawn space clear and tell your companions where it is.",
+                 "In the ruin, nobody switched the lights off. Whoever lived there meant to come back that same night."]},
+      "es_es": {"title": "Una dirección de regreso",
+        "text": ["[lead] Dormí una vez donde quieras volver a despertar.",
+                 "Colocá y usá una [item:minecraft:red_bed|cama] cuando consigas lana sin riesgo; dejá libre el lugar de reaparición y avisale a tu equipo dónde está.",
+                 "En la ruina nadie apagó las luces. Quien vivía ahí pensaba volver esa misma noche."]}
     },
     {
-      "key": "atlas",
-      "deps": [],
-      "milestone": "atlas_awakened",
+      "key": "atlas", "deps": [], "milestone": "atlas_awakened", "layout": {"x": 0, "y": 13.5, "group": "signal", "shape": "hexagon", "size": 2.0, "hide_dependent_lines": false},
       "icon": "entrelumen:atlas",
-      "en_us": [
-        "The Atlas listens",
-        "Click the task to open the Atlas, pick The Atlas Awakens and deliver a book and a copper ingot. The Living Atlas itself waits in the Signal Tower: the compass leads there.\n\nIn the Atlas Courtyard the cover warms up. A voice pushes through the static: '…make room for… &kthose&r who… have not arrived.'"
-      ],
-      "es_es": [
-        "El Atlas escucha",
-        "Clic en la tarea para abrir el Atlas: elegí El Atlas despierta y entregá un libro y un lingote de cobre. El Atlas Vivo te espera en la Torre de la Señal: la brújula te lleva ahí.\n\nEn el Patio del Atlas la tapa se entibia. Una voz atraviesa la estática: «…hacé lugar para… &kquienes&r todavía… no llegaron»."
-      ],
-      "layout": {
-        "x": 0,
-        "y": 13.5,
-        "group": "signal",
-        "shape": "hexagon",
-        "size": 2.0,
-        "hide_dependent_lines": false
-      }
+      "en_us": {"title": "The Atlas listens",
+        "text": ["[lead] Click the task to open the Atlas, pick The Atlas Awakens and deliver a [item:minecraft:book|book] and a [item:minecraft:copper_ingot|copper ingot].",
+                 "The [item:entrelumen:atlas|Living Atlas] itself waits in the Signal Tower: the compass leads there.",
+                 "In the Atlas Courtyard the cover warms up. A voice pushes through the static: '…make room for… [glitch|those] who… have not arrived.'"]},
+      "es_es": {"title": "El Atlas escucha",
+        "text": ["[lead] Clic en la tarea para abrir el Atlas: elegí El Atlas despierta y entregá un [item:minecraft:book|libro] y un [item:minecraft:copper_ingot|lingote de cobre].",
+                 "El [item:entrelumen:atlas|Atlas Vivo] te espera en la Torre de la Señal: la brújula te lleva ahí.",
+                 "En el Patio del Atlas la tapa se entibia. Una voz atraviesa la estática: «…hacé lugar para… [glitch|quienes] todavía… no llegaron»."]}
     },
     {
-      "key": "water",
-      "deps": [
-        "furnace"
-      ],
-      "item": "minecraft:bucket",
-      "en_us": [
-        "Carry the river",
-        "Smelt iron for a bucket and bring water to a small farm beside your shelter.\n\nHeliodor's gardens still drink from channels nobody tends. Water was the first thing its people learned to move."
-      ],
-      "es_es": [
-        "Llevar el río",
-        "Fundí hierro para un balde y llevá agua a una huerta chica junto al refugio.\n\nLos jardines de Heliodor siguen bebiendo de canales que nadie cuida. El agua fue lo primero que su gente aprendió a mover."
-      ],
-      "layout": {
-        "x": -6,
-        "y": 7.75,
-        "group": "kitchen",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "water", "deps": ["furnace"], "item": "minecraft:bucket", "layout": {"x": -11.0, "y": 8.0, "group": "kitchen", "shape": "square", "size": 1.0, "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Carry the river",
+        "text": ["[lead] Smelt iron for a [item:minecraft:bucket|bucket] and bring water to a small farm beside your shelter.",
+                 "Heliodor's gardens still drink from channels nobody tends. Water was the first thing its people learned to move."]},
+      "es_es": {"title": "Llevar el río",
+        "text": ["[lead] Fundí hierro para un [item:minecraft:bucket|balde] y llevá agua a una huerta chica junto al refugio.",
+                 "Los jardines de Heliodor siguen bebiendo de canales que nadie cuida. El agua fue lo primero que su gente aprendió a mover."]}
     },
     {
-      "key": "garden",
-      "deps": [
-        "water"
-      ],
-      "item": "minecraft:wheat",
-      "count": 3,
-      "en_us": [
-        "The patient part",
-        "Harvest three wheat and replant before you leave; keep seeds apart from food.\n\nA note in careful green ink: 'Sow extra. Someone hungry always turns up. —J.'"
-      ],
-      "es_es": [
-        "La parte paciente",
-        "Cosechá tres trigos y replantá antes de irte; guardá las semillas aparte de la comida.\n\nUna nota en tinta verde, prolija: «Sembrá de más. Siempre llega alguien con hambre. —J.»"
-      ],
-      "layout": {
-        "x": -6,
-        "y": 9.25,
-        "group": "kitchen",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "garden", "deps": ["water"], "item": "minecraft:wheat", "count": 3, "layout": {"x": -11.0, "y": 9.5, "group": "kitchen", "shape": "square", "size": 1.0, "hide_dependent_lines": false},
+      "en_us": {"title": "The patient part",
+        "text": ["[lead] Harvest three [item:minecraft:wheat|wheat] and replant before you leave.",
+                 "Keep seeds apart from food.",
+                 "A note in careful green ink: 'Sow extra. Someone hungry always turns up. —J.'"]},
+      "es_es": {"title": "La parte paciente",
+        "text": ["[lead] Cosechá tres [item:minecraft:wheat|trigos] y replantá antes de irte.",
+                 "Guardá las semillas aparte de la comida.",
+                 "Una nota en tinta verde, prolija: «Sembrá de más. Siempre llega alguien con hambre. —J.»"]}
     },
     {
-      "key": "knife",
-      "deps": [
-        "furnace"
-      ],
-      "item": "farmersdelight:flint_knife",
-      "en_us": [
-        "A kitchen tool",
-        "Make a flint knife and check its uses: Farmer's Delight knives work on the cutting board and gather certain ingredients.\n\nThe ruin's kitchens were built for crowds. Whoever ran them fed far more people than ever lived here."
-      ],
-      "es_es": [
-        "Una herramienta de cocina",
-        "Fabricá un cuchillo de pedernal y revisá sus usos: los cuchillos de Farmer's Delight sirven en la tabla de cortar y para juntar ciertos ingredientes.\n\nLas cocinas de la ruina se hicieron para multitudes. Quien las manejaba alimentaba a mucha más gente de la que vivió acá."
-      ],
-      "layout": {
-        "x": -7.5,
-        "y": 7.75,
-        "group": "kitchen",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "knife", "deps": ["furnace"], "item": "farmersdelight:flint_knife", "layout": {"x": -8.5, "y": 8.5, "group": "kitchen", "shape": "square", "size": 1.0, "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "A kitchen tool",
+        "text": ["[lead] Make a [item:farmersdelight:flint_knife|flint knife] and check its uses.",
+                 "Farmer's Delight knives work on the cutting board and gather certain ingredients.",
+                 "The ruin's kitchens were built for crowds. Whoever ran them fed far more people than ever lived here."]},
+      "es_es": {"title": "Una herramienta de cocina",
+        "text": ["[lead] Fabricá un [item:farmersdelight:flint_knife|cuchillo de pedernal] y revisá sus usos.",
+                 "Los cuchillos de Farmer's Delight sirven en la tabla de cortar y para juntar ciertos ingredientes.",
+                 "Las cocinas de la ruina se hicieron para multitudes. Quien las manejaba alimentaba a mucha más gente de la que vivió acá."]}
     },
     {
-      "key": "cutting_board",
-      "deps": [
-        "knife"
-      ],
-      "item": "farmersdelight:cutting_board",
-      "en_us": [
-        "A different kind of crafting",
-        "Place a cutting board, put an ingredient on it and use the tool its recipe shows.\n\nIn Heliodor even a kitchen board was a small machine: something goes in, one gesture, something useful comes out."
-      ],
-      "es_es": [
-        "Otra forma de fabricar",
-        "Colocá una tabla de cortar, poné un ingrediente y usá la herramienta que indica su receta.\n\nEn Heliodor hasta una tabla de cocina era una pequeña máquina: algo entra, un gesto, algo útil sale."
-      ],
-      "layout": {
-        "x": -7.5,
-        "y": 9.25,
-        "group": "kitchen",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "cutting_board", "deps": ["knife"], "item": "farmersdelight:cutting_board", "layout": {"x": -8.5, "y": 10.0, "group": "kitchen", "shape": "square", "size": 1.0, "hide_dependent_lines": false},
+      "en_us": {"title": "A different kind of crafting",
+        "text": ["[lead] Place a [item:farmersdelight:cutting_board|cutting board], put an ingredient on it and use the tool its recipe shows.",
+                 "In Heliodor even a kitchen board was a small machine: something goes in, one gesture, something useful comes out."]},
+      "es_es": {"title": "Otra forma de fabricar",
+        "text": ["[lead] Colocá una [item:farmersdelight:cutting_board|tabla de cortar], poné un ingrediente y usá la herramienta que indica su receta.",
+                 "En Heliodor hasta una tabla de cocina era una pequeña máquina: algo entra, un gesto, algo útil sale."]}
     },
     {
-      "key": "bowl",
-      "deps": [
-        "workbench"
-      ],
-      "item": "minecraft:bowl",
-      "count": 4,
-      "en_us": [
-        "Four places at the table",
-        "Prepare four bowls. Some meals give the bowl back, so count them when you plan a batch.\n\nThe ruin's tables are laid for more guests than chairs. J. wrote underneath: 'A kitchen is measured by who it can welcome.'"
-      ],
-      "es_es": [
-        "Cuatro lugares en la mesa",
-        "Prepará cuatro cuencos. Algunas comidas devuelven el cuenco, así que contalos al planear una tanda.\n\nLas mesas de la ruina están puestas para más invitados que sillas. J. anotó abajo: «Una cocina se mide por la gente que puede recibir»."
-      ],
-      "layout": {
-        "x": -4.5,
-        "y": 7.75,
-        "group": "kitchen",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "bowl", "deps": ["workbench"], "item": "minecraft:bowl", "count": 4, "layout": {"x": -6.75, "y": 8.5, "group": "kitchen", "shape": "square", "size": 1.0, "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Four places at the table",
+        "text": ["[lead] Prepare four [item:minecraft:bowl|bowls].",
+                 "Some meals give the bowl back, so count them when you plan a batch.",
+                 "The ruin's tables are laid for more guests than chairs. J. wrote underneath: 'A kitchen is measured by who it can welcome.'"]},
+      "es_es": {"title": "Cuatro lugares en la mesa",
+        "text": ["[lead] Prepará cuatro [item:minecraft:bowl|cuencos].",
+                 "Algunas comidas devuelven el cuenco, así que contalos al planear una tanda.",
+                 "Las mesas de la ruina están puestas para más invitados que sillas. J. anotó abajo: «Una cocina se mide por la gente que puede recibir»."]}
     },
     {
-      "key": "bread",
-      "deps": [
-        "garden"
-      ],
-      "item": "minecraft:bread",
-      "count": 3,
-      "en_us": [
-        "Food before distance",
-        "Bake three bread for a short survey and watch saturation as well as hunger. Keep a reserve at home.\n\nJ.'s packing lists always start with bread, 'for whoever gets lost'."
-      ],
-      "es_es": [
-        "Comida antes que distancia",
-        "Hacé tres panes para un reconocimiento corto y mirá la saturación además del hambre. Dejá una reserva en casa.\n\nLas listas de viaje de J. siempre empiezan por el pan, «para quien se pierda»."
-      ],
-      "layout": {
-        "x": -6,
-        "y": 10.75,
-        "group": "kitchen",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "bread", "deps": ["garden"], "item": "minecraft:bread", "count": 3, "layout": {"x": -6.75, "y": 10.0, "group": "kitchen", "shape": "square", "size": 1.0, "hide_dependent_lines": false},
+      "en_us": {"title": "Food before distance",
+        "text": ["[lead] Bake three [item:minecraft:bread|bread] for a short survey.",
+                 "Watch saturation as well as hunger, and keep a reserve at home.",
+                 "J.'s packing lists always start with bread, 'for whoever gets lost'."]},
+      "es_es": {"title": "Comida antes que distancia",
+        "text": ["[lead] Hacé tres [item:minecraft:bread|panes] para un reconocimiento corto.",
+                 "Mirá la saturación además del hambre y dejá una reserva en casa.",
+                 "Las listas de viaje de J. siempre empiezan por el pan, «para quien se pierda»."]}
     },
     {
-      "key": "table",
-      "deps": [
-        "atlas"
-      ],
-      "milestone": "travellers_table",
+      "key": "table", "deps": ["atlas"], "milestone": "travellers_table", "layout": {"x": -7.0, "y": 14.0, "group": "kitchen", "shape": "hexagon", "size": 2.0, "hide_dependent_lines": false},
       "icon": "farmersdelight:cutting_board",
-      "en_us": [
-        "A table for those returning",
-        "Open the Atlas, select A Table for Travellers, check what is missing and choose Deliver.\n\nJ. always kept a place set for strangers. The Atlas answers the delivery with one clear word through the noise: '…welcome.'"
-      ],
-      "es_es": [
-        "Una mesa para quienes vuelven",
-        "Abrí el Atlas, elegí Una mesa para viajeros, revisá lo que falta y pulsá Entregar.\n\nJ. siempre dejaba un lugar puesto para desconocidos. El Atlas responde a la entrega con una sola palabra clara entre el ruido: «…bienvenidos»."
-      ],
-      "layout": {
-        "x": -5.25,
-        "y": 15.75,
-        "group": "kitchen",
-        "shape": "hexagon",
-        "size": 2.0,
-        "hide_dependent_lines": false
-      }
+      "en_us": {"title": "A table for those returning",
+        "text": ["[lead] Open the Atlas, select A Table for Travellers, check what is missing and choose Deliver.",
+                 "J. always kept a place set for strangers. The Atlas answers the delivery with one clear word through the noise: '…welcome.'"]},
+      "es_es": {"title": "Una mesa para quienes vuelven",
+        "text": ["[lead] Abrí el Atlas, elegí Una mesa para viajeros, revisá lo que falta y pulsá Entregar.",
+                 "J. siempre dejaba un lugar puesto para desconocidos. El Atlas responde a la entrega con una sola palabra clara entre el ruido: «…bienvenidos»."]}
     },
     {
-      "key": "habitation",
-      "deps": [
-        "table"
-      ],
-      "milestone": "habitation_module",
+      "key": "habitation", "deps": ["table"], "milestone": "habitation_module", "layout": {"group": "shelter", "x": -5.0, "y": 17.3, "size": 2.0, "shape": "hexagon"},
       "icon": "entrelumen:habitation_module",
-      "en_us": [
-        "A home to come back to",
-        "Deliver a white bed, a campfire, two lanterns and four bread to Habitation Module in the Atlas. Set it in its place in the Ark, with the controller there: /sethome marks your one home and /home brings you back to it from anywhere.\n\nJ.'s note, under a drawn doorway: 'Wherever the road ends, there has to be a door that opens from the inside.'"
-      ],
-      "es_es": [
-        "Un hogar al que volver",
-        "Entregá una cama blanca, una fogata, dos faroles y cuatro panes en Módulo de habitabilidad desde el Atlas. Ponelo en su lugar del Arca, con el controlador ahí: /sethome marca tu única casa y /home te lleva de vuelta desde cualquier lado.\n\nLa nota de J., bajo una puerta dibujada: «Donde sea que termine el camino, tiene que haber una puerta que se abra desde adentro»."
-      ],
-      "layout": {
-        "group": "shelter",
-        "x": -2.25,
-        "y": 15.75,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
+      "en_us": {"title": "A home to come back to",
+        "text": ["[lead] Deliver to Habitation Module in the Atlas:",
+                 "[li] A [item:minecraft:white_bed|white bed]",
+                 "[li:minecraft:campfire] A [item:minecraft:campfire|campfire]",
+                 "[li:minecraft:lantern] Two [item:minecraft:lantern|lanterns]",
+                 "[li:minecraft:bread] Four [item:minecraft:bread|bread]",
+                 "Set it in its place in the Ark, with the controller there: /sethome marks your one home and /home brings you back to it from anywhere.",
+                 "{page}",
+                 "J.'s note, under a drawn doorway: 'Wherever the road ends, there has to be a door that opens from the inside.'"]},
+      "es_es": {"title": "Un hogar al que volver",
+        "text": ["[lead] Entregá en Módulo de habitabilidad desde el Atlas:",
+                 "[li] Una [item:minecraft:white_bed|cama blanca]",
+                 "[li:minecraft:campfire] Una [item:minecraft:campfire|fogata]",
+                 "[li:minecraft:lantern] Dos [item:minecraft:lantern|faroles]",
+                 "[li:minecraft:bread] Cuatro [item:minecraft:bread|panes]",
+                 "Ponelo en su lugar del Arca, con el controlador ahí: /sethome marca tu única casa y /home te lleva de vuelta desde cualquier lado.",
+                 "{page}",
+                 "La nota de J., bajo una puerta dibujada: «Donde sea que termine el camino, tiene que haber una puerta que se abra desde adentro»."]}
     },
     {
-      "key": "copper",
-      "deps": [
-        "furnace"
-      ],
-      "item": "minecraft:copper_ingot",
-      "count": 4,
-      "en_us": [
-        "Metal that remembers weather",
-        "Smelt four copper ingots and keep them with the glass for the lens.\n\nEvery instrument in the ruin has a copper frame gone green. Someone designed them to be repaired, not replaced."
-      ],
-      "es_es": [
-        "Un metal que recuerda el clima",
-        "Fundí cuatro lingotes de cobre y guardalos junto al vidrio de la lente.\n\nTodos los instrumentos de la ruina tienen marcos de cobre verdes de óxido. Alguien los diseñó para repararlos, no para tirarlos."
-      ],
-      "layout": {
-        "x": 4.5,
-        "y": 7.75,
-        "group": "cartography",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "copper", "deps": ["furnace"], "item": "minecraft:copper_ingot", "count": 4, "layout": {"x": 4.25, "y": 7.25, "group": "cartography", "shape": "square", "size": 1.0, "hide_dependent_lines": false},
+      "en_us": {"title": "Metal that remembers weather",
+        "text": ["[lead] Smelt four [item:minecraft:copper_ingot|copper ingots] and keep them with the glass for the lens.",
+                 "Every instrument in the ruin has a copper frame gone green. Someone designed them to be repaired, not replaced."]},
+      "es_es": {"title": "Un metal que recuerda el clima",
+        "text": ["[lead] Fundí cuatro [item:minecraft:copper_ingot|lingotes de cobre] y guardalos junto al vidrio de la lente.",
+                 "Todos los instrumentos de la ruina tienen marcos de cobre verdes de óxido. Alguien los diseñó para repararlos, no para tirarlos."]}
     },
     {
-      "key": "glass",
-      "deps": [
-        "furnace"
-      ],
-      "item": "minecraft:glass",
-      "count": 4,
-      "en_us": [
-        "A window small enough to carry",
-        "Smelt four glass, taking sand from a small, safe patch rather than undermining your shelter.\n\nHeliodor built with glass so the light could reach everything. It was what its people loved most."
-      ],
-      "es_es": [
-        "Una ventana que cabe en la mano",
-        "Fundí cuatro bloques de vidrio; sacá la arena de un lugar chico y seguro, sin socavar el refugio.\n\nHeliodor construía con vidrio para que la luz llegara a todo. Era lo que su gente más amaba."
-      ],
-      "layout": {
-        "x": 6,
-        "y": 7.75,
-        "group": "cartography",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "glass", "deps": ["furnace"], "item": "minecraft:glass", "count": 4, "layout": {"x": 5.75, "y": 7.25, "group": "cartography", "shape": "square", "size": 1.0, "hide_dependent_lines": false},
+      "en_us": {"title": "A window small enough to carry",
+        "text": ["[lead] Smelt four [item:minecraft:glass|glass].",
+                 "Take the sand from a small, safe patch rather than undermining your shelter.",
+                 "Heliodor built with glass so the light could reach everything. It was what its people loved most."]},
+      "es_es": {"title": "Una ventana que cabe en la mano",
+        "text": ["[lead] Fundí cuatro bloques de [item:minecraft:glass|vidrio].",
+                 "Sacá la arena de un lugar chico y seguro, sin socavar el refugio.",
+                 "Heliodor construía con vidrio para que la luz llegara a todo. Era lo que su gente más amaba."]}
     },
     {
-      "key": "lens",
-      "deps": [
-        "atlas"
-      ],
-      "milestone": "lens_assembled",
+      "key": "lens", "deps": ["atlas"], "milestone": "lens_assembled", "layout": {"x": 2.5, "y": 15.75, "group": "cartography", "shape": "hexagon", "size": 2.0, "hide_dependent_lines": false},
       "icon": "entrelumen:raw_lens",
-      "en_us": [
-        "A borrowed horizon",
-        "Open the Atlas, select Assemble the Lens and deliver the listed materials to receive the raw lens once. Keep it for the first signal.\n\nBeside the sketch, in a small, precise hand: 'Measure before believing. —T.'"
-      ],
-      "es_es": [
-        "Un horizonte prestado",
-        "Abrí el Atlas, elegí Ensamblar la lente y entregá los materiales para recibir la lente en bruto una sola vez. Guardala para la primera señal.\n\nJunto al dibujo, con letra chica y precisa: «Medí antes de creer. —T.»"
-      ],
-      "layout": {
-        "x": 2.25,
-        "y": 15.75,
-        "group": "cartography",
-        "shape": "hexagon",
-        "size": 2.0,
-        "hide_dependent_lines": false
-      }
+      "en_us": {"title": "A borrowed horizon",
+        "text": ["[lead] Open the Atlas, select Assemble the Lens and deliver the listed materials.",
+                 "You receive the [item:entrelumen:raw_lens|raw lens] once: keep it for the first signal.",
+                 "Beside the sketch, in a small, precise hand: 'Measure before believing. —T.'"]},
+      "es_es": {"title": "Un horizonte prestado",
+        "text": ["[lead] Abrí el Atlas, elegí Ensamblar la lente y entregá los materiales.",
+                 "Recibís la [item:entrelumen:raw_lens|lente en bruto] una sola vez: guardala para la primera señal.",
+                 "Junto al dibujo, con letra chica y precisa: «Medí antes de creer. —T.»"]}
     },
     {
-      "key": "map_marker",
-      "deps": [
-        "storage"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "map_marker", "deps": ["storage"], "type": "checkmark", "optional": true, "layout": {"x": -3.25, "y": 4.5, "group": "qol", "shape": "circle", "size": 0.75, "hide_dependent_lines": false},
       "icon": "minecraft:map",
-      "en_us": [
-        "Mark the ordinary",
-        "Find the map's controls and mark your shelter with a practical name.\n\nThe Atlas remembers a world that no longer matches yours. Your own map is the one that tells the truth today."
-      ],
-      "es_es": [
-        "Marcar lo cotidiano",
-        "Buscá los controles del mapa y marcá tu refugio con un nombre práctico.\n\nEl Atlas recuerda un mundo que ya no coincide con el tuyo. Tu mapa es el que dice la verdad hoy."
-      ],
-      "layout": {
-        "x": -3.25,
-        "y": 4.5,
-        "group": "qol",
-        "shape": "circle",
-        "size": 0.75,
-        "hide_dependent_lines": false
-      }
+      "en_us": {"title": "Mark the ordinary",
+        "text": ["[lead] Find the map's controls and mark your shelter with a practical name.",
+                 "The Atlas remembers a world that no longer matches yours. Your own map is the one that tells the truth today."]},
+      "es_es": {"title": "Marcar lo cotidiano",
+        "text": ["[lead] Buscá los controles del mapa y marcá tu refugio con un nombre práctico.",
+                 "El Atlas recuerda un mundo que ya no coincide con el tuyo. Tu mapa es el que dice la verdad hoy."]}
     },
     {
-      "key": "survey_kit",
-      "deps": [
-        "bread",
-        "light"
-      ],
-      "item": "minecraft:paper",
-      "count": 3,
-      "en_us": [
-        "Leave with a question",
-        "Prepare three paper for field notes, and pack food, a pickaxe and light with room left for samples.\n\nThe compass will not send you far. Heliodor's traces are close, if you know how to look."
-      ],
-      "es_es": [
-        "Salir con una pregunta",
-        "Prepará tres papeles para las notas de campo y llevá comida, pico y luz, con lugar para muestras.\n\nLa brújula no te va a mandar lejos. Los rastros de Heliodor están cerca, si sabés mirar."
-      ],
-      "layout": {
-        "x": 4.5,
-        "y": 10.75,
-        "group": "cartography",
-        "shape": "square",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "survey_kit", "deps": ["bread", "light"], "item": "minecraft:paper", "count": 3, "layout": {"x": 4.25, "y": 10.25, "group": "cartography", "shape": "square", "size": 1.0, "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Leave with a question",
+        "text": ["[lead] Prepare three [item:minecraft:paper|paper] for field notes.",
+                 "Pack food, a pickaxe and light, with room left for samples.",
+                 "The compass will not send you far. Heliodor's traces are close, if you know how to look."]},
+      "es_es": {"title": "Salir con una pregunta",
+        "text": ["[lead] Prepará tres [item:minecraft:paper|papeles] para las notas de campo.",
+                 "Llevá comida, pico y luz, con lugar para muestras.",
+                 "La brújula no te va a mandar lejos. Los rastros de Heliodor están cerca, si sabés mirar."]}
     },
     {
-      "key": "survey",
-      "deps": [
-        "atlas",
-        "lens"
-      ],
-      "milestone": "field_survey",
+      "key": "survey", "deps": ["atlas", "lens"], "milestone": "field_survey", "layout": {"x": 5.75, "y": 15.75, "group": "cartography", "shape": "hexagon", "size": 2.0, "hide_dependent_lines": false},
       "icon": "entrelumen:survey_notes",
-      "en_us": [
-        "Two accounts of one place",
-        "Take a short walk and compare a nearby landmark with your map, then open Field Survey in the Atlas and deliver its materials (paper and an ordinary compass) to receive your survey notes.\n\nWhat the villagers remember and what the Atlas remembers do not match. Somebody has to write it down again."
-      ],
-      "es_es": [
-        "Dos versiones de un lugar",
-        "Hacé una caminata corta y compará un punto cercano con tu mapa; después abrí Relevamiento de campo en el Atlas y entregá sus materiales (papel y una brújula común) para recibir las notas de relevamiento.\n\nLo que recuerdan los aldeanos y lo que recuerda el Atlas no coincide. Alguien tiene que volver a escribirlo."
-      ],
-      "layout": {
-        "x": 5.25,
-        "y": 15.75,
-        "group": "cartography",
-        "shape": "hexagon",
-        "size": 2.0,
-        "hide_dependent_lines": false
-      }
+      "en_us": {"title": "Two accounts of one place",
+        "text": ["[lead] Take a short walk and compare a nearby landmark with your map.",
+                 "Then open Field Survey in the Atlas and deliver its materials (paper and an ordinary [item:minecraft:compass|compass]) to receive your [item:entrelumen:survey_notes|survey notes].",
+                 "What the villagers remember and what the Atlas remembers do not match. Somebody has to write it down again."]},
+      "es_es": {"title": "Dos versiones de un lugar",
+        "text": ["[lead] Hacé una caminata corta y compará un punto cercano con tu mapa.",
+                 "Después abrí Relevamiento de campo en el Atlas y entregá sus materiales (papel y una [item:minecraft:compass|brújula] común) para recibir las [item:entrelumen:survey_notes|notas de relevamiento].",
+                 "Lo que recuerdan los aldeanos y lo que recuerda el Atlas no coincide. Alguien tiene que volver a escribirlo."]}
     },
     {
-      "key": "unpack",
-      "deps": [
-        "survey_kit"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "unpack", "deps": ["survey_kit"], "type": "checkmark", "optional": true, "layout": {"x": 6.0, "y": 11.5, "group": "qol", "shape": "circle", "size": 0.75, "hide_dependent_lines": false},
       "icon": "minecraft:chest",
-      "en_us": [
-        "The expedition ends at home",
-        "Back home, restock food and torches before storing the rest, try matching-deposit and note one material you were missing.\n\nEvery trip in J.'s notes ends the same way: 'Back home. Nobody lost.'"
-      ],
-      "es_es": [
-        "La expedición termina en casa",
-        "Al volver, reponé comida y antorchas antes de guardar el resto, probá depositar coincidentes y anotá un material que te faltó.\n\nCada viaje de las notas de J. termina igual: «De vuelta en casa. No se perdió nadie»."
-      ],
-      "layout": {
-        "x": 7.75,
-        "y": 10.75,
-        "group": "qol",
-        "shape": "circle",
-        "size": 0.75,
-        "hide_dependent_lines": false
-      }
+      "en_us": {"title": "The expedition ends at home",
+        "text": ["[lead] Back home, restock food and torches before storing the rest.",
+                 "Try matching-deposit, and note one material you were missing.",
+                 "Every trip in J.'s notes ends the same way: 'Back home. Nobody lost.'"]},
+      "es_es": {"title": "La expedición termina en casa",
+        "text": ["[lead] Al volver, reponé comida y antorchas antes de guardar el resto.",
+                 "Probá depositar coincidentes y anotá un material que te faltó.",
+                 "Cada viaje de las notas de J. termina igual: «De vuelta en casa. No se perdió nadie»."]}
     },
     {
-      "key": "signal",
-      "deps": [
-        "table",
-        "lens",
-        "survey",
-        "habitation"
-      ],
-      "milestone": "first_signal",
+      "key": "signal", "deps": ["table", "lens", "survey", "habitation"], "milestone": "first_signal", "layout": {"x": 0, "y": 19.5, "group": "signal", "shape": "hexagon", "size": 3.0, "hide_dependent_lines": false},
       "icon": "entrelumen:signal_core",
-      "en_us": [
-        "One light answers",
-        "Open First Signal in the Atlas and deliver the listed materials. Bring the Signal Ember, from the Signal Tower, as well. Once, your team receives a signal core and two of Terra's calibration frames: the core builds a survey station, and one frame builds the metallurgic infuser that copies the rest.\n\nFar away, a light answers. Through the static, a voice: '…can you &khear&r… us? We are still… here.'"
-      ],
-      "es_es": [
-        "Una luz responde",
-        "Abrí Primera señal en el Atlas y entregá los materiales. Llevá también la Brasa de la Señal, de la Torre de la Señal. Una sola vez, tu equipo recibe un núcleo de señal y dos marcos de calibración de Terra: el núcleo construye una estación cartográfica y un marco, el infusor metalúrgico que copia los demás.\n\nA lo lejos, una luz responde. Entre la estática, una voz: «…¿nos &koís&r? Seguimos… acá»."
-      ],
-      "layout": {
-        "x": 0,
-        "y": 19.5,
-        "group": "signal",
-        "shape": "hexagon",
-        "size": 3.0,
-        "hide_dependent_lines": false
-      }
+      "en_us": {"title": "One light answers",
+        "text": ["[lead] Open First Signal in the Atlas and deliver the listed materials.",
+                 "Bring the [item:entrelumen:signal_ember|Signal Ember], from the Signal Tower, as well.",
+                 "Once, your team receives a [item:entrelumen:signal_core|signal core] and two of Terra's [item:entrelumen:calibration_frame|calibration frames]: the core builds a survey station, and one frame builds the metallurgic infuser that copies the rest.",
+                 "{page}",
+                 "Far away, a light answers. Through the static, a voice: '…can you [glitch|hear]… us? We are still… here.'"]},
+      "es_es": {"title": "Una luz responde",
+        "text": ["[lead] Abrí Primera señal en el Atlas y entregá los materiales.",
+                 "Llevá también la [item:entrelumen:signal_ember|Brasa de la Señal], de la Torre de la Señal.",
+                 "Una sola vez, tu equipo recibe un [item:entrelumen:signal_core|núcleo de señal] y dos [item:entrelumen:calibration_frame|marcos de calibración] de Terra: el núcleo construye una estación cartográfica y un marco, el infusor metalúrgico que copia los demás.",
+                 "{page}",
+                 "A lo lejos, una luz responde. Entre la estática, una voz: «…¿nos [glitch|oís]? Seguimos… acá»."]}
     },
     {
-      "key": "next_page",
-      "deps": [
-        "signal"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "next_page", "deps": ["signal"], "type": "checkmark", "optional": true, "layout": {"x": -1.5, "y": 22.75, "group": "signal", "shape": "circle", "size": 0.75, "hide_dependent_lines": false},
       "icon": "entrelumen:atlas",
-      "en_us": [
-        "A workshop with a destination",
-        "When every project of this act is delivered, choose Advance in the Atlas to open the next one; if it takes too long, choose Refresh before retrying.\n\nThe voice has gone quiet. Once you advance, the compass will turn toward a workshop that sank with its tools inside."
-      ],
-      "es_es": [
-        "Un taller con destino",
-        "Cuando entregues todos los proyectos del acto, pulsá Avanzar en el Atlas para abrir el siguiente; si tarda, pulsá Actualizar antes de reintentar.\n\nLa voz se calló. Cuando avances, la brújula va a girar hacia un taller que se hundió con las herramientas adentro."
-      ],
-      "layout": {
-        "x": -1.5,
-        "y": 22.75,
-        "group": "signal",
-        "shape": "circle",
-        "size": 0.75,
-        "hide_dependent_lines": false
-      }
+      "en_us": {"title": "A workshop with a destination",
+        "text": ["[lead] Once every project of this act is delivered, choose Advance in the Atlas.",
+                 "If it takes too long, choose Refresh before retrying.",
+                 "The voice has gone quiet. Once you advance, the compass will turn toward a workshop that sank with its tools inside."]},
+      "es_es": {"title": "Un taller con destino",
+        "text": ["[lead] Cuando entregues todos los proyectos del acto, pulsá Avanzar en el Atlas.",
+                 "Si tarda, pulsá Actualizar antes de reintentar.",
+                 "La voz se calló. Cuando avances, la brújula va a girar hacia un taller que se hundió con las herramientas adentro."]}
     },
     {
-      "key": "survey_station",
-      "deps": [
-        "signal"
-      ],
-      "item": "entrelumen:survey_station",
-      "optional": true,
-      "en_us": [
-        "A place your compass remembers",
-        "Build a survey station from the signal core, copper, smooth stone and glass. Use an ordinary compass on it to mark the spot without spending the compass (it points here within this dimension); an empty hand opens your team's Atlas.\n\nHeliodor had a station like this in every square. The Heliodor Compass follows the Atlas; this one brings you home."
-      ],
-      "es_es": [
-        "Un lugar que tu brújula recuerda",
-        "Construí una estación cartográfica con el núcleo de señal, cobre, piedra lisa y vidrio. Usá una brújula común sobre ella para marcar el lugar sin gastarla (apunta acá dentro de esta dimensión); con la mano vacía abre el Atlas de tu equipo.\n\nHeliodor tenía una estación así en cada plaza. La Brújula de Heliodor sigue al Atlas; esta te trae a casa."
-      ],
-      "layout": {
-        "x": 1.5,
-        "y": 22.75,
-        "group": "signal",
-        "shape": "diamond",
-        "size": 1.0,
-        "hide_dependent_lines": false
-      }
+      "key": "survey_station", "deps": ["signal"], "item": "entrelumen:survey_station", "optional": true, "layout": {"x": 1.5, "y": 22.75, "group": "signal", "shape": "diamond", "size": 1.0, "hide_dependent_lines": false},
+      "en_us": {"title": "A place your compass remembers",
+        "text": ["[lead] Build a [item:entrelumen:survey_station|survey station] from the signal core, copper, smooth stone and glass.",
+                 "[li] An ordinary compass used on it points here, within this dimension, and is not spent",
+                 "[li] An empty hand opens your team's Atlas",
+                 "{page}",
+                 "Heliodor had a station like this in every square. The Heliodor Compass follows the Atlas; this one brings you home."]},
+      "es_es": {"title": "Un lugar que tu brújula recuerda",
+        "text": ["[lead] Construí una [item:entrelumen:survey_station|estación cartográfica] con el núcleo de señal, cobre, piedra lisa y vidrio.",
+                 "[li] Una brújula común usada sobre ella apunta acá, dentro de esta dimensión, y no se gasta",
+                 "[li] Con la mano vacía abre el Atlas de tu equipo",
+                 "{page}",
+                 "Heliodor tenía una estación así en cada plaza. La Brújula de Heliodor sigue al Atlas; esta te trae a casa."]}
+    },
+    {
+      "key": "first_hour_toy_place", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"group": "kitchen", "x": -4.25, "y": 15.0, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:bowl",
+      "en_us": {"title": "One more place",
+        "text": ["[lead] Set one more bowl than there are guests.",
+                 "J. did it every night. Somebody always arrived."]},
+      "es_es": {"title": "Un lugar más",
+        "text": ["[lead] Poné un cuenco más que invitados.",
+                 "J. lo hacía todas las noches. Siempre llegaba alguien."]}
+    },
+    {
+      "key": "first_hour_toy_star", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"group": "shelter", "x": -9.0, "y": -3.6, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:nether_star",
+      "en_us": {"title": "The evening star",
+        "text": ["[lead] The first star comes out over the ruin.",
+                 "Someone here drew lines between the stars. The lines do not match the sky any more."]},
+      "es_es": {"title": "El lucero",
+        "text": ["[lead] La primera estrella sale sobre la ruina.",
+                 "Alguien acá dibujó líneas entre las estrellas. Ya no coinciden con el cielo."]}
     }
   ],
-  "layout_groups": {
-    "shelter": {
-      "en_us": "Shelter by the ruin",
-      "es_es": "Refugio junto a la ruina"
-    },
-    "kitchen": {
-      "en_us": "J.'s notes · Garden and table",
-      "es_es": "Notas de J. · Huerta y mesa"
-    },
-    "cartography": {
-      "en_us": "T.'s notes · Measure the horizon",
-      "es_es": "Notas de T. · Medir el horizonte"
-    },
-    "signal": {
-      "en_us": "A light answers",
-      "es_es": "Una luz responde"
-    },
-    "qol": {
-      "en_us": "Small useful habits",
-      "es_es": "Pequeñas costumbres útiles"
-    }
-  },
+  "layout_groups": {"shelter": {"en_us": "Shelter by the ruin", "es_es": "Refugio junto a la ruina"}, "kitchen": {"en_us": "J.'s notes · Garden and table", "es_es": "Notas de J. · Huerta y mesa"}, "cartography": {"en_us": "T.'s notes · Measure the horizon", "es_es": "Notas de T. · Medir el horizonte"}, "signal": {"en_us": "A light answers", "es_es": "Una luz responde"}, "qol": {"en_us": "Small useful habits", "es_es": "Pequeñas costumbres útiles"}},
   "autofocus": "arrival",
-  "milestones": [
-    "atlas_awakened",
-    "travellers_table",
-    "lens_assembled",
-    "field_survey",
-    "habitation_module",
-    "first_signal"
-  ]
+  "milestones": ["atlas_awakened", "travellers_table", "lens_assembled", "field_survey", "habitation_module", "first_signal"],
+  "presentation": 2,
+  "art": [
+    {"id": "sky_0", "picture": "#2B2350", "x": -0.09999999999999964, "y": -5.300000000000001, "w": 25.0, "h": 1.2000000000000002, "alpha": 70, "order": -12},
+    {"id": "sky_1", "picture": "#43305F", "x": -0.09999999999999964, "y": -4.15, "w": 25.0, "h": 1.1, "alpha": 74, "order": -12},
+    {"id": "sky_2", "picture": "#6E3F62", "x": -0.09999999999999964, "y": -3.1, "w": 25.0, "h": 1.0, "alpha": 78, "order": -12},
+    {"id": "sky_3", "picture": "#A8575A", "x": -0.09999999999999964, "y": -2.15, "w": 25.0, "h": 0.9000000000000001, "alpha": 82, "order": -12},
+    {"id": "sky_4", "picture": "#D9804F", "x": -0.09999999999999964, "y": -1.35, "w": 25.0, "h": 0.7, "alpha": 86, "order": -12},
+    {"id": "sun", "glow": [-6.6, -1.75], "r": 0.75, "alpha": 255, "tint": "#FFC98A", "order": -10},
+    {"id": "sun_haze", "glow": [-6.6, -1.75], "r": 2.4, "alpha": 80, "order": -11},
+    {"id": "hills", "path": [[-12.6, -1.25], [-9.5, -1.55], [-7.2, -1.2], [-4.0, -1.45], [-1.8, -1.1], [2.0, -1.35], [5.0, -1.1], [8.0, -1.5], [12.4, -1.2]], "smooth": 2, "color": "#1C1626", "width": 0.5, "alpha": 90, "order": -9},
+    {"id": "night", "picture": "#0B0D26", "x": -0.09999999999999964, "y": -3.45, "w": 25.0, "h": 4.9, "alpha": 150, "reveal": "signal", "order": -10},
+    {"id": "stars_atlas", "scatter": ["minecraft:textures/particle/critical_hit.png", "minecraft:textures/particle/generic_0.png", "minecraft:textures/particle/spark_0.png"], "region": [-12.2, -5.7, -3.0, -2.6], "count": 5, "size": [0.12, 0.3], "alphas": [150, 255], "seed": 30, "reveal": "atlas", "order": -6, "tint": "#FFF4DA", "avoid": [[-6.6, -1.75, 1.6], [11.0, -3.2, 1.2], [-9.0, -3.6, 0.8]]},
+    {"id": "stars_table", "scatter": ["minecraft:textures/particle/critical_hit.png", "minecraft:textures/particle/generic_0.png", "minecraft:textures/particle/spark_0.png"], "region": [-3.0, -5.7, 4.0, -2.8], "count": 5, "size": [0.12, 0.3], "alphas": [150, 255], "seed": 31, "reveal": "table", "order": -6, "tint": "#FFF4DA", "avoid": [[-6.6, -1.75, 1.6], [11.0, -3.2, 1.2], [-9.0, -3.6, 0.8]]},
+    {"id": "stars_lens", "scatter": ["minecraft:textures/particle/critical_hit.png", "minecraft:textures/particle/generic_0.png", "minecraft:textures/particle/spark_0.png"], "region": [3.5, -5.7, 9.4, -2.8], "count": 5, "size": [0.12, 0.3], "alphas": [150, 255], "seed": 32, "reveal": "lens", "order": -6, "tint": "#FFF4DA", "avoid": [[-6.6, -1.75, 1.6], [11.0, -3.2, 1.2], [-9.0, -3.6, 0.8]]},
+    {"id": "stars_survey", "scatter": ["minecraft:textures/particle/critical_hit.png", "minecraft:textures/particle/generic_0.png", "minecraft:textures/particle/spark_0.png"], "region": [-12.2, -4.2, -0.5, -2.0], "count": 4, "size": [0.12, 0.3], "alphas": [150, 255], "seed": 33, "reveal": "survey", "order": -6, "tint": "#FFF4DA", "avoid": [[-6.6, -1.75, 1.6], [11.0, -3.2, 1.2], [-9.0, -3.6, 0.8]]},
+    {"id": "stars_habitation", "scatter": ["minecraft:textures/particle/critical_hit.png", "minecraft:textures/particle/generic_0.png", "minecraft:textures/particle/spark_0.png"], "region": [0.5, -4.4, 9.0, -2.1], "count": 4, "size": [0.12, 0.3], "alphas": [150, 255], "seed": 34, "reveal": "habitation", "order": -6, "tint": "#FFF4DA", "avoid": [[-6.6, -1.75, 1.6], [11.0, -3.2, 1.2], [-9.0, -3.6, 0.8]]},
+    {"id": "stars_signal", "scatter": ["minecraft:textures/particle/critical_hit.png", "minecraft:textures/particle/generic_0.png", "minecraft:textures/particle/spark_0.png"], "region": [-12.299999999999999, -5.8, 12.1, -2.0], "count": 10, "size": [0.12, 0.3], "alphas": [150, 255], "seed": 35, "reveal": "signal", "order": -6, "tint": "#FFF4DA", "avoid": [[-6.6, -1.75, 1.6], [11.0, -3.2, 1.2], [-9.0, -3.6, 0.8]]},
+    {"id": "tower", "picture": "minecraft:textures/block/calcite.png", "x": 11.0, "y": -2.45, "w": 0.55, "h": 2.9, "sketch": true, "reveal": "atlas", "order": -7},
+    {"id": "tower_ribs", "picture": "minecraft:textures/block/oxidized_cut_copper.png", "x": 11.0, "y": -2.45, "w": 0.16, "h": 2.9, "reveal": "atlas", "order": -6},
+    {"id": "tower_dome", "picture": "minecraft:textures/block/oxidized_copper.png", "x": 11.0, "y": -4.05, "w": 0.95, "h": 0.4, "sketch": true, "reveal": "atlas", "order": -6},
+    {"id": "tower_lantern", "picture": "minecraft:textures/block/glass.png", "x": 11.0, "y": -4.45, "w": 0.4, "h": 0.4, "sketch": true, "reveal": "atlas", "order": -6},
+    {"id": "tower_answer", "glow": [11.0, -4.45], "r": 1.5, "alpha": 230, "reveal": "signal", "order": -3},
+    {"id": "tower_beam", "picture": "minecraft:textures/entity/beacon_beam.png", "x": 11.0, "y": -5.15, "w": 0.3, "h": 1.4, "tint": "#FFE39A", "alpha": 220, "reveal": "signal", "order": -4},
+    {"id": "tower_name", "text": {"en_us": "The Signal Tower", "es_es": "La Torre de la Señal"}, "x": 10.5, "y": -0.45, "scale": 1, "align": "middle", "tint": "#E8DCB5", "reveal": "atlas"},
+    {"id": "ruin_left", "sprite": "minecraft:block/tuff_bricks", "x": -1.45, "y": -1.05, "w": 0.7, "h": 1.9, "sketch": true, "reveal": "arrival", "order": -5},
+    {"id": "ruin_left_cap", "sprite": "minecraft:block/chiseled_tuff", "x": -1.45, "y": -2.2, "w": 0.95, "h": 0.4, "sketch": true, "reveal": "arrival", "order": -4},
+    {"id": "ruin_right", "sprite": "minecraft:block/tuff_bricks", "x": 1.45, "y": -0.6, "w": 0.7, "h": 1.0, "sketch": true, "reveal": "arrival", "order": -5},
+    {"id": "ruin_fallen", "sprite": "minecraft:block/chiseled_tuff", "x": 2.45, "y": 0.35, "w": 0.95, "h": 0.4, "rotation": 18, "reveal": "arrival", "order": -4},
+    {"id": "ruin_moss", "sprite": "minecraft:block/moss_block", "cells": [[-1.45, -0.05], [1.45, -0.05]], "w": 0.75, "h": 0.14, "reveal": "arrival", "order": -3},
+    {"id": "pedestal_glow", "glow": [0, 0], "r": 1.2, "alpha": 150, "reveal": "arrival"},
+    {"id": "compass", "item": "entrelumen:heliodor_compass", "x": 0.85, "y": -0.55, "size": 0.55, "reveal": "arrival"},
+    {"id": "compass_path", "through": ["arrival", "workbench", "stone_tools", "furnace", [0.3, 6.4], [-0.9, 8.4], [-0.3, 10.2], [0.55, 11.6], "atlas"], "smooth": 2, "dots": "#E8B04A", "size": 0.14, "step": 0.56, "grow": ["workbench", "stone_tools", "furnace", "furnace", "light", "bread", "survey_kit", "atlas"], "sketch": true, "order": -3},
+    {"id": "torches", "path": [[1.2, 5.9], [0.85, 7.1], [-0.45, 8.9], [0.15, 10.6], [1.1, 11.9]], "smooth": 3, "dots": "minecraft:textures/block/torch.png", "size": 0.6, "step": 1.55, "reveal": "light", "order": -2},
+    {"id": "courtyard", "path": [[1.75, 13.5], [1.2374368670764582, 14.737436867076458], [1.071565949253934e-16, 15.25], [-1.237436867076458, 14.737436867076458], [-1.75, 13.5], [-1.2374368670764584, 12.262563132923542], [-3.214697847761802e-16, 11.75], [1.237436867076458, 12.262563132923542]], "closed": true, "texture": "minecraft:textures/block/tuff_bricks.png", "width": 0.4, "step": 0.7, "sketch": true, "reveal": "atlas", "order": -5},
+    {"id": "courtyard_lanterns", "sprite": "minecraft:block/lantern", "cells": [[-1.9, 12.35], [1.9, 12.35]], "w": 0.45, "h": 0.45, "reveal": "atlas", "order": -2},
+    {"id": "courtyard_glow_l", "glow": [-1.9, 12.35], "r": 0.8, "reveal": "atlas"},
+    {"id": "courtyard_glow_r", "glow": [1.9, 12.35], "r": 0.8, "reveal": "atlas"},
+    {"id": "courtyard_name", "lettering": {"en_us": "ATLAS COURTYARD", "es_es": "PATIO DEL ATLAS"}, "path": [[-2.35, 14.1], [-1.4, 15.25], [0, 15.75], [1.4, 15.25], [2.35, 14.1]], "scale": 1, "tint": "#E8B04A", "reveal": "atlas"},
+    {"id": "stream", "path": [[-11.7, -1.2], [-11.35, 1.5], [-11.75, 4.0], [-11.2, 6.4], [-11.0, 7.35]], "smooth": 2, "sprite": "minecraft:block/water_flow", "tint": "#3F76E4", "width": 0.45, "step": 0.75, "sketch": true, "reveal": "water", "order": -5},
+    {"id": "farmland", "picture": "minecraft:textures/block/farmland.png", "x": -11.0, "y": 10.85, "w": 2.1, "h": 0.3, "sketch": true, "reveal": "water", "order": -4},
+    {"id": "wheat", "sprite": "minecraft:block/wheat_stage7", "cells": [[-11.75, 10.45], [-11.25, 10.45], [-10.75, 10.45], [-10.25, 10.45]], "w": 0.5, "h": 0.55, "reveal": "garden", "order": -3},
+    {"id": "walls", "frame": [-9.7, 7.2, -3.1, 18.35], "color": "#9A7650", "thickness_px": 2.0, "alpha": 220, "fill": "#2A1E14", "fill_alpha": 110, "corners": false, "sketch": true, "reveal": "storage", "order": -8},
+    {"id": "floor", "path": [[-9.7, 11.35], [-3.1, 11.35]], "texture": "minecraft:textures/block/spruce_planks.png", "width": 0.3, "step": 0.66, "sketch": true, "reveal": "storage", "order": -6},
+    {"id": "roof_l", "path": [[-10.25, 7.5], [-6.3999999999999995, 5.2]], "texture": "minecraft:textures/block/dark_oak_planks.png", "width": 0.42, "step": 0.55, "sketch": true, "reveal": "furnace", "order": -6},
+    {"id": "roof_r", "path": [[-6.3999999999999995, 5.2], [-2.55, 7.5]], "texture": "minecraft:textures/block/dark_oak_planks.png", "width": 0.42, "step": 0.55, "sketch": true, "reveal": "furnace", "order": -6},
+    {"id": "chimney", "picture": "minecraft:textures/block/bricks.png", "x": -4.55, "y": 5.85, "w": 0.5, "h": 1.1, "sketch": true, "reveal": "furnace", "order": -7},
+    {"id": "smoke", "scatter": "minecraft:textures/particle/big_smoke_0.png", "region": [-5.0, 3.9, -4.0, 5.0], "count": 4, "size": [0.3, 0.55], "alphas": [100, 160], "seed": 3, "reveal": "furnace", "order": -2},
+    {"id": "counter", "picture": "minecraft:textures/block/spruce_planks.png", "x": -8.5, "y": 10.85, "w": 2.2, "h": 0.28, "sketch": true, "reveal": "cutting_board", "order": -4},
+    {"id": "hearth", "item": "minecraft:campfire", "x": -5.05, "y": 10.6, "size": 0.75, "reveal": "knife"},
+    {"id": "kitchen_lamp", "item": "minecraft:lantern", "x": -7.6, "y": 7.75, "size": 0.45, "reveal": "bowl"},
+    {"id": "kitchen_glow", "glow": [-7.6, 7.8], "r": 1.0, "alpha": 120, "reveal": "bowl"},
+    {"id": "board", "picture": "minecraft:textures/block/oak_planks.png", "x": -6.3, "y": 15.25, "w": 5.0, "h": 0.3, "sketch": true, "reveal": "table", "order": -4},
+    {"id": "board_legs", "picture": "minecraft:textures/block/oak_planks.png", "x": -8.45, "y": 15.95, "w": 0.22, "h": 1.1, "sketch": true, "reveal": "table", "order": -5},
+    {"id": "board_legs_r", "picture": "minecraft:textures/block/oak_planks.png", "x": -4.15, "y": 15.95, "w": 0.22, "h": 1.1, "sketch": true, "reveal": "table", "order": -5},
+    {"id": "chairs", "item": "minecraft:oak_stairs", "x": -9.1, "y": 15.6, "size": 0.7, "rotation": 0, "reveal": "table"},
+    {"id": "bowls", "path": [[-8.6, 14.95], [-5.4, 14.95]], "dots": "minecraft:textures/item/bowl.png", "size": 0.42, "step": 1.05, "reveal": "bowl", "order": -2},
+    {"id": "loaves", "picture": "minecraft:textures/item/bread.png", "x": -5.6, "y": 14.85, "w": 0.5, "h": 0.5, "reveal": "bread", "order": -1},
+    {"id": "extra_place", "picture": "minecraft:textures/item/bowl.png", "x": -3.75, "y": 14.95, "w": 0.42, "h": 0.42, "reveal": "first_hour_toy_place", "order": -1},
+    {"id": "extra_chair", "item": "minecraft:oak_stairs", "x": -3.55, "y": 15.6, "size": 0.7, "reveal": "first_hour_toy_place"},
+    {"id": "door_top", "picture": "minecraft:textures/block/spruce_door_top.png", "x": -3.1, "y": 16.85, "w": 0.7, "h": 0.8, "sketch": true, "reveal": "habitation", "order": -3},
+    {"id": "door_bottom", "picture": "minecraft:textures/block/spruce_door_bottom.png", "x": -3.1, "y": 17.65, "w": 0.7, "h": 0.8, "sketch": true, "reveal": "habitation", "order": -3},
+    {"id": "door_light", "glow": [-2.7, 17.3], "r": 1.3, "alpha": 170, "reveal": "habitation"},
+    {"id": "door_lantern", "item": "minecraft:lantern", "x": -2.55, "y": 16.25, "size": 0.45, "reveal": "habitation"},
+    {"id": "window", "picture": "minecraft:textures/block/glass.png", "x": -5.0, "y": 8.3, "w": 0.7, "h": 0.7, "sketch": true, "reveal": "habitation", "order": -3},
+    {"id": "window_light", "glow": [-5.0, 8.3], "r": 0.8, "alpha": 200, "reveal": "habitation"},
+    {"id": "marker", "picture": "minecraft:textures/map/decorations/white_banner.png", "x": -6.3999999999999995, "y": 4.25, "w": 0.6, "h": 0.6, "reveal": "map_marker", "order": -1},
+    {"id": "marker_name", "text": {"en_us": "Home", "es_es": "Casa"}, "x": -5.8999999999999995, "y": 4.25, "scale": 1, "align": "start", "tint": "#E8DCB5", "reveal": "map_marker"},
+    {"id": "bedroll", "sprite": "minecraft:block/red_wool", "x": -4.6, "y": 3.35, "w": 0.9, "h": 0.25, "sketch": true, "reveal": "bed", "order": -3},
+    {"id": "note_pin", "picture": "minecraft:textures/item/paper.png", "x": -4.55, "y": 1.35, "w": 0.45, "h": 0.45, "rotation": -10, "reveal": "recipe_favourites", "order": -2},
+    {"id": "tripod_l", "path": [[8.55, 8.35], [7.85, 10.75]], "texture": "minecraft:textures/block/stripped_spruce_log.png", "width": 0.14, "step": 0.6, "turn": true, "sketch": true, "reveal": "copper", "order": -4},
+    {"id": "tripod_m", "path": [[8.55, 8.35], [8.6, 10.95]], "texture": "minecraft:textures/block/stripped_spruce_log.png", "width": 0.14, "step": 0.6, "turn": true, "sketch": true, "reveal": "copper", "order": -4},
+    {"id": "tripod_r", "path": [[8.55, 8.35], [9.35, 10.75]], "texture": "minecraft:textures/block/stripped_spruce_log.png", "width": 0.14, "step": 0.6, "turn": true, "sketch": true, "reveal": "copper", "order": -4},
+    {"id": "tube", "path": [[7.75, 9.1], [9.55, 6.55]], "texture": "minecraft:textures/block/cut_copper.png", "width": 0.4, "step": 0.45, "turn": true, "sketch": true, "reveal": "copper", "order": -3},
+    {"id": "tube_lens", "picture": "minecraft:textures/block/glass.png", "x": 9.62, "y": 6.45, "w": 0.55, "h": 0.55, "rotation": 35, "sketch": true, "reveal": "glass", "order": -2},
+    {"id": "lens_glow", "glow": [9.62, 6.45], "r": 0.9, "alpha": 200, "reveal": "lens"},
+    {"id": "sight", "path": [[9.75, 6.1], [11.0, -0.3]], "dots": "#E8B04A", "size": 0.09, "step": 0.55, "alpha": 170, "reveal": "lens", "order": -3},
+    {"id": "satchel", "picture": "minecraft:textures/item/bundle.png", "x": 5.3, "y": 9.55, "w": 0.55, "h": 0.55, "reveal": "survey_kit", "order": -2},
+    {"id": "notes", "scatter": "minecraft:textures/item/paper.png", "region": [2.85, 9.2, 3.55, 11.0], "count": 3, "size": [0.35, 0.42], "seed": 8, "spin": true, "reveal": "survey_kit", "order": -2},
+    {"id": "home_chest", "item": "minecraft:chest", "x": 7.15, "y": 12.2, "size": 0.55, "reveal": "unpack"},
+    {"id": "survey_map", "picture": "minecraft:textures/map/map_background.png", "x": 9.1, "y": 15.1, "w": 3.0, "h": 3.0, "sketch": true, "reveal": "survey", "order": -5},
+    {"id": "survey_frame", "frame": [7.45, 13.45, 10.75, 16.75], "color": "#E8B04A", "thickness_px": 1.0, "alpha": 200, "sketch": true, "reveal": "survey", "order": -4},
+    {"id": "account_atlas", "path": [[8.2, 14.3], [9.4, 13.9], [10.2, 14.9], [9.6, 16.0], [8.4, 15.6]], "closed": true, "smooth": 3, "dots": "#E8B04A", "size": 0.1, "step": 0.45, "reveal": "survey", "order": -3},
+    {"id": "account_map", "path": [[8.4, 14.6], [9.6, 14.3], [10.0, 15.3], [9.2, 16.1], [8.1, 15.3]], "closed": true, "smooth": 3, "dots": "#6B3F1F", "size": 0.1, "step": 0.45, "reveal": "survey", "order": -3},
+    {"id": "landmark", "picture": "minecraft:textures/map/decorations/red_x.png", "x": 9.2, "y": 15.1, "w": 0.45, "h": 0.45, "reveal": "survey", "order": -2},
+    {"id": "way_home", "path": [[1.5, 22.75], [0.2, 21.75], [-2.2, 20.5], [-3.5, 18.7], [-3.0, 17.8]], "smooth": 3, "dots": "#9DC3FF", "size": 0.11, "step": 0.5, "reveal": "survey_station", "order": -3},
+    {"id": "onward", "path": [[-1.5, 22.75], [-3.2, 23.7], [-5.6, 24.1], [-7.4, 24.2]], "dots": "#E8B04A", "size": 0.12, "step": 0.5, "sketch": true, "reveal": "next_page", "order": -3},
+    {"id": "onward_hatch", "sprite": "minecraft:block/ladder", "x": -8.05, "y": 24.35, "w": 0.6, "h": 0.8, "sketch": true, "reveal": "next_page", "order": -3},
+    {"id": "evening_star", "glow": [-9.0, -3.6], "r": 0.7, "alpha": 90, "order": -5},
+    {"id": "star_lines", "path": [[-9.0, -3.6], [-7.9, -4.6], [-6.6, -4.2], [-5.6, -5.1], [-4.3, -4.5]], "color": "#C9D4FF", "width": 0.04, "alpha": 160, "reveal": "first_hour_toy_star", "order": -5},
+    {"id": "star_point_0", "picture": "minecraft:textures/particle/critical_hit.png", "x": -7.9, "y": -4.6, "w": 0.3, "h": 0.3, "reveal": "first_hour_toy_star", "order": -4},
+    {"id": "star_point_1", "picture": "minecraft:textures/particle/critical_hit.png", "x": -6.6, "y": -4.2, "w": 0.3, "h": 0.3, "reveal": "first_hour_toy_star", "order": -4},
+    {"id": "star_point_2", "picture": "minecraft:textures/particle/critical_hit.png", "x": -5.6, "y": -5.1, "w": 0.3, "h": 0.3, "reveal": "first_hour_toy_star", "order": -4},
+    {"id": "star_point_3", "picture": "minecraft:textures/particle/critical_hit.png", "x": -4.3, "y": -4.5, "w": 0.3, "h": 0.3, "reveal": "first_hour_toy_star", "order": -4}
+  ],
+  "book": {"panels": false}
 }
