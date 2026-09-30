@@ -1,0 +1,34 @@
+# ENTRELUMEN: Squat Grow 21.1.4, five times slower than its defaults (Elias, 29 September: "twerk pero tipo x5
+# veces mas lento y nerfeado"; docs/design/mod-pingpong.md, Ronda 7). Cloth Config's YAML serializer builds the
+# object from this file and keeps its defaults for every key left out (debug, hoeTakesDamage, useWhitelist,
+# allowAdventureTwerking, ae2Multiplier and the requirements block).
+# Random ticks per squat and block: chance x randomTickMultiplier = 0.2 x 2 = 0.4, against 0.5 x 4 = 2.
+!!dev.wuffs.squatgrow.config.SquatGrowConfig
+chance: 0.2
+randomTickMultiplier: 2
+range: 2
+sugarcaneMultiplier: 1
+requireHoe: false
+enableMysticalCrops: false
+enableAE2Accelerator: false
+enableDirtToGrass: false
+# The default list, then the growables that are progression or resources. Mystical Agriculture's crops extend
+# CropBlock, so the plain crop action would grow them even with enableMysticalCrops off: they are listed by
+# namespace and by tag, together with Agradditions (same crop class), Oritech's withered crop, Occultism's
+# datura, Actually Additions' lotus and coffee, Silent Gear's flax and Ars Nouveau's mage bloom.
+ignoreList:
+- minecraft:grass_block
+- minecraft:grass
+- minecraft:short_grass
+- minecraft:tall_grass
+- minecraft:netherrack
+- minecraft:warped_nylium
+- minecraft:crimson_nylium
+- "#mysticalagriculture:crops"
+- mysticalagriculture:*
+- mysticalagradditions:*
+- oritech:*
+- occultism:*
+- actuallyadditions:*
+- silentgear:*
+- ars_nouveau:*

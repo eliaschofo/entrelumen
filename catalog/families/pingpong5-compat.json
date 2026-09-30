@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "about": "Mod ping-pong round 5, batch 3 (docs/design/mod-pingpong.md#lote-3--compat-entre-sistemas-que-ya-tenemos): compat between systems the pack already has. Staging is by the round-5 family of tools/generate_family_balance.py (pingpong5compat): Advanced Peripherals' AE2 disk cells are removed (MEGA Cells, act IV, is the large-cell route).",
+  "content": {
+    "apothic_compat": [
+      "I-V",
+      "Cataclysm, Twilight Forest and Undergarden ranged weapons join Apotheosis's bow category",
+      "Affix loot for weapons Apotheosis 8 cannot categorise on its own; data map only"
+    ],
+    "irons_apothic": [
+      "II-IV",
+      "Apotheosis affixes and gems for Iron's Spells gear",
+      "Follows Iron's act II entry and the campaign World Tiers; affix values native, to review in play"
+    ],
+    "polyeng": [
+      "III",
+      "Polymorph recipe choice inside AE2 pattern encoding",
+      "Resolves conflicting outputs in ME patterns the way Polymorph does at the crafting table"
+    ],
+    "ad_astra_giselle_addon": [
+      "V",
+      "Space protection upgrades for the MekaSuit and PneumaticCraft armour, fuel loader, rocket sensor and an automated NASA workbench",
+      "The automated workbench is made from the NASA workbench, whose atomic-alloy gate (Act V) stays the way into rockets"
+    ],
+    "advancedperipherals": [
+      "III-V",
+      "ComputerCraft peripherals: ME and RS bridges, detectors, inventory manager, chat box, geo scanner and automata turtles",
+      "Optional programming beside CC: Tweaked; its AE2 disk cells are removed, the chunky turtle is off, and the player detector and chat box are range-limited"
+    ]
+  },
+  "clientOnly": [],
+  "performance": [],
+  "infrastructure": [],
+  "cfRelations": [
+    {
+      "project": 282001,
+      "satisfiedBy": "computercraft",
+      "why": "CurseForge relates Advanced Peripherals and More Red CCT to CC: Tweaked's original project (282001); the lock carries CC: Tweaked 1.120.2 from project 1676502, which provides the same computercraft mod ID their mods.toml requires ([1.119.0,) and [1.114.4,))"
+    },
+    {
+      "project": 704113,
+      "waivedFor": [
+        "Ad-Astra-Giselle-Addon-neoforge-1.21.1-8.1.jar"
+      ],
+      "why": "Botarium is a stale CurseForge relation of Giselle 8.1: its mods.toml requires only ad_astra, common_storage_lib and resourcefulconfig (Ad Astra 1.16 moved from Botarium to Common Storage Lib), and ATM10 8.1 ships this file without Botarium"
+    }
+  ],
+  "pins": [
+    {
+      "modIds": [
+        "apothic_compat"
+      ],
+      "filename": "apothic_compat-2.0.2.jar",
+      "sha256": "eaee4ee2be65b95fe10ee749dc2d023b90fb63338825f5ba0b697124f42295de",
+      "dependencies": [
+        "apotheosis [8.5,9)",
+        "minecraft [1.21.1,1.22)",
+        "neoforge [21.1.0,)"
+      ],
+      "license": "MIT",
+      "projectID": 1516278,
+      "fileID": 8219980,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/apothic-category-compat/files/8219980",
+      "downloadUrl": "https://edge.forgecdn.net/files/8219/980/apothic_compat-2.0.2.jar",
+      "sourceSha512": "2112b702f079b5b08ee21efb2933f59ab15dc3ebeb81cd4bf51213346f3f559967d8e2a3571640fce7bfabcc09b9470348f0a35809931afb23271c5fcb30513c",
+      "modrinthMapping": {
+        "projectId": "Uonyc6M4",
+        "versionId": "y4nlMQLL",
+        "downloadUrl": "https://cdn.modrinth.com/data/Uonyc6M4/versions/y4nlMQLL/apothic_compat-2.0.2.jar"
+      },
+      "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/1516278/files/8219980); FTB Evolution 1.43.1 ships the same CurseForge file with the same SHA-1; identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "irons_apothic"
+      ],
+      "filename": "irons_apothic-2.2.1.jar",
+      "sha256": "5120745dbabeac1d836bc10f673a9070e7e63bd0584c67fcd685cde9f96107c5",
+      "dependencies": [
+        "apotheosis [8.6.0,)",
+        "irons_spellbooks *",
+        "minecraft [1.21.1, 1.22)",
+        "neoforge [21.1.0,)"
+      ],
+      "license": "MIT + CC-BY-4.0",
+      "projectID": 1244863,
+      "fileID": 8480849,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/apotheosis-x-irons-spellbooks-compat/files/8480849",
+      "downloadUrl": "https://edge.forgecdn.net/files/8480/849/irons_apothic-2.2.1.jar",
+      "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/1244863/files/8480849); FTB Evolution 1.43.1 ships the same CurseForge file with the same SHA-1; not on Modrinth"
+    },
+    {
+      "modIds": [
+        "polyeng"
+      ],
+      "filename": "polyeng-0.4.1.jar",
+      "sha256": "69e565dc00abc5881ccff6801c8a0817f479eaf871d578aefd992b9b6614a2f9",
+      "dependencies": [
+        "ae2 [19.0.13-alpha,)",
+        "polymorph [1.0.4,)"
+      ],
+      "license": "LGPLv3.0",
+      "projectID": 941096,
+      "fileID": 5545923,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/polymorphic-energistics/files/5545923",
+      "sourceSha512": "7a2838f275ea229177b188632d482959408ab0caef274dd39bf4e33f49967d382137536127f75817649d58b3616b50b0d2fd0afff0d75eb86cdd947043a60694",
+      "modrinthMapping": {
+        "projectId": "VS1a14jA",
+        "versionId": "oxmWQs9t",
+        "downloadUrl": "https://cdn.modrinth.com/data/VS1a14jA/versions/oxmWQs9t/polyeng-0.4.1.jar"
+      },
+      "evidence": "ATM10 8.1 reference instance; CurseForge SHA-1 4add4d9e854807ed2b10c0cabf972244f862b21f matched; identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "ad_astra_giselle_addon"
+      ],
+      "filename": "Ad-Astra-Giselle-Addon-neoforge-1.21.1-8.1.jar",
+      "sha256": "8b50abe78976e7a85fd506b868ec896fe8d058ceb134e6cc5f5fe78f489e57bf",
+      "dependencies": [
+        "ad_astra [1.16.0,)",
+        "common_storage_lib [0.0.9,)",
+        "minecraft [1.21.1,)",
+        "neoforge [21.1.229,)",
+        "resourcefulconfig [3.0.11,)"
+      ],
+      "license": "MIT",
+      "projectID": 714958,
+      "fileID": 8676868,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/ad-astra-giselle-addon/files/8676868",
+      "sourceSha512": "f87db7faf700c8b4f8ee7090060ca2f9999bab34ec384600d8daa4b80d861d5ed5d750a96a318ae1872a8891221cdc22c99265e6ecf6ec91f624a58795ced598",
+      "modrinthMapping": {
+        "projectId": "XQDxCBVw",
+        "versionId": "ACL2XPNJ",
+        "downloadUrl": "https://cdn.modrinth.com/data/XQDxCBVw/versions/ACL2XPNJ/Ad-Astra-Giselle-Addon-neoforge-1.21.1-8.1.jar"
+      },
+      "evidence": "ATM10 8.1 reference instance; CurseForge SHA-1 fb1425a7e4024a485e6790e17f53091610a53eb8 matched; identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "advancedperipherals"
+      ],
+      "filename": "AdvancedPeripherals-1.21.1-0.8.0a.jar",
+      "sha256": "5f1021046ba20a5c19ff56fbf5aaf9243355d9b8ccd9ae1b2777e8c5fb791b38",
+      "dependencies": [
+        "computercraft [1.119.0,)",
+        "minecraft [1.21.1,)",
+        "neoforge [21.1.238,)"
+      ],
+      "license": "Apache-2.0",
+      "projectID": 431725,
+      "fileID": 8666472,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/advanced-peripherals/files/8666472",
+      "evidence": "ATM10 8.1 reference instance; CurseForge SHA-1 ec8bd2580a81d18b93f307ed099e9ad1bee125e1 matched; not on Modrinth"
+    }
+  ]
+}

@@ -142,6 +142,62 @@
         "key.openManual"
       ],
       "reason": "McJty manual only for a McJty item under the cursor; F1 extended info is the quest screen help."
+    },
+    {
+      "keys": [
+        "key.use",
+        "key.neovitae.blood_shield"
+      ],
+      "reason": "Neo Vitae raises the Blood Shield with the use button while a blood orb is in the off hand, like a vanilla shield."
+    },
+    {
+      "keys": [
+        "key.playerlist",
+        "simulated.keyinfo.rotate_mode"
+      ],
+      "reason": "Create Simulated rotates a structure while Tab is held during a Creative Physics Staff drag; the player list showing at the same time is harmless, and the staff is creative only."
+    },
+    {
+      "keys": [
+        "key.jump",
+        "key.createrailgrinding.grind_jump"
+      ],
+      "reason": "Rail Grinding jumps off a rail with the normal jump key while grinding."
+    },
+    {
+      "keys": [
+        "key.sneak",
+        "key.createrailgrinding.grind_crouch"
+      ],
+      "reason": "Rail Grinding crouches on a rail with the normal sneak key."
+    },
+    {
+      "keys": [
+        "key.aether.gravitite_jump_ability.desc",
+        "key.createrailgrinding.grind_jump"
+      ],
+      "reason": "Both read the jump key in their own state: gravitite armor boosts a jump, Rail Grinding jumps off a rail."
+    },
+    {
+      "keys": [
+        "key.createrailgrinding.grind_jump",
+        "key.the_bumblezone.beehemoth_up"
+      ],
+      "reason": "Both read the jump key in their own state: riding a Beehemoth, or grinding a rail."
+    },
+    {
+      "keys": [
+        "key.createrailgrinding.grind_jump",
+        "pneumaticcraft.boots.jet_boots"
+      ],
+      "reason": "Both read the jump key in their own state: jet boots flying, or grinding a rail."
+    },
+    {
+      "keys": [
+        "key.familiarslib.summoning_key",
+        "key.loadToolbarActivator"
+      ],
+      "reason": "Vanilla loads a saved hotbar with X only in creative; in survival X summons the familiar."
     }
   ],
   "keys": {
@@ -228,6 +284,34 @@
       ],
       "evidence": "FTB Ultimine 2101.1.15 onKeyPress: only while the Ultimine key is held.",
       "gate": "hold:ultimine"
+    },
+    "iris.keybind.reload": {
+      "default": "key.keyboard.r",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Iris 1.8.14-beta.1 Iris.onEarlyInitialize: vanilla KeyMapping, GLFW 82 (R); reloads the active shader pack."
+    },
+    "iris.keybind.shaderPackSelection": {
+      "default": "key.keyboard.o",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Iris 1.8.14-beta.1 Iris.onEarlyInitialize: vanilla KeyMapping, GLFW 79 (O); opens the shader pack screen."
+    },
+    "iris.keybind.toggleShaders": {
+      "default": "key.keyboard.k",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Iris 1.8.14-beta.1 Iris.onEarlyInitialize: vanilla KeyMapping, GLFW 75 (K); turns shaders on or off."
+    },
+    "iris.keybind.wireframe": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Iris 1.8.14-beta.1 Iris.onEarlyInitialize: vanilla KeyMapping, InputConstants.UNKNOWN (unbound); wireframe debug view."
     },
     "justdirethings.key.toggle_tool": {
       "default": null,
@@ -339,6 +423,20 @@
       ],
       "evidence": "Apotheosis 8.7.0."
     },
+    "key.ars_affinity.ability": {
+      "default": "key.keyboard.f",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ars Affinity 1.1.1 ArsAffinityClient: vanilla KeyMapping, GLFW 70; fires the active affinity ability."
+    },
+    "key.ars_affinity.affinity_ui": {
+      "default": "key.keyboard.left.bracket",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ars Affinity 1.1.1 ArsAffinityClient: vanilla KeyMapping, GLFW 91; opens the affinity screen."
+    },
     "key.ars_elemental.open_pouch": {
       "default": "key.keyboard.j",
       "contexts": [
@@ -413,6 +511,13 @@
       ],
       "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
       "vanilla": true
+    },
+    "key.bridgingmod.toggle_bridging": {
+      "default": "key.keyboard.comma",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Bridging Mod 2.6.2: KeyMapping with GLFW 44 (comma), polled in game to toggle bridging placement."
     },
     "key.buildinggadgets2.anchor": {
       "default": "key.keyboard.h",
@@ -536,6 +641,28 @@
       ],
       "evidence": "Crafting Tweaks 21.1.11: crafting-grid screens."
     },
+    "key.createrailgrinding.catch": {
+      "default": "key.keyboard.space:SHIFT",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create: Train Track Rail Grinding 1.2.2 ModKeyMappings: KeyConflictContext.IN_GAME, KeyModifier.SHIFT + GLFW 32 (Shift+Space); the rail catch action."
+    },
+    "key.createrailgrinding.grind_crouch": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create: Train Track Rail Grinding 1.2.2 ModKeyMappings: KeyConflictContext.IN_GAME, GLFW 340; crouches while grinding.",
+      "hold": true
+    },
+    "key.createrailgrinding.grind_jump": {
+      "default": "key.keyboard.space",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create: Train Track Rail Grinding 1.2.2 ModKeyMappings: KeyConflictContext.IN_GAME, GLFW 32; jumps off a rail while grinding."
+    },
     "key.curios.open.desc": {
       "default": "key.keyboard.g",
       "contexts": [
@@ -615,6 +742,20 @@
       "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
       "vanilla": true
     },
+    "key.dynamic_fps.toggle_disabled": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Dynamic FPS 3.11.4 KeyMappingHandler: InputConstants.UNKNOWN (unbound)."
+    },
+    "key.dynamic_fps.toggle_forced": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Dynamic FPS 3.11.4 KeyMappingHandler: InputConstants.UNKNOWN (unbound)."
+    },
     "key.easy_villagers.cycle_trades": {
       "default": "key.keyboard.c",
       "contexts": [
@@ -644,6 +785,20 @@
       ],
       "evidence": "Ender IO 8.2.11 KeymapHandler: vanilla ctor (UNIVERSAL)."
     },
+    "key.entityculling.toggle": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Entity Culling 1.10.5 KeybindHolder: TRansition GeneralUtil.createKeyMapping with key code -1 (unbound); toggles culling for debugging."
+    },
+    "key.entityculling.toggleBoxes": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Entity Culling 1.10.5 KeybindHolder: key code -1 (unbound); toggles the debug culling boxes."
+    },
     "key.eternal_starlight.switch_crest": {
       "default": "key.keyboard.h",
       "contexts": [
@@ -665,6 +820,41 @@
       ],
       "evidence": "EvilCraft 1.2.94 FartKeyHandler (CyclopsCore key registry)."
     },
+    "key.extended_industrialization.toggle_boots_ability": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Extended Industrialization 1.16.2 EIKeybinds: KeyConflictContext.IN_GAME, key code -1 (unbound); toggles the boots item ability."
+    },
+    "key.extended_industrialization.toggle_chestplate_ability": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Extended Industrialization 1.16.2 EIKeybinds: KeyConflictContext.IN_GAME, key code -1 (unbound); toggles the chestplate item ability."
+    },
+    "key.extended_industrialization.toggle_helmet_ability": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Extended Industrialization 1.16.2 EIKeybinds: KeyConflictContext.IN_GAME, key code -1 (unbound); toggles the helmet item ability."
+    },
+    "key.extended_industrialization.toggle_leggings_ability": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Extended Industrialization 1.16.2 EIKeybinds: KeyConflictContext.IN_GAME, key code -1 (unbound); toggles the leggings item ability."
+    },
+    "key.extended_industrialization.toggle_main_hand_ability": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Extended Industrialization 1.16.2 EIKeybinds: KeyConflictContext.IN_GAME, key code -1 (unbound); toggles the main hand item ability."
+    },
     "key.extendedae.set_amount": {
       "default": "key.mouse.middle",
       "contexts": [
@@ -680,6 +870,90 @@
       ],
       "evidence": "ExtendedAE 2.2.35 PatternHotKey: tooltip of the encoded pattern under the cursor.",
       "hover": "ae2-pattern"
+    },
+    "key.familiarslib.familiar_quick_summon_1": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 1."
+    },
+    "key.familiarslib.familiar_quick_summon_10": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 10."
+    },
+    "key.familiarslib.familiar_quick_summon_2": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 2."
+    },
+    "key.familiarslib.familiar_quick_summon_3": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 3."
+    },
+    "key.familiarslib.familiar_quick_summon_4": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 4."
+    },
+    "key.familiarslib.familiar_quick_summon_5": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 5."
+    },
+    "key.familiarslib.familiar_quick_summon_6": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 6."
+    },
+    "key.familiarslib.familiar_quick_summon_7": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 7."
+    },
+    "key.familiarslib.familiar_quick_summon_8": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 8."
+    },
+    "key.familiarslib.familiar_quick_summon_9": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 9."
+    },
+    "key.familiarslib.screen_key": {
+      "default": "key.keyboard.h",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, GLFW 72; opens the familiar selection screen."
+    },
+    "key.familiarslib.summoning_key": {
+      "default": "key.keyboard.x",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, GLFW 88; summons or recalls the selected familiar."
     },
     "key.fireNobu": {
       "default": "key.mouse.left",
@@ -1922,6 +2196,44 @@
       ],
       "evidence": "More Overlays 1.24.2: vanilla ctor (UNIVERSAL), overlay toggles in the world."
     },
+    "key.neovitae.blood_shield": {
+      "default": "key.mouse.right",
+      "contexts": [
+        "world"
+      ],
+      "gate": "held:neovitae-orb",
+      "evidence": "Neo Vitae 1.1.28 BloodShieldKeyHandler: mouse button 1 while a blood orb is in the off hand raises the Blood Shield."
+    },
+    "key.neovitae.edit_hud": {
+      "default": "key.keyboard.h",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Neo Vitae 1.1.28 ClientModEventHandler: vanilla constructor, GLFW 72 (H); opens the HUD layout editor."
+    },
+    "key.neovitae.lex_beam": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "gate": "held:neovitae-lex",
+      "evidence": "Neo Vitae 1.1.28: key code -1 (unbound); fires the Lex Vitae beam."
+    },
+    "key.neovitae.lex_mode": {
+      "default": "key.keyboard.period",
+      "contexts": [
+        "world"
+      ],
+      "gate": "held:neovitae-lex",
+      "evidence": "Neo Vitae 1.1.28 LexVitaeBeamHandler: consumeClick of GLFW 46 (period) cycles the Lex Vitae mode."
+    },
+    "key.neovitae.open_guide": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Neo Vitae 1.1.28: key code -1 (unbound); opens the Modonomicon guide."
+    },
     "key.nextDestination": {
       "default": "key.keyboard.right.bracket",
       "contexts": [
@@ -1972,6 +2284,20 @@
       ],
       "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
       "vanilla": true
+    },
+    "key.pingwheel.open_settings": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ping Wheel 1.12.2: unbound (key code -1); opens its settings screen."
+    },
+    "key.pingwheel.ping_location": {
+      "default": "key.mouse.5",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ping Wheel 1.12.2: InputConstants.Type.MOUSE button 4 (Mouse5); click pings, hold opens the wheel."
     },
     "key.playerlist": {
       "default": "key.keyboard.tab",
@@ -2331,6 +2657,21 @@
       "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
       "vanilla": true
     },
+    "keybind.advancedperipherals.description": {
+      "default": "key.keyboard.left.control",
+      "contexts": [
+        "gui"
+      ],
+      "hold": true,
+      "evidence": "Advanced Peripherals 0.8.0a: KeyConflictContext.GUI, GLFW 341 (left Ctrl) held to show item descriptions in tooltips."
+    },
+    "keybind.advancedperipherals.glasses_hotkey": {
+      "default": "key.keyboard.g",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Advanced Peripherals 0.8.0a: KeyConflictContext.IN_GAME, GLFW 71 (G); sends a key event from the smart glasses hotkey module to their computer."
+    },
     "keybind.ironjetpacks.decrement_throttle": {
       "default": "key.keyboard.comma",
       "contexts": [
@@ -2445,6 +2786,27 @@
         "world"
       ],
       "evidence": "Simple Magnets 1.1.12c."
+    },
+    "simulated.keyinfo.rotate_mode": {
+      "default": "key.keyboard.tab",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create Simulated 1.3.2 SimKeys: GLFW 258 (Tab); held while dragging a structure with the Creative Physics Staff, which has no recipe."
+    },
+    "simulated.keyinfo.scroll_down": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create Simulated 1.3.2 SimKeys: InputConstants.UNKNOWN (unbound)."
+    },
+    "simulated.keyinfo.scroll_up": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create Simulated 1.3.2 SimKeys: InputConstants.UNKNOWN (unbound); the staff drag distance also follows the mouse wheel."
     },
     "supplementaries.keybind.quiver": {
       "default": null,

@@ -14,7 +14,9 @@ Rules (fail with exit code 1):
      mirrored left to right (Luminosities count as one kind) and keeps its ENTRELUMEN items on the
      vertical axis, the corners or the middle row;
   4. spawner augments are the five-item copper medallion;
-  5. Emperor's Cloth stays hidden in EMI and JEI (static part; the loaded check is a GameTest).
+  5. Emperor's Cloth stays hidden in EMI and JEI (static part; the loaded check is a GameTest);
+  6. campaign loot stays out of the viewers: EMI Loot's recipes for ENTRELUMEN loot tables and the
+     quest loot-crate category of FTB XMod Compat are filtered in EMI and hidden in JEI.
 
 --report prints a summary per source, the fan-out table and the inventory of every recipe with an
 ENTRELUMEN item (form, grid, components, nesting depth) as Markdown; --all lists every recipe the pack
@@ -44,6 +46,15 @@ JEI_SCRIPT = 'pack/kubejs/client_scripts/entrelumen_recipe_viewer.js'
 # Twilight Forest 4.8.3345: EMI shows the crafting recipe under its serializer ID with a leading slash
 # (EmiEmperorsClothRecipe.getId, "twilightforest:/emperors_cloth_recipe"), the smithing one under its
 # data ID (EmiPort.getId); JEI names both by their data IDs.
+# EMI Loot 0.7.9 names every recipe emi_loot:/<category>/<table namespace>/<table path> (ChestLootRecipe.getId
+# and its siblings) and has no per-table setting; EMI's own filter hides them by that ID. FTB XMod Compat
+# 21.1.11 registers the quest loot crates as the JEI RecipeType ftbquests:loot_crate, which EMI imports
+# under the same ID (JemiCategory).
+LOOT_FILTER = 'pack/kubejs/assets/emi/recipe/filters/entrelumen_hidden_loot.json'
+LOOT_HIDDEN = ['emi_loot:/chest_loot/entrelumen/chests/ruin_act2_workshop', 'emi_loot:/chest_loot/entrelumen/enves/vault',
+               'emi_loot:/block_drops/entrelumen/blocks/peace_altar', 'emi_loot:/mob_drops/entrelumen/entities/guardian']
+LOOT_SHOWN = ['emi_loot:/chest_loot/minecraft/chests/simple_dungeon', 'emi_loot:/block_drops/create/blocks/zinc_ore']
+LOOT_CRATES = 'ftbquests:loot_crate'
 HIDDEN_RECIPES = {'emi': ['twilightforest:/emperors_cloth_recipe', 'twilightforest:emperors_cloth_smithing'],
                   'jei': ['twilightforest:emperors_cloth_recipe', 'twilightforest:emperors_cloth_smithing']}
 
@@ -108,6 +119,7 @@ HITOS = {
         'entrelumen:growth_altar_duplication': 'copia del Altar de Crecimiento',
         'entrelumen:renewal_altar_duplication': 'copia del Altar de Renovación',
         'botanypotstiers:elite_upgrade': 'macetas Elite',
+        'neovitae:ara_vitae': 'Neo Vitae entero: el altar de sangre (Elias, 27/9)',
     },
     'entrelumen:power_regulator': {
         'entrelumen:integration/workshop_hands': 'Núcleo de Manipulación',
@@ -130,6 +142,7 @@ HITOS = {
         'refinedstorage:autocrafter': 'autocrafteo de Refined Storage',
         'rftoolsbuilder:builder': 'constructor de RFTools',
         'easy_villagers:auto_trader': 'comercio automático',
+        'simulated:physics_assembler': 'vehículos físicos de Create Aeronautics (a prueba, 27/9)',
     },
     'entrelumen:spectral_lens': {
         'entrelumen:integration/sealed_memory': 'Sello de Contención',
@@ -444,6 +457,7 @@ def check(recipes, tree):
             if b['pattern'] != AUGMENT_PATTERN or filled != 5:
                 problems.append(f'aumentadores: {rid} is not the five-item copper medallion')
     problems.extend(check_hidden(tree))
+    problems.extend(check_hidden_loot(tree))
     return problems
 
 
@@ -460,6 +474,26 @@ def check_hidden(tree):
     if text is None or 'RecipeViewerEvents.removeRecipes' not in text \
             or not all(f"'{rid}'" in text for rid in HIDDEN_RECIPES['jei']):
         problems.append(f'Emperor\'s Cloth: {JEI_SCRIPT} does not hide {HIDDEN_RECIPES["jei"]}')
+    return problems
+
+
+def check_hidden_loot(tree):
+    """Rule 6: EMI's filter regex (/.../, matched with find()) hides every ENTRELUMEN table and nothing else."""
+    problems = []
+    emi = tree.read(LOOT_FILTER)
+    if emi is None:
+        return [f'botín de campaña: missing EMI filter {LOOT_FILTER}']
+    filters = json.loads(emi).get('filters', [])
+    patterns = [re.compile(f['id'][1:-1]) for f in filters
+                if set(f) == {'id'} and f['id'].startswith('/') and f['id'].endswith('/')]
+    hidden = lambda rid: any(p.search(rid) for p in patterns)
+    problems += [f'botín de campaña: EMI still shows {rid}' for rid in LOOT_HIDDEN if not hidden(rid)]
+    problems += [f'botín de campaña: EMI filter also hides {rid}' for rid in LOOT_SHOWN if hidden(rid)]
+    if {'category': LOOT_CRATES} not in filters:
+        problems.append(f'botín de campaña: EMI filter does not hide the {LOOT_CRATES} category')
+    text = tree.read(JEI_SCRIPT) or ''
+    if 'RecipeViewerEvents.removeCategories' not in text or f"'{LOOT_CRATES}'" not in text:
+        problems.append(f'botín de campaña: {JEI_SCRIPT} does not hide the {LOOT_CRATES} category in JEI')
     return problems
 
 

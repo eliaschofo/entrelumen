@@ -5,11 +5,14 @@ import functools
 import hashlib
 from collections import Counter
 import importlib.util
+import io
 import json
 from pathlib import Path
 import re
+import tempfile
 import unittest
 import unittest.mock
+import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -298,6 +301,138 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual(by_id['psi:assembler']['act'], 'III')
         self.assertEqual({change['act'] for change in family['changes']}, {'II', 'III', 'IV'})
         self.assertEqual({spec['op'] for spec in family['data']}, {'copy', 'disable'})
+
+    def test_round_five_compat_removes_large_cells_and_leaves_bridges_upstream(self):
+        family = balance.FAMILIES['pingpong5compat']
+        # MEGA Cells (Act IV) stays the only route to 1M+ cells; the chunky turtle is off in the server config.
+        self.assertEqual(family['changes'], [])
+        self.assertEqual({rid for rid in family['removals'] if 'ae_disk_cell' in rid},
+                         {f'advancedperipherals:ae_disk_cell_{s}' for s in ('1m', '4m', '16m', '64m', '256m')})
+        self.assertIn('advancedperipherals:chunk_controller', family['removals'])
+        self.assertEqual(balance.UPSTREAM['ad_astra_giselle_addon:crafting/automation_nasa_workbench'], 'ad_astra:nasa_workbench')
+        self.assertEqual(balance.UPSTREAM['advancedperipherals:me_bridge'], 'ae2:network/blocks/controller')
+        self.assertEqual(balance.UPSTREAM['advancedperipherals:rs_bridge'], 'refinedstorage:controller')
+
+    def test_round_five_tech_stages_wireless_energy_and_the_dyson_sphere(self):
+        family = balance.FAMILIES['pingpong5tech']
+        by_id = {change['id']: change for change in family['changes']}
+        # Wireless energy keeps Act III in every mod; the Dyson sphere is endgame power (Act V).
+        for recipe in ('extended_industrialization:machines/tesla_coil/craft', 'extended_industrialization:machines/tesla_tower/craft'):
+            self.assertEqual(by_id[recipe]['add'], balance.ALLOY_III)
+            self.assertIn(recipe, balance.FUNCTION_MEMBERS['wireless_energy'])
+        self.assertEqual(by_id['dysoncubeproject:em_railejector_controller']['add'], balance.ATOMIC)
+        self.assertIn('dysoncubeproject:em_railejector_controller', balance.FUNCTION_MEMBERS['endgame_reactor'])
+        # Solar panels follow MI's circuit ladder: no gate; the receiver -> coil conversion would skip one.
+        self.assertFalse(any('solar_panel' in rid for rid in by_id))
+        self.assertIn('extended_industrialization:machines/tesla_coil/craft/from_tesla_receiver', family['removals'])
+        self.assertEqual(balance.UPSTREAM['dysoncubeproject:ray_receiver_controller'], 'dysoncubeproject:em_railejector_controller')
+        # EI's quantum nano armor is the same Act VI jump as MI's quantum armor: the same Luminosity, packed third.
+        for piece in ('helmet', 'chestplate', 'leggings', 'boots'):
+            change = by_id[f'extended_industrialization:tool/nano_suit_{piece}_quantum_upgrade']
+            self.assertEqual((change['function'], change['op'], change['act']), ('top_armor', 'append', 'VI'))
+            self.assertEqual(change['add'], balance.LUMINOSITY[balance.TOP_ARMOR['modern_industrialization']])
+        pingpong = {c['id']: c for c in balance.FAMILIES['pingpong']['changes']}
+        self.assertIn('extended_industrialization:tool/nano_suit_gravichestplate_downgrade',
+                      pingpong['modern_industrialization:armor/gravichestplate']['alternates'])
+
+    def test_round_five_neo_vitae_opens_at_the_altar_and_rituals_wait_for_act_four(self):
+        family = balance.FAMILIES['neovitae']
+        by_id = {change['id']: change for change in family['changes']}
+        # The Ara Vitae opens the whole mod (Act III, a component like Psi's assembler); every ritual,
+        # the Demon Realm gateways included, needs the master ritual stone (Act IV).
+        self.assertEqual((by_id['neovitae:ara_vitae']['add'], by_id['neovitae:ara_vitae']['act']), (balance.PC, 'III'))
+        for recipe in ('neovitae:ritual_stone_master', 'sanguine_networks:virtual_sacrificer'):
+            self.assertEqual((by_id[recipe]['add'], by_id[recipe]['act']), (balance.IRONWOOD, 'IV'))
+        # Teleposers swap blocks without a protection event: gone with their foci and the sigil chain.
+        self.assertEqual(set(family['removals']), {
+            'neovitae:teleposer', 'neovitae:ara_vitae/teleposer_focus', 'neovitae:ara_vitae/enhanced_teleposer_focus',
+            'neovitae:reinforced_teleposer_focus', 'neovitae:alchemytable/reagent_teleposition',
+            'neovitae:array/teleposition_sigil'})
+
+    def test_round_five_aeronautics_gates_the_physics_assembler(self):
+        family = balance.FAMILIES['pingpong5aero']
+        (change,) = family['changes']
+        # Every Sable structure (airship, car, borer) starts at the assembler: the gyrodyne's handling core.
+        self.assertEqual((change['id'], change['add'], change['act']), ('simulated:physics_assembler', balance.HC, 'III'))
+        self.assertEqual(family['removals'], [])
+
+    def test_round_seven_insanium_opens_in_act_six_and_the_energy_tower_goes(self):
+        family = balance.FAMILIES['pingpong7']
+        (change,) = family['changes']
+        # Insanium comes only from supremium blocks around the master crystal, now with the Nature Luminosity.
+        self.assertEqual((change['id'], change['add'], change['act']),
+                         ('mysticalagradditions:insanium_block_combine', balance.LUMINOSITY['nature'], 'VI'))
+        self.assertEqual(change['alternates'], ['mysticalagradditions:insanium_block'])
+        self.assertEqual(set(family['removals']), {'mysticalagradditions:insanium_essence',
+                                                   'me_beam_former:wireless_energy_tower'})
+        self.assertEqual(balance.UPSTREAM['me_beam_former:beam_former_part'], 'ae2:network/blocks/controller')
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_nothing_makes_insanium_or_tier_six_seeds_before_act_six(self):
+        insanium = {'mysticalagradditions:insanium_essence', 'mysticalagradditions:insanium_block'}
+        crops = ('nether_star', 'dragon_egg', 'gaia_spirit', 'awakened_draconium', 'neutronium', 'nitro_crystal')
+        seeds = {f'mysticalagriculture:{crop}_seeds': f'mysticalagradditions:{crop}' for crop in crops}
+        family = balance.FAMILIES['pingpong7']
+        gated = {c['id'] for c in family['changes']} | set(family['removals'])
+        # Productive Bees' insanium bee is infused from four insanium blocks and four insanium essence.
+        downstream = {'productivebees:centrifuge/mysticalagriculture/honeycomb_insanium':
+                      'productivebees:mysticalagriculture/insanium_bee'}
+        def made_by(recipe):
+            # Deeper than balance.outputs: machine outputs nest the item ({"item": {"item": ...}}, main_output).
+            found = set()
+
+            def walk(value):
+                if isinstance(value, dict):
+                    found.update(v for k, v in value.items() if k in ('id', 'item') and isinstance(v, str))
+                    for child in value.values():
+                        walk(child)
+                elif isinstance(value, list):
+                    for child in value:
+                        walk(child)
+            for key in ('result', 'output', 'results', 'outputs', 'item_outputs', 'main_output', 'secondary_output'):
+                walk(recipe.get(key))
+            return found
+
+        recipes, _, _ = balance.load_recipes()
+        makers, seed_makers = set(), set()
+        for rid, (recipe, _) in recipes.items():
+            made = made_by(recipe)
+            if made & insanium:
+                makers.add(rid)
+                self.assertTrue(rid in gated or rid in downstream or balance.ingredient_items(recipe) & insanium,
+                                f'{rid} makes insanium without the Act VI gate')
+            for seed in made & set(seeds):
+                seed_makers.add(rid)
+                # Mystical Agriculture resolves a tier-6 crop's essence component to insanium essence.
+                text = json.dumps(recipe)
+                self.assertIn('"component": "essence"', text, f'{rid} makes {seed} without essence')
+                self.assertIn(f'"crop": "{seeds[seed]}"', text, f'{rid} makes {seed} from another crop')
+        self.assertIn('mysticalagradditions:insanium_block_combine', makers)
+        self.assertGreaterEqual(len(seed_makers), 2 * len(crops))
+        for rid, source in downstream.items():
+            self.assertIn(rid, makers)
+            self.assertTrue(balance.ingredient_items(recipes[source][0]) & insanium, f'{source} takes no insanium')
+
+    def test_nested_jar_recipes_are_indexed_under_the_outer_pin(self):
+        def jar_bytes(files):
+            buffer = io.BytesIO()
+            with zipfile.ZipFile(buffer, 'w') as jar:
+                for name, data in files.items():
+                    jar.writestr(name, data)
+            return buffer.getvalue()
+
+        inner = jar_bytes({'data/a/recipe/shared.json': json.dumps({'from': 'inner'}),
+                           'data/b/recipe/only_nested.json': json.dumps({'from': 'inner'})})
+        with tempfile.TemporaryDirectory() as temp:
+            outer = Path(temp) / 'bundle.jar'
+            outer.write_bytes(jar_bytes({'data/a/recipe/shared.json': json.dumps({'from': 'outer'}),
+                                         'META-INF/jarjar/inner.jar': inner}))
+            lock = {'mods': [{'filename': 'bundle.jar', 'sha256': 'x' * 64}]}
+            with unittest.mock.patch.object(balance, 'lock_entries', return_value=(lock, {'bundle.jar': str(outer)})):
+                recipes, sources, _ = balance.load_recipes()
+        self.assertEqual(recipes['a:shared'], ({'from': 'outer'}, 'bundle.jar'))
+        self.assertEqual(recipes['b:only_nested'], ({'from': 'inner'}, 'bundle.jar'))
+        self.assertEqual(sources, {'bundle.jar': 'x' * 64})
 
     def test_copy_keeps_one_owner_of_a_shared_path_and_can_move_the_other(self):
         path = 'data/patchouli/recipe/guide_book.json'

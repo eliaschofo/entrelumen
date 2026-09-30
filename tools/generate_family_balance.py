@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import copy
 import hashlib
+import io
 import json
 from pathlib import Path
 import re
@@ -542,7 +543,9 @@ FUNCTION_MEMBERS = {
     'teleport': ['justdirethings:portalgun', 'justdirethings:portalgun_v2', 'enderio:travel_anchor',
                  'enderio:staff_of_travelling', 'draconicevolution:tools/dislocator', 'rftoolsutility:matter_receiver'],
     'remote_inventory': ['enderstorage:ender_chest', 'enderstorage:ender_tank', 'enderstorage:ender_pouch'],
-    'wireless_energy': ['fluxnetworks:flux_plug', 'rftoolspower:dimensionalcell_simple', 'rftoolspower:dimensionalcell'],
+    'wireless_energy': ['fluxnetworks:flux_plug', 'rftoolspower:dimensionalcell_simple', 'rftoolspower:dimensionalcell',
+                        'extended_industrialization:machines/tesla_coil/craft',
+                        'extended_industrialization:machines/tesla_tower/craft'],
     'jetpack': ['ironjetpacks:strap', 'oritech:crafting/basicjetpack', 'oritech:crafting/basicjetpackalt',
                 'modern_industrialization:armor/diesel_jetpack'],
     'area_mining': ['mininggadgets:mininggadget_simple', 'mininggadgets:mininggadget', 'mininggadgets:mininggadget_fancy',
@@ -554,6 +557,7 @@ FUNCTION_MEMBERS = {
     'reactor': ['create_new_age:mechanical_crafting/reactor_rod', 'industrialforegoing:dissolution_chamber/infinity_nuke',
                 'oritech:crafting/nuke', 'oritech:crafting/nukebetter'],
     'renewal': ['justdirethings:time_wand'],
+    'endgame_reactor': ['dysoncubeproject:em_railejector_controller'],
 }
 # Recipes that are left native on purpose because another gate already covers them (they need a gated
 # piece to work) or because they are pieces built by the dozen; docs/design/recipe-design-rules.md.
@@ -564,6 +568,12 @@ UPSTREAM = {
     'psi:cad_core_hyperclocked': 'psi:assembler', 'psi:cad_core_radiative': 'psi:assembler',
     'create_new_age:shaped/generator_coil': 'create_new_age:shaped/carbon_brushes',
     'create_new_age:shaped/advanced_solar_heating_plate': 'create_new_age:shaped/carbon_brushes',
+    'ad_astra_giselle_addon:crafting/automation_nasa_workbench': 'ad_astra:nasa_workbench',
+    'advancedperipherals:me_bridge': 'ae2:network/blocks/controller',
+    'advancedperipherals:rs_bridge': 'refinedstorage:controller',
+    'extended_industrialization:machines/tesla_receiver/craft': 'extended_industrialization:machines/tesla_coil/craft',
+    'dysoncubeproject:ray_receiver_controller': 'dysoncubeproject:em_railejector_controller',
+    'me_beam_former:beam_former_part': 'ae2:network/blocks/controller',
 }
 # Oritech 0.19 copies Mekanism's alloys in its foundry and its circuits in its atomic forge. Those routes
 # skipped the metallurgic infuser, the way into Mekanism that the calibration frame opens, and with it
@@ -883,8 +893,11 @@ FAMILIES = {
             shaped('enderio:octadic_capacitor', 0, 1, tag('c:ingots/vibrant_alloy'), ATOMIC, 'V', 'Highest Ender IO machine tier'),
             # Modern Industrialization: each staged controller keeps its shaped recipe; its assembler twin is removed.
             shaped('modern_industrialization:armor/diesel_jetpack', 2, 1, None, ALLOY_III, 'III', 'Powered flight, first tier'),
+            # Extended Industrialization (round 5) unpacks its nano gravichestplate back into this one; the nano
+            # piece is packed from this gravichestplate, so the unpacker returns it rather than making a new one.
             shaped('modern_industrialization:armor/gravichestplate', 2, 1, item('modern_industrialization:superconductor_plate'),
-                   HZ, 'IV', 'Creative-style flight'),
+                   HZ, 'IV', 'Creative-style flight',
+                   alternates=['extended_industrialization:tool/nano_suit_gravichestplate_downgrade']),
             paired('modern_industrialization:electric_age/machine/electric_quarry_asbl', [(0, 0), (0, 2)],
                    item('modern_industrialization:large_motor'), IRONWOOD, 'IV', 'Ores from power without world mining'),
             shaped('modern_industrialization:electric_age/machine/nuclear_reactor_asbl', 0, 1,
@@ -961,6 +974,115 @@ FAMILIES = {
             disabled('data/minecraft/advancement/wander_add_map.json',
                      "Dungeons and Taverns wandering-trader hook with a missing parent and a missing reward function"),
         ],
+    },
+    # Round 5 of the mod ping-pong, batch 3 (docs/design/mod-pingpong.md, «Lote 3»): compat between systems the
+    # pack already has. Giselle's automated NASA workbench is made from the NASA workbench (atomic alloy, Act V),
+    # and Advanced Peripherals' ME and RS bridges need a network whose controller already takes the routing
+    # matrix, so neither needs a gate of its own (UPSTREAM rule). Advanced Peripherals' AE2 disk cells (1M to
+    # 256M bytes from ComputerCraft disks and processors) would skip MEGA Cells, the Act IV route to large cells,
+    # so they go; its chunk controller only makes the chunky turtle, which the pack's server config turns off.
+    'pingpong5compat': {
+        'script': 'entrelumen_pingpong5compat_balance.js',
+        'tag': 'ENTRELUMEN_PINGPONG5_COMPAT_BALANCE',
+        'namespaces': {'advancedperipherals', 'ad_astra_giselle_addon', 'polyeng', 'apothic_compat', 'irons_apothic'},
+        'changes': [],
+        'removals': [f'advancedperipherals:ae_disk_cell_{size}' for size in ('1m', '4m', '16m', '64m', '256m')]
+                    + ['advancedperipherals:chunk_controller'],
+    },
+    # Round 5, batch 4 (docs/design/mod-pingpong.md, «Lote 4»): technology and redstone. Extended
+    # Industrialization's solar panels, processing array and tools follow MI's own circuit ladder (analog LV,
+    # electronic MV, digital HV), so they stay native; its tesla coil and tower are wireless energy, whose
+    # members take the act III alloy wherever they come from (the receivers need a transmitter, UPSTREAM), and
+    # their MI assembler twins go. The Dyson rail ejector is a vanilla-cheap recipe for endgame power: the
+    # atomic alloy (Act V) replaces one slab; the ray receiver only collects ejected sails. Industrialization
+    # Overdrive's pieces already need MI's electronic to EV tiers, and More Red is logic.
+    'pingpong5tech': {
+        'script': 'entrelumen_pingpong5tech_balance.js',
+        'tag': 'ENTRELUMEN_PINGPONG5_TECH_BALANCE',
+        'namespaces': {'extended_industrialization', 'industrialization_overdrive', 'dysoncubeproject', 'morered',
+                       'moreredxcctcompat', 'tesseract_api'},
+        'changes': [
+            paired('extended_industrialization:machines/tesla_coil/craft', [(0, 0), (0, 2)], None, ALLOY_III, 'III',
+                   'Wireless energy: the act III alloy beside the silver top load'),
+            shaped('extended_industrialization:machines/tesla_tower/craft', 0, 1,
+                   item('modern_industrialization:clean_stainless_steel_machine_casing'), ALLOY_III, 'III',
+                   'Long-range wireless energy: the alloy crowns the tower'),
+            shaped('dysoncubeproject:em_railejector_controller', 2, 1, item('minecraft:smooth_stone_slab'), ATOMIC, 'V',
+                   'The Dyson sphere, endgame power: the atomic alloy in the ejector base'),
+        ] + [
+            # EI packs a nano piece with MI's quantum upgrade into quantum nano armor: the same top-armor jump as
+            # MI's quantum armor (Act VI), so it takes the same habitation Luminosity as a third packer input.
+            function_appended('top_armor', f'extended_industrialization:tool/nano_suit_{piece}_quantum_upgrade', 'item_inputs',
+                              'Quantum nano armor, Act VI: the packer takes a third input, as MI quantum armor does',
+                              limit=3, extra={'amount': 1}, runtime_field='itemInputs',
+                              add=LUMINOSITY[TOP_ARMOR['modern_industrialization']])
+            for piece in ('helmet', 'chestplate', 'leggings', 'boots')
+        ],
+        # The coil and the receiver convert into each other in the crafting grid; only receiver -> coil
+        # would skip the gate, so it goes (a gated coil still turns into a receiver).
+        'removals': ['extended_industrialization:machines/tesla_coil/assembler',
+                     'extended_industrialization:machines/tesla_tower/assembler',
+                     'extended_industrialization:machines/tesla_coil/craft/from_tesla_receiver'],
+    },
+    # Round 5, batch 5 (docs/design/mod-pingpong.md, «Lote 5»): Neo Vitae, Elias's choice of 27 September for
+    # acts III-IV with its own dimension. The Ara Vitae opens the whole mod, so it takes a component, like Psi's
+    # assembler: the propagation core (new life) fills its free top slot. Every ritual needs a master ritual
+    # stone, and the Demon Realm's dungeons are opened by rituals (Breaching the Edge, Highway to Hell), so the
+    # stone takes the act IV material in its two top corners. Sanguine Neural Networks' virtual sacrificer turns
+    # Hostile Neural Networks models into blood without a farm: Act IV too, ironwood in its free corners.
+    'neovitae': {
+        'script': 'entrelumen_neovitae_balance.js',
+        'tag': 'ENTRELUMEN_NEOVITAE_BALANCE',
+        'namespaces': {'neovitae', 'sanguine_networks'},
+        'changes': [
+            shaped('neovitae:ara_vitae', 0, 1, None, PC, 'III',
+                   'The Ara Vitae opens Neo Vitae: the propagation core crowns the altar'),
+            paired('neovitae:ritual_stone_master', [(0, 0), (0, 2)], tag('c:obsidians'), IRONWOOD, 'IV',
+                   'Every ritual and the Demon Realm gateways: Twilight ironwood in the top corners'),
+            paired('sanguine_networks:virtual_sacrificer', [(0, 0), (0, 2)], None, IRONWOOD, 'IV',
+                   'Blood from data models instead of a farm: ironwood beside the sacrifice rune'),
+        ],
+        # The teleposer swaps whole blocks (containers and spawners too) in a cube up to 7x7x7 beyond it with
+        # setBlock: no BreakEvent, no FTB Chunks claim and no ruin protection, only a bedrock/portal
+        # blacklist tag (Utils.swapLocations, 1.1.28). It goes with its foci and the teleposition sigil,
+        # whose reagent needs a teleposer; rituals, sigils and charges ask BlockProtectionHelper and stay.
+        'removals': ['neovitae:teleposer', 'neovitae:ara_vitae/teleposer_focus',
+                     'neovitae:ara_vitae/enhanced_teleposer_focus', 'neovitae:reinforced_teleposer_focus',
+                     'neovitae:alchemytable/reagent_teleposition', 'neovitae:array/teleposition_sigil'],
+    },
+    # Round 5, batch 7 (docs/design/mod-pingpong.md, «Lote 7»): Create Aeronautics on trial. Every physics
+    # vehicle (airship, car, borer) starts as a build that Create Simulated's physics assembler turns into a Sable
+    # structure, so the assembler is the one keystone: the handling core fills its free top slot (Act III), the
+    # same maneuvering control as Immersive Aircraft's gyrodyne. Propellers, envelopes, burners, wheels and
+    # levitite are pieces built by the dozen and only work on an assembled structure.
+    'pingpong5aero': {
+        'script': 'entrelumen_pingpong5aero_balance.js',
+        'tag': 'ENTRELUMEN_PINGPONG5AERO_BALANCE',
+        'namespaces': {'simulated', 'aeronautics', 'offroad'},
+        'changes': [
+            shaped('simulated:physics_assembler', 0, 1, None, HC, 'III',
+                   'Physics vehicles: the handling core steers every Sable structure'),
+        ],
+        'removals': [],
+    },
+    # Round 7 (docs/design/mod-pingpong.md, «Ronda 7»): Elias's decisions of 28 September on the outward
+    # search. Insanium, Mystical Agradditions' sixth tier, is Act VI: every tier-6 seed and crux needs insanium
+    # essence, so the tier opens where insanium is made. Its two producers were four supremium essence around an
+    # infusion crystal and four supremium blocks around the master crystal; the first goes, and the second takes
+    # the Nature Luminosity on the drawing's axis (one Luminosity per block, nine essence). Elias accepted the
+    # star and egg seeds: an Act VI source of Nether stars besides the Wither. ME Beam Former's wireless energy
+    # tower moves unlimited energy for ender eyes and iron, which would undercut Flux Networks: it goes too.
+    'pingpong7': {
+        'script': 'entrelumen_pingpong7_balance.js',
+        'tag': 'ENTRELUMEN_PINGPONG7_BALANCE',
+        'namespaces': {'mysticalagradditions', 'me_beam_former'},
+        'changes': [
+            # The nine-essence block only compresses insanium, which now comes from uncrafting these blocks.
+            shaped('mysticalagradditions:insanium_block_combine', 0, 1, item('mysticalagriculture:supremium_block'),
+                   LUMINOSITY['nature'], 'VI', 'Insanium, the sixth tier: the Nature Luminosity over the master crystal',
+                   alternates=['mysticalagradditions:insanium_block']),
+        ],
+        'removals': ['mysticalagradditions:insanium_essence', 'me_beam_former:wireless_energy_tower'],
     },
     # The progression batch of 24 September 2026 (docs/design/progression-functions.md): gates of the
     # reference-packs proposal, one component per function, the top armor in Act VI and the vein
@@ -1125,7 +1247,11 @@ def load_recipes():
     for entry in lock['mods']:
         path = Path(paths[entry['filename']])
         with zipfile.ZipFile(path) as jar:
+            nested = []
             for name in jar.namelist():
+                if name.endswith('.jar'):
+                    nested.append(name)
+                    continue
                 rid = recipe_id_from_name(name)
                 if rid is None:
                     continue
@@ -1133,6 +1259,22 @@ def load_recipes():
                     recipes.setdefault(rid, (json.loads(jar.read(name)), entry['filename']))
                 except (ValueError, UnicodeDecodeError):
                     continue
+            # Jar-in-jar content (a bundle such as Create Aeronautics): its recipes load like the outer JAR's,
+            # which the lock pins; the outer JAR's own recipes win a shared ID.
+            for name in nested:
+                try:
+                    inner_jar = zipfile.ZipFile(io.BytesIO(jar.read(name)))
+                except zipfile.BadZipFile:
+                    continue
+                with inner_jar:
+                    for inner_name in inner_jar.namelist():
+                        rid = recipe_id_from_name(inner_name)
+                        if rid is None:
+                            continue
+                        try:
+                            recipes.setdefault(rid, (json.loads(inner_jar.read(inner_name)), entry['filename']))
+                        except (ValueError, UnicodeDecodeError):
+                            continue
         sources[entry['filename']] = entry['sha256']
     return recipes, sources, lock
 

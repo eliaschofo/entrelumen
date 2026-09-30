@@ -1,0 +1,15 @@
+# ENTRELUMEN: Advanced Peripherals 0.8.0a server settings, copied into each new world's serverconfig.
+# - The player detector reads positions only within 128 blocks and never across dimensions, and does not
+#   report other players' statistics: other teams' bases and trips stay private on shared servers.
+# - The chat box reaches 256 blocks and cannot attach run_command actions to its messages.
+# - The chunky turtle stays off: forced chunks go through FTB Chunks and its bounded claims.
+# See docs/design/mod-pingpong.md (round 5, batch 3).
+[Peripherals]
+	[Peripherals.Chat_Box]
+		chatBoxMaxRange = 256
+		chatBoxPreventRunCommand = true
+	[Peripherals.Player_Detector]
+		playerDetMaxRange = 128
+		playerSpyStatistics = false
+	[Peripherals.Chunky_Turtle]
+		enableChunkyTurtle = false

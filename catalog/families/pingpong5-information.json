@@ -1,0 +1,362 @@
+{
+  "schemaVersion": 1,
+  "about": "Mod ping-pong round 5, batch 2 (docs/design/mod-pingpong.md#lote-2--información-y-comodidad): information and comfort from the 27 September census, plus Chunky, Dynamic FPS and Ping Wheel from the outward search (docs/research/mod-outward.md). No items, no act gate. FindMe was dropped: it pulls items from any container in range without asking FTB Chunks.",
+  "qol": {
+    "emi_loot": "EMI shows what mobs, blocks and chests drop; ENTRELUMEN's own tables and the quest loot crates stay hidden",
+    "emi_ores": "EMI shows the heights and biomes where each ore generates",
+    "rightclickharvest": "Right-click a ripe crop to harvest and replant it; each harvest posts a break event that FTB Chunks can refuse",
+    "ae2ct": "The AE2 crafting status shows the whole request tree and the missing patterns",
+    "bridgingmod": "Place blocks outward from the edge you stand on, for bridges and ledges",
+    "wits": "/wits names the structure you stand in",
+    "bwncr": "The Wither and Ender Dragon sounds carry only nearby instead of across the whole world",
+    "yeetusexperimentus": "No experimental-settings warning when creating or opening a world with the pack's dimensions",
+    "chunky": "Pregenerates the world before a server opens",
+    "dynamic_fps": "Lowers frame rate and volume while the window is in the background (about 15 FPS unfocused)",
+    "pingwheel": "Ping a place or a creature for your FTB party (Mouse 5)"
+  },
+  "clientOnly": [
+    "bridgingmod",
+    "yet_another_config_lib_v3",
+    "bwncr",
+    "yeetusexperimentus",
+    "dynamic_fps"
+  ],
+  "performance": [],
+  "infrastructure": [],
+  "cfRelations": [
+    {
+      "project": 351264,
+      "satisfiedBy": "kotlinforforge",
+      "why": "Fzzy Config's CurseForge record requires Kotlin for Forge (351264); the lock already carries that mod (kotlinforforge-5.12.0-all.jar, round 4) from Modrinth, because the ATM10 copy has other bytes"
+    }
+  ],
+  "pins": [
+    {
+      "modIds": [
+        "ae2ct"
+      ],
+      "filename": "ae2ct-1.21.1-1.1.1.jar",
+      "sha256": "70a704742cf8bc13778a201a2338d0f4108dc0700bca47ed265aba02180f6777",
+      "dependencies": [
+        "ae2 [19.0.16, 99.99.99)",
+        "minecraft [1.21,1.21.2)",
+        "neoforge [21.0.0-beta,)"
+      ],
+      "license": "All Rights Reserved",
+      "projectID": 1086241,
+      "fileID": 7182163,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/ae2-crafting-tree/files/7182163",
+      "evidence": "ATM10 8.1 reference instance; CurseForge SHA-1 2e425a9dc8891bdcd3b2914506d1bc33414b61be matched; not on Modrinth"
+    },
+    {
+      "modIds": [
+        "bridgingmod"
+      ],
+      "filename": "BridgingMod-2.6.2+1.21.1.neoforge-release.jar",
+      "sha256": "382f3688c1a6c93ae96c12e8c7b3f529aa1a2f7dd07c2aaabda5e0b28464715b",
+      "dependencies": [
+        "minecraft [1.21.1,)",
+        "neoforge [21.1,)",
+        "yet_another_config_lib_v3 [3.6.2+1.21,)"
+      ],
+      "license": "MIT",
+      "projectID": 533942,
+      "fileID": 6269728,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/bridging-mod/files/6269728",
+      "sourceSha512": "315129fd67381cfc799aa51fcd6ee511fdb6959a8b60f33afc9ea48c7cc13c689d6d56fcd2c793d8ce9ba95f7a37a5fe94c4422baa8c011592153ad2bd47dbd5",
+      "modrinthMapping": {
+        "projectId": "lO3s8hjs",
+        "versionId": "GiR8tHNc",
+        "downloadUrl": "https://cdn.modrinth.com/data/lO3s8hjs/versions/GiR8tHNc/BridgingMod-2.6.2%2B1.21.1.neoforge-release.jar"
+      },
+      "evidence": "ATM10 8.1 reference instance; CurseForge SHA-1 18c4fdadf7d1b4632ae0e0914e4075847306b52f matched; identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "yet_another_config_lib_v3"
+      ],
+      "filename": "yet_another_config_lib_v3-3.8.2+1.21.1-neoforge.jar",
+      "sha256": "b5c30321b46cfaa521645a04aff89d2804d8167a25bb23ad4b1ae8da73093a2f",
+      "dependencies": [],
+      "license": "LGPL-3.0-or-later",
+      "projectID": 667299,
+      "fileID": 7437845,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/yacl/files/7437845",
+      "sourceSha512": "583de19b927ce8050c2b7d5e60b75accc69e325e5aac85c27994c82a9dec2e4e078343fa1d4c3a10d4bd7e0e524e0b3b246a18cf03db01e363a1e6f865adcf48",
+      "modrinthMapping": {
+        "projectId": "1eAoo2KR",
+        "versionId": "7TVdVtxF",
+        "downloadUrl": "https://cdn.modrinth.com/data/1eAoo2KR/versions/7TVdVtxF/yet_another_config_lib_v3-3.8.2%2B1.21.1-neoforge.jar"
+      },
+      "evidence": "ATM10 8.1 reference instance; CurseForge SHA-1 fe270c9f6e0a8142cf316944087f5109cef08bbb matched; identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "wits"
+      ],
+      "filename": "wits-neoforge-1.3.1.jar",
+      "sha256": "1ac1297df094f4019589093f5a4a5e1ddbef2bdaf494a7c83aa049ed225e0698",
+      "dependencies": [
+        "minecraft [1.21,)",
+        "neoforge *"
+      ],
+      "license": "MIT",
+      "projectID": 909375,
+      "fileID": 8412915,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/wits/files/8412915",
+      "sourceSha512": "8bf6da87a6fc62d74b77c78a2e261d078109fb9faf1da55efd89ab0e559d5b8d6fe12670e2622ba73e510c7d90f711005f5d48f88a8af21b211fd0e314117ba1",
+      "modrinthMapping": {
+        "projectId": "AVo2esap",
+        "versionId": "XbM2TRNR",
+        "downloadUrl": "https://cdn.modrinth.com/data/AVo2esap/versions/XbM2TRNR/wits-neoforge-1.3.1.jar"
+      },
+      "evidence": "ATM10 8.1 reference instance; CurseForge SHA-1 a03b6bd7d05bb1955036a9cd37e0e14121193d3e matched; identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "bwncr"
+      ],
+      "filename": "bwncr-neoforge-1.21.1-3.20.4.jar",
+      "sha256": "5ad29f3287e9c6f5b20638f051597918657886a0cdbc5123cf20505210584ac4",
+      "dependencies": [
+        "minecraft [1.21,1.22)"
+      ],
+      "license": "MIT",
+      "projectID": 261251,
+      "fileID": 8135209,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/bad-wither-no-cookie-reloaded/files/8135209",
+      "sourceSha512": "642c550c61f0fc374b576bd5b26a6e9ee69c0b8e47a1368d99bffcbd47420689c763b60aef64ace8fa2e0ecd8e909b26771a779add2fcde0dd86c9c4c99ffee8",
+      "modrinthMapping": {
+        "projectId": "lL2MtE37",
+        "versionId": "FRuLJsBp",
+        "downloadUrl": "https://cdn.modrinth.com/data/lL2MtE37/versions/FRuLJsBp/bwncr-neoforge-1.21.1-3.20.4.jar"
+      },
+      "evidence": "ATM10 8.1 reference instance; CurseForge SHA-1 dd7920e114fbd066986ea1028aa201a5e0742875 matched; identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "yeetusexperimentus"
+      ],
+      "filename": "yeetusexperimentus-neoforge-87.0.0.jar",
+      "sha256": "9117db8b5905abf18f64fdf8f8d8ca5a91c23abd0a7fa2c9986c21aa17d74e75",
+      "dependencies": [
+        "minecraft [1.21,)",
+        "neoforge [21,)"
+      ],
+      "license": "All Rights Reserved",
+      "projectID": 635427,
+      "fileID": 5444189,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/yeetusexperimentus/files/5444189",
+      "sourceSha512": "cc2dc46dcaa0424c820cb7931fd2ceb3826669934189c011fd1ebd5692cdf7652c725034abec2828bfea2238c9615d6f9c36e3e01e21fc9eb44551eb51e06fe3",
+      "modrinthMapping": {
+        "projectId": "HaaH232J",
+        "versionId": "Pp0TjcvD",
+        "downloadUrl": "https://cdn.modrinth.com/data/HaaH232J/versions/Pp0TjcvD/yeetusexperimentus-neoforge-87.0.0.jar"
+      },
+      "evidence": "ATM10 8.1 reference instance; CurseForge SHA-1 7132c346103d75a7c84da64b35b92e3a6f1ce3da matched; identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "fzzy_config"
+      ],
+      "filename": "fzzy_config-0.7.6+1.21+neoforge.jar",
+      "sha256": "4e5cc1438087b0bc0276969e88b9ad0bdf2bcc60d6caf5fe79e18947d7a29050",
+      "dependencies": [
+        "kotlinforforge [5.3.0,)",
+        "minecraft [1.21,)",
+        "neoforge [21.0.0-beta,)"
+      ],
+      "license": "TDL-M (https://github.com/fzzyhmstrs/Timefall-Development-Licence-Modified)",
+      "projectID": 1005914,
+      "fileID": 7568897,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/fzzy-config/files/7568897",
+      "sourceSha512": "6071890aba7f2273c9fd508914acc7850de9d986423760f9ce416875ffa04eea2ad71a7a6f4d5f90f0625a672f6f54606778d11151b155f3fd98c223c61a4a6d",
+      "modrinthMapping": {
+        "projectId": "hYykXjDp",
+        "versionId": "MAPG6cXE",
+        "downloadUrl": "https://cdn.modrinth.com/data/hYykXjDp/versions/MAPG6cXE/fzzy_config-0.7.6%2B1.21%2Bneoforge.jar"
+      },
+      "evidence": "ATM10 8.1 reference instance; CurseForge SHA-1 c0910f9b975aaab8545ce950539748fb33d704d1 matched; identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "emi_loot"
+      ],
+      "filename": "emi_loot-0.7.9+1.21+neoforge.jar",
+      "sha256": "a89805cdcb2e11734624d7239112643ee6b8f95e6b71b3a720530df6a5c18980",
+      "dependencies": [
+        "emi [1.0.0,)",
+        "fzzy_config [0.4.1,)",
+        "minecraft [1.21,1.22)",
+        "neoforge [21.0,)"
+      ],
+      "license": "MIT",
+      "projectID": 681783,
+      "fileID": 7417271,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/emi-loot/files/7417271",
+      "downloadUrl": "https://edge.forgecdn.net/files/7417/271/emi_loot-0.7.9%2B1.21%2Bneoforge.jar",
+      "sourceSha512": "9c67ff502da7a94ef7707c144deb4ec6472f445e99cc8eab30b77f22d886a86b8793338452fe394296f3132ed4d37271d475af184e3a9519ddebdad1a82eecf7",
+      "modrinthMapping": {
+        "projectId": "qbbO7Jns",
+        "versionId": "QXkODMCT",
+        "downloadUrl": "https://cdn.modrinth.com/data/qbbO7Jns/versions/QXkODMCT/emi_loot-0.7.9%2B1.21%2Bneoforge.jar"
+      },
+      "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/681783/files/7417271); identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "emi_ores"
+      ],
+      "filename": "emi_ores-1.3+1.21.1+neoforge.jar",
+      "sha256": "079e92666e61d0c15671f73f89191d6e5b71f4b70c6abbf97be273bd76a1ce52",
+      "dependencies": [
+        "emi [1.1.20,)",
+        "minecraft 1.21.1",
+        "neoforge [21,)"
+      ],
+      "license": "LGPL-3.0-only",
+      "projectID": 974009,
+      "fileID": 8254306,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/emi-ores/files/8254306",
+      "downloadUrl": "https://edge.forgecdn.net/files/8254/306/emi_ores-1.3%2B1.21.1%2Bneoforge.jar",
+      "sourceSha512": "c5774be0eeda90253c4fa98aaf0006ecb50dbd62ef5027420385482cea21b3339abdfbe945ab1233101bac7f52663cd2860abde04941a818ac3da312d86fc4ee",
+      "modrinthMapping": {
+        "projectId": "sG4TqDb8",
+        "versionId": "V2MXZKsX",
+        "downloadUrl": "https://cdn.modrinth.com/data/sG4TqDb8/versions/V2MXZKsX/emi_ores-1.3%2B1.21.1%2Bneoforge.jar"
+      },
+      "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/974009/files/8254306); identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "rightclickharvest"
+      ],
+      "filename": "rightclickharvest-neoforge-4.6.1+1.21.1.jar",
+      "sha256": "b5d597ed361964ba9530a848fe8987715f40af2390dfa1a6adb70a2a74076d52",
+      "dependencies": [
+        "architectury [13.0.6,)",
+        "jamlib [1.2.2-build.2+1.21.1,)",
+        "minecraft [1.21,)",
+        "neoforge [21,)"
+      ],
+      "license": "MIT",
+      "projectID": 452834,
+      "fileID": 7508749,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/rightclickharvest/files/7508749",
+      "downloadUrl": "https://edge.forgecdn.net/files/7508/749/rightclickharvest-neoforge-4.6.1%2B1.21.1.jar",
+      "sourceSha512": "909cc4aba3ed535bb65c4cf285725907f100c0ebbcb619b1c861338b7993a020f0aef953bebeeb74920304c5a80e9cd07654aa5f885a5995824da7cf6784bf42",
+      "modrinthMapping": {
+        "projectId": "Cnejf5xM",
+        "versionId": "djt0zS53",
+        "downloadUrl": "https://cdn.modrinth.com/data/Cnejf5xM/versions/djt0zS53/rightclickharvest-neoforge-4.6.1%2B1.21.1.jar"
+      },
+      "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/452834/files/7508749); FTB Evolution 1.43.1 ships the same CurseForge file with the same SHA-1; identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "jamlib"
+      ],
+      "filename": "jamlib-neoforge-1.3.6+1.21.1.jar",
+      "sha256": "911afdfe717a2375a651253e282ac9e769f8bead381d33c2167955c25eefe514",
+      "dependencies": [
+        "architectury [13.0.6,)",
+        "minecraft [1.21,)",
+        "neoforge [21,)"
+      ],
+      "license": "MIT",
+      "projectID": 623764,
+      "fileID": 7766752,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/jamlib/files/7766752",
+      "downloadUrl": "https://edge.forgecdn.net/files/7766/752/jamlib-neoforge-1.3.6%2B1.21.1.jar",
+      "sourceSha512": "c544322a31b5f3fe045cf80eb39e6bd59f91f209a0e510731daa0a6403a273f582769bb26277ef767b4c1ca6438316959d31a6a08e5aa4b1b5a9184a370e5135",
+      "modrinthMapping": {
+        "projectId": "IYY9Siz8",
+        "versionId": "n6UM6TcS",
+        "downloadUrl": "https://cdn.modrinth.com/data/IYY9Siz8/versions/n6UM6TcS/jamlib-neoforge-1.3.6%2B1.21.1.jar"
+      },
+      "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/623764/files/7766752); FTB Evolution 1.43.1 ships the same CurseForge file with the same SHA-1; identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "chunky"
+      ],
+      "filename": "Chunky-NeoForge-1.4.23.jar",
+      "sha256": "d72f235cf1f56f2c374f52c00bdda5034524b28142305a84cfc123a3f92ad274",
+      "dependencies": [
+        "minecraft [1.21,1.22)",
+        "neoforge [21.0-beta,)"
+      ],
+      "license": "GNU GPLv3",
+      "projectID": 485681,
+      "fileID": 6383261,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/chunky-pregenerator-forge/files/6383261",
+      "downloadUrl": "https://edge.forgecdn.net/files/6383/261/Chunky-NeoForge-1.4.23.jar",
+      "sourceSha512": "2db769dd723f243a21e1881e7c9f825e9c193da6f2bed454b70cb6fa9e51c57f63fdcf017c0657bbd26f7bba30815413e27c74d3c7be0783390a96ee9baa4bf7",
+      "modrinthMapping": {
+        "projectId": "fALzjamp",
+        "versionId": "LuFhm4eU",
+        "downloadUrl": "https://cdn.modrinth.com/data/fALzjamp/versions/LuFhm4eU/Chunky-NeoForge-1.4.23.jar"
+      },
+      "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/485681/files/6383261); identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "dynamic_fps"
+      ],
+      "filename": "dynamic-fps-3.11.4+minecraft-1.21.0-neoforge.jar",
+      "sha256": "78cb67c9faeff5d1cb4da48d41e48ecc47baddaaec0f792e6edc8207aee0ab8e",
+      "dependencies": [
+        "minecraft [1.21.0,1.21.1]"
+      ],
+      "license": "MIT",
+      "projectID": 335493,
+      "fileID": 7546938,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/dynamic-fps/files/7546938",
+      "downloadUrl": "https://edge.forgecdn.net/files/7546/938/dynamic-fps-3.11.4%2Bminecraft-1.21.0-neoforge.jar",
+      "sourceSha512": "8eb18a280b265e598540306275b51a165836f4b14c6c703b6ced11fcac50bfab439e4deb69e222f62614a9f15fa0ef58e5bd84e20e37ae57755d9c2f8b134057",
+      "modrinthMapping": {
+        "projectId": "LQ3K71Q1",
+        "versionId": "T238FZpQ",
+        "downloadUrl": "https://cdn.modrinth.com/data/LQ3K71Q1/versions/T238FZpQ/dynamic-fps-3.11.4%2Bminecraft-1.21.0-neoforge.jar"
+      },
+      "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/335493/files/7546938); identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "pingwheel"
+      ],
+      "filename": "Ping-Wheel-1.12.2-neoforge-1.21.1.jar",
+      "sha256": "fcff3528dfc644dd510e702c51af477c11ddbee07895b9ba906e3f0dbc9c4077",
+      "dependencies": [
+        "minecraft [1.21,1.21.1]",
+        "neoforge [21.0.143,)"
+      ],
+      "license": "MIT",
+      "projectID": 734339,
+      "fileID": 7996932,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/ping-wheel/files/7996932",
+      "downloadUrl": "https://edge.forgecdn.net/files/7996/932/Ping-Wheel-1.12.2-neoforge-1.21.1.jar",
+      "sourceSha512": "d9f289464fa85c8af34bc57044a6f03abc0ccf4d93bc67451d1e68386be0e3b55524a68dcbf529773859f9166e09cf1fe848c83f1c0c1d10a374819d120d2554",
+      "modrinthMapping": {
+        "projectId": "QQXAdCzh",
+        "versionId": "Zrh2Fmn9",
+        "downloadUrl": "https://cdn.modrinth.com/data/QQXAdCzh/versions/Zrh2Fmn9/Ping-Wheel-1.12.2-neoforge-1.21.1.jar"
+      },
+      "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/734339/files/7996932); identical bytes on Modrinth, SHA-512 matched"
+    }
+  ]
+}

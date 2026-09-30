@@ -28,7 +28,7 @@ class ClientDefaultsTest(unittest.TestCase):
         self.assertNotIn('servers.dat', fragments)
         self.assertEqual(json.loads(general['resourcePacks']),
                          ['vanilla', 'mod_resources', 'file/entrelumen'])
-        self.assertEqual(set(fragments), {'options.txt', 'keybindings.txt'})
+        self.assertEqual(set(fragments), {'options.txt', 'keybindings.txt', 'extra/config/iris.properties'})
 
     def test_native_key_names_and_modifiers_survive(self):
         bindings = defaults.render(self.preset)['keybindings.txt'].splitlines()
@@ -52,6 +52,19 @@ class ClientDefaultsTest(unittest.TestCase):
         preset = copy.deepcopy(self.preset)
         preset['options']['key_key.mekanism.head_mode'] = 'key.keyboard.up:SUPER'
         with self.assertRaisesRegex(ValueError, 'Invalid Default Options binding'):
+            defaults.render(preset)
+
+    def test_iris_starts_with_shaders_off_through_a_seed_once_file(self):
+        fragments = defaults.render(self.preset)
+        seeded = dict(line.split('=', 1) for line in fragments['extra/config/iris.properties'].splitlines())
+        self.assertEqual(seeded, {'disableUpdateMessage': 'true', 'enableShaders': 'false'})
+        preset = copy.deepcopy(self.preset)
+        preset['extra']['config/other.toml'] = {'a': 'b'}
+        with self.assertRaisesRegex(ValueError, 'Not a seeded extra file'):
+            defaults.render(preset)
+        preset = copy.deepcopy(self.preset)
+        preset['extra']['config/iris.properties']['shaderPack'] = 'Complementary Reimagined.zip'
+        with self.assertRaisesRegex(ValueError, 'Invalid property'):
             defaults.render(preset)
 
     def test_check_is_deterministic_and_rejects_unexpected_files(self):

@@ -37,7 +37,7 @@ class FamilyCurationTest(unittest.TestCase):
         })
         self.patch = patch.multiple(
             curate, CATALOG=self.catalog, CONTENT={}, QOL={}, CLIENT=set(),
-            PERFORMANCE=set(), INFRA=set(), FAMILY_PINS={}, REPLACED={},
+            PERFORMANCE=set(), INFRA=set(), FAMILY_PINS={}, REPLACED={}, CF_SATISFIED={}, CF_WAIVED={},
         )
         self.patch.start()
         self.addCleanup(self.patch.stop)
@@ -298,6 +298,58 @@ class FamilyCurationTest(unittest.TestCase):
         paths['lib-1.jar'] = str(self.source / 'mods' / 'lib-1.jar')
         self.assertIn('Replaced family dependency still locked: lib-1.jar (replaced by lib-2.jar)',
                       curate.check(before, paths, 'client')[1])
+
+    def relation_family(self, pin, relations):
+        self.write_json(self.catalog / 'families' / 'magic.json', {
+            'schemaVersion': 1, 'content': {'magic': ['II', 'Synthetic', 'Synthetic']},
+            'cfRelations': relations, 'pins': [pin]})
+        curate.CONTENT.clear()
+        curate.FAMILY_PINS.clear()
+        curate.CF_SATISFIED.clear()
+        curate.CF_WAIVED.clear()
+        curate.load_families()
+
+    def test_cf_required_project_met_by_a_declared_provider_or_waived_for_named_files(self):
+        # computer-2 comes from another CurseForge project (1676502) than the one magic's file relation names.
+        curate.CONTENT['computer'] = ('III', 'Existing computer', 'Existing integration')
+        self.add_jar('computer-2.jar', 'computer', '2.0', 1676502, 40)
+        pin = self.add_jar('magic-1.jar', 'magic', '1.0', 100, 10)
+        self.addons[-1]['installedFile']['dependencies'] = [{'addonId': 282001, 'type': 3},
+                                                            {'addonId': 704113, 'type': 3}]
+        self.sync_instance()
+
+        self.relation_family(pin, [])
+        with self.assertRaisesRegex(ValueError, 'curseforge:282001'):
+            curate.refresh(self.source)
+
+        self.relation_family(pin, [
+            {'project': 282001, 'satisfiedBy': 'computer', 'why': 'Same mod from another project'},
+            {'project': 704113, 'waivedFor': ['magic-1.jar'], 'why': 'Stale relation: not in mods.toml'}])
+        curate.CONTENT['computer'] = ('III', 'Existing computer', 'Existing integration')
+        curate.refresh(self.source)
+        lock = curate.read_json(self.catalog / 'curated.json')
+        paths = curate.read_json(self.catalog / 'local-paths.json')
+        self.assertEqual(lock['missing'], [])
+        self.assertEqual(curate.check(lock, paths, 'server')[1], [])
+
+        # The provider must be locked on that side, and a waiver covers only the files it names.
+        lock_without_provider = dict(lock, mods=[e for e in lock['mods'] if e['filename'] != 'computer-2.jar'])
+        self.assertIn('magic-1.jar: missing CF required project 282001 (server)',
+                      curate.check(lock_without_provider, paths, 'server')[1])
+        curate.CF_WAIVED[704113]['files'] = {'other.jar'}
+        self.assertIn('magic-1.jar: missing CF required project 704113 (client)', curate.check(lock, paths, 'client')[1])
+
+    def test_invalid_cf_relations_are_rejected(self):
+        pin = self.add_jar('magic-1.jar', 'magic', '1.0', 100, 10)
+        for relation in ({'project': 282001, 'why': 'neither'},
+                         {'project': 282001, 'satisfiedBy': 'computer', 'waivedFor': ['magic-1.jar'], 'why': 'both'},
+                         {'project': 282001, 'satisfiedBy': 'computer'},
+                         {'project': '282001', 'satisfiedBy': 'computer', 'why': 'text project'},
+                         {'project': 704113, 'waivedFor': ['../magic-1.jar'], 'why': 'unsafe name'},
+                         {'project': 704113, 'waivedFor': [], 'why': 'no files'}):
+            with self.subTest(relation=relation):
+                with self.assertRaisesRegex(ValueError, 'Invalid CurseForge relation'):
+                    self.relation_family(pin, [relation])
 
     def test_replacement_must_name_a_pin_of_the_same_family(self):
         pin = self.add_jar('magic-1.jar', 'magic', '1.0', 100, 10)

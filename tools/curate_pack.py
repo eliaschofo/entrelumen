@@ -131,6 +131,12 @@ EXCLUDED = {'projecte', 'allthemodium', 'allthetweaks', 'alltheores', 'allthecom
 FAMILY_PINS = {}
 # Earlier lock entries a family replaces on purpose: {filename: {'by': pinned filename, 'why': reason}}.
 REPLACED = {}
+# CurseForge "required project" relations the lock meets another way (family `cfRelations`):
+# {project: {'modId': mod ID another locked file provides, 'why': reason}} when the lock carries the same
+# mod from another project (CC: Tweaked from 1676502 for 282001), and {project: {'files': {filename}, 'why':
+# reason}} when the relation is stale for those files (their mods.toml does not require it).
+CF_SATISFIED = {}
+CF_WAIVED = {}
 
 
 def read_json(path):
@@ -225,6 +231,23 @@ def load_families():
             if name in REPLACED and REPLACED[name] != {'by': by, 'why': replaced['why']}:
                 raise ValueError(f'Conflicting replacement: {name}')
             REPLACED[name] = {'by': by, 'why': replaced['why']}
+        for relation in family.get('cfRelations', []):
+            project, why = relation.get('project'), relation.get('why')
+            satisfied, waived = relation.get('satisfiedBy'), relation.get('waivedFor')
+            if (not isinstance(project, int) or project <= 0 or not why or (satisfied is None) == (waived is None)
+                    or (satisfied is not None and (not isinstance(satisfied, str) or not satisfied))
+                    or (waived is not None and (not isinstance(waived, list) or not waived or not all(
+                        isinstance(name, str) and Path(name).name == name and name.endswith('.jar') for name in waived)))):
+                raise ValueError(f'Invalid CurseForge relation in {path.name}: {relation}')
+            if satisfied is not None:
+                if project in CF_SATISFIED and CF_SATISFIED[project] != {'modId': satisfied, 'why': why}:
+                    raise ValueError(f'Conflicting CurseForge relation: {project}')
+                CF_SATISFIED[project] = {'modId': satisfied, 'why': why}
+            else:
+                known = CF_WAIVED.setdefault(project, {'files': set(), 'why': why})
+                if known['why'] != why:
+                    raise ValueError(f'Conflicting CurseForge relation: {project}')
+                known['files'].update(waived)
         pinned_ids = {mod_id for pin in family.get('pins', []) for mod_id in pin['modIds']}
         requested = set(family.get('content', {})) | set(family.get('qol', {}))
         if not requested <= pinned_ids:
@@ -382,6 +405,11 @@ def refresh(source, preserve=False):
             if dep['required'] and dep['id'] not in provided(entry['metadata']):
                 queue.append((dep['id'], f"required by {mod} ({dep['side']})"))
         for project in entry['cfRequiredProjects']:
+            if project in CF_SATISFIED:
+                queue.append((CF_SATISFIED[project]['modId'], f'CF required project {project} of {mod}, met by a declared provider'))
+                continue
+            if entry['filename'] in CF_WAIVED.get(project, {}).get('files', ()):
+                continue
             candidates = [e for e in inventory if e['projectID'] == project]
             if candidates:
                 queue.append((candidates[0]['metadata']['mods'][0]['id'], f'CF required project of {mod}'))
@@ -449,8 +477,11 @@ def check(lock, paths, side='client'):
             if dep['required'] and dep['side'] in ('both', side) and dep['id'] not in supplied:
                 errors.append(f"{name}: missing {dep['id']} ({side})")
         for project in entry['cfRequiredProjects']:
-            if project not in projects:
-                errors.append(f'{name}: missing CF required project {project} ({side})')
+            if project in projects or name in CF_WAIVED.get(project, {}).get('files', ()):
+                continue
+            if project in CF_SATISFIED and CF_SATISFIED[project]['modId'] in supplied:
+                continue
+            errors.append(f'{name}: missing CF required project {project} ({side})')
     return active, sorted(set(errors))
 
 

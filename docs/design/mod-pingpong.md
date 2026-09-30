@@ -498,3 +498,476 @@ Eternal Starlight es del acto IV: la receta del Orbe de la Profecía lleva una C
 - Pendiente: probarlo en un cliente (el trueque en la pantalla del Guardián, el texto de las quests) y una pelea real con el Guardián.
 
 Seguimiento (27/9, rama `fix/balance-rftools-dragon`): sale `rftoolsutility:minecraft_ender_dragon`. `tools/test_family_balance.py` (`test_no_rftools_spawner_recipe_spawns_a_boss`) lee `c:bosses`, los dos jefes de NeoForge y los que sumen los mods fijados, recorre las recetas del generador de RFTools en los JAR y exige que toda receta de un jefe esté quitada. El servidor no hizo falta: la familia usa el mismo mecanismo de quitado que el Wither, y el arranque anterior ya lo había probado.
+
+## Ronda 5 (27/9): censo de ATM10, FTB Evolution y Craftoria
+
+Rama `feature/mods-r5`. De los 31 ADD del [censo](../research/mod-census.md) entraron 30 (FindMe quedó afuera), con las decisiones de Elias del 27/9: «sumar genuinamente todo lo que MEJORE la experiencia y robustezca al pack (no sumar por sumar)»; Neo Vitae sí, en los actos III-IV y con su dimensión; Iris sí, con los shaders apagados y sin shaderpack; Create Aeronautics a prueba, en su propio lote y medido. El controlador sumó Create Collision Fix y, desde la [búsqueda hacia afuera](../research/mod-outward.md), tres arreglos al lote 1, tres comodidades al lote 2 y Sanguine Neural Networks al de Neo Vitae. Un commit (o un grupo chico) por lote, para mergear de a uno. Con los siete lotes, el lock pasa de 316 cliente / 274 servidor a **365 / 312** (362 / 309 sin Aeronautics).
+
+**Qué versión se fija.** La que usa un pack de referencia (primero ATM10) cuando cumple las dependencias del lock: esos packs corren el mismo NeoForge 21.1 con cientos de mods, y su pin es evidencia de que carga. Un archivo oficial más nuevo entra sólo si arregla algo que necesitamos, y se dice por qué. Cada JAR sale de la fuente oficial:
+
+- **Instancia ATM10 8.1** (sólo lectura): el SHA-1 de CurseForge de su `minecraftinstance.json` coincide con los bytes.
+- **CDN de CurseForge** (`edge.forgecdn.net`): el tamaño coincide con el registro oficial del archivo. Cuando FTB Evolution 1.43.1 trae el mismo archivo, su manifiesto público da el mismo SHA-1.
+- **CDN de Modrinth**: SHA-1 y SHA-512 de la API de versiones.
+- En los tres casos, si los mismos bytes están en Modrinth, el pin guarda su SHA-512 y `--check` lo vuelve a verificar. Todo pin de CurseForge lleva los IDs de proyecto y archivo que necesita la exportación de la App.
+
+**Relaciones de CurseForge.** `tools/curate_pack.py` suma `cfRelations` a las familias: un proyecto requerido por CurseForge puede darse por cumplido con un mod que el lock ya provee desde otro proyecto (`satisfiedBy`, como CC: Tweaked 1676502 para el 282001 que piden Advanced Peripherals y More Red CCT) o quedar exento para archivos nombrados cuando la relación es vieja y su `mods.toml` no la pide (`waivedFor`). `--check` rechaza un proveedor ausente y una exención que no nombra al archivo; `tools/test_curate_families.py` lo cubre.
+
+### Lote 1 · Robustez y rendimiento
+
+Familia `catalog/families/pingpong5-robustness.json`: 16 mods y 2 librerías. El lock pasa de 316 cliente / 274 servidor (con los filtros de quests) a **334 / 287**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Lado | Para qué |
+|---|---|---|---|---|
+| Entity Culling | 1.10.5 | CF 448233/8287097 (Craftoria) | cliente | No dibuja criaturas ni bloques con modelo ocultos tras paredes. |
+| Structure Layout Optimizer | 1.0.12 | CF 1087831/7439136 (FTB) | ambos | Arma más rápido las estructuras por piezas (aldeas, mazmorras). |
+| I'm Fast | 1.0.3 | CF 1111501/8747159 (ATM10) | ambos | El servidor deja de echar o frenar a quien se mueve rápido (jetpacks, élitros, aeronaves). |
+| Packet Fixer | 3.3.1 | CF 689467/7221528 (Craftoria) | ambos | Sube el límite de los paquetes: una mochila llena ya no desconecta. |
+| Load My F\*\*\*ing Tags | 1.1.1 | CF 656346/7084444 (ATM10) | ambos | Una entrada rota en un tag ya no vacía el tag entero. |
+| Crash Assistant | 1.11.12 | CF 1154099/8636685 (ATM10) | cliente | Ventana de crash que nombra la causa probable y sube los logs sólo si el jugador lo pide. |
+| Not Enough Recipe Book | 0.4.3 | CF 738663/6880047 (FTB) | ambos | Saca el libro de recetas vanilla; necesita OctoLib 0.6.2 (CF 916747/8040848, ATM10). |
+| NaNny | 1.0.1 | CF 634392/5728615 (FTB) | ambos | Cancela el daño que no es un número, que deja a un jugador inmortal o lo mata. |
+| Better Compatibility Checker | 21.1.8 | CF 551894/7404415 (ATM10) | ambos | La lista de servidores muestra si el servidor corre la misma versión del pack. |
+| Sodium Extra | 0.9.3 | CF 447673/8403576 (ATM10) | cliente | Más opciones de video para PCs modestas. |
+| Compact Machines Preview Fixer | 1.1.0 | CF 1548811/8133423 (FTB; no está en Modrinth) | cliente | Tapa la fuga de memoria de la vista previa de salas de Compact Machines. |
+| Draconic Evolution Render Patcher | 2.0.0 | CF 1383702/8277268 (FTB) | cliente | Núcleo de energía, reactor e inyectores de Draconic se dibujan bien con Sodium. |
+| Create Collision Fix | 1.0.0 | Modrinth j20TJ3QZ/oIRUjqoI | ambos | Evita el crash de Create 6.0.10 por choque de contraptions (`mf.axis` nulo) que deja al servidor reiniciándose en bucle. |
+| Mekanism Pipez Fix | 1.0.1 (beta) | CF 1233861/7661970 | ambos | Los caños de Pipez siguen alimentando multibloques de Mekanism después de reiniciar: un reactor de fisión ya no se queda sin agua. |
+| Neruina | 3.3.3 | CF 851046/8451084, con Configurable 3.5.2 (CF 1092048/8438541) | ambos | Congela la entidad, máquina o ítem que falla en cada tick en vez de tumbar el servidor, y avisa dónde. |
+| Async Locator Refined | 1.6.0 | CF 1331921/8501111 | ambos | Mapas del tesoro, delfines y `/locate` buscan fuera del hilo del servidor. |
+
+Todos salvo Compact Machines Preview Fixer tienen los mismos bytes en Modrinth, y el pin guarda su SHA-512.
+
+- **Versiones que no son las más nuevas.**
+  - Entity Culling 1.11.x arregla que NeoForge no usara la caja de render de los bloques con modelo grande, pero es una serie de seis días con tres arreglos seguidos y un hilo de culling reescrito. Queda 1.10.5, la de Craftoria. Hay que mirar en cliente que no desaparezcan renderizadores grandes (controlador del Arca, altares, núcleo de Draconic); si pasa, van a su lista blanca.
+  - Sodium Extra 0.9.4 sólo corrige la niebla y traducciones; queda 0.9.3, la de ATM10.
+- **Create Collision Fix** exige Create `[6.0.10]` exacto. **Se saca cuando Create pase a 6.0.11**, que trae el arreglo oficial (PR #10301); con 6.0.11 el cargador se niega a arrancar y lo nombra. La GameTest `pingponground5robustnessloaded` también lo avisa.
+- **Configuración:**
+  - `pack/config/bcc-common.toml`: ENTRELUMEN 0.1.0. La versión es la `mod_version` del companion y se sube con cada release; la GameTest compara las dos.
+  - `pack/config/crash_assistant/config.toml`: sólo el nombre del pack. El enlace de ayuda queda en el de NeoForge hasta que ENTRELUMEN tenga un canal público de soporte.
+  - El resto, por defecto. Not Enough Recipe Book queda en su modo `TOGGLE`: el botón del libro muestra u oculta la barra de fabricables de EMI y el servidor no otorga ni guarda recetas. Ningún script, quest ni código del pack usa el desbloqueo de recetas (búsqueda en el repo).
+  - Neruina, por defecto: umbral de 10 excepciones, avisos para todos y comandos para operadores. En la QA, una línea de Neruina cuenta como error.
+- **Compact Machines Preview Fixer** apunta a `MachineRoomScreen` y a la cámara de Gander, que existen en Compact Machines 7.0.81; sus mixins son `@Pseudo` y no exigen el objetivo. FTB Evolution lo usa con el mismo 7.0.81, y Draconic Render Patcher con el mismo Draconic 3.1.4.632 y Sodium 0.8.13.
+- **Escalonado:** ninguno; no agregan ítems.
+- **Teclas:** sólo Entity Culling registra dos, sin asignar (`key.entityculling.toggle` y `toggleBoxes`); quedan en `tools/keybind_contexts.json`.
+- **GameTests:** `pingponground5robustnessloaded` (los de servidor cargados, los de cliente fuera del servidor dedicado, Create en la versión que parchea el hotfix, BCC con el nombre y la versión del pack) y `nannycancelsnandamage` (un cerdo que recibe daño NaN conserva la vida).
+
+### Lote 2 · Información y comodidad
+
+Familia `catalog/families/pingpong5-information.json`: 11 mods y 3 librerías. El lock pasa a **348 / 296**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Lado | Para qué |
+|---|---|---|---|---|
+| EMI Loot | 0.7.9 | CF 681783/7417271 (Craftoria) | ambos | EMI muestra qué sueltan criaturas, bloques y cofres; necesita Fzzy Config 0.7.6 (CF 1005914/7568897, ATM10). |
+| EMI Ores | 1.3 | CF 974009/8254306 (Craftoria) | ambos | EMI muestra en qué alturas y biomas sale cada mineral. |
+| RightClickHarvest | 4.6.1 | CF 452834/7508749 (FTB) | ambos | Clic derecho sobre un cultivo maduro: cosecha y replanta. Necesita JamLib 1.3.6 (CF 623764/7766752, FTB). |
+| AE2: Crafting Tree | 1.1.1 | CF 1086241/7182163 (ATM10; no está en Modrinth) | ambos | El estado de un pedido de AE2 muestra el árbol entero y los patrones que faltan. |
+| Bridging Mod | 2.6.2 | CF 533942/6269728 (ATM10) | cliente | Coloca bloques hacia afuera desde el borde en que estás parado. Necesita YetAnotherConfigLib 3.8.2 (CF 667299/7437845, ATM10), también de cliente. |
+| WITS | 1.3.1 | CF 909375/8412915 (ATM10) | ambos | `/wits` dice en qué estructura estás parado. |
+| Bad Wither No Cookie | 3.20.4 | CF 261251/8135209 (ATM10) | cliente | Los sonidos del Wither y del Dragón se oyen sólo cerca. |
+| Yeetus Experimentus | 87.0.0 | CF 635427/5444189 (ATM10) | cliente | Sin el aviso de «ajustes experimentales» al crear o abrir un mundo. |
+| Chunky | 1.4.23 | CF 485681/6383261 | ambos | Pregenera el mundo antes de abrir un servidor. |
+| Dynamic FPS | 3.11.4 | CF 335493/7546938 | cliente | Baja FPS y volumen con la ventana en segundo plano. |
+| Ping Wheel | 1.12.2 (beta) | CF 734339/7996932 | ambos | Marca un lugar o una criatura para tu grupo de FTB Teams (Mouse 5). |
+
+Todos tienen los mismos bytes en Modrinth salvo AE2: Crafting Tree, que no está ahí.
+
+- **FindMe queda afuera** (ver «Quedó afuera»): el servidor busca en todo contenedor dentro del radio y deja sacar ítems sin abrirlo ni preguntarle a FTB Chunks (`PositionRequestMessage` y `PullItemRequestMessage` de 3.3.4, leídos con `javap`). Su config sólo tiene el radio.
+- **RightClickHarvest respeta los reclamos:** en NeoForge publica un `BreakEvent` antes de cada cosecha y un `EntityPlaceEvent` antes de replantar (`RightClickHarvestPlatformImpl`), y FTB Chunks los cancela en un reclamo ajeno. Config por defecto: sin azada obligatoria, sin costo de hambre ni de experiencia. Los cultivos de Mystical Agriculture son `CropBlock`, así que se cosechan igual que al romperlos.
+- **Yeetus Experimentus hace falta:** `WorldDimensions.checkStability` (servidor 1.21.1 parchado por NeoForge 21.1.249) marca como experimental toda dimensión que no es vanilla, y el pack tiene más de diez. Los tres packs de referencia lo traen. Falta verlo en cliente.
+- **EMI Loot no muestra el botín de la campaña.** No tiene un ajuste por tabla, pero nombra cada receta `emi_loot:/<categoría>/<espacio>/<ruta>` (`ChestLootRecipe.getId` y sus hermanas). El filtro de datos de EMI (`pack/kubejs/assets/emi/recipe/filters/entrelumen_hidden_loot.json`) oculta toda tabla `entrelumen:*`: la del taller de Terra, las de bloques y las del Envés (`entrelumen:enves/<tipo>`), que entran con su rama.
+  - **Las cajas de loot de las quests no son tablas de botín:** son tablas de recompensas de FTB Quests. Las muestra FTB XMod Compat (ya en `main`) con la categoría de JEI `ftbquests:loot_crate`, con pesos, incluidas las cajas de las cumbres y los encargos. EMI la importa con el mismo ID (`JemiCategory`). El mismo filtro la oculta en EMI, y `RecipeViewerEvents.removeCategories` la oculta en JEI (`pack/kubejs/client_scripts/entrelumen_recipe_viewer.js`). La categoría «Quests» de XMod queda: sólo lista quests que el jugador ya puede empezar.
+  - `tools/check_recipe_design.py` suma la regla 6, que prueba el filtro contra IDs de ejemplo de las cinco categorías: oculta los de `entrelumen` y no los de otros mods. También exige la categoría en EMI y en JEI.
+- **Dynamic FPS** (`pack/config/dynamic_fps.json`, parcial: el mod guarda sólo lo que difiere de sus valores): desenfocado a 15 FPS (de fábrica, 1), sin el modo inactivo por batería, sin el indicador de batería y sin descargar las librerías nativas de batería.
+- **Ping Wheel:** queda en `AUTO`. Un grupo de FTB Teams ve sólo sus pings; un jugador sin grupo, todos. Trae traducción al español argentino.
+- **Teclas:**
+  - Bridging Mod venía en la coma, que ya usa Iron Jetpacks para bajar el empuje. El preset la pasa a **Alt+coma**.
+  - Ping Wheel usa Mouse 5 para marcar y deja sin asignar su pantalla de ajustes.
+  - FindMe tenía Y y el teclado numérico, pero quedó afuera.
+  - Dynamic FPS trae dos teclas sin asignar.
+  - `tools/check_keybinds.py`: 0 choques.
+- **Chunky:** hay que probar que las ruinas salen igual en chunks pregenerados. La ruina de inicio se coloca en `ServerStartedEvent`, antes de cualquier `/chunky start`, y el resto de las ruinas todavía no está en `main`. La QA pregenera un cuadrado alrededor del inicio y vuelve a correr la prueba de la ruina.
+- **GameTests:** `pingponground5informationloaded` (el lote cargado, los de cliente fuera del servidor dedicado, FindMe ausente) y `rightclickharvestrespectsforeignclaims`. En esta última, dos jugadores de prueba en un reclamo real de FTB Chunks: el dueño cosecha y su trigo vuelve a edad 0, y el trigo que toca el visitante sigue maduro.
+
+### Lote 3 · Compat entre sistemas que ya tenemos
+
+Familia `catalog/families/pingpong5-compat.json`: 5 mods y ninguna librería nueva. El lock pasa a **353 / 301**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Acto | Para qué |
+|---|---|---|---|---|
+| Apothic Category Compat | 2.0.2 | CF 1516278/8219980 (FTB) | I-V | Armas a distancia de Cataclysm, Twilight Forest y Undergarden entran en la categoría arco de Apotheosis (un mapa de datos). |
+| Apotheosis x Iron's Spellbooks Compat | 2.2.1 | CF 1244863/8480849 (FTB y Craftoria; no está en Modrinth) | II-IV | Afijos y gemas de Apotheosis para el equipo de Iron's. |
+| Polymorphic Energistics | 0.4.1 | CF 941096/5545923 (ATM10) | III | Elegir la salida cuando dos recetas chocan al codificar un patrón de AE2. |
+| Ad-Astra: Giselle Addon | 8.1 | CF 714958/8676868 (ATM10) | V | Mejoras de espacio para la MekaSuit y la armadura de PneumaticCraft, cargador de combustible, sensor de cohete y mesa NASA automática. |
+| Advanced Peripherals | 0.8.0a (alfa) | CF 431725/8666472 (ATM10 y FTB; no está en Modrinth) | III-V | Periféricos de ComputerCraft: puentes a AE2 y RS, detectores, gestor de inventario, chat, escáner geológico y tortugas autómatas. |
+
+- **Versiones:**
+  - Iron's Apothic se fija en 2.2.1, la que usan FTB Evolution y Craftoria con las mismas Apotheosis 8.7.0 e Iron's 3.16.3 del lock. Las 2.2.4 a 2.2.6 salieron en la última semana.
+  - Giselle queda en 8.1 (ATM10, con Ad Astra 1.16.19); las 8.2 a 8.4 sólo están en CurseForge y no traen changelog.
+  - Advanced Peripherals queda en 0.8.0a, la de ATM10 y FTB con CC: Tweaked; la 0.7.62b es beta de otra serie.
+- **Relaciones de CurseForge** (`cfRelations` de la familia):
+  - CC: Tweaked 282001, que piden Advanced Peripherals y More Red CCT, se cumple con el CC: Tweaked 1.120.2 del proyecto 1676502 que ya estaba: provee el mismo `computercraft` y su `mods.toml` sólo pide `[1.119.0,)`.
+  - Botarium (704113) queda exento para Giselle 8.1: el `mods.toml` no lo pide (Ad Astra 1.16 pasó a Common Storage Lib) y ATM10 lo trae sin Botarium.
+- **Escalonado** (familia `pingpong5compat` de `tools/generate_family_balance.py`, script `entrelumen_pingpong5compat_balance.js`):
+  - **Se quitan** las cinco celdas de disco AE2 de Advanced Peripherals: de 1M a 256M bytes, con disquetes de ComputerCraft y procesadores. Saltearían MEGA Cells, la ruta del acto IV a las celdas grandes.
+  - **También se quita** el controlador de chunks, que sólo sirve para armar la tortuga que carga chunks.
+  - **Quedan nativos** (regla `UPSTREAM`): la mesa NASA automática de Giselle se hace con la mesa NASA, que ya lleva la aleación atómica (V). Los puentes ME y RS necesitan una red cuyo controlador ya pide la Matriz de Enrutamiento. El censo proponía la Matriz en el puente ME, pero la Matriz ya está en 7 de 8 y el puente no abre ninguna función.
+  - Los módulos de MekaSuit de Giselle piden el traje espacial, y la mejora de oxígeno de PneumaticCraft también.
+- **Config de Advanced Peripherals:**
+  - `pack/config/Advancedperipherals/world.toml`: `givePlayerBookOnJoin = false`. Es el único regalo de primer ingreso de los lotes 1 a 3 (`tools/audit_first_join.py`); sin esto, el jugador nuevo ya no llegaba con las manos vacías.
+  - `pack/defaultconfigs/Advancedperipherals/peripherals.toml` (se copia a cada mundo nuevo):
+    - el detector de jugadores lee posiciones hasta 128 bloques (antes, infinito y entre dimensiones) y no informa estadísticas;
+    - el chat alcanza 256 bloques y no puede adjuntar `run_command`;
+    - la tortuga que carga chunks queda apagada, porque los chunks forzados pasan por FTB Chunks y sus límites.
+- **Teclas:**
+  - El atajo de las gafas inteligentes venía en G, la tecla fija de Curios. El preset lo deja sin asignar: sólo sirve con el módulo de atajos puesto en las gafas, y cada uno lo asigna al armarlo.
+  - Ctrl izquierdo para ver descripciones se mantiene apretado y sólo actúa en pantallas.
+- **Carry On:** `advancedperipherals:*` y `ad_astra_giselle_addon:*` quedan en la lista negra.
+- **Afijos de hechizo de Iron's Apothic:** quedan nativos. Tienen 140 afijos y 23 gemas en su propio espacio; siguen la rareza de Apotheosis, que en el pack atan los World Tiers de la campaña. Hay que mirarlos en juego.
+- **Apothic Category Compat:** su mapa de datos también nombra armas de mods que no tenemos (Alex's Caves, Alex's Mobs, Born in Chaos). El arranque dirá si NeoForge las ignora en silencio.
+- **GameTests:**
+  - `pingponground5compatloaded`: el lote cargado, sin recetas de las celdas ni del controlador, y los seis valores de config de Advanced Peripherals leídos del mod.
+  - `carryonrefusesround5blocks`: la lista crece con cada lote.
+
+### Lote 4 · Tecnología y redstone
+
+Familia `catalog/families/pingpong5-tech.json`: 5 mods y 1 librería (Tesseract API), todo de la instancia ATM10. El lock pasa a **359 / 307**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Acto | Para qué |
+|---|---|---|---|---|
+| Extended Industrialization | 1.16.2 | CF 1068418/8708268 | II-V | Amplía Modern Industrialization: calderas y paneles solares, energía inalámbrica tesla, máquinas grandes, matriz de procesamiento, granjero, encadenador de máquinas, traje nano y herramientas eléctricas. Necesita Tesseract API 1.12.16 (CF 1067672/8708086). |
+| Industrialization Overdrive | 1.12.2 | CF 1089065/8742295 (no está en Modrinth) | III-V | Constructor de multibloques de MI, matriz de procesamiento múltiple, horno de pirólisis y la herramienta Vajra. |
+| Dyson Cube Project | 1.0.5 | CF 1345066/8082907 (no está en Modrinth) | V | Esfera de Dyson: se lanzan velas solares a órbita y un receptor cobra su energía. |
+| More Red | 6.0.0.3 | CF 387638/5763286 | II-VI | Compuertas lógicas de redstone, cables de colores y agrupados, mesa de soldar. |
+| More Red x CC:Tweaked Compat | 1.3.0 (beta) | CF 867286/6165477 | III-V | ComputerCraft lee y escribe los cables agrupados de More Red. |
+
+- **Escalonado** (familia `pingpong5tech`, script `entrelumen_pingpong5tech_balance.js`):
+  - **Tesla** (función «energía inalámbrica», acto III, como el enchufe de Flux y las celdas dimensionales): la bobina lleva la aleación reforzada en las dos esquinas libres de arriba (`ZLZ / EHE / BCB`) y la torre, en lugar de una de sus dos carcasas (`AZA / DHD / ACA`). Se quitan sus gemelos del ensamblador de MI y la conversión receptor → bobina, que salteaba el gate; la bobina se sigue convirtiendo en receptor. Los receptores y escotillas quedan nativos (`UPSTREAM`: sin transmisor no reciben nada).
+  - **Esfera de Dyson** (función «reactor final», acto V): su receta es de hierro, cobre y diamante, así que sin gate la esfera salía en el acto I. El expulsor lleva la aleación atómica en lugar de una losa. El receptor queda nativo: sólo cobra velas ya lanzadas.
+  - **Armadura nano cuántica de EI**: un empaquetador de MI suma pieza nano y mejora cuántica. Es el mismo salto que la armadura cuántica de MI (acto VI), así que lleva la misma Luminosidad de Habitabilidad como tercera entrada, en las cuatro piezas.
+  - **La pechera gravitatoria nano de EI** se desempaca en la de MI, pero se empaqueta a partir de ella. El gate de la de MI (Carta de Horizonte) la declara como ruta alternativa: devuelve la pechera que ya existía.
+  - **Nativos a propósito:** los paneles solares, las calderas solares, la matriz de procesamiento y las herramientas de EI siguen la escalera de circuitos de MI (analógico LV, electrónico MV, digital HV), que ya los ubica. Lo mismo vale para las piezas de Industrialization Overdrive, que piden de MV a EV (la Vajra, cryofluid y circuitos digitales), y para la lógica de More Red. El censo proponía componentes para los paneles LV/HV, el constructor, la matriz y la Vajra. Por las reglas del playtest (lo que va por docenas y los escalones internos de un mod no piden componentes) quedan con la escalera de MI.
+  - `FUNCTION_MEMBERS` suma la bobina y la torre a la energía inalámbrica y el expulsor al reactor final; los tests lo comprueban.
+- **Almost Unified:**
+  - El polvo de netherita de EI entra en `c:dusts/netherite`, que ya se unifica (gana el de Mekanism).
+  - El lingote de aleación roja de More Red se etiqueta `c:ingots/redstone_alloy` a propósito, igual que la aleación de Ender IO: las recetas de cada mod aceptan la del otro. No se unifica (`redstone_alloy` no está en la lista de materiales).
+  - Ese cruce deja hacer en la mesa (cobre o hierro y 4 de redstone) la aleación que Ender IO pide para 13 recetas (conductos de redstone, filtros, cuba), sin pasar por su fundidora, que es una máquina temprana sin gate. Queda anotado; no rompe un acto.
+- **Esfera de Dyson, balance** (config nativa): 20 FE/t por vela, hasta 50 millones de velas. Cada vela cuesta 3 cobres, 4 paneles de vidrio y 2 lapislázulis. Diez mil velas dan 200.000 FE/t, y la esfera no tiene tope práctico. Queda para probar en juego frente a Powah, los reactores y New Age antes de tocar la config.
+- **Teclas:** EI trae cinco atajos del traje nano, sin asignar. Los demás no registran teclas.
+- **Carry On:** `extended_industrialization:*`, `industrialization_overdrive:*`, `dysoncubeproject:*` y `morered:*`.
+- **GameTests:** `pingponground5techloaded` controla:
+  - el lote cargado;
+  - la bobina y la torre con aleación reforzada y el expulsor con aleación atómica, en el gestor de recetas cargado;
+  - las cuatro piezas nano cuánticas con la Luminosidad, leídas de la lista de entradas de MI;
+  - que no queden las rutas quitadas.
+
+  `carryonrefusesround5blocks` suma cinco bloques de este lote.
+
+### Lote 5 · Neo Vitae
+
+Familia `catalog/families/pingpong5-neovitae.json`: 2 mods, ninguna librería nueva. El lock pasa a **361 / 309**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Acto | Para qué |
+|---|---|---|---|---|
+| Neo Vitae | 1.1.28 | CF 1404763/8976888 (CDN; los mismos bytes en Modrinth) | III-IV | El sucesor de Blood Magic: el Ara Vitae y sus niveles, orbes, sigilos, runas, alquimia, la forja del fuego infernal, rituales y las mazmorras del Reino Demoníaco, su dimensión (`neovitae:dungeon`). |
+| Sanguine Neural Networks | 2.0 | CF 1111092/8815455 (CDN; los mismos bytes en Modrinth) | IV | Sangre para el altar desde un modelo de datos de Hostile Neural Networks, sin granja de criaturas. Trae el sacrificador virtual y la estructura Suffering Inc. |
+
+- **Versión.** ATM10 y FTB Evolution fijan Neo Vitae 1.1.15, y Craftoria una 1.1.2x. Entra 1.1.28 por arreglos que un servidor público necesita:
+  - 1.1.26 y 1.1.27: la Linterna de Sangre ya no corre su chequeo de spawn durante la generación de chunks (tumbaba al servidor explorando), ya no crashea cuando otro mod hace aparecer animales cerca y ya no carga chunks de más;
+  - 1.1.22: se cierra un duplicado de experiencia con los tomos, las redes de enrutamiento ya no cargan chunks remotos y un depósito grande ya no deja el saldo de sangre en negativo;
+  - 1.1.16: las invocaciones del Sigilo de Nigromancia tienen un tope por jugador (10) y ya no pagan sangre muriendo en pinchos, y el Nexo del Tormento reparte botín de Apotheosis según el World Tier del dueño;
+  - 1.1.28 sólo reparte más llaves de mazmorra en el Reino.
+- **Escalonado** (familia `neovitae` de `tools/generate_family_balance.py`, script `entrelumen_neovitae_balance.js`):
+  - **El Ara Vitae abre el mod entero** (acto III): el Núcleo de Propagación llena su hueco de arriba (`sZs / sfs / ggg`), como el ensamblador de Psi. Todo lo demás sale del altar: las tablillas, los orbes, la forja (pide una Tabula Rasa), las runas, los sigilos y la mesa de alquimia. `tools/check_recipe_design.py` lo anota como hito del Núcleo (fan-out 6).
+  - **La piedra ritual maestra** (acto IV) lleva hierro de bosque (ironwood) en las dos esquinas de arriba (`ZsZ / scs / oso`). Todos los rituales la necesitan, incluidos los de mazmorra, que abren el Reino Demoníaco. La piedra ritual imperfecta (lluvia, resistencia y otros menores) queda con el altar.
+  - **El sacrificador virtual** de Sanguine Neural Networks lleva ironwood en sus esquinas libres (`ZDZ / SOS / BCB`, acto IV). Suffering Inc. se arma con él.
+- **El teleposer sale, con sus tres focos y la cadena del Sigilo de Teleposición** (el reactivo pide un teleposer). Intercambia bloques enteros, contenedores y spawners incluidos, en un cubo de hasta 7×7×7 que arranca arriba del teleposer (`x, z` en `[−r, r]`, `y` en `[1, 2r+1]`). Lo hace con `setBlock` en `Utils.swapLocations` y sólo mira un tag de bedrock y portales: ni `BreakEvent`, ni FTB Chunks, ni `StructureProtection`. Puesto junto al borde de un reclamo o de una ruina de Heliodor, se lleva lo de adentro. Puede volver si más adelante un gancho del companion le hace respetar reclamos y `StructureProtection`.
+- **El resto respeta la protección.** Rituales, sigilos, cargas explosivas, el área de la Lex Vitae y el enrutador pasan por `BlockProtectionHelper`, que publica `BreakEvent` y `EntityPlaceEvent` con un jugador falso del dueño, así que FTB Chunks y `StructureProtection` pueden negarse. La captura de spawners con una gema de Spiritus ya la cubren la protección de uso de ítems de las ruinas y la de interacción de FTB Chunks.
+- **Dimensión:** `neovitae:dungeon`, sólo por rituales. El mod no suma estructuras, biomas ni menas al Overworld (no trae modificadores de bioma ni sets de estructuras). Yeetus Experimentus (lote 2) evita el aviso experimental.
+- **Almost Unified:** el salitre y el azufre de Neo Vitae entran en `c:dusts/saltpeter` y `c:dusts/sulfur`, que ya se unifican (gana Immersive Engineering por prioridad de mod). El hierro infernal (`hellforged`) es sólo de Neo Vitae.
+- **Primer ingreso:** ningún regalo (`tools/audit_first_join.py`). El libro guía se fabrica con un libro y redstone.
+- **Teclas:**
+  - editar el HUD venía en H, que ya usa Eternal Starlight: el preset la deja sin asignar;
+  - cambiar el modo de la Lex Vitae venía en el punto, que es el acelerador de Iron Jetpacks: pasa a **Shift+punto**, sólo con la Lex Vitae en la mano;
+  - el Escudo de Sangre es el botón de usar con un orbe en la otra mano, como un escudo (compartido a propósito con `key.use`);
+  - el rayo de la Lex Vitae y la guía vienen sin asignar;
+  - `tools/check_keybinds.py`: 0 choques.
+- **Carry On:** `neovitae:*` y `sanguine_networks:*`.
+- **EMI Loot** muestra las tablas de Neo Vitae (cofres de mazmorra, criaturas): no son de la campaña.
+- **GameTests:** `pingponground5neovitaeloaded` controla:
+  - los dos mods cargados;
+  - el altar con el Núcleo y la piedra maestra y el sacrificador con ironwood, en el gestor de recetas cargado;
+  - las seis recetas del teleposer ausentes;
+  - la dimensión `neovitae:dungeon` cargada.
+
+  `carryonrefusesround5blocks` suma el altar, la piedra maestra, la forja y el sacrificador.
+- **Ganchos para las quests** (cadena propia de Neo Vitae; no se tocó contenido de quests):
+  1. Ara Vitae (`neovitae:ara_vitae`, acto III, con el Núcleo de Propagación).
+  2. Orbe Novicius (`neovitae:blood_orb_weak`), Tabula Rasa (`neovitae:tabula_rasa`) y la primera runa (`neovitae:rune_blank`, `neovitae:rune_sacrifice`).
+  3. Forja del fuego infernal (`neovitae:hellfire_forge`) y gema de Spiritus menor (`neovitae:spiritus_gem_petty`).
+  4. Sigilos: adivinación, agua, lava y aire (`neovitae:sigil_divination`, `neovitae:sigil_water`, `neovitae:sigil_lava`, `neovitae:sigil_air`).
+  5. Orbes Discipulus y Veneficus (`neovitae:blood_orb_apprentice`, `neovitae:blood_orb_magician`) y Tabula Animata (`neovitae:tabula_animata`).
+  6. Acto IV: piedra ritual maestra (`neovitae:master_ritual_stone`, con ironwood), cristal de activación débil (`neovitae:activation_crystal_weak`) y adivinador ritual (`neovitae:ritual_diviner`).
+  7. El Reino Demoníaco: la dimensión `neovitae:dungeon` por un ritual de mazmorra, demonita cruda (`neovitae:raw_demonite`) y lingote infernal (`neovitae:ingot_hellforged`).
+  8. Orbe Magus (`neovitae:blood_orb_master`), Tabula Spiritus (`neovitae:tabula_spiritus`) y la Lex Vitae (`neovitae:lex_vitae`).
+  9. Sanguine Neural Networks: sacrificador virtual (`sanguine_networks:virtual_sacrificer`) con un modelo de datos de HNN.
+- **Pendiente en juego:** el HUD y el altar en un cliente, una bajada al Reino Demoníaco y lo que pesan las Linternas de Sangre.
+
+### Lote 6 · Iris
+
+Familia `catalog/families/pingpong5-shaders.json`: 1 mod de cliente. El lock pasa a **362 / 309**; el servidor no cambia.
+
+| Mod | Versión | Fuente | Lado | Para qué |
+|---|---|---|---|---|
+| Iris | 1.8.14-beta.1 | CF 455508/8242804 (ATM10; los mismos bytes en Modrinth) | cliente | Carga shaders en formato OptiFine que agregue el jugador. |
+
+- **Versión:** la de ATM10, que corre con el mismo Sodium 0.8.13 y Sodium Extra 0.9.3 del lock. El log de ATM10 en esta máquina la muestra cargando y apagada por falta de pack («Shaders are disabled because no valid shaderpack is selected»). Su `mods.toml` pide `[1.21,1.21.1)` de Minecraft, pero el mismo archivo carga en ATM10 sobre 1.21.1.
+- **Apagado por defecto, sin shaderpack.** Iris lee `config/iris.properties` al cargar las opciones (`Options.load`) y prende los shaders salvo que diga `enableShaders=false`. Default Options copia `config/defaultoptions/extra/<ruta>` a `<ruta>` al construir `GameConfig`, antes de que ningún mod lea su config, y sólo si el archivo no existe (`ExtraDefaultOptionsHandler`, 21.1.8). Así el pack siembra una vez `enableShaders=false` y `disableUpdateMessage=true`. Quien prende shaders conserva esa elección cuando el pack se actualiza, algo que un `config/iris.properties` enviado directo pisaría.
+  - `tools/generate_client_defaults.py` genera el archivo desde la sección `extra` del preset (`pack/config/entrelumen/client-preset.json`). Sólo acepta los archivos de su lista (`config/iris.properties`) y líneas `clave=valor` simples; `--check` lo compara y los tests cubren el valor y los rechazos.
+  - Para usarlos: copiar un shaderpack a `shaderpacks/`, abrir Opciones → Video → Shader Packs, elegirlo y poner «Shaders: ON».
+- **Teclas:** Iris traía recargar en R (el cinturón de herramientas), prender o apagar en K (el gestor de reclamos, tecla fija) y la pantalla de packs en O (la bolsa de Occultism). El preset deja las tres sin asignar; la pantalla sigue a mano en las opciones de video. El modo alambre viene sin asignar. `tools/check_keybinds.py`: 0 choques.
+- **Escalonado, Carry On, GameTests:** no aplica (cliente, sin ítems ni bloques). Falta verlo en un cliente: el botón de Shader Packs, un pack de prueba prendido y apagado, y que el archivo sembrado no se pise al reiniciar.
+
+### Lote 7 · Create Aeronautics (a prueba)
+
+Familia `catalog/families/pingpong5-aeronautics.json`: 3 JARs. El lock pasa a **365 / 312**. Elias lo aprobó a prueba: entra en su propio commit, se mide su costo contra los lotes 1 a 6 y se queda sólo si el costo es aceptable. El controlador sumó el puente de reclamos a la prueba.
+
+| JAR | Versión | Fuente | Qué trae |
+|---|---|---|---|
+| Create Aeronautics (bundled) | 1.3.2 | CF 676721/8763471 (los mismos bytes en Modrinth) | Aeronautics (hélices, globos y quemadores, levitita, cojinetes giroscópicos), Create Simulated (ensamblador físico, cojinetes giratorios, sogas, sensores, acople) y Offroad (ruedas y tuneladoras), en JAR anidados. |
+| Sable | 2.0.5 | CF 1312371/8673825 (FTB Evolution trae el mismo archivo; los mismos bytes en Modrinth) | El motor de física de las estructuras móviles: nativos de Rapier (se extraen al arrancar, 9 MB comprimidos), Veil 4.3.2 y Sable Companion 1.6.0 anidados. |
+| FTB Chunks: Sable Aerospace | 1.0.1 | Modrinth zy8ymgWP (MIT) | Los reclamos de FTB Chunks alcanzan a las estructuras de Sable. |
+
+- **Versiones:** Aeronautics 1.3.2 arregla la integración con JEI y la pestaña creativa (PR #1403). Pide Sable `[2.0.0,3.0.0)` y Create `[6.0.10,)`. Sable rechaza Sodium anterior a 0.8.12 (tenemos 0.8.13) y ScalableLux (no está).
+- **Licencias:** Aeronautics trae su propia licencia (Simulated Project License) y Sable la PolyForm Shield 1.0.0. Las dos se fijan por CurseForge, así que el launcher las baja de la fuente. El addon es MIT.
+- **Escalonado** (familia `pingpong5aero`, script `entrelumen_pingpong5aero_balance.js`):
+  - **El ensamblador físico** de Simulated convierte una construcción en estructura de Sable, y todo vehículo empieza ahí: dirigible, auto o tuneladora. Lleva el núcleo de manejo en su hueco de arriba (`" Z " / " N " / "ARA"`, acto III), el mismo control de maniobra que el girodino de Immersive Aircraft. El núcleo de manejo queda en 7 hitos (meta 8).
+  - Hélices, globos, quemadores, ruedas y levitita quedan nativos: se hacen por docena y sólo sirven en una estructura ensamblada. La levitita pide polvo de piedra del End. El Bastón de Física es sólo creativo (no tiene receta).
+  - `tools/generate_family_balance.py` ahora indexa las recetas de los JAR anidados, a nombre del JAR fijado que los contiene; si un ID se repite, gana el del JAR de afuera. Eso suma al índice las 30 recetas anidadas que ya estaban (conductos de Ender IO, ProductiveLib) sin cambiar sus scripts. Hay un test con un JAR sintético.
+- **Reclamos:**
+  - Sable guarda los bloques de cada estructura en su propia zona del mundo. Sin el addon, FTB Chunks no protege nada de un barco, ni estacionado dentro de un reclamo.
+  - El addon traduce el clic o la rotura de un bloque de estructura a la posición real de la estructura y le pregunta a FTB Chunks ahí (`RightClickBlock`, `LeftClickBlock`, `BreakEvent`). Un barco estacionado en un reclamo queda protegido como el reclamo. Sobre el reclamo de otro equipo, ni el dueño del barco puede usarlo o romperlo mientras cruza; el cliente avisa antes de entrar.
+  - Se escribió para Sable 1.1.x: sus cinco llamadas a Sable existen con la misma firma en 2.0.5 (`javap`). Falta confirmarlo en el arranque. Su descripción promete filtrar explosiones y una zona libre arriba de Y 320, pero la 1.0.1 sólo escucha esos tres eventos.
+  - **Sin cubrir:** si el ensamblador puede llevarse bloques de un reclamo vecino que toquen la construcción. Hay que probarlo en juego.
+- **Otros efectos:**
+  - Simulated vuelve «mar» el vacío del End (desde Y −40) y del Aether (desde Y 1): las estructuras flotan en vez de caer.
+  - Suma dos tipos de mundo planos, «Airship ready» y «End sea», a la pantalla de crear mundo. El servidor tiene el suyo fijo; en un jugador conviene no elegirlos, porque no traen estructuras ni ruinas.
+  - Otros mods del pack ya traen mixins opcionales hacia clases de Simulated y Sable: el arranque de humo de la ronda los mostró sin objetivo («Error loading class»). Con Aeronautics se aplican; hay que mirarlos en el arranque.
+- **Teclas:** rotar con el Bastón de Física de Simulated usa Tab mientras se arrastra, y la comparte a propósito con la lista de jugadores (el bastón es creativo). Subir y bajar vienen sin asignar. La tecla del editor de Veil (F6) sólo se registra con ImGui MC, que no está en el pack. `tools/check_keybinds.py`: 0 choques.
+- **Carry On:** `aeronautics:*`, `simulated:*`, `offroad:*` y `sable:*`.
+- **Primer ingreso:** ningún regalo (`tools/audit_first_join.py`).
+- **GameTests:** `pingponground5aeronauticsloaded` (los seis mods cargados, contando el paquete, Sable y el addon, y el ensamblador con el núcleo). `carryonrefusesround5blocks` suma el ensamblador, el cojinete de hélice y el soporte de rueda.
+- **Costo:** diferido a la fase final de pruebas (Elias 29/9); se mide con el método de la ronda (misma semilla, generación de chunks, ticks y memoria) contra los lotes 1 a 6. Queda o sale con esos números; decide Elias.
+- **Ganchos para las quests** (si se queda): ensamblador físico (`simulated:physics_assembler`), cojinete de hélice (`aeronautics:propeller_bearing`), quemador y globo (`aeronautics:adjustable_burner`, `aeronautics:white_envelope`), levitita (`aeronautics:levitite`), volante y acelerador (`simulated:steering_wheel`, `simulated:throttle_lever`), mesa de navegación (`simulated:navigation_table`), soporte de rueda (`offroad:wheel_mount`) y conector de acople (`simulated:docking_connector`).
+
+### Ganchos para las quests (lotes 1 a 4)
+
+No se tocó contenido de quests. Los lotes 5 y 7 tienen su propia lista más arriba. Los lotes 1 y 2 no traen ítems. Ping Wheel se puede enseñar con una quest de casilla: marcar un lugar con Mouse 5 para el grupo.
+
+- **Advanced Peripherals** (acto III-V): puente ME (`advancedperipherals:me_bridge`), gestor de inventario (`advancedperipherals:inventory_manager`) y detector de jugadores (`advancedperipherals:player_detector`), en el capítulo de ComputerCraft.
+- **Giselle** (acto V): cargador de combustible (`ad_astra_giselle_addon:fuel_loader`) y mesa NASA automática (`ad_astra_giselle_addon:automation_nasa_workbench`), en el de Ad Astra.
+- **Extended Industrialization** (acto III-VI): bobina tesla (`extended_industrialization:tesla_coil`, energía inalámbrica) y matriz de procesamiento (`extended_industrialization:processing_array`).
+- **Industrialization Overdrive:** matriz de procesamiento múltiple (`industrialization_overdrive:multi_processing_array`).
+- **Dyson Cube Project** (acto V): expulsor (`dysoncubeproject:em_railejector_controller`), como meta de energía final junto a la fusión.
+- **More Red** (acto II): mesa de soldar (`morered:soldering_table`), en redstone.
+
+### Quedó afuera (ronda 5)
+
+- **FindMe** (lote 2): saca ítems de contenedores ajenos sin abrirlos ni preguntarle a FTB Chunks.
+- **El teleposer de Neo Vitae** (lote 5), con sus focos y el Sigilo de Teleposición: intercambia bloques sin evento de protección. El resto de Neo Vitae entra.
+
+### Rendimiento y QA (diferidos a la fase final de pruebas, Elias 29/9)
+
+Regla de Elias del 29/9: todas las pruebas en juego y de runtime pasan al final del proyecto, y el resto avanza sin ellas. La rama se mergea sin la QA de servidor ni las mediciones. Lo de abajo queda listo para esa fase: corre junto, con el lock del servidor de QA, cuando la máquina tenga RAM. El plan está en `mods-r5-20260927/runtime_all.sh` (recibos fuera del repo):
+
+- **QA** del final de la rama (rondas 6 y 7 incluidas): arranque completo y las GameTests de las rondas 5 a 7. En QA, una línea de Neruina cuenta como error.
+- **Rendimiento**, con el método de la ronda 4: servidor dedicado, semilla 71942026, 90 s en reposo y cuatro sondas de 256 chunks (Overworld dos veces, Nether y End). Se compara en orden ABBA: la base de `main`, los lotes 1 a 6, más Aeronautics y el final de la rama con las rondas 6 y 7 (ahí entran el mundo de Familiars y las menas de Agradditions). El script toma cada estado de la rama misma, así que un rebase no lo desactualiza.
+- **Las 15 GameTests listas** para esa fase (`runtime_all.sh`): pingponground5robustnessloaded, nannycancelsnandamage, pingponground5informationloaded, rightclickharvestrespectsforeignclaims, pingponground5compatloaded, carryonrefusesround5blocks, pingponground5techloaded, pingponground5neovitaeloaded, pingponground5aeronauticsloaded, pingponground6loaded, ironssummonsspareftbteammates, pingponground7loaded, carryonrefusesround7blocks, squatgrowadvanceswheatbutnotmysticalcrops, hardcorerevivaldownsandrescuesincoop.
+- **Arranque de humo del 27/9:** se probó con `-Xmx3584M` y 4,6 GB libres. Todos los mods de los lotes 1 a 5 cargaron y el arranque llegó a la carga de datapacks, pero a los 112 s la RAM libre bajó de 700 MB y el guardián cortó el servidor. El pack completo pide unos 6 a 7 GB libres para arrancar con 4 GB de heap.
+
+### Pendiente para Elias
+
+- **Create Aeronautics:** se queda o sale con los números de costo.
+- **Petrol's Parts** (ronda 6): entraría con una actualización de JEI, y eso obliga a revisar los mixins de FTB XMod Compat.
+- **En un cliente:**
+  - lotes 1 y 2: Entity Culling con renderizadores grandes, Yeetus y EMI Loot sin el botín de la campaña;
+  - lote 6: los shaders apagados;
+  - lote 5: el altar y el HUD de Neo Vitae.
+- **En juego:**
+  - la esfera de Dyson frente a las demás fuentes de energía;
+  - los afijos de hechizo de Iron's Apothic;
+  - una bajada al Reino Demoníaco;
+  - si el ensamblador de Aeronautics se lleva bloques de un reclamo vecino.
+
+## Ronda 6 (27/9): contenido de la búsqueda hacia afuera
+
+Los mods de contenido aprobados de la [búsqueda hacia afuera](../research/mod-outward.md), después de la ronda 5 y en la misma rama. Familia `catalog/families/pingpong6.json`: 7 mods y 1 librería. El lock pasa a **373 / 319**; ninguna entrada previa cambió. Sigue la regla de la ronda: versión de la nota de la búsqueda, fuente oficial y bytes verificados.
+
+| Mod | Versión | Fuente | Acto | Para qué |
+|---|---|---|---|---|
+| Create: Train Track Rail Grinding | 1.2.2 | CF 1545733/8543987 (los mismos bytes en Modrinth; MIT) | II | Deslizarse por las vías de Create sin perder impulso, con botas de buceo o el encantamiento de botas que trae. |
+| Create: Integrated Farming | 1.4.1c | CF 1249131/8847936 (los mismos bytes en Modrinth) | II | Cosechadora de vacío, redes de pesca para trenes y barcos, y gallineros que se alimentan con spouts. |
+| Croptopia & Botany Pots compat | 1.0.0 | CF 1553397/8143070 (los mismos bytes en Modrinth; MIT) | I-II | Los cultivos y árboles de Croptopia crecen en las macetas: 85 recetas de datos, sin ítems. |
+| Alshanex's Familiars | 4.0.4 | CF 1171602/8966342 (sólo CurseForge) | II-V | Familiares magos de Iron's que se doman y pelean con hechizos, con sus estructuras, fragmentos y rituales. Necesita FamiliarsLib 1.8 (CF 1316458/8966334). |
+| Ars Affinity | 1.1.1 | CF 1319260/7416588 (sólo CurseForge; MIT) | II-IV | Afinidad por escuela de Ars: pasivas que se ganan lanzando hechizos y una habilidad activa. |
+| Psionic Utilities | 1.4 | CF 611991/8358809 (los mismos bytes en Modrinth) | III | Colores y atajos para el programador de Psi. Sólo cliente: sus 13 mixins son de cliente. |
+| Irons Spell N FTB Teams | 1.0.0 (beta) | CF 1610802/8435267 (los mismos bytes en Modrinth; GPL) | II-VI | Las invocaciones de Iron's no atacan a los compañeros de equipo de FTB Teams de su dueño. |
+
+- **Petrol's Parts queda afuera.** Pide Petrolpark's Library `[1.5.5,1.6.0)`, y cada 1.5.x fija JEI en un rango angosto: 1.5.5 y 1.5.6 piden `[19.44,19.45)`, de 1.5.7 a 1.5.9 `[19.52,19.53)` y 1.5.10 `[19.53,19.54)`. El lock tiene JEI 19.50.0.414, el de ATM10 con el que se revisaron los mixins obligatorios de FTB XMod Compat sobre JEI. NeoForge rechaza una dependencia opcional presente fuera de su rango, así que el cliente no arrancaría. Puede entrar junto con una actualización de JEI, que obliga a revisar esos mixins, y además ata Create a `[6.0.10,6.0.11)`.
+- **Versiones:**
+  - Integrated Farming se fija en 1.4.1c: desde 1.4.2 pide Supplementaries 3.9.9 y el lock tiene 3.9.5. Pide Create Dragons Plus `[1.11.1,)` (hay 1.11.9); sus mixins para Sable y otros mods son condicionales.
+  - Familiars 4.0.4 y FamiliarsLib 1.8 sólo están en CurseForge (Modrinth llega a 4.0.3 y 1.7.1), y salen juntos.
+  - Ars Affinity se compiló contra Ars 5.10. Sus cuatro objetivos de mixin existen en Ars 5.13.1 con la misma firma (`SpellResolver.onResolveEffect`, `GuiSpellBook.init` y el `BaseScreen` de nuggets 1.1.0.48, que trae Ars; se revisó con `javap`). Falta el arranque.
+  - El mixin de Irons Spell N FTB Teams va a la cabeza de `IMagicSummon.isAlliedHelper`, que existe igual en Iron's 3.16.3.
+- **Escalonado:** ninguno; todos siguen escaleras que ya existen.
+  - Rail Grinding necesita botas de buceo de Create o su encantamiento.
+  - La cosechadora de vacío pide latón y la cosechadora mecánica.
+  - El libro de familiares pide un libro de hechizos de diamante y mithril de Iron's; los amuletos y la caja de Pandora, mithril y elixires.
+  - Ars Affinity crece con los hechizos que el jugador ya lanza.
+  - Las macetas y sus tiers ya los escalona el balance de recursos (`generate_resource_balance.py` no cambia: 1105 cambios).
+- **Mundo de Familiars** (se mide con la pregeneración de la ronda):
+  - cuatro estructuras: campamento de cazadores (bosques, cada unos 40 chunks), cementerio (valle de almas del Nether), laboratorio del End (biomas de ciudades del End) y la isla de origen (océanos, en anillos concéntricos como las fortalezas);
+  - familiares salvajes: druida en bosques, escarchado en nieve, cazador en bosques, junglas y taigas, mago en montañas, abrasador en el Nether y guerrero dragón en el End;
+  - 17 modificadores de botín en cofres vanilla y de Iron's, y en algunas criaturas;
+  - los familiares no se pueden capturar (`c:capturing_not_supported`).
+  - Lo de «su mago carga creepers» resultó al revés: su único código de creepers es un mixin que los hace huir del familiar mago (`AvoidEntityGoal` a 6 bloques, como con los gatos).
+- **Integrated Farming** trae mixins condicionales para Sable: si Aeronautics se queda, las redes y cosechadoras funcionan en estructuras de Sable.
+- **Croptopia & Botany Pots compat** es de un solo autor. Si se rompe, sus JSON (MIT) pueden pasar al generador.
+- **Teclas** (`tools/check_keybinds.py`: 0 choques):
+  - la habilidad de Ars Affinity venía en F, que es cambiar de mano: pasa a **Mouse 4**, al lado de Ping Wheel;
+  - la pantalla de afinidades venía en `[`, el tipo de minimapa de JourneyMap: queda sin asignar (el libro de hechizos suma su botón);
+  - la pantalla de familiares venía en H, la de Eternal Starlight: pasa a **Shift+J**;
+  - invocar al familiar queda en X y comparte a propósito con cargar una barra guardada, que vanilla sólo usa en creativo;
+  - enganchar un riel venía en Shift+Espacio y tapaba el salto agachado: queda sin asignar, porque clic derecho sobre la vía con la mano vacía hace lo mismo;
+  - saltar y agacharse en el riel comparten a propósito las teclas de siempre;
+  - las diez invocaciones rápidas vienen sin asignar.
+- **Carry On:** `create_integrated_farming:*` y `alshanex_familiars:*`.
+- **Primer ingreso:** ningún regalo (`tools/audit_first_join.py`).
+- **GameTests** (`ModPingpongRound6FullpackGameTests`):
+  - `pingponground6loaded`: los siete mods cargados, Psionic Utilities fuera del servidor dedicado y Petrol's Parts ausente;
+  - `ironssummonsspareftbteammates`: la prueba que pedía la búsqueda. Dos jugadores de prueba forman un grupo real de FTB y un tercero queda solo; un oso polar invocado para el dueño tiene que tratar al compañero como aliado y al tercero no.
+- **Ganchos para las quests:**
+  - Rail Grinding: botas de buceo con el encantamiento (`createrailgrinding:railgrind_enchantment`), en el capítulo de trenes de Create.
+  - Integrated Farming: cosechadora de vacío (`create_integrated_farming:vacuum_harvester`), red de pesca (`create_integrated_farming:fishing_net`) y gallinero (`create_integrated_farming:roost`).
+  - Familiars: libro de familiares (`alshanex_familiars:familiar_spellbook`), cama y almacén de familiares (`alshanex_familiars:pet_bed`, `alshanex_familiars:familiar_storage`) y la estación de encogimiento (`alshanex_familiars:shrinking_station`).
+  - Ars Affinity: no tiene ítems propios que pedir; una quest puede explicar la habilidad en Mouse 4.
+- **Runtime (diferido a la fase final de pruebas, Elias 29/9):** corre junto con el de la ronda 5 (ver «Rendimiento y QA»). El arranque confirma los mixins de Ars Affinity e Irons Spell N FTB Teams, y la pregeneración mide el mundo de Familiars.
+
+## Ronda 7 (28/9): las preguntas de la búsqueda hacia afuera
+
+Elias decidió el 28/9 las 15 preguntas de la [búsqueda hacia afuera](../research/mod-outward.md#preguntas-para-elias). Entran tres, Animus queda pospuesto y el resto sale; el 29/9 se suma Squat Grow (ver abajo). Familia `catalog/families/pingpong7.json`: 4 mods, ninguna librería nueva. El lock pasa de 373 / 319 a **377 / 323**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Acto | Para qué |
+|---|---|---|---|---|
+| Mystical Agradditions | 8.0.14 | CF 256247/8515974 (FTB Evolution trae el mismo archivo; MIT) | VI | El sexto tier de Mystical Agriculture: insanium y semillas de estrella del Nether, huevo de dragón, draconio despertado y cristal nitro. Suma menas de inferium y prosperidad en el Nether y el End. |
+| ME Beam Former | 1.3.0 | CF 1351545/7765462 (los mismos bytes en Modrinth; LGPL) | III | Rayos visibles que llevan una red ME hasta 32 bloques por el aire. |
+| Hardcore Revival | 21.1.22 | CF 274036/8837401 (los mismos bytes en Modrinth) | todos | En co-op, un jugador sin vida queda caído dos minutos y un compañero lo puede levantar. |
+| Squat Grow | 21.1.4 | CF 515698/8495735 (los mismos bytes en Modrinth; FTB Evolution trae el mismo archivo) | I-VI | Agacharse junto a un cultivo lo hace crecer, cinco veces más lento que por defecto. |
+
+### Mystical Agradditions: el insanium, en el acto VI
+
+- **Todo pasa por el insanium.** Cada semilla de tier 6 lleva cuatro esencias de insanium (la receta de mesa y la del altar de infusión usan el componente «esencia» del cultivo, que para el tier 6 es insanium) y cada crux, otras cuatro. Alcanza con cerrar dónde nace el insanium.
+- **Escalonado** (familia `pingpong7` de `tools/generate_family_balance.py`, script `entrelumen_pingpong7_balance.js`). El insanium tenía dos fuentes:
+  - `mysticalagradditions:insanium_essence`, cuatro esencias de supremium alrededor de un cristal de infusión: **sale**;
+  - `mysticalagradditions:insanium_block_combine`, cuatro bloques de supremium alrededor del cristal maestro: queda, con la **Luminosidad de Naturaleza** en lugar del bloque de arriba (`" Z " / "ECE" / " E "`). Una Luminosidad da un bloque, nueve esencias: una semilla y su crux, con una de sobra.
+  - El bloque de nueve esencias queda como ruta alternativa declarada: sólo compacta insanium, que ahora sale de desarmar esos bloques.
+- **Nada saltea el acto VI** (`test_nothing_makes_insanium_or_tier_six_seeds_before_act_six`). El test recorre las recetas de todos los JAR fijados, anidados incluidos, y exige:
+  - que toda receta que da insanium esté escalonada o quitada, o tome insanium;
+  - que toda receta de semilla de tier 6 tome la esencia de su cultivo;
+  - que la única excepción declarada sea la centrífuga de panal de insanium de Productive Bees, porque la abeja de insanium se infusiona con cuatro bloques y cuatro esencias de insanium. El test lo comprueba.
+
+  Mekanism More Machine plantaba esas semillas; esa ruta ya la bloqueaba `entrelumen_more_machine_balance.js`.
+- **Estrellas del Nether, a propósito.** Elias aceptó las semillas de estrella y de huevo. Abren una fuente tardía de estrellas además del Wither: 27 esencias dan una estrella (nueve por esquirla, tres esquirlas por estrella), y la semilla y su crux piden seis estrellas y dos almas marchitas, que suelta el Wither (35 %). La ofrenda del Envés sigue siendo una estrella o 64 esquirlas de luz agria; con esto, una estrella del acto VI también la paga.
+- **Huevos de dragón:** la crux pide cuatro escamas de dragón (el Dragón suelta ocho); tres pedazos de huevo hacen un huevo.
+- **Draconio despertado y cristal nitro:** también quedan en el acto VI por el insanium. La crux del draconio pide tres bloques de draconio despertado y un corazón de dragón; la del nitro, dos cristales y dos capacitores nitro de Powah.
+- **Gaia y neutronio** no se cargan: Botania y Avaritia no están en el pack.
+- **Config por defecto:** los cultivos de tier 6 no aceptan fertilizante. Las menas del Nether y del End quedan prendidas y se miden en la pregeneración.
+- Almost Unified no toca el insanium (no está en su lista de materiales).
+- **Ganchos para las quests** (acto VI, en la cadena de Mystical Agriculture):
+  - bloque de insanium (`mysticalagradditions:insanium_block`), con la Luminosidad;
+  - tierra de insanium (`mysticalagradditions:insanium_farmland`);
+  - crux de estrella (`mysticalagradditions:nether_star_crux`) y semillas de estrella (`mysticalagriculture:nether_star_seeds`);
+  - crux de huevo (`mysticalagradditions:dragon_egg_crux`) y semillas de huevo (`mysticalagriculture:dragon_egg_seeds`);
+  - como secreto, una estrella cosechada: tres esquirlas (`mysticalagradditions:nether_star_shard`).
+
+### ME Beam Former, sin la torre
+
+- **Sale la torre de inducción inalámbrica** (`me_beam_former:wireless_energy_tower`). Movía energía sin tope por ojos de ender, hierro y oro, y pisaba a Flux Networks, que el pack escalona en el acto III.
+- **Los rayos quedan nativos** (`UPSTREAM`: la pieza lleva los canales que su red ya tiene, y el controlador pide la Matriz de Distribución). ExtendedAE ya conectaba sin cable; esto suma un rayo visible y dos bloques que salen de la misma pieza, el Mega y el Omni.
+- **Reclamos.** La pieza busca en línea recta hasta 32 bloques la primera pieza enfrentada y se conecta sin mirar dueños. Es como dejar la punta de un cable en el borde del reclamo: otro puede meter una pieza en el camino del rayo, del lado sin reclamar, y unir las redes. Los rayos tienen que ir dentro del propio reclamo; lo dice la quest.
+- **Carry On:** `me_beam_former:*`.
+- **Gancho para las quests:** el ME Beam Former (`me_beam_former:beam_former_part`) y la herramienta de enlace (`me_beam_former:laser_binding_tool`), en el capítulo de AE2.
+
+### Hardcore Revival, sólo en co-op
+
+- **Cómo funciona.** Hardcore Revival cancela la muerte del jugador con prioridad alta y lo deja caído con medio corazón:
+  - las criaturas no lo atacan;
+  - no recibe daño, salvo el del vacío;
+  - un golpe letal de lava o del vacío mata sin dejarlo caído;
+  - un compañero lo levanta en dos segundos a tres bloques, con clic derecho;
+  - si nadie llega en dos minutos, muere de verdad;
+  - el tótem de la inmortalidad sigue funcionando como siempre.
+- **Config** (`pack/config/hardcorerevival-common.toml`): apagado en un jugador y en un servidor con un solo jugador conectado. Solo nadie te levanta, y quedar caído sólo demoraría la muerte. Lo demás, por defecto.
+- **Con Tombstone:** queda como está. Su manejador de muerte ve la cancelación, escribe un aviso en el log y no hace tumba. La tumba se hace sólo en la muerte real.
+- **Con el Envés:** una caída del grupo se cuenta en la muerte real (`EnvesDeaths` no recibe eventos cancelados). Un compañero que te levanta a tiempo ahorra la caída.
+- **Distribución:** el archivo es «todos los derechos reservados». CurseForge lo referencia por ID y los mismos bytes están en Modrinth para la exportación `.mrpack`.
+- **Sin teclas:** se rescata con el botón de usar.
+
+### Squat Grow, cinco veces más lento (Elias, 29/9)
+
+Pedido de Elias: «me gustaría que haya TWERK pero tipo x5 veces más lento y nerfeado».
+
+- **El mod.** Squat Grow 21.1.4, de Gaz (nanite/FTB), «todos los derechos reservados». La página cede la distribución a FeedTheBeast y CurseForge para modpacks: el pin lleva `allowModDistribution: true` (dato del controlador; el flag de la API de CurseForge no se pudo leer desde acá, respondió 403) y FTB Evolution 1.43.1 trae el mismo archivo. Depende de Architectury 13.0.1 y de Cloth Config, que el lock ya tiene. Es de ambos lados: un mixin en el jugador dispara la acción y el cliente sincroniza con el servidor si el jugador la tiene prendida (`SquatGrowEnabledPacket`).
+- **Qué hace.** Cada vez que el jugador se agacha, sobre los bloques a su alrededor aplica la magia de un ítem según el bloque:
+  - un cultivo de vainilla (`CropBlock`) crece como con un polvo de hueso;
+  - lo que se puede fertilizar y los tallos, igual;
+  - la caña de azúcar, el cactus y los tallos reciben ticks aleatorios extra (`randomTickMultiplier`, y `sugarcaneMultiplier` para la caña);
+  - con Mystical Agriculture, sus cultivos, y con AE2, los cristales;
+  - de yapa, `enableDirtToGrass` convierte tierra en pasto.
+- **Config** (`pack/config/squatgrow-common.yaml`; el nombre y el formato salen del JAR: Cloth Config AutoConfig con su serializador YAML, `squatgrow-common.yaml`, que construye el objeto desde el archivo y deja el valor por defecto de toda clave que falte):
+
+| Opción | Valor | Por defecto | Para qué |
+|---|---|---|---|
+| `chance` | 0,2 | 0,5 | Junto con el multiplicador: 0,2 × 2 = 0,4 ticks aleatorios por sentadilla y bloque, contra 0,5 × 4 = 2 por defecto: cinco veces más lento. |
+| `randomTickMultiplier` | 2 | 4 | Ídem. |
+| `range` | 2 | 3 | Un área de 5×5 en lugar de 7×7. |
+| `sugarcaneMultiplier` | 1 | 4 | La caña sin el ×4. |
+| `enableMysticalCrops` | false | true | Las semillas de recursos de Mystical Agriculture son progresión. |
+| `enableAE2Accelerator` | false | true | El crecimiento de cristales de AE2 es una puerta de tecnología pensada. |
+| `enableDirtToGrass` | false | true | Recorta los extras. |
+
+  `requireHoe` (false) y el resto quedan por defecto.
+- **La lista de ignorados** (`ignoreList`) conserva la de fábrica (pasto, hierba, netherrack y las dos nylium) y suma lo que un agachado no debe acelerar. Ojo con una cosa que el JAR no avisa: los cultivos de Mystical Agriculture extienden `CropBlock`, así que la acción común de cultivos los haría crecer igual con `enableMysticalCrops` apagado (esa opción sólo apaga una acción extra que también los toca). La lista los frena de verdad. Se compara por identificador exacto, por espacio de nombres con `mod:*` y por tag con `#`:
+  - `#mysticalagriculture:crops` y `mysticalagriculture:*`;
+  - `mysticalagradditions:*`: Agradditions usa la misma clase de cultivo;
+  - los cultivos de recurso o de progresión que hay en los JAR fijados: `oritech:*` (el cultivo marchito), `occultism:*` (la datura), `actuallyadditions:*` (loto negro y café), `silentgear:*` (lino) y `ars_nouveau:*` (la flor de mago).
+
+  Los cultivos de comida (Farmer's Delight, Croptopia, Pam's, Herbs and Harvest, Aether's Delight y demás) sí crecen: son el sentido del mod.
+- **Números.** El «5×» sale de la cuenta de arriba (0,4 contra 2 ticks por bloque y sentadilla); además el área baja de 49 a 25 bloques, así que por sentadilla el efecto total ronda una décima parte. No se midió en juego.
+- **GameTests:** `pingponground7loaded` lee la config cargada por el mod (los siete valores y cuatro entradas de la lista), y `squatgrowadvanceswheatbutnotmysticalcrops` hace que un jugador de prueba se agache 400 veces (`SquatAction.performAction`, lo que llama el mixin de agacharse) junto a un trigo y a un cultivo de inferium: el trigo tiene que avanzar y el de Mystical Agriculture quedarse en edad 0.
+- **Ganchos para las quests:** ninguno propio; una quest de casilla puede enseñar el «twerk» en el capítulo de granja.
+
+### Industrialization Overdrive: ya estaba, se queda en 1.12.2
+
+Ya entró en el lote 4 (1.12.2, de la instancia de ATM10); no hay que sumarlo. Se revisó si convenía subir a la 1.14.0, la última (13/9), y se decidió **quedarse en 1.12.2**:
+
+- **Compatibilidad con nuestro Modern Industrialization 2.5.6:** las tres versiones la declaran. La 1.12.2 pide MI `[2.4.2,2.6)` y Tesseract API `[1.12.0,1.13)`; la 1.13.0 y la 1.14.0 piden MI `[2.5.4,2.6)` y Tesseract `[1.12.16,1.13)`. Tesseract 1.12.16 está en el lock. Ninguna necesita un arreglo nuestro.
+- **La 1.14.0 no arregla nada que necesitemos y trae contenido sin revisar:** una máquina nueva (el apilador de mejoras, con su receta), 21 clases más, la receta de la terminal cambiada y la del ensamblador de la terminal quitada. Sube la superficie del lote 4 sin un motivo; la 1.13.0 ni siquiera está en Modrinth. Regla de la ronda: un pin de un pack de referencia primero, y uno más nuevo sólo si arregla algo.
+- **Extended Industrialization 1.16.2 y Tesseract API 1.12.16** están en el lock, de los dos lados. Subir a la 1.14.0 queda como opción para la fase final, con las recetas nuevas revisadas.
+
+### Animus, pospuesto
+
+Elias lo aprobó a condición de que se arregle el crash del cliente en multijugador, y no está arreglado. En 5.2.13, la última de 1.21.1, `ItemSpearBound.hurtEnemy` llama a `consumeEV` antes de mirar si corre en el cliente, y `consumeEV` usa la red de sangre que `getAnima` devuelve nula en un cliente conectado a un servidor (leído con `javap`; [TeamDman/Animus#156](https://github.com/TeamDman/Animus/issues/156), abierto el 27/9; la rama 1.21.1 no tiene commits desde el 14/9). Se revisa con la próxima versión. Si entra, también hay que resolver su sigilo que acelera bloques ×32.
+
+### Quedan afuera (Elias, 28/9)
+
+Create Big Cannons, Brewin' and Chewin', Better Fusion Reactor, Mekanism Nuclear Weapons & Explosives y Controlify. También Dark Doppelganger, Create: Gunsmithing, Steam 'n' Rails, Cataclysm: Spellbooks, Adam's Ars Plus y Create: Wizardry, como recomendó el controlador. Los motivos de cada uno están en la tabla de la búsqueda hacia afuera.
+
+### Verificación (estática)
+
+- **GameTests** (`ModPingpongRound7FullpackGameTests`):
+  - `pingponground7loaded`: los cuatro mods cargados, Animus ausente, el bloque de insanium con la Luminosidad, las dos recetas quitadas y las configs de Hardcore Revival (co-op) y de Squat Grow leídas del mod;
+  - `carryonrefusesround7blocks`;
+  - `squatgrowadvanceswheatbutnotmysticalcrops`, de arriba;
+  - `hardcorerevivaldownsandrescuesincoop`: con dos jugadores de prueba conectados, un golpe letal deja caído al primero, vivo; el segundo lo levanta por el camino de rescate del propio mod.
+- `tools/test_family_balance.py` suma los dos tests de arriba. Pasan las familias (14), el diseño de recetas, el lock de los dos lados y la compilación de las GameTests. Ninguno de los tres regala nada al primer ingreso.
+- El runtime entra en la misma cola que las rondas 5 y 6, diferida a la fase final de pruebas (Elias 29/9).
