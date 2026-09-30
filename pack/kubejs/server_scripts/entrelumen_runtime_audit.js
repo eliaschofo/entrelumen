@@ -2439,6 +2439,7 @@ const entrelumenAuditTargets = {
     "integrateddynamics:menril_leaves",
     "integrateddynamics:menril_log",
     "integrateddynamics:menril_sapling",
+    "integrateddynamics:menril_torch",
     "integrateddynamics:on_the_dynamics_of_integration",
     "integrateddynamics:part_audio_reader",
     "integrateddynamics:part_audio_writer",
@@ -3434,11 +3435,13 @@ const entrelumenAuditTargets = {
     "minecraft:furnace",
     "minecraft:gilded_blackstone",
     "minecraft:glass",
+    "minecraft:glass_pane",
     "minecraft:glistering_melon_slice",
     "minecraft:glow_berries",
     "minecraft:glow_ink_sac",
     "minecraft:glowstone",
     "minecraft:glowstone_dust",
+    "minecraft:goat_horn",
     "minecraft:gold_ingot",
     "minecraft:gold_nugget",
     "minecraft:golden_apple",
@@ -3557,6 +3560,7 @@ const entrelumenAuditTargets = {
     "minecraft:shield",
     "minecraft:shulker_box",
     "minecraft:shulker_shell",
+    "minecraft:silverfish_spawn_egg",
     "minecraft:skeleton_skull",
     "minecraft:slime_ball",
     "minecraft:snow_block",
@@ -4498,6 +4502,7 @@ const entrelumenAuditTargets = {
     "oritech:target_designator",
     "oritech:tech_button",
     "oritech:tech_door",
+    "oritech:tech_lever",
     "oritech:treefeller_block",
     "oritech:unholy_intelligence",
     "oritech:unstable_container",
@@ -4839,6 +4844,7 @@ const entrelumenAuditTargets = {
     "psi:cad_battery_basic",
     "psi:cad_colorizer_empty",
     "psi:cad_colorizer_psi",
+    "psi:cad_colorizer_rainbow",
     "psi:cad_colorizer_white",
     "psi:cad_core_basic",
     "psi:cad_core_hyperclocked",
@@ -5799,7 +5805,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "2c86961c928d67a6"
+  "signature": "32a60b2aef018b13"
 };
 
 ServerEvents.afterRecipes(event => {
