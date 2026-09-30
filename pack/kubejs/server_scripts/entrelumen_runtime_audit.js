@@ -2924,6 +2924,7 @@ const entrelumenAuditTargets = {
     "malum:encyclopedia_arcana",
     "malum:encyclopedia_esoterica",
     "malum:ether",
+    "malum:ether_torch",
     "malum:fused_consciousness",
     "malum:gilded_ring",
     "malum:glass_brooch",
@@ -3018,6 +3019,7 @@ const entrelumenAuditTargets = {
     "malum:waveform_runewood_totem_base",
     "malum:weight_of_worlds",
     "malum:wicked_spirit",
+    "malum:wind_nucleus",
     "malum:wind_tunnel",
     "mcwbridges:oak_log_bridge_middle",
     "mcwdoors:garage_white_door",
@@ -5793,7 +5795,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "0cd8fa83f1eae517"
+  "signature": "4d8aa8837e5e36a8"
 };
 
 ServerEvents.afterRecipes(event => {
