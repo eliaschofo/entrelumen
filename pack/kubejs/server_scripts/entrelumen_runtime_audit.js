@@ -3329,6 +3329,7 @@ const entrelumenAuditTargets = {
     "minecraft:arrow",
     "minecraft:barrel",
     "minecraft:barrier",
+    "minecraft:bat_spawn_egg",
     "minecraft:beacon",
     "minecraft:bedrock",
     "minecraft:bee_nest",
@@ -5792,7 +5793,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "591ea656a4336a23"
+  "signature": "0cd8fa83f1eae517"
 };
 
 ServerEvents.afterRecipes(event => {
