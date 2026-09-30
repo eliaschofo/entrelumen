@@ -636,8 +636,9 @@ El curio único de la Luz Agria, construido con la especificación final de Elia
   - «La última estalla: 15 de daño a 5 bloques a la redonda, ×3 a jefes; 8 s de recarga.»
   - Los números salen de las constantes de `SourShackleRules`. También hay mensajes de muerte propios.
 - **Las marcas en la mano.** Un brazalete en la muñeca del brazo principal: una banda de marfil de 5 × 3 × 5 unidades, media unidad por fuera del brazo, por encima de la capa de la manga.
-  - Del lado de afuera tiene un engaste de oro con **cinco pernos** de 0,5 × 1 × 0,5, separados por media unidad. Cada marca enciende uno, a plena luz.
-  - Al estallar, los cinco quedan encendidos medio segundo. Durante el enfriamiento los pernos se apagan del todo y la banda se oscurece: el marfil baja dos tonos y el oro pasa a oliva muerta.
+  - Adelante, en la cara de la muñeca que la primera persona muestra aun detrás de una espada, tiene un engaste de oro. Sobre él flotan las **cinco marcas**: cubitos de 0,5 en un círculo de radio 1,2, a un cuarto de unidad de la banda, como la gema sobre el aro. Las bisagras quedan a los costados y atrás (Elias, 29/9: antes eran cinco pernos en línea del lado de afuera, que una espada tapaba).
+  - Cada marca enciende una, a plena luz, desde la de arriba y dando la vuelta hacia afuera del brazo. En el brazo izquierdo el círculo se recorre al revés, como un espejo.
+  - Al estallar, las cinco quedan encendidas medio segundo. Durante el enfriamiento se apagan del todo y la banda se oscurece: el marfil baja dos tonos y el oro pasa a oliva muerta.
   - Un texel por unidad en `textures/entity/sour_shackle/cuff.png`, de 64 × 16.
   - **Primera persona, mano vacía:** `RenderArmEvent`, sobre el brazo que dibuja vanilla, con la pose que le da `PlayerRenderer.renderHand`.
   - **Primera persona, con algo en la mano:** `RenderHandEvent`. Vanilla no dibuja el brazo y la muñeca real quedaría bajo el borde de la pantalla, así que el brazalete queda donde estaría la muñeca con la mano vacía y se mueve con el ítem, al equiparlo y al golpear.
@@ -645,11 +646,12 @@ El curio único de la Luz Agria, construido con la especificación final de Elia
   - Las marcas viven en el servidor. El paquete `entrelumen:sour_shackle_marks` (marcas, ticks de enfriamiento, si está puesto y si acaba de estallar) va al portador y a quien lo ve. Se manda con cada marca, al ponérselo o sacárselo, al empezar a verlo, al entrar, al reaparecer y al cambiar de dimensión.
   - Nada se crea por cuadro en el código propio: el modelo se hornea una vez y las rotaciones reusan un cuaternión. Queda el `pushPose` de la pila de poses.
 - **Arte.** Hecho con `art/authoring/draw_enves_curio.py`, que escribe la grilla `art/grids/item/sour_shackle.txt` (la exporta `art/build_art.py`) y la textura del brazalete; `--check` compara con lo commiteado. La procedencia está en `art/grids/provenance.json` (`item.sour_shackle` y `entity.sour_shackle/cuff`).
-  - Segunda pasada tras la revisión de Elias («está bien pero no tiene su outline arriba y abajo, y es como demasiado grueso y grande»): el contorno oscuro ahora cierra arriba de la gema y abajo del aro. La banda tiene 2 texels a los lados en vez de 3. La pieza ocupa 15 × 12 en vez de 16 × 14.
-  - Sigue siendo simétrica por construcción, con asserts de simetría, contorno cerrado y tamaño. Las bisagras de oro quedan dentro de la banda.
+  - Segunda pasada tras la revisión de Elias («está bien pero no tiene su outline arriba y abajo, y es como demasiado grueso y grande»): el contorno oscuro ahora cierra arriba de la gema y abajo del aro, y la banda tiene 2 texels a los lados en vez de 3.
+  - Tercera pasada, entre las dos: vuelve la gema grande del borrador con sus garras de oro, y el aro es hueco («es negro por dentro en vez de ser hueco y eso queda re raro»). El contorno también rodea el agujero. La pieza ocupa 16 × 12 (el borrador, 16 × 14).
+  - Sigue siendo simétrica por construcción, con asserts de simetría, contorno cerrado, tamaño y agujero hueco. Las bisagras de oro quedan dentro de la banda.
   - **Referencias vistas** (primera pasada, desde los JAR fijados): `artifacts:textures/item/withered_bracelet.png` (Artifacts 13.2.3), `ars_elemental:textures/item/fire_bangle.png` y `base_bangle.png` (Ars Elemental 0.7.10.1), `minecraft:textures/item/nether_star.png` y nuestra `sour_light_shard`.
   - Para el brazalete, `PlayerModel` e `ItemInHandRenderer` de las fuentes de NeoForge 21.1.249: el brazo mide 4 (o 3, fino) × 12 × 4, con la manga a 0,25.
-  - Hoja de revisión, con el sprite nuevo contra el borrador, el ítem en ranuras y maquetas por software de la mano con 0, 3 y 5 marcas y en enfriamiento: `E:/Temp/Elias/claude/C--Users-elias-Documents-Codex-2026-09-12-h/39181316-8996-4d78-bc8f-017b1c5c55c6/scratchpad/enves-curio/sour_shackle_review.png`. No son capturas del juego.
+  - Hoja de revisión, con el sprite nuevo contra el borrador y la segunda pasada, el ítem en ranuras y maquetas por software de la mano, vacía y con espada, con 0, 3 y 5 marcas y en enfriamiento: `E:/Temp/Elias/claude/C--Users-elias-Documents-Codex-2026-09-12-h/39181316-8996-4d78-bc8f-017b1c5c55c6/scratchpad/enves-curio/sour_shackle_review.png`. No son capturas del juego.
 - **Pruebas.**
   - **JUnit:**
     - `SourShackleRulesTest`: el ciclo, los números y el radio inclusivo;
@@ -668,7 +670,7 @@ El curio único de la Luz Agria, construido con la especificación final de Elia
   - cómo se ve el brazalete en primera persona, con y sin ítem;
   - la tercera persona con Curios;
   - el ítem en la ranura real de Curios;
-  - si los pernos se leen con la luz real.
+  - si las marcas se leen con la luz real, de refilón como quedan en primera persona.
 
 ## Para decidir
 
