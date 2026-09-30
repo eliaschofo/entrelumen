@@ -4,494 +4,633 @@
   "act": "any",
   "icon": "minecraft:lever",
   "emblem": "minecraft:textures/item/comparator.png",
-  "title": {
-    "en_us": "The Pack's Controls",
-    "es_es": "Los controles del pack"
-  },
+  "title": {"en_us": "The Pack's Controls", "es_es": "Los controles del pack"},
   "subtitle": {
     "en_us": "Every key the preset moved, grouped by what you are doing.",
     "es_es": "Cada tecla que movió el preset, agrupada por lo que estás haciendo."
   },
   "quests": [
     {
-      "key": "qol_controls_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "A Keyboard for 300 Mods",
-        "V, B, R, G, H, C, Z and the arrows were each claimed by five or six mods. The pack's key preset moves the clashing ones to free keys or to Alt, Ctrl and Shift combinations, and only fills keys you never set yourself: change one and your choice stays.\n\nThree hundred mods, one keyboard. Somebody had to negotiate."
-      ],
-      "es_es": [
-        "Un teclado para 300 mods",
-        "V, B, R, G, H, C, Z y las flechas las reclamaban cinco o seis mods cada una. El preset de teclas del pack mueve las que chocaban a teclas libres o a combinaciones con Alt, Ctrl y Shift, y sólo completa las que nunca configuraste: cambiá una y tu elección se queda.\n\nTrescientos mods, un teclado. Alguien tuvo que negociar."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "repo:pack/config/entrelumen/client-preset.json",
-        "repo:docs/design/automatic-client-defaults.md"
-      ]
+      "key": "qol_controls_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "A Keyboard for 300 Mods", "subtitle": "Somebody had to negotiate.",
+        "text": ["[lead] Three hundred mods, one keyboard: the busiest keys had five or six claimants each.",
+                 "V, B, R, G, H, C, Z and the arrows were the hot ones. The preset moved the clashing actions to free keys or to [hl|Alt], [hl|Ctrl] and [hl|Shift] combinations.",
+                 "It only fills keys you never set yourself: change one and your choice stays."]},
+      "es_es": {"title": "Un teclado para 300 mods", "subtitle": "Alguien tuvo que negociar.",
+        "text": ["[lead] Trescientos mods, un teclado: las teclas más disputadas tenían cinco o seis pretendientes.",
+                 "V, B, R, G, H, C, Z y las flechas eran las calientes. El preset las mandó a teclas libres o a combinaciones con [hl|Alt], [hl|Ctrl] y [hl|Shift].",
+                 "Sólo completa las que nunca configuraste: cambiá una y tu elección se queda."]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt", "repo:pack/config/entrelumen/client-preset.json", "repo:docs/design/automatic-client-defaults.md"]
     },
     {
-      "key": "qol_controls_controlling",
-      "deps": [
-        "qol_controls_welcome"
-      ],
-      "type": "checkmark",
+      "key": "qol_controls_controlling", "deps": ["qol_controls_welcome"], "type": "checkmark", "layout": {"x": 3.5, "y": 0, "size": 1.5, "shape": "square"},
       "icon": "minecraft:comparator",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "Find Any Key",
-        "&eControlling&r (Options, Controls, Key Binds) adds a search box and a conflict filter; red keys are used twice, which is fine when they act in different places.\n\nUnbound on purpose: Accessories' own screen (the Aether's stays on &eI&r), Crafting on a Stick's second Curios key, Ars Nouveau's next and previous spell slot (use the F6 radial), Twilight's goggle zoom (Just Zoom covers it) and the Key Bundles radial."
-      ],
-      "es_es": [
-        "Encontrá cualquier tecla",
-        "&eControlling&r (Opciones, Controles, Asignación de teclas) suma un buscador y un filtro de conflictos; las teclas en rojo están usadas dos veces, y está bien si actúan en lugares distintos.\n\nSin tecla a propósito: la pantalla propia de Accessories (la del Aether sigue en &eI&r), la segunda tecla de Curios de Crafting on a Stick, la ranura de hechizo siguiente y anterior de Ars Nouveau (usá el radial de F6), el zoom de antiparras de Twilight (Just Zoom lo cubre) y el radial de Key Bundles."
-      ],
-      "sources": [
-        "jar:Controlling-neoforge-1.21.1-19.0.5.jar:META-INF/neoforge.mods.toml",
-        "repo:docs/design/keybinding-review.md"
-      ]
+      "en_us": {"title": "Find Any Key", "subtitle": "Red keys are double-booked.",
+        "text": ["[lead] The key list now has a search box and a conflict filter.",
+                 "[hl|Controlling] adds them to Options, Controls, Key Binds. A red key is used twice, which is fine when the two actions live in different places.",
+                 "{page}",
+                 "Unbound on purpose:",
+                 "[li] Accessories' own screen (the Aether's stays on [key:key.aether.open_accessories.desc])",
+                 "[li] Crafting on a Stick's second Curios key",
+                 "[li] Ars Nouveau's next and previous spell slot: the [key:key.ars_nouveau.selection_hud] radial covers it",
+                 "[li] Twilight's goggle zoom: Just Zoom covers it",
+                 "[li] The Key Bundles radial, until you [quest:qol_controls_tip_bundles|bind it]"]},
+      "es_es": {"title": "Encontrá cualquier tecla", "subtitle": "Una roja está usada dos veces.",
+        "text": ["[lead] La lista de teclas ahora tiene buscador y filtro de conflictos.",
+                 "[hl|Controlling] los suma a Opciones, Controles, Asignación de teclas. Una tecla roja está usada dos veces, y está bien si las dos acciones viven en lugares distintos.",
+                 "{page}",
+                 "Sin tecla a propósito:",
+                 "[li] La pantalla propia de Accessories (la del Aether sigue en [key:key.aether.open_accessories.desc])",
+                 "[li] La segunda tecla de Curios de Crafting on a Stick",
+                 "[li] La ranura de hechizo siguiente y anterior de Ars Nouveau: lo cubre el radial de [key:key.ars_nouveau.selection_hud]",
+                 "[li] El zoom de antiparras de Twilight: lo cubre Just Zoom",
+                 "[li] El radial de Key Bundles, hasta que lo [quest:qol_controls_tip_bundles|asignes]"]},
+      "sources": ["jar:Controlling-neoforge-1.21.1-19.0.5.jar:META-INF/neoforge.mods.toml", "repo:docs/design/keybinding-review.md"]
     },
     {
-      "key": "qol_controls_everyday",
-      "deps": [
-        "qol_controls_controlling"
-      ],
-      "type": "checkmark",
+      "key": "qol_controls_everyday", "deps": ["qol_controls_controlling"], "type": "checkmark", "layout": {"x": 7, "y": 0, "size": 1.5, "shape": "hexagon"},
       "icon": "minecraft:book",
-      "layout": {
-        "x": 6,
-        "y": 0,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Everyday Keys",
-        "- &eF8&r quest book (it used to sit on the grave key).\n- &eG&r Curios: Terra's Arm and the Ultimine curio go there.\n- &eV&r (hold) FTB Ultimine.\n- &eB&r the backpack you wear or carry.\n- &eR&r Tool Belt radial, &eShift+R&r its slot inventory.\n- &eJ&r full map, &eM&r new waypoint, &eK&r claim manager.\n- &eZ&r zoom (Just Zoom)."
-      ],
-      "es_es": [
-        "Teclas de todos los días",
-        "- &eF8&r libro de quests (antes estaba en la tecla del acento grave).\n- &eG&r Curios: ahí van el Brazo de Terra y el curio de Ultimine.\n- &eV&r (mantener) FTB Ultimine.\n- &eB&r la mochila que llevás puesta o encima.\n- &eR&r radial del Tool Belt, &eShift+R&r su inventario de ranura.\n- &eJ&r mapa completo, &eM&r nuevo waypoint, &eK&r reclamos.\n- &eZ&r zoom (Just Zoom)."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "jar:justzoom_neoforge_2.1.0_MC_1.21.1.jar:de/keksuccino/justzoom/KeyMappings.class"
-      ]
+      "en_us": {"title": "Everyday Keys",
+        "text": ["[lead] Four keys for the daily routine; the rest have their own quests.",
+                 "[li] [key:key.ftbquests.quests]: quest book",
+                 "[li] [key:key.curios.open.desc]: Curios",
+                 "[li] [key:key.sophisticatedbackpacks.open_backpack]: backpack",
+                 "[li] [key:justzoom.keybinds.keybind.zoom]: zoom",
+                 "{page}",
+                 "The quest book used to sit on the grave-accent key. [item:entrelumen:terra_arm|Terra's Arm] and the vein resonator go in Curios; the backpack is the one you wear or carry, and zoom is Just Zoom.",
+                 "The rest of the crowd:",
+                 "[li] [key:key.ftbultimine], held: [quest:qol_controls_ultimine|Ultimine]",
+                 "[li] [key:key.toolbelt.open]: [quest:qol_controls_toolbelt|the Tool Belt]",
+                 "[li] [key:key.journeymap.map_toggle_alt], [key:key.journeymap.create_waypoint], [key:key.ftbchunks.claim_manager]: [quest:qol_controls_map|map, waypoints and claims]"]},
+      "es_es": {"title": "Teclas de todos los días",
+        "text": ["[lead] Cuatro teclas para la rutina diaria; las demás tienen su propia quest.",
+                 "[li] [key:key.ftbquests.quests]: libro de quests",
+                 "[li] [key:key.curios.open.desc]: Curios",
+                 "[li] [key:key.sophisticatedbackpacks.open_backpack]: mochila",
+                 "[li] [key:justzoom.keybinds.keybind.zoom]: zoom",
+                 "{page}",
+                 "El libro de quests antes estaba en la tecla del acento grave. El [item:entrelumen:terra_arm|Brazo de Terra] y el resonador de vetas van en Curios; la mochila es la que llevás puesta o encima, y el zoom es el de Just Zoom.",
+                 "El resto de la barra brava:",
+                 "[li] [key:key.ftbultimine], mantenida: [quest:qol_controls_ultimine|Ultimine]",
+                 "[li] [key:key.toolbelt.open]: [quest:qol_controls_toolbelt|el cinturón]",
+                 "[li] [key:key.journeymap.map_toggle_alt], [key:key.journeymap.create_waypoint], [key:key.ftbchunks.claim_manager]: [quest:qol_controls_map|mapa, waypoints y reclamos]"]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt", "jar:justzoom_neoforge_2.1.0_MC_1.21.1.jar:de/keksuccino/justzoom/KeyMappings.class"]
     },
     {
-      "key": "qol_controls_map",
-      "deps": [
-        "qol_controls_everyday"
-      ],
-      "type": "checkmark",
+      "key": "qol_controls_map", "deps": ["qol_controls_everyday"], "type": "checkmark", "layout": {"x": 10.5, "y": -3, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:filled_map",
-      "layout": {
-        "x": 9,
-        "y": -3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Map and Waypoints",
-        "&eJourneyMap&r is the pack's map: &eJ&r opens it full-screen, &eM&r makes a waypoint where you stand and, inside the map, &eB&r one at the cursor.\n\nFTB Chunks' map key is unbound and its minimap off: it only handles teams and claims, with its claim manager on &eK&r."
-      ],
-      "es_es": [
-        "Mapa y waypoints",
-        "&eJourneyMap&r es el mapa del pack: &eJ&r lo abre en pantalla completa, &eM&r crea un waypoint donde estás y, dentro del mapa, &eB&r uno en el cursor.\n\nLa tecla del mapa de FTB Chunks está sin asignar y su minimapa apagado: sólo se ocupa de equipos y reclamos, con el administrador en &eK&r."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "repo:pack/config/ftbchunks-client.snbt",
-        "repo:docs/design/keybinding-review.md"
-      ]
+      "en_us": {"title": "Map and Waypoints",
+        "text": ["[lead] One key opens the map, another drops a waypoint under your feet.",
+                 "[li] [key:key.journeymap.map_toggle_alt]: [hl|JourneyMap], full screen",
+                 "[li] [key:key.journeymap.create_waypoint]: a waypoint where you stand",
+                 "[li] [key:key.journeymap.fullscreen_create_waypoint]: inside the map, one at the cursor",
+                 "{page}",
+                 "[note] FTB Chunks' map key is unbound and its minimap off: it only handles teams and claims, with its claim manager on [key:key.ftbchunks.claim_manager]."]},
+      "es_es": {"title": "Mapa y waypoints",
+        "text": ["[lead] Una tecla abre el mapa y otra clava un waypoint bajo tus pies.",
+                 "[li] [key:key.journeymap.map_toggle_alt]: [hl|JourneyMap], pantalla completa",
+                 "[li] [key:key.journeymap.create_waypoint]: un waypoint donde estás",
+                 "[li] [key:key.journeymap.fullscreen_create_waypoint]: dentro del mapa, uno en el cursor",
+                 "{page}",
+                 "[note] La tecla del mapa de FTB Chunks está sin asignar y su minimapa apagado: sólo se ocupa de equipos y reclamos, con el administrador en [key:key.ftbchunks.claim_manager]."]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt", "repo:pack/config/ftbchunks-client.snbt", "repo:docs/design/keybinding-review.md"]
     },
     {
-      "key": "qol_controls_toolbelt",
-      "deps": [
-        "qol_controls_everyday"
-      ],
-      "type": "item",
-      "item": "toolbelt:belt",
-      "optional": true,
-      "layout": {
-        "x": 9,
-        "y": 0,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "R and Shift+R: the Tool Belt",
-        "With a Tool Belt in its slot, hold &eR&r for a radial menu that swaps your held item with one on the belt; &eShift+R&r opens the belt's slots.\n\nR is also the recipe key inside screens, but the belt only opens with no screen open, so they never clash. Aircraft dismount moved to &eF12&r for the same reason."
-      ],
-      "es_es": [
-        "R y Shift+R: el cinturón",
-        "Con un Tool Belt en su ranura, mantené &eR&r para un menú radial que cambia lo que tenés en la mano por algo del cinturón; &eShift+R&r abre sus ranuras.\n\nR también es la tecla de recetas dentro de las pantallas, pero el cinturón sólo se abre sin pantallas, así que nunca chocan. Bajarse de un avión pasó a &eF12&r por lo mismo."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "repo:docs/design/keybinding-review.md",
-        "jar:ToolBelt-1.21.1-2.2.10.jar:assets/toolbelt/lang/en_us.json"
-      ]
+      "key": "qol_controls_toolbelt", "deps": ["qol_controls_everyday"], "type": "item", "item": "toolbelt:belt", "optional": true, "layout": {"x": 10.5, "y": 0, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "The Tool Belt Keys", "subtitle": "Your hotbar, on a strap.",
+        "text": ["[lead] Swap the tool in your hand without touching the hotbar.",
+                 "Put a [item:toolbelt:belt|Tool Belt] in its slot, then:",
+                 "[li] Hold [key:key.toolbelt.open]: a radial menu swaps your held item with one on the belt",
+                 "[li] [key:key.toolbelt.slot]: opens the belt's slots",
+                 "{page}",
+                 "[note] [hl|R] is also the recipe key inside screens, but the belt only opens with none open, so they never clash. Aircraft dismount moved to [key:key.immersive_aircraft.dismount] for the same reason."]},
+      "es_es": {"title": "Las teclas del cinturón", "subtitle": "Tu barra rápida, con correa.",
+        "text": ["[lead] Cambiá la herramienta de la mano sin tocar la barra rápida.",
+                 "Poné un [item:toolbelt:belt|Tool Belt] en su ranura y:",
+                 "[li] Mantené [key:key.toolbelt.open]: un menú radial cambia lo que tenés en la mano por algo del cinturón",
+                 "[li] [key:key.toolbelt.slot]: abre las ranuras del cinturón",
+                 "{page}",
+                 "[note] [hl|R] también es la tecla de recetas dentro de las pantallas, pero el cinturón sólo se abre sin pantallas, así que nunca chocan. Bajarse de un avión pasó a [key:key.immersive_aircraft.dismount] por lo mismo."]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt", "repo:docs/design/keybinding-review.md", "jar:ToolBelt-1.21.1-2.2.10.jar:assets/toolbelt/lang/en_us.json"]
     },
     {
-      "key": "qol_controls_ultimine",
-      "deps": [
-        "qol_controls_everyday"
-      ],
-      "type": "checkmark",
+      "key": "qol_controls_ultimine", "deps": ["qol_controls_everyday"], "type": "checkmark", "layout": {"x": 10.5, "y": 3, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:iron_pickaxe",
-      "layout": {
-        "x": 9,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "V: Ultimine",
-        "Hold &eV&r while breaking a block to break the whole connected vein, up to the reach of the vein resonator worn in a Curios charm slot (8, 16, 32 or 64 blocks by tier; without one there is no Ultimine), at extra hunger per block. With V held, Shift and the mouse wheel (or up and down arrows) switch shape: shapeless, tunnels or 3x3.\n\nModern Industrialization's 3x3 tool toggle moved to &eAlt+V&r."
-      ],
-      "es_es": [
-        "V: Ultimine",
-        "Mantené &eV&r al romper un bloque para romper toda la veta conectada, hasta el alcance del resonador de vetas que lleves en un slot de amuleto de Curios (8, 16, 32 o 64 bloques según el tier; sin resonador no hay Ultimine), con hambre extra por bloque. Con V apretada, Shift y la rueda del mouse (o las flechas arriba y abajo) cambian la forma: sin forma, túneles o 3x3.\n\nEl modo 3x3 de las herramientas de Modern Industrialization pasó a &eAlt+V&r."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "jar:ftb-ultimine-neoforge-2101.1.15.jar:dev/ftb/mods/ftbultimine/config/FTBUltimineServerConfig.class",
-        "jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json",
-        "repo:docs/design/progression-functions.md",
-        "repo:pack/config/ftbultimine-server.snbt"
-      ]
+      "en_us": {"title": "Ultimine: Break the Vein", "subtitle": "Hold, swing, done.",
+        "text": ["[lead] Hold one key and a single swing breaks the whole connected vein.",
+                 "Hold [key:key.ftbultimine] while breaking a block. How far it reaches depends on the vein resonator you wear in a Curios charm slot.",
+                 "[careful] Every extra block costs hunger, and with no resonator there is no Ultimine.",
+                 "{page}",
+                 "Reach by resonator tier:",
+                 "[li:entrelumen:vein_resonator_1] Tier I: [hl|8] blocks",
+                 "[li:entrelumen:vein_resonator_2] Tier II: [hl|16] blocks",
+                 "[li:entrelumen:vein_resonator_3] Tier III: [hl|32] blocks",
+                 "[li:entrelumen:vein_resonator_4] Tier IV: [hl|64] blocks",
+                 "With the key held, [hl|Shift] and the mouse wheel (or the up and down arrows) switch shape: shapeless, tunnels or 3x3.",
+                 "[note] Modern Industrialization's 3x3 tool toggle moved to [key:key.modern_industrialization.toggle_3x3]."]},
+      "es_es": {"title": "Ultimine: rompé la veta", "subtitle": "Mantené, golpeá, listo.",
+        "text": ["[lead] Mantené una tecla y un solo golpe rompe toda la veta conectada.",
+                 "Mantené [key:key.ftbultimine] al romper un bloque. El alcance depende del resonador de vetas que lleves en un slot de amuleto de Curios.",
+                 "[careful] Cada bloque extra cuesta hambre, y sin resonador no hay Ultimine.",
+                 "{page}",
+                 "Alcance según el nivel del resonador:",
+                 "[li:entrelumen:vein_resonator_1] Nivel I: [hl|8] bloques",
+                 "[li:entrelumen:vein_resonator_2] Nivel II: [hl|16] bloques",
+                 "[li:entrelumen:vein_resonator_3] Nivel III: [hl|32] bloques",
+                 "[li:entrelumen:vein_resonator_4] Nivel IV: [hl|64] bloques",
+                 "Con la tecla apretada, [hl|Shift] y la rueda del mouse (o las flechas arriba y abajo) cambian la forma: sin forma, túneles o 3x3.",
+                 "[note] El modo 3x3 de las herramientas de Modern Industrialization pasó a [key:key.modern_industrialization.toggle_3x3]."]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt", "jar:ftb-ultimine-neoforge-2101.1.15.jar:dev/ftb/mods/ftbultimine/config/FTBUltimineServerConfig.class", "jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json", "repo:docs/design/progression-functions.md", "repo:pack/config/ftbultimine-server.snbt"]
     },
     {
-      "key": "qol_controls_armor_keys",
-      "deps": [
-        "qol_controls_map"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_controls_armor_keys", "deps": ["qol_controls_map"], "type": "checkmark", "optional": true, "layout": {"x": 14, "y": -4.5, "size": 1.0, "shape": "circle"},
       "icon": "mekanism:jetpack",
-      "layout": {
-        "x": 12,
-        "y": -4.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Mekanism Armor: Alt + Arrows",
-        "Mekanism's armor mode keys left V, G, J and B for the arrows with &eAlt&r: &eAlt+Up&r helmet, &eAlt+Left&r chestplate, &eAlt+Down&r leggings, &eAlt+Right&r boots.\n\nThe MekaSuit HUD toggles with Ctrl and the module tweaker with Alt, each plus the key where US keyboards have the backslash."
-      ],
-      "es_es": [
-        "Mekanism: Alt + flechas",
-        "Las teclas de modo de la armadura de Mekanism dejaron V, G, J y B por las flechas con &eAlt&r: &eAlt+Arriba&r casco, &eAlt+Izquierda&r pechera, &eAlt+Abajo&r pantalones, &eAlt+Derecha&r botas.\n\nEl HUD de la MekaSuit se prende con Ctrl y el ajustador de módulos con Alt, cada uno más la tecla donde el teclado estadounidense tiene la barra invertida."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "repo:docs/design/keybinding-review.md"
-      ]
+      "en_us": {"title": "Mekanism Armor Keys",
+        "text": ["[lead] Armor modes left V, G, J and B: they live on the arrow keys now.",
+                 "[li] [key:key.mekanism.head_mode]: helmet",
+                 "[li] [key:key.mekanism.chest_mode]: chestplate",
+                 "[li] [key:key.mekanism.legs_mode]: leggings",
+                 "[li] [key:key.mekanism.feet_mode]: boots",
+                 "{page}",
+                 "The [item:mekanism:mekasuit_helmet|MekaSuit] HUD toggles on [key:key.mekanism.key_hud] and the module tweaker on [key:key.mekanism.module_tweaker]."]},
+      "es_es": {"title": "Teclas de armadura de Mekanism",
+        "text": ["[lead] Los modos de la armadura dejaron V, G, J y B: ahora viven en las flechas.",
+                 "[li] [key:key.mekanism.head_mode]: casco",
+                 "[li] [key:key.mekanism.chest_mode]: pechera",
+                 "[li] [key:key.mekanism.legs_mode]: pantalones",
+                 "[li] [key:key.mekanism.feet_mode]: botas",
+                 "{page}",
+                 "El HUD del [item:mekanism:mekasuit_helmet|MekaTraje] se prende con [key:key.mekanism.key_hud] y el ajustador de módulos con [key:key.mekanism.module_tweaker]."]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt", "repo:docs/design/keybinding-review.md"]
     },
     {
-      "key": "qol_controls_flight_keys",
-      "deps": [
-        "qol_controls_map"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_controls_flight_keys", "deps": ["qol_controls_map"], "type": "checkmark", "optional": true, "layout": {"x": 14, "y": -1.5, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:elytra",
-      "layout": {
-        "x": 12,
-        "y": -1.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Flight and Travel Keys",
-        "- &eF4&r Iron Jetpacks engine, &eAlt+H&r its hover.\n- &eShift+F4&r Modern Industrialization flight.\n- &eCtrl+F4&r Ad Astra suit flight, &eAlt+R&r Ad Astra radio.\n- &eAlt+E&r Ender IO Staff of Travelling.\n- &eF12&r get off an Immersive Aircraft plane, &eCtrl+F12&r its boost.\n\nEvery way of flying got its own key. Crashing is still shared."
-      ],
-      "es_es": [
-        "Teclas de vuelo y viaje",
-        "- &eF4&r motor de Iron Jetpacks, &eAlt+H&r su modo flotar.\n- &eShift+F4&r vuelo de Modern Industrialization.\n- &eCtrl+F4&r vuelo del traje de Ad Astra, &eAlt+R&r radio de Ad Astra.\n- &eAlt+E&r Bastón de viaje de Ender IO.\n- &eF12&r bajarse de un avión de Immersive Aircraft, &eCtrl+F12&r su impulso.\n\nCada forma de volar tiene su tecla. Estrellarse sigue siendo compartido."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "repo:docs/design/industrial-expansion-family.md"
-      ]
+      "en_us": {"title": "Flight and Travel Keys",
+        "text": ["[lead] Every way of flying got its own key. Crashing is still shared.",
+                 "[li] [key:keybind.ironjetpacks.engine]: [item:ironjetpacks:jetpack|Iron Jetpacks] engine, [key:keybind.ironjetpacks.hover] hover",
+                 "[li] [key:key.modern_industrialization.toggle_flight]: Modern Industrialization flight",
+                 "[li] [key:key.ad_astra.toggle_suit_flight]: Ad Astra suit flight",
+                 "{page}",
+                 "[li] [key:key.ad_astra.open_radio]: Ad Astra radio",
+                 "[li] [key:key.enderio.travel_staff]: [item:enderio:staff_of_travelling|Staff of Travelling]",
+                 "[li] [key:key.immersive_aircraft.dismount]: get off an Immersive Aircraft plane; [key:key.immersive_aircraft.boost] boosts it"]},
+      "es_es": {"title": "Teclas de vuelo y viaje",
+        "text": ["[lead] Cada forma de volar tiene su tecla. Estrellarse sigue siendo compartido.",
+                 "[li] [key:keybind.ironjetpacks.engine]: motor de [item:ironjetpacks:jetpack|Iron Jetpacks], [key:keybind.ironjetpacks.hover] flotar",
+                 "[li] [key:key.modern_industrialization.toggle_flight]: vuelo de Modern Industrialization",
+                 "[li] [key:key.ad_astra.toggle_suit_flight]: vuelo del traje de Ad Astra",
+                 "{page}",
+                 "[li] [key:key.ad_astra.open_radio]: radio de Ad Astra",
+                 "[li] [key:key.enderio.travel_staff]: [item:enderio:staff_of_travelling|Bastón de viaje]",
+                 "[li] [key:key.immersive_aircraft.dismount]: bajarse de un avión de Immersive Aircraft; [key:key.immersive_aircraft.boost] lo impulsa"]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt", "repo:docs/design/industrial-expansion-family.md"]
     },
     {
-      "key": "qol_controls_magic_keys",
-      "deps": [
-        "qol_controls_ultimine"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_controls_magic_keys", "deps": ["qol_controls_ultimine"], "type": "checkmark", "optional": true, "layout": {"x": 14, "y": 1.5, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:amethyst_shard",
-      "layout": {
-        "x": 12,
-        "y": 1.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Magic Keys",
-        "- &eF6&r Ars Nouveau spell radial, &e0&r its crown potion radial.\n- Iron's Spells wheel on the key left of 1 (grave accent on US keyboards), &eAlt+Q&r cast from the spellbook.\n- &eAlt+F&r Psi's main key (C stays for the vanilla hotbar save and the Ars book).\n- Mahou Tsukai: &eAlt+M&r magic circle, &eShift+Y&r mystic code, &eCtrl+H&r selective displacement, &eAlt+.&r settings, &ePage Up/Down&r its guns."
-      ],
-      "es_es": [
-        "Teclas de magia",
-        "- &eF6&r radial de hechizos de Ars Nouveau, &e0&r su radial de pociones de la corona.\n- Rueda de Iron's Spells en la tecla a la izquierda del 1 (acento grave en el teclado estadounidense), &eAlt+Q&r lanzar desde el libro de hechizos.\n- &eAlt+F&r tecla principal de Psi (C queda para guardar la barra rápida vanilla y para el grimorio de Ars).\n- Mahou Tsukai: &eAlt+M&r círculo mágico, &eShift+Y&r código místico, &eCtrl+H&r desplazamiento selectivo, &eAlt+.&r configuración, &eRe Pág/Av Pág&r sus armas."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "jar:mahoutsukai-1.21.1-v1.36.27.jar:assets/mahoutsukai/lang/en_us.json",
-        "repo:docs/design/arcane-expansion-family.md",
-        "repo:docs/design/mod-pingpong.md"
-      ]
+      "en_us": {"title": "Magic Keys",
+        "text": ["[lead] Four magic systems, four sets of keys, zero fights.",
+                 "[li] [key:key.ars_nouveau.selection_hud]: Ars Nouveau spell radial; [key:key.ars_nouveau.head_curio_hotkey], its crown potions",
+                 "[li] [key:key.irons_spellbooks.spell_wheel]: Iron's Spells wheel; [key:key.irons_spellbooks.spellbook_cast], cast from the spellbook",
+                 "{page}",
+                 "[li] [key:psimisc.keybind]: Psi's main key; [hl|C] stays for the vanilla hotbar save and the Ars book",
+                 "Mahou Tsukai:",
+                 "[li] [key:key.drawMahoujin] magic circle, [key:key.changeMysticCode] mystic code",
+                 "[li] [key:key.selectiveDisplacement] selective displacement, [key:key.settingsGUI] settings",
+                 "[li] [key:key.gunUp] and [key:key.gunDown]: its guns"]},
+      "es_es": {"title": "Teclas de magia",
+        "text": ["[lead] Cuatro sistemas de magia, cuatro juegos de teclas, cero peleas.",
+                 "[li] [key:key.ars_nouveau.selection_hud]: radial de hechizos de Ars Nouveau; [key:key.ars_nouveau.head_curio_hotkey], sus pociones de corona",
+                 "[li] [key:key.irons_spellbooks.spell_wheel]: rueda de Iron's Spells; [key:key.irons_spellbooks.spellbook_cast], lanzar desde el libro de hechizos",
+                 "{page}",
+                 "[li] [key:psimisc.keybind]: tecla principal de Psi; [hl|C] queda para guardar la barra rápida vanilla y para el grimorio de Ars",
+                 "Mahou Tsukai:",
+                 "[li] [key:key.drawMahoujin] círculo mágico, [key:key.changeMysticCode] código místico",
+                 "[li] [key:key.selectiveDisplacement] desplazamiento selectivo, [key:key.settingsGUI] configuración",
+                 "[li] [key:key.gunUp] y [key:key.gunDown]: sus armas"]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt", "jar:mahoutsukai-1.21.1-v1.36.27.jar:assets/mahoutsukai/lang/en_us.json", "repo:docs/design/arcane-expansion-family.md", "repo:docs/design/mod-pingpong.md"]
     },
     {
-      "key": "qol_controls_explore_keys",
-      "deps": [
-        "qol_controls_ultimine"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_controls_explore_keys", "deps": ["qol_controls_ultimine"], "type": "checkmark", "optional": true, "layout": {"x": 14, "y": 4.5, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:map",
-      "layout": {
-        "x": 12,
-        "y": 4.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Exploration and Armor Abilities",
-        "- Aether: &eHome&r invisibility cloak; Deep Aether &eShift+Home&r skyjade transparency, &eAlt+G&r stratus dash, &eShift+H&r slider eye.\n- Twilight: the US semicolon key swaps the hotbar, and Shift plus it handles item display maps.\n- Eternal Starlight: &eH&r switches crest.\n- Deeper and Darker: &eAlt+B&r boost, &eAlt+N&r transmit.\n- Cataclysm armor: &eAlt+J&r, &eAlt+K&r helmet, &eAlt+L&r chestplate, &eAlt+I&r boots."
-      ],
-      "es_es": [
-        "Exploración y habilidades",
-        "- Aether: &eInicio&r capa de invisibilidad; Deep Aether &eShift+Inicio&r transparencia del skyjade, &eAlt+G&r impulso de stratus, &eShift+H&r ojo del slider.\n- Twilight: la tecla del punto y coma estadounidense cambia la barra rápida, y Shift más ella maneja los mapas del exhibidor.\n- Eternal Starlight: &eH&r cambia de emblema.\n- Deeper and Darker: &eAlt+B&r impulso, &eAlt+N&r transmitir.\n- Armadura de Cataclysm: &eAlt+J&r, &eAlt+K&r casco, &eAlt+L&r pechera, &eAlt+I&r botas."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "repo:docs/design/exploration-structures-family.md"
-      ]
+      "en_us": {"title": "Exploration and Armor Abilities",
+        "text": ["[lead] The gear of every dimension brought hotkeys of its own.",
+                 "[li] Aether: [key:key.aether.invisibility_toggle.desc] invisibility cloak",
+                 "[li] Deep Aether: [key:key.deep_aether.toggle_skyjade_transparency] skyjade transparency, [key:key.deep_aether.stratus_dash_ability.desc] stratus dash, [key:key.deep_aether.slider_eye_ability] slider eye",
+                 "{page}",
+                 "[li] Twilight: [key:key.twilightforest.swap_hotbar] swaps the hotbar, [key:key.twilightforest.item_display_map_cycle] cycles item display maps",
+                 "[li] Eternal Starlight: [key:key.eternal_starlight.switch_crest] switches crest",
+                 "[li] Deeper and Darker: [key:key.deeperdarker.boost] boost, [key:key.deeperdarker.transmit] transmit",
+                 "[li] Cataclysm armor: [key:key.cataclysm.ability], [key:key.cataclysm.helmet_ability] helmet, [key:key.cataclysm.chestplate_ability] chestplate, [key:key.cataclysm.boots_ability] boots"]},
+      "es_es": {"title": "Exploración y habilidades",
+        "text": ["[lead] El equipo de cada dimensión trajo sus propias teclas.",
+                 "[li] Aether: [key:key.aether.invisibility_toggle.desc] capa de invisibilidad",
+                 "[li] Deep Aether: [key:key.deep_aether.toggle_skyjade_transparency] transparencia del skyjade, [key:key.deep_aether.stratus_dash_ability.desc] impulso de stratus, [key:key.deep_aether.slider_eye_ability] ojo del slider",
+                 "{page}",
+                 "[li] Twilight: [key:key.twilightforest.swap_hotbar] cambia la barra rápida, [key:key.twilightforest.item_display_map_cycle] cambia los mapas del exhibidor",
+                 "[li] Eternal Starlight: [key:key.eternal_starlight.switch_crest] cambia de emblema",
+                 "[li] Deeper and Darker: [key:key.deeperdarker.boost] impulso, [key:key.deeperdarker.transmit] transmitir",
+                 "[li] Armadura de Cataclysm: [key:key.cataclysm.ability], [key:key.cataclysm.helmet_ability] casco, [key:key.cataclysm.chestplate_ability] pechera, [key:key.cataclysm.boots_ability] botas"]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt", "repo:docs/design/exploration-structures-family.md"]
     },
     {
-      "key": "qol_controls_utility_keys",
-      "deps": [
-        "qol_controls_toolbelt",
-        "qol_controls_magic_keys"
-      ],
-      "type": "checkmark",
+      "key": "qol_controls_utility_keys", "deps": ["qol_controls_toolbelt", "qol_controls_magic_keys"], "type": "checkmark", "layout": {"x": 17.5, "y": 0, "size": 1.25, "shape": "square"},
       "icon": "simplemagnets:basicmagnet",
-      "layout": {
-        "x": 15,
-        "y": 0,
-        "size": 1.25,
-        "shape": "square"
-      },
-      "en_us": [
-        "Utility Keys",
-        "- &eAlt+O&r pick up a villager (Easy Villagers).\n- &eShift+M&r Simple Magnets, &eCtrl+M&r Ender IO magnet.\n- US apostrophe key: Supplementaries quiver.\n- &eO&r Occultism ender satchel, &eShift+O&r its storage remote, &eInsert&r its satchel.\n- &eF10&r clear notifications.\n- &eEnd&r Building Gadgets range, &eShift+End&r settings, &eCtrl+End&r anchor.\n- &eAlt+T&r, &eShift+T&r Just Dire Things.\n- &eAlt+P&r, &eAlt+Y&r Draconic; &eAlt+U&r Hostile Neural Networks; &eAlt+Z&r Oritech implants (hold)."
-      ],
-      "es_es": [
-        "Teclas utilitarias",
-        "- &eAlt+O&r levantar un aldeano (Easy Villagers).\n- &eShift+M&r Simple Magnets, &eCtrl+M&r imán de Ender IO.\n- Apóstrofo estadounidense: carcaj de Supplementaries.\n- &eO&r morral del ender de Occultism, &eShift+O&r su control de almacén, &eInsert&r su morral.\n- &eF10&r borrar notificaciones.\n- &eFin&r alcance de Building Gadgets, &eShift+Fin&r configuración, &eCtrl+Fin&r fijar la vista.\n- &eAlt+T&r, &eShift+T&r Just Dire Things.\n- &eAlt+P&r, &eAlt+Y&r Draconic; &eAlt+U&r Hostile Neural Networks; &eAlt+Z&r implantes de Oritech (mantener)."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "repo:docs/design/qol-functional-decor-family.md",
-        "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oritech/lang/en_us.json"
-      ]
+      "en_us": {"title": "Utility Keys",
+        "text": ["[lead] The odd jobs: villagers, magnets, satchels and gadgets.",
+                 "[li] [key:key.easy_villagers.pick_up]: pick up a villager (Easy Villagers)",
+                 "[li] [key:simplemagnets.keys.toggle]: [item:simplemagnets:basicmagnet|Simple Magnets]; [key:key.enderio.toggle_magnet], the Ender IO magnet",
+                 "[li] [key:supplementaries.keybind.quiver]: Supplementaries quiver",
+                 "{page}",
+                 "[li] [key:key.occultism.ender_bag]: [item:occultism:ender_satchel|ender satchel]; [key:key.occultism.storage_remote], its storage remote; [key:key.occultism.backpack], its satchel",
+                 "[li] [key:key.toastcontrol.clear]: clear notifications",
+                 "[li] Building Gadgets: [key:key.buildinggadgets2.range] range, [key:key.buildinggadgets2.settings_menu] settings, [key:key.buildinggadgets2.anchor] anchor",
+                 "{page}",
+                 "[li] Just Dire Things: [key:justdirethings.key.toggle_tool], [key:justdirethings.key.toolUI]",
+                 "[li] Draconic Evolution: [key:key.draconicevolution.place_item], [key:key.draconicevolution.tool_config]",
+                 "[li] [key:key.hostilenetworks.open_deep_learner]: Hostile Neural Networks",
+                 "[li] [key:key.oritech.augment_screen], held: Oritech implants"]},
+      "es_es": {"title": "Teclas utilitarias",
+        "text": ["[lead] Los trabajos raros: aldeanos, imanes, morrales y aparatos.",
+                 "[li] [key:key.easy_villagers.pick_up]: levantar un aldeano (Easy Villagers)",
+                 "[li] [key:simplemagnets.keys.toggle]: [item:simplemagnets:basicmagnet|Simple Magnets]; [key:key.enderio.toggle_magnet], el imán de Ender IO",
+                 "[li] [key:supplementaries.keybind.quiver]: carcaj de Supplementaries",
+                 "{page}",
+                 "[li] [key:key.occultism.ender_bag]: [item:occultism:ender_satchel|morral del ender]; [key:key.occultism.storage_remote], su control de almacén; [key:key.occultism.backpack], su morral",
+                 "[li] [key:key.toastcontrol.clear]: borrar notificaciones",
+                 "[li] Building Gadgets: [key:key.buildinggadgets2.range] alcance, [key:key.buildinggadgets2.settings_menu] configuración, [key:key.buildinggadgets2.anchor] fijar la vista",
+                 "{page}",
+                 "[li] Just Dire Things: [key:justdirethings.key.toggle_tool], [key:justdirethings.key.toolUI]",
+                 "[li] Draconic Evolution: [key:key.draconicevolution.place_item], [key:key.draconicevolution.tool_config]",
+                 "[li] [key:key.hostilenetworks.open_deep_learner]: Hostile Neural Networks",
+                 "[li] [key:key.oritech.augment_screen], mantenida: implantes de Oritech"]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt", "repo:docs/design/qol-functional-decor-family.md", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oritech/lang/en_us.json"]
     },
     {
-      "key": "qol_controls_apoth_keys",
-      "deps": [
-        "qol_controls_utility_keys"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_controls_apoth_keys", "deps": ["qol_controls_utility_keys"], "type": "checkmark", "optional": true, "layout": {"x": 21, "y": -2.2, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:nether_star",
-      "layout": {
-        "x": 18,
-        "y": -3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Ctrl+T, Ctrl+O and Shift+T",
-        "Three Apotheosis keys keep their native combinations: &eCtrl+T&r opens the World Tier screen (readable, but the story sets the tier), &eCtrl+O&r toggles radial mining on gear that has it, and &eShift+T&r in an inventory links the hovered item in chat for your team to admire."
-      ],
-      "es_es": [
-        "Ctrl+T, Ctrl+O y Shift+T",
-        "Tres teclas de Apotheosis conservan sus combinaciones nativas: &eCtrl+T&r abre la pantalla de World Tiers (se lee, pero el nivel lo fija la historia), &eCtrl+O&r alterna la minería radial del equipo que la tenga, y &eShift+T&r en un inventario muestra en el chat el ítem que apuntás, para que tu equipo lo admire."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "repo:docs/design/apotheosis-family.md"
-      ]
+      "en_us": {"title": "Apotheosis Keys",
+        "text": ["[lead] Three Apotheosis keys kept their native combinations.",
+                 "[li] [key:key.apotheosis.open_world_tier_select]: the World Tier screen (readable, but the story sets the tier)",
+                 "[li] [key:key.apotheosis.toggle_radial_mining]: radial mining, on gear that has it",
+                 "[li] [key:key.apotheosis.link_item_to_chat]: in an inventory, links the item to chat for your team to admire"]},
+      "es_es": {"title": "Teclas de Apotheosis",
+        "text": ["[lead] Tres teclas de Apotheosis conservan sus combinaciones nativas.",
+                 "[li] [key:key.apotheosis.open_world_tier_select]: la pantalla de World Tiers (se lee, pero el nivel lo fija la historia)",
+                 "[li] [key:key.apotheosis.toggle_radial_mining]: minería radial, en el equipo que la tenga",
+                 "[li] [key:key.apotheosis.link_item_to_chat]: en un inventario, muestra el ítem en el chat para que tu equipo lo admire"]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt", "repo:docs/design/apotheosis-family.md"]
     },
     {
-      "key": "qol_controls_littletiles_keys",
-      "deps": [
-        "qol_controls_utility_keys"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_controls_littletiles_keys", "deps": ["qol_controls_utility_keys"], "type": "checkmark", "optional": true, "layout": {"x": 21, "y": 2.2, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:stone_button",
-      "layout": {
-        "x": 18,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "LittleTiles Keys",
-        "LittleTiles, the small-block builder, has its own set: &eN&r mirror, &eU&r mark, &eCtrl+I&r configure the held tool (&eShift+I&r secondary settings), &eCtrl+Home&r building mode, &eCtrl+Z&r undo, &eCtrl+Y&r redo.\n\nHow to use them: the Building Tools chapter."
-      ],
-      "es_es": [
-        "Teclas de LittleTiles",
-        "LittleTiles, el constructor de bloques chiquitos, tiene su juego: &eN&r espejo, &eU&r marcar, &eCtrl+I&r configurar la herramienta en mano (&eShift+I&r opciones secundarias), &eCtrl+Inicio&r modo de construcción, &eCtrl+Z&r deshacer, &eCtrl+Y&r rehacer.\n\nCómo usarlas: capítulo de Herramientas de construcción."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/keybindings.txt"
-      ]
+      "en_us": {"title": "LittleTiles Keys",
+        "text": ["[lead] LittleTiles, the small-block builder, has a set of its own.",
+                 "[li] [key:key.little.mirror] mirror, [key:key.little.mark] mark",
+                 "[li] [key:key.little.config.item] configure the held tool; [key:key.little.config_secondary.item], its secondary settings",
+                 "[li] [key:key.little.building_mode] building mode; [key:key.little.undo] undo, [key:key.little.redo] redo",
+                 "How to use them: [chapter:sector_building|Building]."]},
+      "es_es": {"title": "Teclas de LittleTiles",
+        "text": ["[lead] LittleTiles, el constructor de bloques chiquitos, tiene su juego.",
+                 "[li] [key:key.little.mirror] espejo, [key:key.little.mark] marcar",
+                 "[li] [key:key.little.config.item] configurar la herramienta en mano; [key:key.little.config_secondary.item], sus opciones secundarias",
+                 "[li] [key:key.little.building_mode] modo de construcción; [key:key.little.undo] deshacer, [key:key.little.redo] rehacer",
+                 "Cómo usarlas: [chapter:sector_building|Construcción]."]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt"]
     },
     {
-      "key": "qol_controls_tip_layout",
-      "deps": [
-        "qol_controls_controlling"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 3,
-        "y": 4,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Keys Named by Position",
-        "A few preset keys are named after US symbols, the semicolon and the apostrophe, and on a Spanish or Latin American keyboard those physical keys print something else.\n\nDo not hunt for the symbol: read the label in Controls, which shows what your layout prints, or rebind it."
-      ],
-      "es_es": [
-        "Truco: teclas por posición",
-        "Algunas teclas del preset llevan nombres de símbolos del teclado estadounidense, el punto y coma y el apóstrofo, y en un teclado español o latinoamericano esas teclas físicas imprimen otra cosa.\n\nNo busques el símbolo: leé la etiqueta en Controles, que muestra lo que imprime tu distribución, o reasignala."
-      ],
-      "sources": [
-        "repo:docs/design/keybinding-review.md"
-      ]
+      "key": "qol_controls_tip_layout", "deps": ["qol_controls_controlling"], "type": "checkmark", "optional": true, "layout": {"x": 3.5, "y": 3.6, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Keys Named by Position",
+        "text": ["[tip] The preset names two keys after US symbols, the semicolon and the apostrophe, and Spanish or Latin American keyboards print something else there.",
+                 "Do not hunt for the symbol: the keys in these quests show your own label, and Controls shows it too. Or rebind it."]},
+      "es_es": {"title": "Teclas por posición",
+        "text": ["[tip] El preset nombra dos teclas con símbolos del teclado estadounidense, el punto y coma y el apóstrofo, y en un teclado español o latinoamericano esas teclas imprimen otra cosa.",
+                 "No busques el símbolo: las teclas de estas quests muestran tu propia etiqueta, y Controles también. O reasignala."]},
+      "sources": ["repo:docs/design/keybinding-review.md"]
     },
     {
-      "key": "qol_controls_tip_bundles",
-      "deps": [
-        "qol_controls_tip_layout"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 6,
-        "y": 4,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Key Bundles",
-        "&eKeyBind Bundles&r gathers rarely used actions into a radial menu behind one key. It ships unbound: bind &eOpen Bundle radial menu&r in Controls and build bundles from its screen.\n\nGood candidates: armor abilities, magic toggles, every Mahou Tsukai key."
-      ],
-      "es_es": [
-        "Truco: paquetes de teclas",
-        "&eKeyBind Bundles&r junta acciones que usás poco en un menú radial detrás de una sola tecla. Viene sin asignar: asigná &eOpen Bundle radial menu&r en Controles y armá los paquetes desde su pantalla.\n\nBuenos candidatos: habilidades de armadura, interruptores de magia, todas las teclas de Mahou Tsukai."
-      ],
-      "sources": [
-        "jar:keybindbundles-1.4.0.jar:assets/keybindbundles/lang/en_us.json",
-        "repo:docs/design/small-qol-family.md"
-      ]
+      "key": "qol_controls_tip_bundles", "deps": ["qol_controls_tip_layout"], "type": "checkmark", "optional": true, "layout": {"x": 7, "y": 3.6, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Key Bundles",
+        "text": ["[tip] [hl|KeyBind Bundles] gathers rarely used actions into a radial menu behind one key.",
+                 "It ships unbound: bind [hl|Open Bundle radial menu] in Controls and build bundles from its screen. Good candidates:",
+                 "[li] Armor abilities",
+                 "[li] Magic toggles",
+                 "[li] Every Mahou Tsukai key"]},
+      "es_es": {"title": "Paquetes de teclas",
+        "text": ["[tip] [hl|KeyBind Bundles] junta acciones que usás poco en un menú radial detrás de una sola tecla.",
+                 "Viene sin asignar: asigná [hl|Open Bundle radial menu] en Controles y armá los paquetes desde su pantalla. Buenos candidatos:",
+                 "[li] Habilidades de armadura",
+                 "[li] Interruptores de magia",
+                 "[li] Todas las teclas de Mahou Tsukai"]},
+      "sources": ["jar:keybindbundles-1.4.0.jar:assets/keybindbundles/lang/en_us.json", "repo:docs/design/small-qol-family.md"]
     },
     {
-      "key": "qol_controls_tip_modifiers",
-      "deps": [
-        "qol_controls_ultimine"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 9,
-        "y": 6,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Alt, Ctrl and Shift Win",
-        "When a modified combination and a plain key share a letter, the combination whose modifier you hold wins: &eAlt+Q&r casts a spell without dropping your item, and &eCtrl+O&r toggles radial mining instead of opening the ender satchel.\n\nIf a combination ever fires both actions, report it."
-      ],
-      "es_es": [
-        "Particularidad: modificadores",
-        "Cuando una combinación con modificador y una tecla sola comparten letra, gana la combinación cuyo modificador apretás: &eAlt+Q&r lanza un hechizo sin tirar el ítem, y &eCtrl+O&r alterna la minería radial en vez de abrir el morral del ender.\n\nSi alguna combinación dispara las dos acciones, reportalo."
-      ],
-      "sources": [
-        "repo:docs/design/keybinding-review.md",
-        "repo:docs/design/apotheosis-family.md"
-      ]
+      "key": "qol_controls_tip_modifiers", "deps": ["qol_controls_ultimine"], "type": "checkmark", "optional": true, "layout": {"x": 10.5, "y": 6.2, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Alt, Ctrl and Shift Win",
+        "text": ["[lead] When a combination and a plain key share a letter, the modifier you hold wins.",
+                 "[key:key.irons_spellbooks.spellbook_cast] casts a spell without dropping your item, and [key:key.apotheosis.toggle_radial_mining] toggles radial mining instead of opening the ender satchel.",
+                 "If a combination ever fires both actions, report it."]},
+      "es_es": {"title": "Alt, Ctrl y Shift ganan",
+        "text": ["[lead] Cuando una combinación y una tecla sola comparten letra, gana el modificador que apretás.",
+                 "[key:key.irons_spellbooks.spellbook_cast] lanza un hechizo sin tirar el ítem, y [key:key.apotheosis.toggle_radial_mining] alterna la minería radial en vez de abrir el morral del ender.",
+                 "Si alguna combinación dispara las dos acciones, reportalo."]},
+      "sources": ["repo:docs/design/keybinding-review.md", "repo:docs/design/apotheosis-family.md"]
     },
     {
-      "key": "qol_controls_pack_defaults",
-      "deps": [
-        "qol_controls_welcome"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_controls_pack_defaults", "deps": ["qol_controls_welcome"], "type": "checkmark", "optional": true, "layout": {"x": 0, "y": -4, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:redstone_torch",
-      "layout": {
-        "x": 0,
-        "y": -4,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Pack Change: Client Defaults",
-        "A new profile also gets the pack's performance settings (see Performance, Sound and Screen), auto-jump off and the pack's resource pack enabled.\n\nThey are only defaults: if your launcher already made an options file, existing values stay and only missing ones are added."
-      ],
-      "es_es": [
-        "Cambio del pack: valores base",
-        "Un perfil nuevo también recibe los ajustes de rendimiento del pack (mirá Rendimiento, sonido y pantalla), el salto automático apagado y el paquete de recursos del pack activado.\n\nSon sólo valores iniciales: si tu launcher ya creó un archivo de opciones, lo que existe se queda y sólo se agrega lo que falta."
-      ],
-      "sources": [
-        "repo:pack/config/defaultoptions/options.txt",
-        "repo:docs/design/automatic-client-defaults.md"
-      ]
+      "en_us": {"title": "Pack Change: Client Defaults",
+        "text": ["[lead] A new profile also gets the pack's performance settings, auto-jump off and the pack's resource pack on.",
+                 "They are only defaults: if your launcher already made an options file, existing values stay and only missing ones are added.",
+                 "The settings themselves: [chapter:guide_qol_client|Performance, Sound and Screen]."]},
+      "es_es": {"title": "Cambio del pack: valores base",
+        "text": ["[lead] Un perfil nuevo también recibe los ajustes de rendimiento del pack, el salto automático apagado y su paquete de recursos activado.",
+                 "Son sólo valores iniciales: si tu launcher ya creó un archivo de opciones, lo que existe se queda y sólo se agrega lo que falta.",
+                 "Los ajustes en sí: [chapter:guide_qol_client|Rendimiento, sonido y pantalla]."]},
+      "sources": ["repo:pack/config/defaultoptions/options.txt", "repo:docs/design/automatic-client-defaults.md"]
     },
     {
-      "key": "qol_controls_close",
-      "deps": [
-        "qol_controls_utility_keys"
-      ],
-      "type": "checkmark",
+      "key": "qol_controls_close", "deps": ["qol_controls_utility_keys"], "type": "checkmark", "layout": {"x": 24.5, "y": 0, "size": 2.0, "shape": "hexagon"},
       "icon": "minecraft:tripwire_hook",
-      "layout": {
-        "x": 21,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Your Keyboard, Your Rules",
-        "Everything here is a suggestion: keep what feels natural, rebind the rest with Controlling and put rare actions in a bundle.\n\nWhen a new tool shows up, check back here: its key is probably already waiting."
-      ],
-      "es_es": [
-        "Tu teclado, tus reglas",
-        "Todo esto es una sugerencia: quedate con lo que te resulte natural, reasigná el resto con Controlling y guardá las acciones raras en un paquete.\n\nCuando aparezca una herramienta nueva, volvé acá: seguramente su tecla ya te está esperando."
-      ],
-      "sources": [
-        "repo:pack/config/entrelumen/client-preset.json"
-      ]
+      "en_us": {"title": "Your Keyboard, Your Rules",
+        "text": ["[lead] Everything here is a suggestion: keep what feels natural.",
+                 "Rebind the rest with [hl|Controlling] and put the rare actions in a bundle.",
+                 "When a new tool shows up, check back here: its key is probably already waiting."]},
+      "es_es": {"title": "Tu teclado, tus reglas",
+        "text": ["[lead] Todo esto es una sugerencia: quedate con lo que te resulte natural.",
+                 "Reasigná el resto con [hl|Controlling] y guardá las acciones raras en un paquete.",
+                 "Cuando aparezca una herramienta nueva, volvé acá: seguramente su tecla ya te está esperando."]},
+      "sources": ["repo:pack/config/entrelumen/client-preset.json"]
+    },
+    {
+      "key": "qol_controls_toy_lamp", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 30.6, "y": 18.575, "size": 1.0, "shape": "none"},
+      "icon": "minecraft:lantern",
+      "en_us": {"title": "Flip the Bench Lamp",
+        "text": ["[lead] One flick and the whole board lights up warm.",
+                 "Every key you have learned already glows on its own. The lamp only adds mood."]},
+      "es_es": {"title": "Prender la lámpara del banco",
+        "text": ["[lead] Un toque y todo el teclado se baña de luz cálida.",
+                 "Las teclas que aprendiste ya brillan solas. La lámpara sólo pone clima."]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt"]
+    },
+    {
+      "key": "qol_controls_toy_caps", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 3.325, "y": 15.0, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:redstone_torch",
+      "en_us": {"title": "Press Caps Lock",
+        "text": ["[lead] One press and the little green light comes on.",
+                 "The preset leaves this key alone. It is the only one nobody fights over."]},
+      "es_es": {"title": "Apretar Bloq Mayús",
+        "text": ["[lead] Un toque y se prende la lucecita verde.",
+                 "El preset no toca esta tecla. Es la única que nadie se pelea."]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt"]
     }
+  ],
+  "presentation": 2,
+  "art": [
+    {"id": "title", "text": {"en_us": "The Pack's Controls", "es_es": "Los controles del pack"}, "x": -5.6, "y": -7.6, "scale": 3, "tint": "#E8B04A", "align": "start"},
+    {"id": "board_label", "text": {"en_us": "The preset, key by key", "es_es": "El preset, tecla por tecla"}, "x": 1.5, "y": 8.3, "scale": 2, "tint": "#E8DCB5", "align": "start"},
+    {"id": "wall", "picture": "#2E3742", "x": 13.0, "y": 6.263, "w": 38.8, "h": 25.725, "reveal": "qol_controls_welcome", "order": -12},
+    {"id": "wall_rail", "picture": "#4A5563", "x": 13.0, "y": -6.525, "w": 38.8, "h": 0.15, "reveal": "qol_controls_welcome", "order": -11},
+    {"id": "wall_base", "picture": "#232A33", "x": 13.0, "y": 18.975, "w": 38.8, "h": 0.3, "reveal": "qol_controls_welcome", "order": -11},
+    {"id": "bench_sketch", "picture": "#8FA0B5", "x": 13.0, "y": 20.625, "w": 40.0, "h": 3.0, "alpha": 40, "order": -9},
+    {"id": "bench_top", "picture": "#B57F4A", "x": 13.0, "y": 19.775, "w": 40.0, "h": 1.3, "reveal": "qol_controls_welcome", "order": -9},
+    {"id": "bench_edge", "picture": "#D9A56A", "x": 13.0, "y": 19.195, "w": 40.0, "h": 0.14, "reveal": "qol_controls_welcome", "order": -8},
+    {"id": "bench_front", "picture": "#6E4A2C", "x": 13.0, "y": 21.275, "w": 40.0, "h": 1.7, "reveal": "qol_controls_welcome", "order": -9},
+    {"id": "bench_seam_0", "picture": "#4E3320", "x": 3.535, "y": 19.925, "w": 0.07, "h": 1.0, "reveal": "qol_controls_welcome", "order": -8},
+    {"id": "bench_seam_1", "picture": "#4E3320", "x": 12.035, "y": 19.925, "w": 0.07, "h": 1.0, "reveal": "qol_controls_welcome", "order": -8},
+    {"id": "bench_seam_2", "picture": "#4E3320", "x": 20.535, "y": 19.925, "w": 0.07, "h": 1.0, "reveal": "qol_controls_welcome", "order": -8},
+    {"id": "bench_seam_3", "picture": "#4E3320", "x": 27.035, "y": 19.925, "w": 0.07, "h": 1.0, "reveal": "qol_controls_welcome", "order": -8},
+    {"id": "bench_seam_h", "picture": "#4E3320", "x": 13.0, "y": 20.455, "w": 40.0, "h": 0.06, "reveal": "qol_controls_welcome", "order": -8},
+    {"id": "case_sketch", "picture": "#8FA0B5", "x": 13.762, "y": 14.062, "w": 24.525, "h": 9.525, "alpha": 46, "order": -9},
+    {"id": "case", "picture": "#44505F", "x": 13.762, "y": 14.062, "w": 24.525, "h": 9.525, "reveal": "qol_controls_welcome", "order": -8},
+    {"id": "case_rim", "picture": "#6A798E", "x": 13.762, "y": 9.38, "w": 24.525, "h": 0.16, "reveal": "qol_controls_welcome", "order": -7},
+    {"id": "cap_Esc", "picture": "#A9B7C9", "x": 2.825, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F1", "picture": "#A9B7C9", "x": 5.325, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F2", "picture": "#A9B7C9", "x": 6.575, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F3", "picture": "#A9B7C9", "x": 7.825, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F4", "picture": "#A9B7C9", "x": 9.075, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F5", "picture": "#A9B7C9", "x": 10.95, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F6", "picture": "#A9B7C9", "x": 12.2, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F7", "picture": "#A9B7C9", "x": 13.45, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F8", "picture": "#A9B7C9", "x": 14.7, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F9", "picture": "#A9B7C9", "x": 16.575, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F10", "picture": "#A9B7C9", "x": 17.825, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F11", "picture": "#A9B7C9", "x": 19.075, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F12", "picture": "#A9B7C9", "x": 20.325, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_PrtSc", "picture": "#A9B7C9", "x": 22.2, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_ScrLk", "picture": "#A9B7C9", "x": 23.45, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Pause", "picture": "#A9B7C9", "x": 24.7, "y": 10.625, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_x96", "picture": "#A9B7C9", "x": 2.825, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_1", "picture": "#A9B7C9", "x": 4.075, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_2", "picture": "#A9B7C9", "x": 5.325, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_3", "picture": "#A9B7C9", "x": 6.575, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_4", "picture": "#A9B7C9", "x": 7.825, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_5", "picture": "#A9B7C9", "x": 9.075, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_6", "picture": "#A9B7C9", "x": 10.325, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_7", "picture": "#A9B7C9", "x": 11.575, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_8", "picture": "#A9B7C9", "x": 12.825, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_9", "picture": "#A9B7C9", "x": 14.075, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_0", "picture": "#A9B7C9", "x": 15.325, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_x45", "picture": "#A9B7C9", "x": 16.575, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_x61", "picture": "#A9B7C9", "x": 17.825, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Bksp", "picture": "#A9B7C9", "x": 19.7, "y": 12.5, "w": 2.37, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Ins", "picture": "#A9B7C9", "x": 22.2, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Home", "picture": "#A9B7C9", "x": 23.45, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_PgUp", "picture": "#A9B7C9", "x": 24.7, "y": 12.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Tab", "picture": "#A9B7C9", "x": 3.138, "y": 13.75, "w": 1.745, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Q", "picture": "#A9B7C9", "x": 4.7, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_W", "picture": "#A9B7C9", "x": 5.95, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_E", "picture": "#A9B7C9", "x": 7.2, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_R", "picture": "#A9B7C9", "x": 8.45, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_T", "picture": "#A9B7C9", "x": 9.7, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Y", "picture": "#A9B7C9", "x": 10.95, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_U", "picture": "#A9B7C9", "x": 12.2, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_I", "picture": "#A9B7C9", "x": 13.45, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_O", "picture": "#A9B7C9", "x": 14.7, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_P", "picture": "#A9B7C9", "x": 15.95, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_x91", "picture": "#A9B7C9", "x": 17.2, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_x93", "picture": "#A9B7C9", "x": 18.45, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_x92", "picture": "#A9B7C9", "x": 20.012, "y": 13.75, "w": 1.745, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Del", "picture": "#A9B7C9", "x": 22.2, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_End", "picture": "#A9B7C9", "x": 23.45, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_PgDn", "picture": "#A9B7C9", "x": 24.7, "y": 13.75, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Caps", "picture": "#A9B7C9", "x": 3.294, "y": 15.0, "w": 2.058, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_A", "picture": "#A9B7C9", "x": 5.013, "y": 15.0, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_S", "picture": "#A9B7C9", "x": 6.263, "y": 15.0, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_D", "picture": "#A9B7C9", "x": 7.513, "y": 15.0, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_F", "picture": "#A9B7C9", "x": 8.762, "y": 15.0, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_G", "picture": "#A9B7C9", "x": 10.012, "y": 15.0, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_H", "picture": "#A9B7C9", "x": 11.262, "y": 15.0, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_J", "picture": "#A9B7C9", "x": 12.512, "y": 15.0, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_K", "picture": "#A9B7C9", "x": 13.762, "y": 15.0, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_L", "picture": "#A9B7C9", "x": 15.012, "y": 15.0, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_x59", "picture": "#A9B7C9", "x": 16.262, "y": 15.0, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_x39", "picture": "#A9B7C9", "x": 17.512, "y": 15.0, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Enter", "picture": "#A9B7C9", "x": 19.544, "y": 15.0, "w": 2.683, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Shift", "picture": "#A9B7C9", "x": 3.606, "y": 16.25, "w": 2.683, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Z", "picture": "#A9B7C9", "x": 5.638, "y": 16.25, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_X", "picture": "#A9B7C9", "x": 6.888, "y": 16.25, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_C", "picture": "#A9B7C9", "x": 8.137, "y": 16.25, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_V", "picture": "#A9B7C9", "x": 9.387, "y": 16.25, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_B", "picture": "#A9B7C9", "x": 10.637, "y": 16.25, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_N", "picture": "#A9B7C9", "x": 11.887, "y": 16.25, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_M", "picture": "#A9B7C9", "x": 13.137, "y": 16.25, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_x44", "picture": "#A9B7C9", "x": 14.387, "y": 16.25, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_x46", "picture": "#A9B7C9", "x": 15.637, "y": 16.25, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_x47", "picture": "#A9B7C9", "x": 16.887, "y": 16.25, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_RShift", "picture": "#A9B7C9", "x": 19.231, "y": 16.25, "w": 3.308, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Up", "picture": "#A9B7C9", "x": 23.45, "y": 16.25, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Ctrl", "picture": "#A9B7C9", "x": 2.981, "y": 17.5, "w": 1.433, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Win", "picture": "#A9B7C9", "x": 4.544, "y": 17.5, "w": 1.433, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Alt", "picture": "#A9B7C9", "x": 6.106, "y": 17.5, "w": 1.433, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Space", "picture": "#A9B7C9", "x": 10.794, "y": 17.5, "w": 7.683, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_RAlt", "picture": "#A9B7C9", "x": 15.481, "y": 17.5, "w": 1.433, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_RWin", "picture": "#A9B7C9", "x": 17.044, "y": 17.5, "w": 1.433, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Menu", "picture": "#A9B7C9", "x": 18.606, "y": 17.5, "w": 1.433, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_RCtrl", "picture": "#A9B7C9", "x": 20.169, "y": 17.5, "w": 1.433, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Left", "picture": "#A9B7C9", "x": 22.2, "y": 17.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Down", "picture": "#A9B7C9", "x": 23.45, "y": 17.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "cap_Right", "picture": "#A9B7C9", "x": 24.7, "y": 17.5, "w": 1.12, "h": 1.12, "alpha": 54, "order": -6},
+    {"id": "lit_Esc_controlling", "picture": "#7FD4E8", "x": 2.825, "y": 10.625, "w": 1.12, "h": 1.12, "reveal": "qol_controls_controlling", "order": -5},
+    {"id": "lit_F8_everyday", "picture": "#F2D060", "x": 14.7, "y": 10.625, "w": 1.12, "h": 1.12, "reveal": "qol_controls_everyday", "order": -5},
+    {"id": "lit_G_everyday", "picture": "#F2D060", "x": 10.012, "y": 14.72, "w": 1.12, "h": 0.56, "reveal": "qol_controls_everyday", "order": -5},
+    {"id": "lit_B_everyday", "picture": "#F2D060", "x": 10.637, "y": 15.877, "w": 1.12, "h": 0.373, "reveal": "qol_controls_everyday", "order": -5},
+    {"id": "lit_Z_everyday", "picture": "#F2D060", "x": 5.638, "y": 15.877, "w": 1.12, "h": 0.373, "reveal": "qol_controls_everyday", "order": -5},
+    {"id": "lit_J_map", "picture": "#5FA8FF", "x": 12.512, "y": 14.72, "w": 1.12, "h": 0.56, "reveal": "qol_controls_map", "order": -5},
+    {"id": "lit_M_map", "picture": "#5FA8FF", "x": 13.137, "y": 15.877, "w": 1.12, "h": 0.373, "reveal": "qol_controls_map", "order": -5},
+    {"id": "lit_B_map", "picture": "#5FA8FF", "x": 10.637, "y": 16.25, "w": 1.12, "h": 0.373, "reveal": "qol_controls_map", "order": -5},
+    {"id": "lit_K_map", "picture": "#5FA8FF", "x": 13.762, "y": 14.72, "w": 1.12, "h": 0.56, "reveal": "qol_controls_map", "order": -5},
+    {"id": "lit_R_toolbelt", "picture": "#E39A5A", "x": 8.45, "y": 13.47, "w": 1.12, "h": 0.56, "reveal": "qol_controls_toolbelt", "order": -5},
+    {"id": "lit_Shift_toolbelt", "picture": "#E39A5A", "x": 3.606, "y": 16.25, "w": 2.683, "h": 1.12, "reveal": "qol_controls_toolbelt", "order": -5},
+    {"id": "lit_V_ultimine", "picture": "#8FD66A", "x": 9.387, "y": 16.25, "w": 1.12, "h": 1.12, "reveal": "qol_controls_ultimine", "order": -5},
+    {"id": "lit_Alt_armor_keys", "picture": "#FF7F6E", "x": 6.106, "y": 17.5, "w": 1.433, "h": 1.12, "reveal": "qol_controls_armor_keys", "order": -5},
+    {"id": "lit_Up_armor_keys", "picture": "#FF7F6E", "x": 23.45, "y": 16.25, "w": 1.12, "h": 1.12, "reveal": "qol_controls_armor_keys", "order": -5},
+    {"id": "lit_Down_armor_keys", "picture": "#FF7F6E", "x": 23.45, "y": 17.5, "w": 1.12, "h": 1.12, "reveal": "qol_controls_armor_keys", "order": -5},
+    {"id": "lit_Left_armor_keys", "picture": "#FF7F6E", "x": 22.2, "y": 17.5, "w": 1.12, "h": 1.12, "reveal": "qol_controls_armor_keys", "order": -5},
+    {"id": "lit_Right_armor_keys", "picture": "#FF7F6E", "x": 24.7, "y": 17.5, "w": 1.12, "h": 1.12, "reveal": "qol_controls_armor_keys", "order": -5},
+    {"id": "lit_x92_armor_keys", "picture": "#FF7F6E", "x": 20.012, "y": 13.75, "w": 1.745, "h": 1.12, "reveal": "qol_controls_armor_keys", "order": -5},
+    {"id": "lit_F4_flight_keys", "picture": "#B9D7FF", "x": 9.075, "y": 10.625, "w": 1.12, "h": 1.12, "reveal": "qol_controls_flight_keys", "order": -5},
+    {"id": "lit_F12_flight_keys", "picture": "#B9D7FF", "x": 20.325, "y": 10.625, "w": 1.12, "h": 1.12, "reveal": "qol_controls_flight_keys", "order": -5},
+    {"id": "lit_H_flight_keys", "picture": "#B9D7FF", "x": 11.262, "y": 14.627, "w": 1.12, "h": 0.373, "reveal": "qol_controls_flight_keys", "order": -5},
+    {"id": "lit_E_flight_keys", "picture": "#B9D7FF", "x": 7.2, "y": 13.75, "w": 1.12, "h": 1.12, "reveal": "qol_controls_flight_keys", "order": -5},
+    {"id": "lit_R_flight_keys", "picture": "#B9D7FF", "x": 8.45, "y": 14.03, "w": 1.12, "h": 0.56, "reveal": "qol_controls_flight_keys", "order": -5},
+    {"id": "lit_F6_magic_keys", "picture": "#B58CFF", "x": 12.2, "y": 10.625, "w": 1.12, "h": 1.12, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_0_magic_keys", "picture": "#B58CFF", "x": 15.325, "y": 12.5, "w": 1.12, "h": 1.12, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_x96_magic_keys", "picture": "#B58CFF", "x": 2.825, "y": 12.5, "w": 1.12, "h": 1.12, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_Q_magic_keys", "picture": "#B58CFF", "x": 4.7, "y": 13.75, "w": 1.12, "h": 1.12, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_F_magic_keys", "picture": "#B58CFF", "x": 8.762, "y": 15.0, "w": 1.12, "h": 1.12, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_Y_magic_keys", "picture": "#B58CFF", "x": 10.95, "y": 13.377, "w": 1.12, "h": 0.373, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_H_magic_keys", "picture": "#B58CFF", "x": 11.262, "y": 15.0, "w": 1.12, "h": 0.373, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_M_magic_keys", "picture": "#B58CFF", "x": 13.137, "y": 16.25, "w": 1.12, "h": 0.373, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_x46_magic_keys", "picture": "#B58CFF", "x": 15.637, "y": 16.25, "w": 1.12, "h": 1.12, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_PgUp_magic_keys", "picture": "#B58CFF", "x": 24.7, "y": 12.5, "w": 1.12, "h": 1.12, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_PgDn_magic_keys", "picture": "#B58CFF", "x": 24.7, "y": 13.75, "w": 1.12, "h": 1.12, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_C_magic_keys", "picture": "#B58CFF", "x": 8.137, "y": 16.25, "w": 1.12, "h": 1.12, "reveal": "qol_controls_magic_keys", "order": -5},
+    {"id": "lit_Home_explore_keys", "picture": "#4FD1B5", "x": 23.45, "y": 12.22, "w": 1.12, "h": 0.56, "reveal": "qol_controls_explore_keys", "order": -5},
+    {"id": "lit_x59_explore_keys", "picture": "#4FD1B5", "x": 16.262, "y": 15.0, "w": 1.12, "h": 1.12, "reveal": "qol_controls_explore_keys", "order": -5},
+    {"id": "lit_I_explore_keys", "picture": "#4FD1B5", "x": 13.45, "y": 13.47, "w": 1.12, "h": 0.56, "reveal": "qol_controls_explore_keys", "order": -5},
+    {"id": "lit_L_explore_keys", "picture": "#4FD1B5", "x": 15.012, "y": 15.0, "w": 1.12, "h": 1.12, "reveal": "qol_controls_explore_keys", "order": -5},
+    {"id": "lit_N_explore_keys", "picture": "#4FD1B5", "x": 11.887, "y": 15.97, "w": 1.12, "h": 0.56, "reveal": "qol_controls_explore_keys", "order": -5},
+    {"id": "lit_J_explore_keys", "picture": "#4FD1B5", "x": 12.512, "y": 15.28, "w": 1.12, "h": 0.56, "reveal": "qol_controls_explore_keys", "order": -5},
+    {"id": "lit_K_explore_keys", "picture": "#4FD1B5", "x": 13.762, "y": 15.28, "w": 1.12, "h": 0.56, "reveal": "qol_controls_explore_keys", "order": -5},
+    {"id": "lit_G_explore_keys", "picture": "#4FD1B5", "x": 10.012, "y": 15.28, "w": 1.12, "h": 0.56, "reveal": "qol_controls_explore_keys", "order": -5},
+    {"id": "lit_B_explore_keys", "picture": "#4FD1B5", "x": 10.637, "y": 16.623, "w": 1.12, "h": 0.373, "reveal": "qol_controls_explore_keys", "order": -5},
+    {"id": "lit_H_explore_keys", "picture": "#4FD1B5", "x": 11.262, "y": 15.373, "w": 1.12, "h": 0.373, "reveal": "qol_controls_explore_keys", "order": -5},
+    {"id": "lit_O_utility_keys", "picture": "#F0A040", "x": 14.7, "y": 13.47, "w": 1.12, "h": 0.56, "reveal": "qol_controls_utility_keys", "order": -5},
+    {"id": "lit_x39_utility_keys", "picture": "#F0A040", "x": 17.512, "y": 15.0, "w": 1.12, "h": 1.12, "reveal": "qol_controls_utility_keys", "order": -5},
+    {"id": "lit_Ins_utility_keys", "picture": "#F0A040", "x": 22.2, "y": 12.5, "w": 1.12, "h": 1.12, "reveal": "qol_controls_utility_keys", "order": -5},
+    {"id": "lit_End_utility_keys", "picture": "#F0A040", "x": 23.45, "y": 13.75, "w": 1.12, "h": 1.12, "reveal": "qol_controls_utility_keys", "order": -5},
+    {"id": "lit_F10_utility_keys", "picture": "#F0A040", "x": 17.825, "y": 10.625, "w": 1.12, "h": 1.12, "reveal": "qol_controls_utility_keys", "order": -5},
+    {"id": "lit_T_utility_keys", "picture": "#F0A040", "x": 9.7, "y": 13.47, "w": 1.12, "h": 0.56, "reveal": "qol_controls_utility_keys", "order": -5},
+    {"id": "lit_P_utility_keys", "picture": "#F0A040", "x": 15.95, "y": 13.75, "w": 1.12, "h": 1.12, "reveal": "qol_controls_utility_keys", "order": -5},
+    {"id": "lit_U_utility_keys", "picture": "#F0A040", "x": 12.2, "y": 13.47, "w": 1.12, "h": 0.56, "reveal": "qol_controls_utility_keys", "order": -5},
+    {"id": "lit_Y_utility_keys", "picture": "#F0A040", "x": 10.95, "y": 13.75, "w": 1.12, "h": 0.373, "reveal": "qol_controls_utility_keys", "order": -5},
+    {"id": "lit_Z_utility_keys", "picture": "#F0A040", "x": 5.638, "y": 16.25, "w": 1.12, "h": 0.373, "reveal": "qol_controls_utility_keys", "order": -5},
+    {"id": "lit_M_utility_keys", "picture": "#F0A040", "x": 13.137, "y": 16.623, "w": 1.12, "h": 0.373, "reveal": "qol_controls_utility_keys", "order": -5},
+    {"id": "lit_Ctrl_apoth_keys", "picture": "#F4F0DC", "x": 2.981, "y": 17.5, "w": 1.433, "h": 1.12, "reveal": "qol_controls_apoth_keys", "order": -5},
+    {"id": "lit_T_apoth_keys", "picture": "#F4F0DC", "x": 9.7, "y": 14.03, "w": 1.12, "h": 0.56, "reveal": "qol_controls_apoth_keys", "order": -5},
+    {"id": "lit_O_apoth_keys", "picture": "#F4F0DC", "x": 14.7, "y": 14.03, "w": 1.12, "h": 0.56, "reveal": "qol_controls_apoth_keys", "order": -5},
+    {"id": "lit_N_littletiles_keys", "picture": "#FF8FBF", "x": 11.887, "y": 16.53, "w": 1.12, "h": 0.56, "reveal": "qol_controls_littletiles_keys", "order": -5},
+    {"id": "lit_U_littletiles_keys", "picture": "#FF8FBF", "x": 12.2, "y": 14.03, "w": 1.12, "h": 0.56, "reveal": "qol_controls_littletiles_keys", "order": -5},
+    {"id": "lit_I_littletiles_keys", "picture": "#FF8FBF", "x": 13.45, "y": 14.03, "w": 1.12, "h": 0.56, "reveal": "qol_controls_littletiles_keys", "order": -5},
+    {"id": "lit_Y_littletiles_keys", "picture": "#FF8FBF", "x": 10.95, "y": 14.123, "w": 1.12, "h": 0.373, "reveal": "qol_controls_littletiles_keys", "order": -5},
+    {"id": "lit_Z_littletiles_keys", "picture": "#FF8FBF", "x": 5.638, "y": 16.623, "w": 1.12, "h": 0.373, "reveal": "qol_controls_littletiles_keys", "order": -5},
+    {"id": "lit_Home_littletiles_keys", "picture": "#FF8FBF", "x": 23.45, "y": 12.78, "w": 1.12, "h": 0.56, "reveal": "qol_controls_littletiles_keys", "order": -5},
+    {"id": "lab_Esc", "text": {"en_us": "Esc", "es_es": "Esc"}, "x": 2.825, "y": 10.625, "scale": 1.2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_controlling", "order": 6},
+    {"id": "lab_F8", "text": {"en_us": "F8", "es_es": "F8"}, "x": 14.7, "y": 10.625, "scale": 1.2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_everyday", "order": 6},
+    {"id": "lab_G", "text": {"en_us": "G", "es_es": "G"}, "x": 10.012, "y": 15.0, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_everyday", "order": 6},
+    {"id": "lab_B", "text": {"en_us": "B", "es_es": "B"}, "x": 10.637, "y": 16.25, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_everyday", "order": 6},
+    {"id": "lab_Z", "text": {"en_us": "Z", "es_es": "Z"}, "x": 5.638, "y": 16.25, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_everyday", "order": 6},
+    {"id": "lab_J", "text": {"en_us": "J", "es_es": "J"}, "x": 12.512, "y": 15.0, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_map", "order": 6},
+    {"id": "lab_M", "text": {"en_us": "M", "es_es": "M"}, "x": 13.137, "y": 16.25, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_map", "order": 6},
+    {"id": "lab_K", "text": {"en_us": "K", "es_es": "K"}, "x": 13.762, "y": 15.0, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_map", "order": 6},
+    {"id": "lab_R", "text": {"en_us": "R", "es_es": "R"}, "x": 8.45, "y": 13.75, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_toolbelt", "order": 6},
+    {"id": "lab_Shift", "text": {"en_us": "Shift", "es_es": "Shift"}, "x": 3.606, "y": 16.25, "scale": 0.9, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_toolbelt", "order": 6},
+    {"id": "lab_V", "text": {"en_us": "V", "es_es": "V"}, "x": 9.387, "y": 16.25, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_ultimine", "order": 6},
+    {"id": "lab_Alt", "text": {"en_us": "Alt", "es_es": "Alt"}, "x": 6.106, "y": 17.5, "scale": 1.2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_armor_keys", "order": 6},
+    {"id": "lab_Up", "text": {"en_us": "↑", "es_es": "↑"}, "x": 23.45, "y": 16.25, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_armor_keys", "order": 6},
+    {"id": "lab_Down", "text": {"en_us": "↓", "es_es": "↓"}, "x": 23.45, "y": 17.5, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_armor_keys", "order": 6},
+    {"id": "lab_Left", "text": {"en_us": "←", "es_es": "←"}, "x": 22.2, "y": 17.5, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_armor_keys", "order": 6},
+    {"id": "lab_Right", "text": {"en_us": "→", "es_es": "→"}, "x": 24.7, "y": 17.5, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_armor_keys", "order": 6},
+    {"id": "lab_x92", "text": {"en_us": "|", "es_es": "|"}, "x": 20.012, "y": 13.75, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_armor_keys", "order": 6},
+    {"id": "lab_F4", "text": {"en_us": "F4", "es_es": "F4"}, "x": 9.075, "y": 10.625, "scale": 1.2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_flight_keys", "order": 6},
+    {"id": "lab_F12", "text": {"en_us": "F12", "es_es": "F12"}, "x": 20.325, "y": 10.625, "scale": 1.2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_flight_keys", "order": 6},
+    {"id": "lab_H", "text": {"en_us": "H", "es_es": "H"}, "x": 11.262, "y": 15.0, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_flight_keys", "order": 6},
+    {"id": "lab_E", "text": {"en_us": "E", "es_es": "E"}, "x": 7.2, "y": 13.75, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_flight_keys", "order": 6},
+    {"id": "lab_F6", "text": {"en_us": "F6", "es_es": "F6"}, "x": 12.2, "y": 10.625, "scale": 1.2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_magic_keys", "order": 6},
+    {"id": "lab_0", "text": {"en_us": "0", "es_es": "0"}, "x": 15.325, "y": 12.5, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_magic_keys", "order": 6},
+    {"id": "lab_x96", "text": {"en_us": "`", "es_es": "`"}, "x": 2.825, "y": 12.5, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_magic_keys", "order": 6},
+    {"id": "lab_Q", "text": {"en_us": "Q", "es_es": "Q"}, "x": 4.7, "y": 13.75, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_magic_keys", "order": 6},
+    {"id": "lab_F", "text": {"en_us": "F", "es_es": "F"}, "x": 8.762, "y": 15.0, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_magic_keys", "order": 6},
+    {"id": "lab_Y", "text": {"en_us": "Y", "es_es": "Y"}, "x": 10.95, "y": 13.75, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_magic_keys", "order": 6},
+    {"id": "lab_x46", "text": {"en_us": ".", "es_es": "."}, "x": 15.637, "y": 16.25, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_magic_keys", "order": 6},
+    {"id": "lab_PgUp", "text": {"en_us": "PgUp", "es_es": "PgUp"}, "x": 24.7, "y": 12.5, "scale": 0.9, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_magic_keys", "order": 6},
+    {"id": "lab_PgDn", "text": {"en_us": "PgDn", "es_es": "PgDn"}, "x": 24.7, "y": 13.75, "scale": 0.9, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_magic_keys", "order": 6},
+    {"id": "lab_C", "text": {"en_us": "C", "es_es": "C"}, "x": 8.137, "y": 16.25, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_magic_keys", "order": 6},
+    {"id": "lab_Home", "text": {"en_us": "Home", "es_es": "Home"}, "x": 23.45, "y": 12.5, "scale": 0.9, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_explore_keys", "order": 6},
+    {"id": "lab_x59", "text": {"en_us": ";", "es_es": ";"}, "x": 16.262, "y": 15.0, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_explore_keys", "order": 6},
+    {"id": "lab_I", "text": {"en_us": "I", "es_es": "I"}, "x": 13.45, "y": 13.75, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_explore_keys", "order": 6},
+    {"id": "lab_L", "text": {"en_us": "L", "es_es": "L"}, "x": 15.012, "y": 15.0, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_explore_keys", "order": 6},
+    {"id": "lab_N", "text": {"en_us": "N", "es_es": "N"}, "x": 11.887, "y": 16.25, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_explore_keys", "order": 6},
+    {"id": "lab_O", "text": {"en_us": "O", "es_es": "O"}, "x": 14.7, "y": 13.75, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_utility_keys", "order": 6},
+    {"id": "lab_x39", "text": {"en_us": "'", "es_es": "'"}, "x": 17.512, "y": 15.0, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_utility_keys", "order": 6},
+    {"id": "lab_Ins", "text": {"en_us": "Ins", "es_es": "Ins"}, "x": 22.2, "y": 12.5, "scale": 1.2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_utility_keys", "order": 6},
+    {"id": "lab_End", "text": {"en_us": "End", "es_es": "End"}, "x": 23.45, "y": 13.75, "scale": 1.2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_utility_keys", "order": 6},
+    {"id": "lab_F10", "text": {"en_us": "F10", "es_es": "F10"}, "x": 17.825, "y": 10.625, "scale": 1.2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_utility_keys", "order": 6},
+    {"id": "lab_T", "text": {"en_us": "T", "es_es": "T"}, "x": 9.7, "y": 13.75, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_utility_keys", "order": 6},
+    {"id": "lab_P", "text": {"en_us": "P", "es_es": "P"}, "x": 15.95, "y": 13.75, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_utility_keys", "order": 6},
+    {"id": "lab_U", "text": {"en_us": "U", "es_es": "U"}, "x": 12.2, "y": 13.75, "scale": 2, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_utility_keys", "order": 6},
+    {"id": "lab_Ctrl", "text": {"en_us": "Ctrl", "es_es": "Ctrl"}, "x": 2.981, "y": 17.5, "scale": 0.9, "tint": "#14181F", "shadow": false, "bold": true, "reveal": "qol_controls_apoth_keys", "order": 6},
+    {"id": "mouse_sketch", "mosaic": [26.39, 11.0], "cell": 0.27, "alpha": 54, "order": -6, "legend": {"B": "#A9B7C9", "L": "#A9B7C9", "R": "#A9B7C9", "W": "#A9B7C9", "D": "#A9B7C9"}, "rows": ["..LLLWRRR..", ".LLLLWRRRR.", "LLLLLWRRRRR", "LLLLLWRRRRR", "LLLLLWRRRRR", "DDDDDDDDDDD", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", ".BBBBBBBBB.", "..BBBBBBB.."]},
+    {"id": "mouse", "mosaic": [26.39, 11.0], "cell": 0.27, "reveal": "qol_controls_welcome", "order": -5, "legend": {"B": "#39424F", "L": "#56616F", "R": "#56616F", "W": "#2A313B", "D": "#232A33"}, "rows": ["..LLLWRRR..", ".LLLLWRRRR.", "LLLLLWRRRRR", "LLLLLWRRRRR", "LLLLLWRRRRR", "DDDDDDDDDDD", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", ".BBBBBBBBB.", "..BBBBBBB.."]},
+    {"id": "mouse_wheel", "picture": "#8FD66A", "x": 27.875, "y": 11.594, "w": 0.243, "h": 0.81, "reveal": "qol_controls_ultimine", "order": -4},
+    {"id": "mouse_wheel_lab", "text": {"en_us": "wheel", "es_es": "rueda"}, "x": 27.875, "y": 13.295, "scale": 1, "tint": "#8FD66A", "reveal": "qol_controls_ultimine", "order": 6},
+    {"id": "cable", "path": [[27.875, 11.1], [28.125, 10.1], [27.375, 9.2], [27.775, 8.3]], "color": "#39424F", "width": 0.11, "smooth": 4, "reveal": "qol_controls_welcome", "order": -6},
+    {"id": "pip_controlling", "picture": "#7FD4E8", "x": 4.25, "y": 0.75, "w": 0.34, "h": 0.34, "reveal": "qol_controls_controlling", "order": 4},
+    {"id": "pip_everyday", "picture": "#F2D060", "x": 7.75, "y": 0.75, "w": 0.34, "h": 0.34, "reveal": "qol_controls_everyday", "order": 4},
+    {"id": "pip_map", "picture": "#5FA8FF", "x": 11.0, "y": -2.5, "w": 0.34, "h": 0.34, "reveal": "qol_controls_map", "order": 4},
+    {"id": "pip_toolbelt", "picture": "#E39A5A", "x": 11.0, "y": 0.5, "w": 0.34, "h": 0.34, "reveal": "qol_controls_toolbelt", "order": 4},
+    {"id": "pip_ultimine", "picture": "#8FD66A", "x": 11.0, "y": 3.5, "w": 0.34, "h": 0.34, "reveal": "qol_controls_ultimine", "order": 4},
+    {"id": "pip_armor_keys", "picture": "#FF7F6E", "x": 14.5, "y": -4.0, "w": 0.34, "h": 0.34, "reveal": "qol_controls_armor_keys", "order": 4},
+    {"id": "pip_flight_keys", "picture": "#B9D7FF", "x": 14.5, "y": -1.0, "w": 0.34, "h": 0.34, "reveal": "qol_controls_flight_keys", "order": 4},
+    {"id": "pip_magic_keys", "picture": "#B58CFF", "x": 14.5, "y": 2.0, "w": 0.34, "h": 0.34, "reveal": "qol_controls_magic_keys", "order": 4},
+    {"id": "pip_explore_keys", "picture": "#4FD1B5", "x": 14.5, "y": 5.0, "w": 0.34, "h": 0.34, "reveal": "qol_controls_explore_keys", "order": 4},
+    {"id": "pip_utility_keys", "picture": "#F0A040", "x": 18.125, "y": 0.625, "w": 0.34, "h": 0.34, "reveal": "qol_controls_utility_keys", "order": 4},
+    {"id": "pip_apoth_keys", "picture": "#F4F0DC", "x": 21.5, "y": -1.7, "w": 0.34, "h": 0.34, "reveal": "qol_controls_apoth_keys", "order": 4},
+    {"id": "pip_littletiles_keys", "picture": "#FF8FBF", "x": 21.5, "y": 2.7, "w": 0.34, "h": 0.34, "reveal": "qol_controls_littletiles_keys", "order": 4},
+    {"id": "led_num", "picture": "#A9B7C9", "x": 22.275, "y": 9.65, "w": 0.22, "h": 0.14, "alpha": 54, "order": -6},
+    {"id": "led_caps", "picture": "#A9B7C9", "x": 22.825, "y": 9.65, "w": 0.22, "h": 0.14, "alpha": 54, "order": -6},
+    {"id": "led_scroll", "picture": "#A9B7C9", "x": 23.375, "y": 9.65, "w": 0.22, "h": 0.14, "alpha": 54, "order": -6},
+    {"id": "led_caps_on", "picture": "#7CFC7C", "x": 22.825, "y": 9.65, "w": 0.22, "h": 0.14, "reveal": "qol_controls_toy_caps", "order": -5},
+    {"id": "led_caps_glow", "glow": [22.825, 9.65], "r": 0.9, "tint": "#7CFC7C", "alpha": 150, "reveal": "qol_controls_toy_caps"},
+    {"id": "led_caps_lab", "text": {"en_us": "CAPS", "es_es": "CAPS"}, "x": 22.825, "y": 9.05, "scale": 1, "tint": "#7CFC7C", "reveal": "qol_controls_toy_caps", "order": 6},
+    {"id": "tool_lever", "item": "minecraft:lever", "x": -0.4, "y": 19.745, "size": 1.0, "reveal": "qol_controls_welcome"},
+    {"id": "tool_comparator", "item": "minecraft:comparator", "x": 1.0, "y": 19.745, "size": 1.0, "reveal": "qol_controls_controlling"},
+    {"id": "tool_repeater", "item": "minecraft:repeater", "x": 28.5, "y": 19.745, "size": 1.0, "reveal": "qol_controls_close"},
+    {"id": "tool_hook", "item": "minecraft:tripwire_hook", "x": 30.0, "y": 19.745, "size": 1.0, "reveal": "qol_controls_close"},
+    {"id": "lamp_glow", "glow": [13.762, 13.75], "r": 11.5, "tint": "#FFD98A", "alpha": 40, "reveal": "qol_controls_toy_lamp", "order": -4},
+    {"id": "lamp_item", "item": "minecraft:lantern", "x": 30.6, "y": 18.575, "size": 1.1, "reveal": "qol_controls_toy_lamp"},
+    {"id": "lamp_item_glow", "glow": [30.6, 18.575], "r": 2.2, "tint": "#FFD98A", "alpha": 150, "reveal": "qol_controls_toy_lamp"}
   ]
 }
