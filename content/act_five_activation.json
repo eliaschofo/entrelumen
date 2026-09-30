@@ -1,302 +1,278 @@
 {
   "chapter": "last_horizon",
   "act": 5,
-  "title": {
-    "en_us": "V · The Activation",
-    "es_es": "V · La activación"
-  },
+  "title": {"en_us": "V · The Activation", "es_es": "V · La activación"},
   "subtitle": {
-    "en_us": [
-      "The Ark stands with its six modules and its controller: one deliberate act opens a seam in the light and forges the Light Key."
-    ],
-    "es_es": [
-      "El Arca en pie, con sus seis módulos y su controlador: un acto deliberado abre una grieta en la luz y forja la Llave de Luz."
-    ]
+    "en_us": ["The Ark stands with its six modules and its controller: one deliberate act opens a seam in the light and forges the Light Key."],
+    "es_es": ["El Arca en pie, con sus seis módulos y su controlador: un acto deliberado abre una grieta en la luz y forja la Llave de Luz."]
   },
   "autofocus": "horizon_welcome",
-  "layout_groups": {
-    "threshold": {
-      "en_us": "Terra · The Ark's controller",
-      "es_es": "Terra · El controlador del Arca"
-    },
-    "workshop": {
-      "en_us": "The last two modules",
-      "es_es": "Los dos últimos módulos"
-    },
-    "expedition": {
-      "en_us": "The End · A witnessed journey",
-      "es_es": "El End · Un viaje presenciado"
-    },
-    "commission": {
-      "en_us": "The Ark · The activation",
-      "es_es": "El Arca · La activación"
-    },
-    "afterward": {
-      "en_us": "After the activation · self-reported",
-      "es_es": "Después de la activación · autoevaluadas"
-    }
-  },
-  "milestones": [
-    "end_arrival",
-    "logistics_module",
-    "engineering_module",
-    "last_horizon"
+  "layout_groups": {"threshold": {"en_us": "Terra · The Ark's controller", "es_es": "Terra · El controlador del Arca"}, "workshop": {"en_us": "The last two modules", "es_es": "Los dos últimos módulos"}, "expedition": {"en_us": "The End · A witnessed journey", "es_es": "El End · Un viaje presenciado"}, "commission": {"en_us": "The Ark · The activation", "es_es": "El Arca · La activación"}, "afterward": {"en_us": "After the activation · self-reported", "es_es": "Después de la activación · autoevaluadas"}},
+  "milestones": ["end_arrival", "logistics_module", "engineering_module", "last_horizon"],
+  "book": {"panels": false},
+  "presentation": 2,
+  "art": [
+    {"id": "dock_wall_w", "mosaic": [-12.45, 12.0], "cell": 1.0, "rows": ["s", "s", "s", "s", "s", "s", "s"], "legend": {"s": "minecraft:textures/block/stone_bricks.png"}, "reveal": "horizon_welcome", "order": -9},
+    {"id": "dock_wall_w_chalk", "picture": "minecraft:textures/block/stone_bricks.png", "x": -11.95, "y": 15.5, "w": 1.0, "h": 7.0, "tint": "#E8DCB5", "alpha": 50, "order": -10},
+    {"id": "dock_wall_e", "mosaic": [11.95, 12.0], "cell": 1.0, "rows": ["s", "s", "s", "s", "s", "s", "s"], "legend": {"s": "minecraft:textures/block/stone_bricks.png"}, "reveal": "horizon_welcome", "order": -9},
+    {"id": "dock_wall_e_chalk", "picture": "minecraft:textures/block/stone_bricks.png", "x": 12.45, "y": 15.5, "w": 1.0, "h": 7.0, "tint": "#E8DCB5", "alpha": 50, "order": -10},
+    {"id": "dock_floor", "picture": "#4A4641", "x": 0, "y": 18.6, "w": 24.4, "h": 0.8, "sketch": true, "reveal": "horizon_welcome", "order": -9},
+    {"id": "ground_w", "path": [[-13.8, 12.05], [-12.45, 12.05]], "texture": "minecraft:textures/block/grass_block_top.png", "tint": "#7DB85A", "width": 0.4, "step": 1.0, "sketch": true, "reveal": "horizon_welcome", "order": -8},
+    {"id": "ground_e", "path": [[12.95, 12.05], [13.8, 12.05]], "texture": "minecraft:textures/block/grass_block_top.png", "tint": "#7DB85A", "width": 0.4, "step": 1.0, "sketch": true, "reveal": "horizon_welcome", "order": -8},
+    {"id": "tower_w", "mosaic": [-11.6, 0.6], "cell": 1.2, "rows": ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"], "legend": {"s": "minecraft:textures/block/scaffolding_side.png"}, "reveal": "horizon_welcome", "order": -8},
+    {"id": "tower_w_chalk", "picture": "minecraft:textures/block/scaffolding_side.png", "x": -11.0, "y": 9.6, "w": 1.2, "h": 18.0, "tint": "#E8DCB5", "alpha": 55, "order": -9},
+    {"id": "tower_e", "mosaic": [10.4, 0.6], "cell": 1.2, "rows": ["s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s", "s"], "legend": {"s": "minecraft:textures/block/scaffolding_side.png"}, "reveal": "horizon_welcome", "order": -8},
+    {"id": "tower_e_chalk", "picture": "minecraft:textures/block/scaffolding_side.png", "x": 11.0, "y": 9.6, "w": 1.2, "h": 18.0, "tint": "#E8DCB5", "alpha": 55, "order": -9},
+    {"id": "sheet", "frame": [-19.7, -3.0, 19.7, 19.6], "color": "#8A7F6E", "thickness_px": 2.0, "alpha": 190, "corners": true, "sketch": true, "reveal": "horizon_welcome", "order": -11},
+    {"id": "gantry", "path": [[-11.6, 0.3], [11.6, 0.3]], "texture": "minecraft:textures/block/stripped_spruce_log.png", "width": 0.6, "step": 1.93, "sketch": true, "reveal": "horizon_welcome", "order": -7},
+    {"id": "ground_far_w", "path": [[-19.6, 12.05], [-13.8, 12.05]], "texture": "minecraft:textures/block/grass_block_top.png", "tint": "#7DB85A", "width": 0.4, "step": 1.2, "sketch": true, "reveal": "horizon_welcome", "order": -8},
+    {"id": "ground_far_e", "path": [[13.8, 12.05], [19.6, 12.05]], "texture": "minecraft:textures/block/grass_block_top.png", "tint": "#7DB85A", "width": 0.4, "step": 1.2, "sketch": true, "reveal": "horizon_welcome", "order": -8},
+    {"id": "floor_dim", "path": [[-9.5, 17.7], [9.5, 17.7]], "texture": "minecraft:textures/block/stone_bricks.png", "width": 1.0, "step": 1.0, "order": -7, "alpha": 85},
+    {"id": "stair_w_dim", "picture": "minecraft:textures/block/stone_bricks.png", "x": -10.0, "y": 17.95, "w": 1.0, "h": 0.5, "order": -7, "alpha": 85},
+    {"id": "amethyst_edge_w_dim", "picture": "#B48CE6", "x": -8.5, "y": 17.279999999999998, "w": 2.0, "h": 0.16, "order": -6, "alpha": 85},
+    {"id": "stair_e_dim", "picture": "minecraft:textures/block/stone_bricks.png", "x": 10.0, "y": 17.95, "w": 1.0, "h": 0.5, "order": -7, "alpha": 85},
+    {"id": "amethyst_edge_e_dim", "picture": "#B48CE6", "x": 8.5, "y": 17.279999999999998, "w": 2.0, "h": 0.16, "order": -6, "alpha": 85},
+    {"id": "column_w_chalk", "picture": "minecraft:textures/block/tuff_bricks.png", "x": -5.0, "y": 14.2, "w": 1.0, "h": 6.0, "tint": "#E8DCB5", "alpha": 55, "order": -8},
+    {"id": "column_w_dim", "mosaic": [-5.5, 11.2], "cell": 1.0, "rows": ["c", "t", "t", "t", "t", "c"], "legend": {"t": "minecraft:textures/block/tuff_bricks.png", "c": "minecraft:textures/block/calcite.png"}, "order": -8, "alpha": 85},
+    {"id": "beacon_slot_w_dim", "picture": "minecraft:textures/block/beacon.png", "x": -5.0, "y": 10.7, "w": 0.8, "h": 0.8, "order": -7, "alpha": 85},
+    {"id": "column_e_chalk", "picture": "minecraft:textures/block/tuff_bricks.png", "x": 5.0, "y": 14.2, "w": 1.0, "h": 6.0, "tint": "#E8DCB5", "alpha": 55, "order": -8},
+    {"id": "column_e_dim", "mosaic": [4.5, 11.2], "cell": 1.0, "rows": ["c", "t", "t", "t", "t", "c"], "legend": {"t": "minecraft:textures/block/tuff_bricks.png", "c": "minecraft:textures/block/calcite.png"}, "order": -8, "alpha": 85},
+    {"id": "beacon_slot_e_dim", "picture": "minecraft:textures/block/beacon.png", "x": 5.0, "y": 10.7, "w": 0.8, "h": 0.8, "order": -7, "alpha": 85},
+    {"id": "arch_dim", "path": [[-5.0, 11.2], [-3.9, 9.9], [-2.1, 9.15], [0.0, 8.9], [2.1, 9.15], [3.9, 9.9], [5.0, 11.2]], "smooth": 3, "texture": "minecraft:textures/block/cut_copper.png", "width": 0.5, "step": 0.62, "order": -7, "alpha": 85},
+    {"id": "crown_dim", "picture": "minecraft:textures/block/amethyst_block.png", "x": 0, "y": 8.9, "w": 0.8, "h": 0.8, "order": -6, "alpha": 85},
+    {"id": "plinths_dim", "sprite": "minecraft:block/chiseled_copper", "cells": [[-4.3, 16.8], [-3.1, 16.8], [-1.9, 16.8], [1.9, 16.8], [3.1, 16.8], [4.3, 16.8]], "w": 0.8, "h": 0.8, "order": -7, "alpha": 85},
+    {"id": "keel_dim", "picture": "minecraft:textures/block/chiseled_copper.png", "x": 0, "y": 16.8, "w": 1.0, "h": 0.8, "order": -7, "alpha": 85},
+    {"id": "floor", "path": [[-9.5, 17.7], [9.5, 17.7]], "texture": "minecraft:textures/block/stone_bricks.png", "width": 1.0, "step": 1.0, "sketch": false, "reveal": "horizon_controller", "order": -6},
+    {"id": "stair_w", "picture": "minecraft:textures/block/stone_bricks.png", "x": -10.0, "y": 17.95, "w": 1.0, "h": 0.5, "sketch": false, "reveal": "horizon_controller", "order": -6},
+    {"id": "amethyst_edge_w", "picture": "#B48CE6", "x": -8.5, "y": 17.279999999999998, "w": 2.0, "h": 0.16, "reveal": "horizon_controller", "order": -5},
+    {"id": "stair_e", "picture": "minecraft:textures/block/stone_bricks.png", "x": 10.0, "y": 17.95, "w": 1.0, "h": 0.5, "sketch": false, "reveal": "horizon_controller", "order": -6},
+    {"id": "amethyst_edge_e", "picture": "#B48CE6", "x": 8.5, "y": 17.279999999999998, "w": 2.0, "h": 0.16, "reveal": "horizon_controller", "order": -5},
+    {"id": "column_w", "mosaic": [-5.5, 11.2], "cell": 1.0, "rows": ["c", "t", "t", "t", "t", "c"], "legend": {"t": "minecraft:textures/block/tuff_bricks.png", "c": "minecraft:textures/block/calcite.png"}, "reveal": "horizon_logistics", "order": -7},
+    {"id": "beacon_slot_w", "picture": "minecraft:textures/block/beacon.png", "x": -5.0, "y": 10.7, "w": 0.8, "h": 0.8, "sketch": false, "reveal": "horizon_last", "order": -6},
+    {"id": "column_e", "mosaic": [4.5, 11.2], "cell": 1.0, "rows": ["c", "t", "t", "t", "t", "c"], "legend": {"t": "minecraft:textures/block/tuff_bricks.png", "c": "minecraft:textures/block/calcite.png"}, "reveal": "horizon_engineering", "order": -7},
+    {"id": "beacon_slot_e", "picture": "minecraft:textures/block/beacon.png", "x": 5.0, "y": 10.7, "w": 0.8, "h": 0.8, "sketch": false, "reveal": "horizon_last", "order": -6},
+    {"id": "arch", "path": [[-5.0, 11.2], [-3.9, 9.9], [-2.1, 9.15], [0.0, 8.9], [2.1, 9.15], [3.9, 9.9], [5.0, 11.2]], "smooth": 3, "texture": "minecraft:textures/block/cut_copper.png", "width": 0.5, "step": 0.62, "sketch": false, "reveal": "horizon_end_arrival", "order": -6},
+    {"id": "crown", "picture": "minecraft:textures/block/amethyst_block.png", "x": 0, "y": 8.9, "w": 0.8, "h": 0.8, "sketch": false, "reveal": "horizon_end_arrival", "order": -5},
+    {"id": "plinths", "sprite": "minecraft:block/chiseled_copper", "cells": [[-4.3, 16.8], [-3.1, 16.8], [-1.9, 16.8], [1.9, 16.8], [3.1, 16.8], [4.3, 16.8]], "w": 0.8, "h": 0.8, "sketch": false, "reveal": "horizon_controller", "order": -6},
+    {"id": "keel", "picture": "minecraft:textures/block/chiseled_copper.png", "x": 0, "y": 16.8, "w": 1.0, "h": 0.8, "sketch": false, "reveal": "horizon_controller", "order": -6},
+    {"id": "module_logistics_module", "item": "entrelumen:logistics_module", "x": -4.3, "y": 16.0, "size": 0.75, "reveal": "horizon_logistics"},
+    {"id": "module_habitation_module", "item": "entrelumen:habitation_module", "x": -3.1, "y": 16.0, "size": 0.75, "reveal": "horizon_controller"},
+    {"id": "module_exploration_module", "item": "entrelumen:exploration_module", "x": -1.9, "y": 16.0, "size": 0.75, "reveal": "horizon_controller"},
+    {"id": "module_nature_module", "item": "entrelumen:nature_module", "x": 1.9, "y": 16.0, "size": 0.75, "reveal": "horizon_controller"},
+    {"id": "module_arcane_module", "item": "entrelumen:arcane_module", "x": 3.1, "y": 16.0, "size": 0.75, "reveal": "horizon_controller"},
+    {"id": "module_engineering_module", "item": "entrelumen:engineering_module", "x": 4.3, "y": 16.0, "size": 0.75, "reveal": "horizon_engineering"},
+    {"id": "cable_keel", "path": [[0, 0.6], [0, 15.799999999999999]], "sprite": "minecraft:block/chain", "width": 0.55, "step": 1.0, "turn": true, "sketch": true, "reveal": "horizon_controller", "order": -5},
+    {"id": "cable_w", "path": [[-7.3, 0.6], [-7.3, 10.6]], "sprite": "minecraft:block/chain", "width": 0.55, "step": 0.75, "turn": true, "sketch": true, "reveal": "horizon_logistics", "order": -5},
+    {"id": "cable_e", "path": [[7.3, 0.6], [7.3, 10.6]], "sprite": "minecraft:block/chain", "width": 0.55, "step": 0.75, "turn": true, "sketch": true, "reveal": "horizon_engineering", "order": -5},
+    {"id": "keel_feed", "path": [[0, 15.799999999999999], [0, 13.2]], "color": "#F2C14E", "width": 0.14, "alpha": 230, "sketch": true, "reveal": "horizon_controller", "order": -4},
+    {"id": "circuit_w", "path": [[-4.3, 17.099999999999998], [-0.6, 17.099999999999998]], "color": "#3FD07A", "width": 0.12, "alpha": 230, "sketch": true, "reveal": "horizon_logistics", "order": -4},
+    {"id": "circuit_e", "path": [[0.6, 17.099999999999998], [4.3, 17.099999999999998]], "color": "#FF4A3A", "width": 0.12, "alpha": 230, "sketch": true, "reveal": "horizon_engineering", "order": -4},
+    {"id": "bulb_w", "picture": "minecraft:textures/block/copper_bulb_lit.png", "x": -5.0, "y": 13.7, "w": 0.7, "h": 0.7, "sketch": true, "reveal": "horizon_logistics", "order": -3},
+    {"id": "bulb_glow_w", "glow": [-5.0, 13.7], "r": 1.2, "tint": "#7CFFB0", "alpha": 190, "reveal": "horizon_logistics", "order": -4},
+    {"id": "bulb_e", "picture": "minecraft:textures/block/copper_bulb_lit.png", "x": 5.0, "y": 13.7, "w": 0.7, "h": 0.7, "sketch": true, "reveal": "horizon_engineering", "order": -3},
+    {"id": "bulb_glow_e", "glow": [5.0, 13.7], "r": 1.2, "tint": "#FFB07A", "alpha": 190, "reveal": "horizon_engineering", "order": -4},
+    {"id": "lantern_0", "item": "minecraft:lantern", "x": -8.8, "y": 16.849999999999998, "size": 0.6, "reveal": "horizon_controller"},
+    {"id": "lantern_glow_0", "glow": [-8.8, 16.7], "r": 1.0, "tint": "#FFD27A", "alpha": 160, "reveal": "horizon_controller", "order": -4},
+    {"id": "lantern_1", "item": "minecraft:lantern", "x": -6.4, "y": 16.849999999999998, "size": 0.6, "reveal": "horizon_controller"},
+    {"id": "lantern_glow_1", "glow": [-6.4, 16.7], "r": 1.0, "tint": "#FFD27A", "alpha": 160, "reveal": "horizon_controller", "order": -4},
+    {"id": "lantern_2", "item": "minecraft:lantern", "x": 6.4, "y": 16.849999999999998, "size": 0.6, "reveal": "horizon_controller"},
+    {"id": "lantern_glow_2", "glow": [6.4, 16.7], "r": 1.0, "tint": "#FFD27A", "alpha": 160, "reveal": "horizon_controller", "order": -4},
+    {"id": "lantern_3", "item": "minecraft:lantern", "x": 8.8, "y": 16.849999999999998, "size": 0.6, "reveal": "horizon_controller"},
+    {"id": "lantern_glow_3", "glow": [8.8, 16.7], "r": 1.0, "tint": "#FFD27A", "alpha": 160, "reveal": "horizon_controller", "order": -4},
+    {"id": "ghost_arch", "path": [[-5.0, 11.2], [-3.9, 9.9], [-2.1, 9.15], [0.0, 8.9], [2.1, 9.15], [3.9, 9.9], [5.0, 11.2]], "smooth": 2, "color": "#7FE8FF", "width": 0.05, "alpha": 190, "reveal": "horizon_placement", "order": -2},
+    {"id": "ghost_body", "path": [[-5.5, 11.2], [-5.5, 17.2], [-10.5, 17.2], [-10.5, 18.2], [10.5, 18.2], [10.5, 17.2], [5.5, 17.2], [5.5, 11.2]], "color": "#7FE8FF", "width": 0.05, "alpha": 190, "reveal": "horizon_placement", "order": -2},
+    {"id": "end_window", "picture": "minecraft:textures/environment/end_sky.png", "x": 16.3, "y": 5.3, "w": 5.0, "h": 8.6, "tint": "#4A3560", "sketch": true, "reveal": "horizon_end_arrival", "order": -8},
+    {"id": "end_frame", "frame": [13.8, 1.0, 18.8, 9.6], "color": "#5B4E6E", "thickness_px": 2.0, "alpha": 210, "corners": false, "sketch": true, "reveal": "horizon_eyes", "order": -7},
+    {"id": "portal_frames", "sprite": "minecraft:block/end_portal_frame_side", "cells": [[15.3, 11.55], [16.3, 11.55], [17.3, 11.55]], "w": 1.0, "h": 0.6, "sketch": true, "reveal": "horizon_eyes", "order": -6},
+    {"id": "portal_eyes", "sprite": "minecraft:block/end_portal_frame_eye", "cells": [[15.3, 11.05], [16.3, 11.05], [17.3, 11.05]], "w": 0.7, "h": 0.4, "reveal": "horizon_eyes", "order": -5},
+    {"id": "end_stars", "scatter": ["minecraft:textures/particle/glitter_1.png", "minecraft:textures/particle/glitter_4.png"], "region": [14.1, 1.3, 18.5, 9.3], "count": 8, "size": [0.25, 0.4], "tint": "#E7C8FF", "seed": 13, "avoid": [[16.3, 6.6, 1.1], [16.3, 1.8, 0.6], [16.3, 3.4, 0.5]], "reveal": "horizon_end_arrival", "order": -6},
+    {"id": "end_path", "path": [[16.3, 10.4], [13.4, 8.2], [8.4, 7.2], [3.2, 7.7], [0.6, 8.5]], "smooth": 3, "dots": "#B266FF", "size": 0.13, "step": 0.85, "reveal": "horizon_end_arrival", "order": -4},
+    {"id": "crown_violet", "glow": [0, 8.9], "r": 1.3, "tint": "#B266FF", "alpha": 210, "reveal": "horizon_end_arrival", "order": -4},
+    {"id": "light_key", "item": "entrelumen:light_key", "x": 0, "y": 9.9, "size": 0.9, "reveal": "horizon_last"},
+    {"id": "seam", "picture": "minecraft:textures/entity/beacon_beam.png", "x": 0, "y": 3.5, "w": 0.7, "h": 10.6, "tint": "#FFE08A", "alpha": 210, "reveal": "horizon_last", "order": -6},
+    {"id": "seam_glow", "glow": [0, 8.9], "r": 2.4, "tint": "#F2C14E", "alpha": 220, "reveal": "horizon_last", "order": -5},
+    {"id": "solsticio", "text": {"en_us": "Solsticio", "es_es": "Solsticio"}, "x": 0, "y": -2.05, "scale": 2, "tint": "#F2C14E", "reveal": "horizon_last"},
+    {"id": "second_road", "path": [[-13.9, 12.45], [-19.4, 12.45]], "dots": "#C9A36A", "size": 0.12, "step": 0.8, "reveal": "horizon_post_routes", "order": -5},
+    {"id": "signpost", "item": "minecraft:oak_sign", "x": -18.6, "y": 11.35, "size": 0.7, "reveal": "horizon_post_routes"},
+    {"id": "barrel", "item": "minecraft:barrel", "x": -13.9, "y": 11.55, "size": 0.7, "reveal": "horizon_post_reserve"},
+    {"id": "flag", "item": "minecraft:yellow_banner", "x": -9.6, "y": -1.1, "size": 1.3, "reveal": "horizon_flag"}
   ],
   "quests": [
     {
-      "key": "horizon_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "optional": true,
+      "key": "horizon_welcome", "deps": [], "type": "checkmark", "optional": true, "layout": {"group": "threshold", "x": 0, "y": -0.9, "size": 0.75, "shape": "circle", "hide_dependent_lines": true},
       "icon": "entrelumen:atlas",
-      "en_us": [
-        "The Ark takes shape",
-        "Build six different Ark modules, place them around the controller and commission them one batch at a time; activating the Ark forges the Light Key and opens act VI.\n\nTerra spreads the plan across the Atlas: six chambers, one for each discipline of Heliodor. 'The fusion wanted one machine to hold everything. This time, six hands hold one door.'"
-      ],
-      "es_es": [
-        "El Arca toma forma",
-        "Construí seis módulos distintos del Arca, colocalos alrededor del controlador y ponelos en marcha de a un lote; activar el Arca forja la Llave de Luz y abre el acto VI.\n\nTerra despliega el plano sobre el Atlas: seis cámaras, una por cada disciplina de Heliodor. «La fusión quería una sola máquina que lo sostuviera todo. Esta vez, seis manos sostienen una puerta»."
-      ],
-      "layout": {
-        "group": "threshold",
-        "x": 0,
-        "y": 0,
-        "size": 0.75,
-        "shape": "circle"
-      }
+      "en_us": {"title": "The Ark takes shape",
+        "text": ["[lead] Place the controller, build the Ark around it and set its six modules in their places.",
+                 "Four modules come from acts I to IV and the last two from here; activating the Ark forges the Light Key and opens act VI.",
+                 "{page}",
+                 "Terra spreads the plan across the Atlas: six chambers, one for each discipline of Heliodor. 'The fusion wanted one machine to hold everything. This time, six hands hold one door.'"]},
+      "es_es": {"title": "El Arca toma forma",
+        "text": ["[lead] Poné el controlador, construí el Arca alrededor y ubicá sus seis módulos en su lugar.",
+                 "Cuatro módulos vienen de los actos I a IV y los dos últimos, de acá; activar el Arca forja la Llave de Luz y abre el acto VI.",
+                 "{page}",
+                 "Terra despliega el plano sobre el Atlas: seis cámaras, una por cada disciplina de Heliodor. «La fusión quería una sola máquina que lo sostuviera todo. Esta vez, seis manos sostienen una puerta»."]}
     },
     {
-      "key": "horizon_controller",
-      "deps": [
-        "horizon_welcome"
-      ],
-      "item": "entrelumen:ark_controller",
-      "en_us": [
-        "A controller, not a throne",
-        "Craft the Ark Controller shapelessly from one lodestone, one signal core and one diamond. It marks where the Ark stands and the modules need it: place it first and build around it with the guide the Atlas projects.\n\nAurelia wanted a throne at the centre of the fusion machine. Terra built a controller instead: anyone can read it, and it obeys only a team that finished its work."
-      ],
-      "es_es": [
-        "Un controlador, no un trono",
-        "Fabricá el controlador del Arca sin forma fija con una magnetita, un núcleo de señal y un diamante. Marca dónde va el Arca y los módulos lo necesitan: ponelo primero y construí alrededor con la guía que proyecta el Atlas.\n\nAurelia quería un trono en el centro de la máquina de la fusión. Terra construyó un controlador: cualquiera puede leerlo y sólo obedece a un equipo que terminó su trabajo."
-      ],
-      "layout": {
-        "group": "threshold",
-        "x": 0,
-        "y": 1.5,
-        "size": 1.0,
-        "shape": "square"
-      }
+      "key": "horizon_controller", "deps": ["horizon_welcome"], "item": "entrelumen:ark_controller", "layout": {"group": "threshold", "x": 0, "y": 16.3, "size": 1.0, "shape": "square"},
+      "en_us": {"title": "A controller, not a throne",
+        "text": ["[lead] Craft the [item:entrelumen:ark_controller|Ark Controller] shapelessly from one [item:minecraft:lodestone|lodestone], one [item:entrelumen:signal_core|signal core] and one diamond.",
+                 "It marks where the Ark stands and the modules need it: place it first and build around it with the guide the Atlas projects.",
+                 "{page}",
+                 "Aurelia wanted a throne at the centre of the fusion machine. Terra built a controller instead: anyone can read it, and it obeys only a team that finished its work."]},
+      "es_es": {"title": "Un controlador, no un trono",
+        "text": ["[lead] Fabricá el [item:entrelumen:ark_controller|controlador del Arca] sin forma fija con una [item:minecraft:lodestone|magnetita], un [item:entrelumen:signal_core|núcleo de señal] y un diamante.",
+                 "Marca dónde va el Arca y los módulos lo necesitan: ponelo primero y construí alrededor con la guía que proyecta el Atlas.",
+                 "{page}",
+                 "Aurelia quería un trono en el centro de la máquina de la fusión. Terra construyó un controlador: cualquiera puede leerlo y sólo obedece a un equipo que terminó su trabajo."]}
     },
     {
-      "key": "horizon_placement",
-      "deps": [
-        "horizon_controller"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "horizon_placement", "deps": ["horizon_controller"], "type": "checkmark", "optional": true, "layout": {"group": "commission", "x": -7.3, "y": 16.3, "size": 0.75, "shape": "circle"}, "hide_lines": true,
       "icon": "entrelumen:ark_controller",
-      "en_us": [
-        "Field note: the Ark on its feet",
-        "Optional, self-reported: build the Ark round its controller. In the Atlas, select The Ark and choose Show guide: a ghost marks every block. Each module works once it is in its place, the Ark is whole and the controller stands.\n\nAn astrolabe of stone and copper. Terra drew it so anyone could read the sky from it, even a child."
-      ],
-      "es_es": [
-        "Nota de campo: el Arca en pie",
-        "Opcional y autoevaluado: construí el Arca alrededor del controlador. En el Atlas, elegí El Arca y pulsá Mostrar guía: un fantasma marca cada bloque. Cada módulo funciona en su lugar, con el Arca entera y el controlador puesto.\n\nUn astrolabio de piedra y cobre. Terra lo dibujó para que cualquiera pudiera leer el cielo en él, hasta un chico."
-      ],
-      "layout": {
-        "group": "commission",
-        "x": -3,
-        "y": 1.5,
-        "size": 0.75,
-        "shape": "circle"
-      }
+      "en_us": {"title": "Field note: the Ark on its feet",
+        "text": ["[lead] Optional, self-reported: build the Ark round its controller.",
+                 "In the Atlas, select The Ark and choose Show guide: a ghost marks every block. Each module works once it is in its place, the Ark is whole and the controller stands.",
+                 "{page}",
+                 "An astrolabe of stone and copper. Terra drew it so anyone could read the sky from it, even a child."]},
+      "es_es": {"title": "Nota de campo: el Arca en pie",
+        "text": ["[lead] Opcional y autoevaluado: construí el Arca alrededor del controlador.",
+                 "En el Atlas, elegí El Arca y pulsá Mostrar guía: un fantasma marca cada bloque. Cada módulo funciona en su lugar, con el Arca entera y el controlador puesto.",
+                 "{page}",
+                 "Un astrolabio de piedra y cobre. Terra lo dibujó para que cualquiera pudiera leer el cielo en él, hasta un chico."]}
     },
     {
-      "key": "horizon_logistics",
-      "deps": [
-        "voices_chorus"
-      ],
-      "milestone": "logistics_module",
+      "key": "horizon_logistics", "deps": ["voices_chorus"], "milestone": "logistics_module", "layout": {"group": "workshop", "x": -7.3, "y": 11.8, "size": 2.0, "shape": "hexagon"},
       "icon": "entrelumen:logistics_module",
-      "en_us": [
-        "Logistics: trade from afar",
-        "Deliver one routing matrix, sixteen emeralds and eight ender pearls to Logistics Module in the Atlas. In its place in the Ark your team buys from the Atlas in the Solsticio shops it knows, and villagers treat you as a Hero of the Village.\n\nAurelia kept a ledger of every debt of the fusion. Its last line reads: 'Trade honestly with those who stayed.'"
-      ],
-      "es_es": [
-        "Logística: comercio a distancia",
-        "Entregá una matriz de distribución, dieciséis esmeraldas y ocho perlas de Ender en Módulo de logística desde el Atlas. En su lugar del Arca tu equipo compra desde el Atlas en las tiendas de Solsticio que conoce, y los aldeanos te tratan como Héroe de la Aldea.\n\nAurelia llevaba un libro con cada deuda de la fusión. La última línea dice: «Comerciá honestamente con los que se quedaron»."
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": -4.5,
-        "y": 6,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
+      "en_us": {"title": "Logistics: trade from afar",
+        "text": ["[lead] Deliver to Logistics Module in the Atlas:",
+                 "[li:entrelumen:routing_matrix] One [item:entrelumen:routing_matrix|routing matrix]",
+                 "[li:minecraft:emerald] Sixteen [item:minecraft:emerald|emeralds]",
+                 "[li:minecraft:ender_pearl] Eight [item:minecraft:ender_pearl|ender pearls]",
+                 "In its place in the Ark your team buys from the Atlas in the Solsticio shops it knows, and villagers treat you as a Hero of the Village.",
+                 "{page}",
+                 "Aurelia kept a ledger of every debt of the fusion. Its last line reads: 'Trade honestly with those who stayed.'"]},
+      "es_es": {"title": "Logística: comercio a distancia",
+        "text": ["[lead] Entregá en Módulo de logística desde el Atlas:",
+                 "[li:entrelumen:routing_matrix] Una [item:entrelumen:routing_matrix|matriz de distribución]",
+                 "[li:minecraft:emerald] Dieciséis [item:minecraft:emerald|esmeraldas]",
+                 "[li:minecraft:ender_pearl] Ocho [item:minecraft:ender_pearl|perlas de Ender]",
+                 "En su lugar del Arca tu equipo compra desde el Atlas en las tiendas de Solsticio que conoce, y los aldeanos te tratan como Héroe de la Aldea.",
+                 "{page}",
+                 "Aurelia llevaba un libro con cada deuda de la fusión. La última línea dice: «Comerciá honestamente con los que se quedaron»."]}
     },
     {
-      "key": "horizon_engineering",
-      "deps": [
-        "voices_chorus"
-      ],
-      "milestone": "engineering_module",
+      "key": "horizon_engineering", "deps": ["voices_chorus"], "milestone": "engineering_module", "layout": {"group": "workshop", "x": 7.3, "y": 11.8, "size": 2.0, "shape": "hexagon"},
       "icon": "entrelumen:engineering_module",
-      "en_us": [
-        "Engineering: charge without wires",
-        "Deliver one Ark Connection Bus, eight blocks of redstone and eight blocks of copper to Engineering Module in the Atlas. In its place in the Ark every item with energy your team carries charges itself, in any dimension.\n\nTerra's first rule for the fusion machine: 'Power goes where the people are, not where the cables end.'"
-      ],
-      "es_es": [
-        "Ingeniería: carga sin cables",
-        "Entregá un bus de conexión del Arca, ocho bloques de redstone y ocho bloques de cobre en Módulo de ingeniería desde el Atlas. En su lugar del Arca todo ítem con energía que lleve tu equipo se carga solo, en cualquier dimensión.\n\nLa primera regla de Terra para la máquina de la fusión: «La energía va adonde está la gente, no adonde terminan los cables»."
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": 4.5,
-        "y": 6,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
+      "en_us": {"title": "Engineering: charge without wires",
+        "text": ["[lead] Deliver one Ark Connection Bus, eight blocks of redstone and eight blocks of copper to Engineering Module in the Atlas.",
+                 "In its place in the Ark every item with energy your team carries charges itself, in any dimension.",
+                 "{page}",
+                 "Terra's first rule for the fusion machine: 'Power goes where the people are, not where the cables end.'"]},
+      "es_es": {"title": "Ingeniería: carga sin cables",
+        "text": ["[lead] Entregá un bus de conexión del Arca, ocho bloques de redstone y ocho bloques de cobre en Módulo de ingeniería desde el Atlas.",
+                 "En su lugar del Arca todo ítem con energía que lleve tu equipo se carga solo, en cualquier dimensión.",
+                 "{page}",
+                 "La primera regla de Terra para la máquina de la fusión: «La energía va adonde está la gente, no adonde terminan los cables»."]}
     },
     {
-      "key": "horizon_eyes",
-      "deps": [
-        "horizon_welcome"
-      ],
-      "item": "minecraft:ender_eye",
-      "en_us": [
-        "The old doorway",
-        "Craft Eyes of Ender from ender pearls and blaze powder. A thrown eye leads toward a stronghold, and its portal frame needs eyes to open; bring enough for both. Carrying eyes only prepares the trip: your campaign still has to enter the End.\n\nThe Atlas remembers this doorway from Heliodor's oldest charts. They never used it. They were too busy looking up."
-      ],
-      "es_es": [
-        "La vieja entrada",
-        "Fabricá ojos de ender con perlas de ender y polvo de blaze. Un ojo lanzado lleva hacia una fortaleza, y el marco de su portal necesita ojos para abrirse; llevá suficientes para las dos cosas. Tener ojos sólo prepara el viaje: tu campaña todavía tiene que entrar al End.\n\nEl Atlas recuerda esta entrada en las cartas más viejas de Heliodor. Nunca la usaron. Estaban muy ocupados mirando para arriba."
-      ],
-      "layout": {
-        "group": "expedition",
-        "x": 9,
-        "y": 2.5,
-        "size": 1.0,
-        "shape": "square"
-      }
+      "key": "horizon_eyes", "deps": ["horizon_welcome"], "item": "minecraft:ender_eye", "layout": {"group": "expedition", "x": 16.3, "y": 1.8, "size": 1.0, "shape": "square"},
+      "en_us": {"title": "The old doorway",
+        "text": ["[lead] Craft [item:minecraft:ender_eye|Eyes of Ender] from ender pearls and blaze powder.",
+                 "[li] A thrown eye leads toward a stronghold",
+                 "[li] Its portal frame needs eyes to open: bring enough for both",
+                 "Carrying eyes only prepares the trip: your campaign still has to enter the End.",
+                 "{page}",
+                 "The Atlas remembers this doorway from Heliodor's oldest charts. They never used it. They were too busy looking up."]},
+      "es_es": {"title": "La vieja entrada",
+        "text": ["[lead] Fabricá [item:minecraft:ender_eye|ojos de ender] con perlas de ender y polvo de blaze.",
+                 "[li] Un ojo lanzado lleva hacia una fortaleza",
+                 "[li] El marco de su portal necesita ojos para abrirse: llevá suficientes para las dos cosas",
+                 "Tener ojos sólo prepara el viaje: tu campaña todavía tiene que entrar al End.",
+                 "{page}",
+                 "El Atlas recuerda esta entrada en las cartas más viejas de Heliodor. Nunca la usaron. Estaban muy ocupados mirando para arriba."]}
     },
     {
-      "key": "horizon_end_plan",
-      "deps": [
-        "horizon_eyes"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "horizon_end_plan", "deps": ["horizon_eyes"], "type": "checkmark", "optional": true, "layout": {"group": "expedition", "x": 16.3, "y": 3.4, "size": 0.75, "shape": "circle"},
       "icon": "minecraft:filled_map",
-      "en_us": [
-        "Field note: a way home",
-        "Optional, self-reported: pack food, protection and blocks before the stronghold portal and agree on a return route. In a new End, defeating the dragon opens the exit home; on a shared world it may already be open, and your team needs no second kill.\n\nBodhi asks one thing of every journey: that it ends where it began, with everyone."
-      ],
-      "es_es": [
-        "Nota de campo: volver",
-        "Opcional y autoevaluado: llevá comida, protección y bloques antes del portal de la fortaleza y acordá una ruta de regreso. En un End nuevo, vencer al dragón abre la salida a casa; en un mundo compartido puede estar abierta y tu equipo no necesita otra muerte del dragón.\n\nBodhi le pide una sola cosa a cada viaje: que termine donde empezó, con todos."
-      ],
-      "layout": {
-        "group": "expedition",
-        "x": 9,
-        "y": 4,
-        "size": 0.75,
-        "shape": "circle"
-      }
+      "en_us": {"title": "Field note: a way home",
+        "text": ["[lead] Optional, self-reported: pack food, protection and blocks before the stronghold portal and agree on a return route.",
+                 "In a new End, defeating the dragon opens the exit home; on a shared world it may already be open, and your team needs no second kill.",
+                 "{page}",
+                 "Bodhi asks one thing of every journey: that it ends where it began, with everyone."]},
+      "es_es": {"title": "Nota de campo: volver",
+        "text": ["[lead] Opcional y autoevaluado: llevá comida, protección y bloques antes del portal de la fortaleza y acordá una ruta de regreso.",
+                 "En un End nuevo, vencer al dragón abre la salida a casa; en un mundo compartido puede estar abierta y tu equipo no necesita otra muerte del dragón.",
+                 "{page}",
+                 "Bodhi le pide una sola cosa a cada viaje: que termine donde empezó, con todos."]}
     },
     {
-      "key": "horizon_end_arrival",
-      "deps": [],
-      "milestone": "end_arrival",
+      "key": "horizon_end_arrival", "deps": [], "milestone": "end_arrival", "layout": {"group": "expedition", "x": 16.3, "y": 6.6, "size": 2.0, "shape": "octagon"},
       "icon": "minecraft:end_stone",
-      "en_us": [
-        "A horizon actually crossed",
-        "Enter the End with your current team. The server witnesses real entry, login or respawn there; an earlier visit counts, even before act V. Joining a team does not bring your personal travels with you, and clicking this task does nothing.\n\nTerra needs the End's silence measured for the exploration module: the one place the light of the Aether never reached."
-      ],
-      "es_es": [
-        "Un horizonte cruzado de verdad",
-        "Entrá al End con tu equipo actual. El servidor observa la entrada, el inicio de sesión o la reaparición real allí; una visita anterior cuenta, incluso antes del acto V. Sumarte a un equipo no le trae tus viajes personales, y pulsar esta tarea no hace nada.\n\nTerra necesita medir el silencio del End para el módulo de exploración: el único lugar al que nunca llegó la luz del Aether."
-      ],
-      "layout": {
-        "group": "expedition",
-        "x": 9,
-        "y": 6,
-        "size": 2.0,
-        "shape": "octagon"
-      }
+      "en_us": {"title": "A horizon actually crossed",
+        "text": ["[lead] Enter the End with your current team.",
+                 "The server witnesses real entry, login or respawn there; an earlier visit counts, even before act V.",
+                 "Joining a team does not bring your personal travels with you, and clicking this task does nothing.",
+                 "{page}",
+                 "Terra needs the End's silence measured before the Ark opens: the one place the light of the Aether never reached."]},
+      "es_es": {"title": "Un horizonte cruzado de verdad",
+        "text": ["[lead] Entrá al End con tu equipo actual.",
+                 "El servidor observa la entrada, el inicio de sesión o la reaparición real allí; una visita anterior cuenta, incluso antes del acto V.",
+                 "Sumarte a un equipo no le trae tus viajes personales, y pulsar esta tarea no hace nada.",
+                 "{page}",
+                 "Terra necesita medir el silencio del End antes de que el Arca se abra: el único lugar al que nunca llegó la luz del Aether."]}
     },
     {
-      "key": "horizon_last",
-      "deps": [
-        "world_network",
-        "horizon_end_arrival",
-        "horizon_logistics",
-        "horizon_engineering"
-      ],
-      "milestone": "last_horizon",
+      "key": "horizon_last", "deps": ["world_network", "horizon_end_arrival", "horizon_logistics", "horizon_engineering"], "milestone": "last_horizon", "layout": {"group": "commission", "x": 0, "y": 11.8, "size": 3.0, "shape": "hexagon"}, "hide_lines": true,
       "icon": "entrelumen:ark_controller",
-      "en_us": [
-        "The Ark opens the light",
-        "With the Ark standing, its six modules and controller in place, World Network complete and the End journey witnessed, crouch and interact with the controller with an empty main hand. It consumes nothing and forges your team's Light Key. Act VI begins.\n\nThe light parts along a seam. Bodhi, very quietly: 'Open it. Never own it.' Behind it, Solsticio."
-      ],
-      "es_es": [
-        "El Arca abre la luz",
-        "Con el Arca en pie, sus seis módulos y el controlador en su lugar, la Red del mundo completa y el viaje al End observado, agachate e interactuá con el controlador con la mano principal vacía. No consume nada y forja la Llave de Luz de tu equipo. Empieza el acto VI.\n\nLa luz se abre en una costura. Bodhi, muy bajo: «Abrila. Nunca te adueñes de ella». Del otro lado, Solsticio."
-      ],
-      "layout": {
-        "group": "commission",
-        "x": 0,
-        "y": 11,
-        "size": 3.0,
-        "shape": "hexagon"
-      }
+      "en_us": {"title": "The Ark opens the light",
+        "text": ["[lead] One gesture opens the light, once the Ark is whole.",
+                 "With the Ark standing, its six modules and controller in place, World Network complete and the End journey witnessed, crouch and interact with the controller with an empty main hand.",
+                 "It consumes nothing and forges your team's [item:entrelumen:light_key|Light Key]. Act VI begins.",
+                 "{page}",
+                 "The light parts along a seam. Bodhi, very quietly: 'Open it. Never own it.' Behind it, Solsticio."]},
+      "es_es": {"title": "El Arca abre la luz",
+        "text": ["[lead] Un solo gesto abre la luz, con el Arca completa.",
+                 "Con el Arca en pie, sus seis módulos y el controlador en su lugar, la Red del mundo completa y el viaje al End observado, agachate e interactuá con el controlador con la mano principal vacía.",
+                 "No consume nada y forja la [item:entrelumen:light_key|Llave de Luz] de tu equipo. Empieza el acto VI.",
+                 "{page}",
+                 "La luz se abre en una costura. Bodhi, muy bajo: «Abrila. Nunca te adueñes de ella». Del otro lado, Solsticio."]}
     },
     {
-      "key": "horizon_post_routes",
-      "deps": [
-        "horizon_last"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "horizon_post_routes", "deps": ["horizon_last"], "type": "checkmark", "optional": true, "layout": {"group": "afterward", "x": -17.4, "y": 11.8, "size": 0.75, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:map",
-      "en_us": [
-        "Afterward: two routes",
-        "Optional, self-reported: make two different ways to move one useful supply between your settlements, then pause one and see whether the other is understandable and usable. Note what failed and what was easy to repair.\n\nTerra's favourite test, older than the fusion: a system is only as good as its second path."
-      ],
-      "es_es": [
-        "Después: dos rutas",
-        "Opcional y autoevaluado: armá dos maneras distintas de mover un insumo útil entre tus asentamientos, detené una y fijate si la otra se entiende y funciona. Anotá qué falló y qué fue fácil de reparar.\n\nLa prueba favorita de Terra, más vieja que la fusión: un sistema vale lo que vale su segundo camino."
-      ],
-      "layout": {
-        "group": "afterward",
-        "x": -1.5,
-        "y": 14.25,
-        "size": 0.75,
-        "shape": "circle"
-      }
+      "en_us": {"title": "Afterward: two routes",
+        "text": ["[lead] Optional, self-reported: make two different ways to move one useful supply between your settlements.",
+                 "Pause one and see whether the other is understandable and usable. Note what failed and what was easy to repair.",
+                 "{page}",
+                 "Terra's favourite test, older than the fusion: a system is only as good as its second path."]},
+      "es_es": {"title": "Después: dos rutas",
+        "text": ["[lead] Opcional y autoevaluado: armá dos maneras distintas de mover un insumo útil entre tus asentamientos.",
+                 "Detené una y fijate si la otra se entiende y funciona. Anotá qué falló y qué fue fácil de reparar.",
+                 "{page}",
+                 "La prueba favorita de Terra, más vieja que la fusión: un sistema vale lo que vale su segundo camino."]}
     },
     {
-      "key": "horizon_post_reserve",
-      "deps": [
-        "horizon_last"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "horizon_post_reserve", "deps": ["horizon_last"], "type": "checkmark", "optional": true, "layout": {"group": "afterward", "x": -15.2, "y": 11.8, "size": 0.75, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:wheat",
-      "en_us": [
-        "Afterward: a shared reserve",
-        "Optional, self-reported: pick one renewable food or material reserve, let a visitor take a known amount and time how long your usual process takes to replace it. Note what would make the reserve fair to share.\n\nJuan's question, the one he asks Solsticio every morning: if someone new arrives today, will there be enough tomorrow?"
-      ],
-      "es_es": [
-        "Después: una reserva compartida",
-        "Opcional y autoevaluado: elegí una reserva renovable de comida o material, dejá que una visita tome una cantidad conocida y medí cuánto tarda tu proceso habitual en reponerla. Anotá qué la haría justa para compartir.\n\nLa pregunta de Juan, la que le hace a Solsticio cada mañana: si hoy llega alguien nuevo, ¿va a alcanzar mañana?"
-      ],
-      "layout": {
-        "group": "afterward",
-        "x": 1.5,
-        "y": 14.25,
-        "size": 0.75,
-        "shape": "circle"
-      }
+      "en_us": {"title": "Afterward: a shared reserve",
+        "text": ["[lead] Optional, self-reported: pick one renewable food or material reserve and let a visitor take a known amount.",
+                 "Time how long your usual process takes to replace it, and note what would make the reserve fair to share.",
+                 "{page}",
+                 "Juan's question, the one he asks Solsticio every morning: if someone new arrives today, will there be enough tomorrow?"]},
+      "es_es": {"title": "Después: una reserva compartida",
+        "text": ["[lead] Opcional y autoevaluado: elegí una reserva renovable de comida o material y dejá que una visita tome una cantidad conocida.",
+                 "Medí cuánto tarda tu proceso habitual en reponerla y anotá qué la haría justa para compartir.",
+                 "{page}",
+                 "La pregunta de Juan, la que le hace a Solsticio cada mañana: si hoy llega alguien nuevo, ¿va a alcanzar mañana?"]}
+    },
+    {
+      "key": "horizon_flag", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"group": "threshold", "x": -10.9, "y": -0.9, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:yellow_banner",
+      "en_us": {"title": "Heliodor's colours",
+        "text": ["[lead] The dock flies Heliodor's colours again.",
+                 "Terra sewed the flag from a council robe. Nobody on the council complained; nobody on the council could."]},
+      "es_es": {"title": "Los colores de Heliodor",
+        "text": ["[lead] El dique vuelve a izar los colores de Heliodor.",
+                 "Terra cosió la bandera con una túnica del Consejo. Nadie del Consejo se quejó; nadie del Consejo podía."]}
     }
   ]
 }
