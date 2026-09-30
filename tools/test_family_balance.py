@@ -726,17 +726,23 @@ class EternaCeilingTest(unittest.TestCase):
         self.assertEqual(balance.tier_acts(), {'haven': (1, 2), 'frontier': (3, 3), 'ascent': (4, 4),
                                                'summit': (5, 5), 'pinnacle': (6, 6)})
 
-    def test_augment_override_keeps_its_shape_and_disables_at_the_base(self):
+    def test_augment_is_stubbed_and_our_own_carries_the_value(self):
         spec, model = balance.eterna_ceiling('haven'), json.loads(json.dumps(LADDER))
         source = [('Apotheosis-x.jar', '', json.dumps(AUGMENT).encode())]
-        out = json.loads(balance.eterna_override(spec, source, model))
-        self.assertEqual(out['modifier']['value'], -55.0)
-        self.assertEqual({k: v for k, v in out.items() if k != 'modifier'}, {k: v for k, v in AUGMENT.items() if k != 'modifier'})
+        stub = 'apotheosis/tier_augments/haven/max_eterna.json'
+        own = 'entrelumen/tier_augments/haven/max_eterna.json'
+        out = {k: json.loads(v) for k, v in balance.eterna_override(spec, source, model).items()}
+        self.assertEqual(sorted(out), [stub, own])
+        # Nothing of Apotheosis's file is written: the false condition alone, and a file at our own ID.
+        self.assertEqual(out[stub], {'neoforge:conditions': [{'type': 'neoforge:false'}]})
+        self.assertEqual(out[own]['modifier']['value'], -55.0)
+        self.assertEqual(out[own]['modifier_id'], 'entrelumen:haven/max_eterna')
+        self.assertEqual({k: v for k, v in out[own].items() if k not in ('modifier', 'modifier_id')},
+                         {k: v for k, v in AUGMENT.items() if k not in ('modifier', 'modifier_id')})
         model['tiers']['haven']['ceiling'] = 100.0
-        off = json.loads(balance.eterna_override(spec, source, model))
-        self.assertEqual(off['neoforge:conditions'], [{'type': 'neoforge:false'}] + AUGMENT['neoforge:conditions'])
-        self.assertEqual(off['modifier'], AUGMENT['modifier'])
-        self.assertIsNone(balance.eterna_override(balance.eterna_ceiling('pinnacle'), [], model))
+        off = {k: json.loads(v) for k, v in balance.eterna_override(spec, source, model).items()}
+        self.assertEqual(sorted(off), [stub])  # at the base the stub alone leaves the tier untouched
+        self.assertEqual(balance.eterna_override(balance.eterna_ceiling('pinnacle'), [], model), {})
         model['tiers']['pinnacle']['ceiling'] = 90.0
         with self.assertRaises(AssertionError):  # a tier without an upstream augment would need a new file
             balance.eterna_override(balance.eterna_ceiling('pinnacle'), [], model)
@@ -749,7 +755,8 @@ class EternaCeilingTest(unittest.TestCase):
         probe = {'probe': {'data': [balance.eterna_ceiling('haven')]}}
         with unittest.mock.patch.object(balance, 'eterna_ceilings', return_value=LADDER), \
                 unittest.mock.patch.dict(balance.FAMILIES, probe), unittest.mock.patch.dict(balance.ETERNA_REPORT):
-            self.assertEqual(len(balance.build_data('probe', found)), 1)
+            self.assertEqual(sorted(balance.build_data('probe', found)),
+                             ['apotheosis/tier_augments/haven/max_eterna.json', 'entrelumen/tier_augments/haven/max_eterna.json'])
             found.update(upstream('data/other/tier_augments/x.json', AUGMENT))
             with self.assertRaises(AssertionError):
                 balance.build_data('probe', found)
@@ -1120,6 +1127,80 @@ class PortedLootTest(unittest.TestCase):
                                       (shared, set())):       # another structure uses the same tag
                 with self.subTest(templates=sorted(templates)), self.assertRaises(AssertionError):
                     balance.build_data('probe', broken, templates)
+
+
+class ReservedDataTest(unittest.TestCase):
+    """The repository is public: no file under pack/kubejs/data may copy a mod whose license reserves its data
+    (docs/design/mod-pingpong.md#datos-de-mods-con-derechos-reservados-309)."""
+
+    def test_stub_disable_writes_the_false_condition_alone(self):
+        original = {'neoforge:conditions': [{'type': 'neoforge:mod_loaded', 'modid': 'x'}], 'type': 'x:recipe',
+                    'result': {'id': 'x:out'}}
+        spec = balance.disabled('data/x/recipe/y.json', '', stub=True)
+        found = upstream(spec['path'], original)
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            self.assertEqual(json.loads(balance.build_data('probe', found)['x/recipe/y.json']),
+                             {'neoforge:conditions': [{'type': 'neoforge:false'}]})
+            found[spec['path']] = [('Mod-x.jar', '', json.dumps(balance.DISABLED_STUB).encode())]
+            with self.assertRaises(AssertionError):  # already disabled upstream: the stub has nothing to do
+                balance.build_data('probe', found)
+
+    def test_authored_file_is_ours_and_the_native_one_only_a_stub(self):
+        native = {'essences': {'souls': 1}, 'inputs': [{'amount': 3, 'ingredient': {'item': 'x:orb'}}]}
+        added = {'amount': 1, 'ingredient': {'item': balance.CS}}
+        ours = dict(native, inputs=native['inputs'] + [added])
+        spec = balance.authored('data/x/x/ritual/y.json', 'data/entrelumen/x/ritual/y.json', ours, 'inputs', added,
+                                '', limit=8)
+        found = upstream(spec['path'], native)
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            out = {k: json.loads(v) for k, v in balance.build_data('probe', found).items()}
+            self.assertEqual(out, {'x/x/ritual/y.json': balance.DISABLED_STUB, 'entrelumen/x/ritual/y.json': ours})
+            drift = [dict(native, essences={'souls': 2}), dict(native, extra=1),
+                     dict(native, **{'neoforge:conditions': [{'type': 'neoforge:false'}]})]
+            for changed in drift:  # upstream moved: our copy of its numbers is stale, so generation stops
+                with self.subTest(changed=changed), self.assertRaises(AssertionError):
+                    balance.build_data('probe', upstream(spec['path'], changed))
+            with self.assertRaises(AssertionError):  # the path we write must not be shipped
+                balance.build_data('probe', {**found, **upstream(spec['to'], native)})
+        tight = balance.authored(spec['path'], spec['to'], ours, 'inputs', added, '', limit=3)
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [tight]}}), self.assertRaises(AssertionError):
+            balance.build_data('probe', found)  # four items on a three-slot machine
+
+    def test_reserved_mods_are_written_as_stubs_and_the_eternal_stella_ritual_is_ours(self):
+        stubs = {'createdeco', 'malum'}
+        for spec in balance.FAMILIES['pingpong']['data']:
+            if spec['op'] == 'disable' and spec['path'].split('/')[1] in stubs:
+                self.assertTrue(spec['stub'], spec['path'])
+        for path in ('data/irons_jewelry/loot_table/generate_jewelry_test_materials.json',
+                     'data/minecraft/advancement/give_quest_trader_trade.json',
+                     'data/minecraft/advancement/wander_add_map.json'):
+            specs = [s for f in balance.FAMILIES.values() for s in f.get('data', []) if s['path'] == path]
+            self.assertEqual([s['stub'] for s in specs], [True], path)
+        ritual = json.loads((balance.PACK_DATA / 'entrelumen/forbidden_arcanus/hephaestus_forge/ritual/eternal_stella.json')
+                            .read_text(encoding='utf-8'))
+        self.assertEqual(ritual['inputs'][-1], {'amount': 1, 'ingredient': {'item': balance.CS}})
+        self.assertEqual(json.loads((balance.PACK_DATA / 'forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/'
+                                     'eternal_stella.json').read_text(encoding='utf-8')), balance.DISABLED_STUB)
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_malum_compat_recipes_are_ours_and_still_match_the_native_mechanics(self):
+        spec = importlib.util.spec_from_file_location('malum_compat_under_test', Path(__file__).with_name('generate_malum_compat.py'))
+        malum = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(malum)
+        with unittest.mock.patch('builtins.print'):
+            malum.generate()  # raises when the JAR, a stub or the script differs from the specs
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_no_pack_data_file_copies_a_mod_that_reserves_its_data(self):
+        spec = importlib.util.spec_from_file_location('loot_check_under_test', Path(__file__).with_name('check_loot_tables.py'))
+        loot = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(loot)
+        sources = loot.Sources(loot.pinned_jars())
+        try:
+            found = loot.copies(sources, loot.restricted_jars())
+        finally:
+            sources.close()
+        self.assertEqual([(mine, jar, theirs, why) for mine, jar, theirs, why in found], [])
 
 
 if __name__ == '__main__':

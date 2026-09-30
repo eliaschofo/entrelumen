@@ -52,3 +52,14 @@ These files are ENTRELUMEN's own. None copies the named mod's data; each only na
 
 - `pack/kubejs/data/endermanoverhaul/loot_table/blocks/tiny_skull.json`: a self-drop block table written from scratch in vanilla's form for the Enderman Overhaul block (all rights reserved), whose own table is in the 1.20 folder.
 - Aliases under `pack/kubejs/data/{minecraft,nova_structures,kaisyn}/loot_table/`: one pool whose only entry is a `minecraft:loot_table` reference to an existing table, at IDs that the structure templates of Deep Aether, L_Ender's Cataclysm, Dungeons and Taverns and Towns and Towers name but do not ship.
+
+### Files written for mods that reserve their data
+
+Apotheosis (its metadata reads «MIT License (code) / All Rights Reserved (assets)» and its repository's `LICENSE_ASSETS` names no scope), Create Deco, Forbidden Arcanus, Iron's Jewelry, Malum and Dungeons and Taverns are all rights reserved or unclear, so no file of theirs is copied. Where the pack changes or turns off one of their data files, the file at the mod's own path holds only `{"neoforge:conditions": [{"type": "neoforge:false"}]}`, and whatever takes its place is ENTRELUMEN's own, written from the pack's specification in `tools/generate_family_balance.py` and `tools/generate_malum_compat.py`, which fail when the pinned JAR no longer matches:
+
+- `pack/kubejs/data/entrelumen/tier_augments/{haven,frontier,ascent}/max_eterna.json`: our World Tier Eterna ceilings, in the codec fields of an Apotheosis tier augment, under IDs of ours; Apotheosis's `tier_augments/*/max_eterna.json` are turned off.
+- `pack/kubejs/data/entrelumen/forbidden_arcanus/hephaestus_forge/ritual/eternal_stella.json`: our ritual for the Eternal Stella, with a containment seal; Forbidden Arcanus's ritual of the same name is turned off.
+- `pack/kubejs/server_scripts/entrelumen_malum_compat.js`: our recipes for four Occultism chalk repairs and the grim talc milling, whose Malum files ship stale; those files are turned off.
+- Turned off and replaced by nothing: Create Deco's placard dye recipe, five Malum Undergarden repair recipes, Iron's Jewelry's developer test loot table and two Dungeons and Taverns hidden advancements.
+
+`tools/check_loot_tables.py --copies` fails when any file under `pack/kubejs/data` copies data of such a mod, and `tools/test_family_balance.py` runs it.
