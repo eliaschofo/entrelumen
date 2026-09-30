@@ -116,14 +116,14 @@ The Enchantment Library (`apothic_enchanting:library`) stays native: its recipe 
 
 Apotheosis 8.7.0 lowers the player attribute `apothic_enchanting:max_eterna` in every World Tier but Pinnacle (`data/apotheosis/tier_augments/<tier>/max_eterna.json`). Apothic Enchanting builds that attribute with base 100, minimum 0 and maximum 100 (`Ench$Attributes`, read from the class by the generator), and the table offers and infuses with the lower of the shelves' Eterna and the attribute (`EnchantmentTableStats.eterna(Player)`). The upstream ceilings trailed this ladder by one tier: hellshelves were capped in Acts I–II, deepshelves in Act III, endshelves in Act IV, and 100 Eterna, which the Act V shelves and the Library of Alexandria need, only worked in Act VI.
 
-`tools/generate_family_balance.py --family apotheosis` now writes reversible overrides of the four files to `pack/kubejs/data/apotheosis/tier_augments/`, next to the progression overrides. Each keeps the type, target, sort index, modifier ID and `mod_loaded` condition and changes only the value to the ceiling minus the base; a ceiling of 100 disables the file instead, with `neoforge:false` ahead of its own condition:
+`tools/generate_family_balance.py --family apotheosis` writes the ceilings without copying Apotheosis's augment files (30 September 2026, [mod-pingpong.md](mod-pingpong.md#datos-de-mods-con-derechos-reservados-309)). Apotheosis's metadata reads «MIT License (code) / All Rights Reserved (assets)» and its repository ships a `LICENSE_ASSETS` that names no scope, so its data files count as unclear. Placebo's registry has no merge, but it reads every namespace and a tier applies all the augments it lists. Each upstream file is therefore written as the `neoforge:false` condition alone (the mod's file never loads), and our own augment at `pack/kubejs/data/entrelumen/tier_augments/<tier>/max_eterna.json` (ID `entrelumen:<tier>/max_eterna`) carries the whole value, the ceiling minus the base, with the same codec fields (type `apotheosis:attribute`, target, sort index, `mod_loaded` condition). A ceiling of 100 needs no augment of ours, so the stub alone leaves the tier at the base. The effect on the attribute is the same for any upstream value, because the native modifier is off:
 
-| Tier | Acts | Apotheosis 8.7.0 | ENTRELUMEN | Override | Shelves that reach it |
+| Tier | Acts | Apotheosis 8.7.0 | ENTRELUMEN | Our augment | Shelves that reach it |
 |---|---|---|---|---|---|
 | Haven | I–II | 30 (−70) | **45** | −55 | hellshelf, seashelf |
 | Frontier | III | 45 (−55) | **75** | −25 | echoing and soul-touched deepshelves |
 | Ascent | IV | 60 (−40) | **90** | −10 | endshelf, pearlescent endshelf |
-| Summit | V | 75 (−25) | **100** | disabled | draconic endshelf, horizon shelf |
+| Summit | V | 75 (−25) | **100** | none (stub only) | draconic endshelf, horizon shelf |
 | Pinnacle | VI | 100 (no augment) | **100** | none | draconic endshelf, horizon shelf |
 
 The numbers are not typed anywhere; the generator derives them from its own staging:

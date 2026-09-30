@@ -483,10 +483,14 @@ def lettering_images(key, art, extra, languages):
 
 def decor(q, out):
     """A toy on the canvas: optional checkmark without reward, toast, lock icon or lines, never counted."""
-    tasks = qe.tasks_of(q)
-    assert [qe.task_kind(t) for t in tasks] == ["checkmark"], f"{q['key']}: a decor node is one checkmark"
-    size = float(q.get("size", 1.0))
-    assert size in DECOR_SIZES, f"{q['key']}: decor size {size}"
+    return decor_node(q["key"], [qe.task_kind(t) for t in qe.tasks_of(q)], q.get("size", 1.0), out)
+
+
+def decor_node(key, kinds, size, out):
+    """The decor flags on a compiled node, for sectors and for the guide and story chapters of tools/quest_v2.py
+    (whose quests name their task with "type")."""
+    assert kinds == ["checkmark"], f"{key}: a decor node is one checkmark"
+    assert float(size) in DECOR_SIZES, f"{key}: decor size {size}"
     out.update(optional=True, disable_toast=True, hide_lock_icon=True, hide_dependency_lines=True,
                hide_dependent_lines=True, rewards=[])
     return out

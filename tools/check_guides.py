@@ -13,6 +13,9 @@ schema extends the story chapters' format (see content/act_two.json):
                "en_us": ["Title", "Description"], "es_es": ["Título", "Descripción"],
                "sources": ["jar:<file>:<path>", "https://..."]}]}
 
+A guide with "presentation": 2 writes each quest's copy as {"title", "subtitle"?, "text": [paragraphs]} instead, and
+may carry "motif", "art", "medallion" and decor quests (tools/quest_v2.py; content/guides/README.md).
+
 Checks: schema, unique chapter ids and quest keys (globally, prefixed by the chapter), deps inside
 the chapter, EN/ES parity, text limits and formatting codes, sources on every quest, and that every
 item, icon and tag namespace exists in the pinned JARs (catalog/local-paths.json) or vanilla.
@@ -53,6 +56,10 @@ frame, a cost that client QA has not measured yet. A "presentation": 2 chapter a
 (Elias, 28/9): at most SKETCH_SHARE of its strong images (alpha above quest_art.FAINT, and every item render) may
 show before any quest is done; the rest arrive with their quests.
 
+Guides and story chapters in presentation v2 (tools/quest_v2.py) get the sectors' JAR checks for what v2 adds: the
+items, keys, translation keys, inline images and icons of their text, and the textures, sprites and item renders of
+their art (check_v2_refs); the image budget and the sketch-first warning count them too (v2_chapters).
+
 Registry caches live outside the repository, one file per set of JARs, so worktrees with different
 locks do not rebuild each other's.
 """
@@ -67,6 +74,7 @@ from pathlib import Path
 import quest_art
 import quest_engine
 import quest_text
+import quest_v2
 
 ROOT = Path(__file__).resolve().parents[1]
 GUIDES = ROOT / 'content' / 'guides'
@@ -186,6 +194,13 @@ def bundled(jar):
                         pass
 
 
+def custom_crop_items():
+    """Items of the Mystical Agriculture crops that pack/config/mysticalcustomization/crops declares. MA registers
+    them at load under its own namespace (<file name>_seeds and _essence), so no pinned JAR ships their models."""
+    crops = ROOT / 'pack' / 'config' / 'mysticalcustomization' / 'crops'
+    return {f'mysticalagriculture:{p.stem}_{kind}' for p in crops.glob('*.json') for kind in ('seeds', 'essence')}
+
+
 def registry():
     """Item-like ids known from item models and lang keys of every pinned JAR and the JARs they bundle, plus
     vanilla and the companion. Cached (outside the repository) per set of JAR paths, since reading 300+ JARs
@@ -207,6 +222,7 @@ def registry():
                 items, namespaces = set(c['items']), set(c['namespaces'])
                 comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / 'assets' / 'entrelumen'
                 items |= {'entrelumen:' + p.stem for p in (comp / 'models' / 'item').glob('*.json')}
+                items |= custom_crop_items()
                 _ITEMS = (items, namespaces | {'entrelumen', 'minecraft', 'c', 'neoforge'})
                 return _ITEMS
         except Exception:
@@ -245,6 +261,7 @@ def registry():
     comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / 'assets' / 'entrelumen'
     for p in (comp / 'models' / 'item').glob('*.json'):
         items.add('entrelumen:' + p.stem)
+    items |= custom_crop_items()
     namespaces |= {'entrelumen', 'minecraft', 'c', 'neoforge'}
     _ITEMS = (items, namespaces)
     return _ITEMS
@@ -334,6 +351,13 @@ def check_chapter(path, seen_chapters, seen_keys, errors):
             errors.append(f'{w}: icon {q["icon"]} not found in the pinned JARs')
         for lang in ('en_us', 'es_es'):
             pair = q.get(lang)
+            if ch.get('presentation', 1) >= 2:   # v2 copy: tools/quest_v2.py and quest_engine.quest_copy check the rest
+                if not (isinstance(pair, dict) and isinstance(pair.get('text'), list) and pair['text']
+                        and all(isinstance(t, str) and t.strip() for t in pair['text'])):
+                    errors.append(f'{w}: {lang} must be {{"title", "text": [paragraphs]}} in a presentation v2 guide')
+                    continue
+                text_ok(pair.get('title'), MAX_TITLE, f'{w} {lang} title', errors, False)
+                continue
             if not (isinstance(pair, list) and len(pair) == 2):
                 errors.append(f'{w}: {lang} must be [title, description]')
                 continue
@@ -348,7 +372,9 @@ def check_chapter(path, seen_chapters, seen_keys, errors):
         elif pos in positions:
             errors.append(f'{w}: two quests at the same position {pos}')
         positions.add(pos)
-    return len(quests)
+    if ch.get('presentation', 1) >= 2:
+        check_v2_refs(ch, where, errors)
+    return sum(1 for q in quests if quest_art.is_counted(q))
 
 
 COPY_MAX_DESC = 500
@@ -855,38 +881,13 @@ def check_sector(path, errors, all_keys):
             if 'icon' in t:
                 add_icon(t['icon'])
         for lang in ('en_us', 'es_es'):
-            for para in q[lang]['text']:
-                for m in re.finditer(r'\[(item|key|name):([^\]|]+)', para):
-                    refs[{'item': 'items', 'key': 'keys', 'name': 'names'}[m.group(1)]].add(m.group(2))
-                m = re.match(r'\{image:(\S+)', para)
-                if m:
-                    refs['textures'].add(m.group(1))
-                for ref in quest_text.icon_refs_in(para):   # presentation v2: icons drawn as font glyphs
-                    texture, item = quest_text.icon_texture(ref)
-                    glyph_textures.add(texture)
-                    if item:
-                        refs['items'].add(item)
+            text_refs(q[lang]['text'], refs, glyph_textures)
         for dep in q['deps']:
             if dep not in all_keys:
                 errors.append(f'{where}:{q["key"]}: unknown dependency {dep}')
         if not q.get('sources'):
             errors.append(f'{where}:{q["key"]}: no sources')
-    for art in data.get('art', []):
-        if 'texture' in art:
-            refs['textures'].add(art['texture'])
-    drawn = quest_art.references(data)   # presentation v2: pictures, sprites and item renders on the canvas
-    refs['textures'] |= drawn['textures'] | glyph_textures
-    refs['items'] |= drawn['items']
-    for sprite in sorted(drawn['sprites']):
-        ns, path = sprite.split(':', 1)
-        if not any_texture(f'{ns}:textures/{path}.png'):
-            errors.append(f'{where}: sprite {sprite} has no texture in the pinned JARs')
-        elif not in_block_atlas(sprite):
-            errors.append(f'{where}: sprite {sprite} is not in the block atlas (it would draw as the missing texture)')
-    for tex in sorted(glyph_textures):
-        info = texture_info(tex) if EMBLEM.match(tex) else None
-        if info and info[2]:
-            errors.append(f'{where}: icon {tex} is animated: a font glyph would squash every frame')
+    drawn_refs(data, where, refs, glyph_textures, errors)
     for fig in data.get('figures', {}).values():
         for style in fig.get('draw', []):
             refs['textures'].update(style.get('textures', []))
@@ -910,13 +911,7 @@ def check_sector(path, errors, all_keys):
     for key in sorted(refs['names']):
         if key not in reg['lang']:
             errors.append(f'{where}: translation key {key} not found')
-    for tex in sorted(refs['textures']):
-        rel = ROOT / 'companion/src/main/resources/assets' / tex.split(':')[0] / tex.split(':', 1)[1]
-        if rel.exists():
-            continue
-        info = texture_info(tex) if EMBLEM.match(tex) else None
-        if info is None and not any_texture(tex):
-            errors.append(f'{where}: texture {tex} not found')
+    check_textures(where, refs['textures'], errors)
     for item in sorted(task_items):
         swap = unified(item, reg)
         if swap:
@@ -940,6 +935,83 @@ def check_sector(path, errors, all_keys):
             elif not any(member in items for member in tag_members(tag, tags)):
                 errors.append(f'{where}: item tag #{tag} holds no item of the pinned JARs')
     return sum(1 for q in data['quests'] if quest_art.is_counted(q))
+
+
+def text_refs(paragraphs, refs, glyph_textures):
+    """What a paragraph list of v2 markup names: items, keybinds, translation keys, inline images and icon glyphs."""
+    for para in paragraphs:
+        for m in re.finditer(r'\[(item|key|name):([^\]|]+)', para):
+            refs[{'item': 'items', 'key': 'keys', 'name': 'names'}[m.group(1)]].add(m.group(2))
+        m = re.match(r'\{image:(\S+)', para)
+        if m:
+            refs['textures'].add(m.group(1))
+        for ref in quest_text.icon_refs_in(para):   # presentation v2: icons drawn as font glyphs
+            texture, item = quest_text.icon_texture(ref)
+            glyph_textures.add(texture)
+            if item:
+                refs['items'].add(item)
+
+
+def drawn_refs(data, where, refs, glyph_textures, errors):
+    """The art list's textures and items into refs; errors for sprites outside the block atlas and animated icons."""
+    for art in data.get('art', []):
+        if 'texture' in art:
+            refs['textures'].add(art['texture'])
+    drawn = quest_art.references(data)   # presentation v2: pictures, sprites and item renders on the canvas
+    refs['textures'] |= drawn['textures'] | glyph_textures
+    refs['items'] |= drawn['items']
+    for sprite in sorted(drawn['sprites']):
+        ns, path = sprite.split(':', 1)
+        if not any_texture(f'{ns}:textures/{path}.png'):
+            errors.append(f'{where}: sprite {sprite} has no texture in the pinned JARs')
+        elif not in_block_atlas(sprite):
+            errors.append(f'{where}: sprite {sprite} is not in the block atlas (it would draw as the missing texture)')
+    for tex in sorted(glyph_textures):
+        info = texture_info(tex) if EMBLEM.match(tex) else None
+        if info and info[2]:
+            errors.append(f'{where}: icon {tex} is animated: a font glyph would squash every frame')
+
+
+def check_textures(where, textures, errors):
+    for tex in sorted(textures):
+        rel = ROOT / 'companion/src/main/resources/assets' / tex.split(':')[0] / tex.split(':', 1)[1]
+        if rel.exists():
+            continue
+        info = texture_info(tex) if EMBLEM.match(tex) else None
+        if info is None and not any_texture(tex):
+            errors.append(f'{where}: texture {tex} not found')
+
+
+def check_v2_refs(data, where, errors):
+    """JAR checks for what presentation v2 adds to a guide or story chapter: its text and its art. Tasks, icons and
+    the emblem keep their own checks (check_chapter; the story's in tools/generate_quests.py and the server)."""
+    items, _ = registry()
+    reg = sector_registry()
+    refs = {'items': set(), 'keys': set(), 'names': set(), 'textures': set()}
+    glyph_textures = set()
+    for q in data['quests']:
+        for lang in ('en_us', 'es_es'):
+            if isinstance(q.get(lang), dict):
+                text_refs(q[lang].get('text', []), refs, glyph_textures)
+    drawn_refs(data, where, refs, glyph_textures, errors)
+    for item in sorted(refs['items']):
+        if item not in items:
+            errors.append(f'{where}: item {item} not found in the pinned JARs')
+    for key in sorted(refs['keys']):
+        if key not in reg['lang']:
+            errors.append(f'{where}: keybind {key} not found')
+    for key in sorted(refs['names']):
+        if key not in reg['lang']:
+            errors.append(f'{where}: translation key {key} not found')
+    check_textures(where, refs['textures'], errors)
+
+
+def v2_chapters():
+    """Names of the compiled chapters in presentation v2: sectors, guides and story chapters."""
+    import generate_quests
+    return {d['chapter'] for d in quest_engine.load_sectors() + quest_text.v2_chapters(ROOT)
+            if d.get('presentation', 1) >= 2} | {d['chapter'] for d in generate_quests.load_chapters()
+                                                  if d.get('presentation', 1) >= 2}
 
 
 _LOCKED = None
@@ -1030,7 +1102,7 @@ def image_budget(warnings, flt=''):
     sketch; prints the book total and the heaviest chapters."""
     import generate_quests
     files = generate_quests.generate_book()
-    v2 = {d['chapter'] for d in quest_engine.load_sectors() if d.get('presentation', 1) >= 2}
+    v2 = v2_chapters()
     counts = {}
     for path, text in files.items():
         if path.parent.name != 'chapters' or path.suffix != '.snbt':
@@ -1064,6 +1136,7 @@ def main():
             continue
         total += check_chapter(p, chapters, keys, errors)
         warnings += copy_warnings(p)
+        warnings += quest_art.lint(json.loads(p.read_text(encoding='utf-8')))
     sectors = 0
     all_keys = {q['key'] for p in files for q in json.loads(p.read_text(encoding='utf-8')).get('quests', [])}
     for p in sorted((ROOT / 'content').glob('*.json')):
@@ -1080,6 +1153,16 @@ def main():
         total += check_sector(p, errors, all_keys)
         warnings += quest_art.lint(json.loads(p.read_text(encoding='utf-8')))   # notes no player would see
         sectors += 1
+    import generate_quests
+    story = 0
+    for name in generate_quests.CHAPTER_SOURCES:   # story chapters in presentation v2: their text and art
+        data = json.loads((ROOT / 'content' / name).read_text(encoding='utf-8'))
+        if data.get('presentation', 1) < 2 or (flt and flt not in data['chapter'] and flt not in name):
+            continue
+        check_v2_refs(data, name, errors)
+        warnings += quest_art.lint(data)
+        story += 1
+        total += sum(1 for q in data['quests'] if quest_art.is_counted(q))
     if not flt:
         check_reward_tables(errors)
     try:
@@ -1090,7 +1173,8 @@ def main():
         print('WARN', w)
     for e in errors:
         print('ERROR', e)
-    print(f'{"FAIL" if errors else "PASS"}: {len(chapters)} guide chapters, {sectors} sector chapters, {total} quests, '
+    print(f'{"FAIL" if errors else "PASS"}: {len(chapters)} guide chapters, {sectors} sector chapters'
+          + (f', {story} v2 story chapters' if story else '') + f', {total} quests, '
           f'{len(errors)} errors, {len(warnings)} warnings')
     return 1 if errors else 0
 

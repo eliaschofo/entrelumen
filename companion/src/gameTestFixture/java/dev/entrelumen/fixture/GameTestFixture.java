@@ -49,6 +49,9 @@ public final class GameTestFixture {
   static final ResourceLocation BATTERY = ResourceLocation.fromNamespaceAndPath("entrelumen_gametest_fixture", "test_battery");
   static DataComponentType<Integer> energy;
   static Item battery;
+  /** A block with an energy capability: any mod's FE cable counts as a Terralight «cable». */
+  static final ResourceLocation CABLE = ResourceLocation.fromNamespaceAndPath("entrelumen_gametest_fixture", "test_cable");
+  static Block cable;
 
   public GameTestFixture(IEventBus bus) {
     LOGGER.warn("Entrelumen isolated GameTests use synthetic cross-mod item IDs; this is not full-pack compatibility evidence.");
@@ -76,6 +79,8 @@ public final class GameTestFixture {
   private void registerCapabilities(RegisterCapabilitiesEvent event) {
     event.registerItem(Capabilities.EnergyStorage.ITEM,
         (stack, context) -> new ComponentEnergyStorage(stack, energy, 200_000), battery);
+    event.registerBlock(Capabilities.EnergyStorage.BLOCK,
+        (level, pos, state, entity, side) -> new net.neoforged.neoforge.energy.EnergyStorage(1_000), cable);
   }
 
   /** Eaten in place like a Farmer's Delight pie: a slice's food values through FoodData.eat. */
@@ -99,6 +104,8 @@ public final class GameTestFixture {
   private void registerItems(RegisterEvent event) {
     event.register(Registries.BLOCK, registry -> {
       registry.register(ResourceLocation.fromNamespaceAndPath("entrelumen_gametest_fixture", "bite_block"), new BiteBlock());
+      cable = new Block(BlockBehaviour.Properties.of());
+      registry.register(CABLE, cable);
       if (!ModList.get().isLoaded("rechiseled")) {
         var amethyst = net.minecraft.world.level.block.Blocks.AMETHYST_BLOCK;
         registry.register(POLISHED_AMETHYST, new Block(BlockBehaviour.Properties.ofFullCopy(amethyst)));

@@ -13,6 +13,7 @@ El libro v2 ([quest-book](quest-book.md)) resolvió la escala, la historia y el 
 | `content/sectors/sector_*.json` | Una cadena por archivo: quests con rol, tareas, posición y texto en los dos idiomas; figuras, paneles, arte y enlaces; recompensas propias y tablas del capítulo |
 | `tools/quest_engine.py` | Compila las cadenas: gramática de nodos, presets, texto enriquecido, imágenes, curvas, recompensas (las del rol y las propias), tablas del libro y del capítulo, tema y validación |
 | `tools/quest_text.py`, `tools/quest_art.py` | Presentación v2 ([abajo](#presentación-v2-28-de-septiembre-de-2026)): marcas de jerarquía y fuentes del companion; el vocabulario de dibujo del lienzo, el dibujo que se completa con el progreso y los nodos de adorno |
+| `tools/quest_v2.py` | Presentación v2 para guías y capítulos de historia ([abajo](#guías-e-historia-en-la-v2-30-de-septiembre)): el mismo texto y el mismo lienzo que las cadenas, con las reglas propias de la historia |
 | `tools/quest_draft.py`, `tools/preview/` | El kit para pasar capítulos a la v2 ([abajo](#kit-para-pasar-capítulos-28-de-septiembre)): el borrador del texto y el renderer de vistas previas, de a uno por vez en la PC |
 | `tools/generate_quests.py` | Arma el libro entero (historia, guías, cadenas, hub) y escribe `pack/config/ftbquests/quests` y los recursos del companion |
 | `content/quest_book.json` | Motivos (colores y formas por tema), colores por rol, ritmo de recompensas, las 18 tablas y los nombres de las formas |
@@ -354,6 +355,63 @@ Con el kit, las otras seis cadenas de las dos familias del piloto pasaron a la v
 | Mekanism · Logística y equipo | 328 | 4% |
 
 Vistas previas en `E:/Elias/Codex/Entrelumen-ssd/previews/wt-presentation/`: el boceto, el avance (50%) y el final de cada capítulo, más las hojas de paneles de Contraptions.
+
+### Guías e historia en la v2 (30 de septiembre)
+
+Pedido de Elias: que todo el libro se vea como la v2, con texto legible y dibujos que se completan jugando. Las 89 cadenas ya tenían la v2; faltaban las 21 guías y los 8 capítulos de historia, que usan otros formatos.
+
+**Motor: `tools/quest_v2.py`.** Una guía o un capítulo de historia con `"presentation": 2` toma las dos mitades de la v2 con el mismo código que las cadenas:
+- **Texto.** Cada quest pasa a `{"title", "text": [párrafos]}` con las marcas de `quest_engine` y `quest_text`, y la compila `quest_engine.quest_copy`, con las mismas comprobaciones: el lead primero, 330 caracteres en la página 1, sin frases meta, y los mismos enlaces, ítems y teclas en los dos idiomas.
+  - Los códigos `&` ya no van: FTB no los lee dentro de una línea JSON. Los reemplazan `[hl|…]`, `[b|…]` e `[i|…]`.
+  - Para la interferencia del Atlas hay dos marcas nuevas en `quest_text`: `[glitch|…]` (letras ofuscadas, hasta 8) y `[strike|…]` (tachado).
+- **Lienzo.**
+  - Una lista `art` con los tipos de `quest_art`: `reveal`, `through` y `grow` (las posiciones son las del `layout`) y `sketch`.
+  - Quests con `"role": "decor"`: forma `none`, sin premio, y no cuentan en ningún total.
+  - `motif` elige la paleta; sin motivo, el oro de Heliodor.
+- **Guías.**
+  - Subtítulo de quest y enlaces a cualquier capítulo.
+  - `hide_lines`, `hide_dependent_lines`, `reveal` e `icon_scale`, como en una cadena.
+  - El medallón se puede mover o sacar (`medallion`).
+  - El motor valida que los nodos no se pisen.
+- **Historia.** Sigue con sus reglas, y la v2 suma:
+  - qué y después por qué: el último párrafo es el lore, simple (la rama opcional queda exenta);
+  - sin subtítulos de quest; dos glitches como mucho; enlaces sólo a quests de la historia;
+  - la gramática de nodos, los hitos de campaña, el sentido de lectura y los IDs no cambian, y los digests de `test_generate_quests.py` lo comprueban;
+  - el numeral, el emblema y un título a escala 3 se ponen arriba de todo el dibujo;
+  - el sol y el medallón del final llegan con el final;
+  - los rótulos de rama pasan a escala 2, o se sacan con `"book": {"panels": false}`.
+- **Lo que no pide la v2 no cambia.** Con el motor nuevo y el contenido de `origin/main`, las 175 salidas del libro salen idénticas byte a byte (`generate_quests.py --check` y un digest de cada archivo generado). Un capítulo v1 no puede traer `art`, `motif`, adornos ni texto v2.
+- **El kit.**
+  - `quest_draft.py` también toma guías e historia: convierte el formato y los códigos, marca `"presentation": 2`, hace el borrador y deja entero el lore de cada quest.
+  - `format_sector.py` ordena también los capítulos v2 de guías e historia.
+  - `check_guides.py` revisa contra los JAR fijados lo que suman su texto y su arte, les aplica el presupuesto de 700 imágenes y el aviso de boceto, y avisa de notas que nadie ve.
+  - `preview_v2.py` dibuja cualquier capítulo, también por archivo (`content/act_two.json`).
+- **Pruebas:** `GuidesAndStory` en `tools/test_presentation.py` (9, también dentro de `test_sector_book.py`). Sobre los 27 capítulos v1, el borrador conserva claves, tareas y fuentes, y cada quest que no marca «fix by hand» compila. `test_generate_quests.py` y `test_quest_book.py` leen los dos formatos, y los adornos quedan fuera de digests y totales.
+
+**Pilotos.** Conservan todas sus claves, tareas, datos y fuentes; cambian la posición (en la guía), el texto y el dibujo.
+- **Despertar entre ruinas: el patio del sol.**
+  - Al oeste, el pasto donde despertás, con los libros que no te regalan como fantasmas. Arriba, las nubes del Aether.
+  - En el medio, el patio: el piso de toba y calcita, el sol de cobre oxidado con sus rayos y las ocho columnas, cuatro rotas y con su tope caído al lado. Llega con «La ruina inicial».
+  - El marco dorado de la protección se prende con su quest. Las reglas están dibujadas: la TNT tachada, la puerta, el cofre y el yunque, el pico frenado en el borde, las vasijas rotas del punto ciego.
+  - Al este, el camino al Atlas y más allá, a la aldea y a la cámara de desafío. Solsticio se ve a lo lejos.
+  - Juguetes: pulir el sol, que muestra el oro bajo la pátina, y prender los faroles de las columnas.
+- **II · Los oficios perdidos: el Taller hundido en corte.**
+  - Arriba, el pasto y la tierra; la escalera baja al descanso. Desde ahí, la pasarela crece hasta cada mesa con su primera quest.
+  - Terra tiene el arroyo, la rueda, el eje que baja por la cadena de quests y las prensas oxidadas en fila.
+  - B., el estante de rezos, las geodas y el cantero de flor mágica.
+  - El cristal tiene el generador que humea y el haz rojo hasta los cristales que zumban.
+  - J., la olla sobre la fogata y el canal con peces.
+  - El viajero, el mapa gastado con su camino punteado.
+  - Cada mesa se arma con su hito y lleva «Terra» rayado en runas.
+  - Abajo, la bóveda: el plano sale, el brazo vuelve y el nombre aparece en grande.
+  - Juguete: la campana del turno prende las lámparas.
+
+| Capítulo | Imágenes | Visibles al empezar (fuertes) |
+|---|---|---|
+| Despertar entre ruinas | 257 | 2% |
+| II · Los oficios perdidos | 295 | 4% |
+
+Vistas previas en `E:/Elias/Codex/Entrelumen-ssd/previews/wt-v2-engine-guides/`: el boceto, el avance (25, 50 y 75%), el final, la pantalla de 1080p y las hojas de paneles, en los dos idiomas.
 
 ### Límites de la v2
 

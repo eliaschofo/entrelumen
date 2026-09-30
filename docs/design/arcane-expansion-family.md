@@ -22,7 +22,7 @@
 |---|---|---|---|
 | `reliquary:rending_gale` | horizon chart replaces one gold ingot | IV | Rending Gale grants flight; flight tools share the IV exploration stage with elite jetpacks and the JDT flight upgrade |
 | `theurgy:crafting/shaped/sulfuric_flux_emitter` | containment seal fills an empty slot | IV | Reformation converts sulfurs within a rarity tier, a controlled transmutation route |
-| Forbidden and Arcanus ritual `eternal_stella` | one containment seal added as a third pedestal input (five of eight pedestals used) | IV | The eternal modifier makes tools unbreakable |
+| Forbidden and Arcanus ritual `eternal_stella` | our own ritual `entrelumen:eternal_stella` (`pack/kubejs/data/entrelumen/forbidden_arcanus/hephaestus_forge/ritual/`) with the native inputs plus one containment seal as a third pedestal input (five of eight pedestals used); the mod's file is written as a `neoforge:false` stub because Forbidden Arcanus is all rights reserved, and `--check` fails unless the native ritual equals ours without the seal | IV | The eternal modifier makes tools unbreakable |
 | `reliquary:alkahestry/crafting/*` (22 IDs) and `reliquary:alkahestry_tome` | removed | — | Redstone-charged duplication of iron, gold, diamonds, emeralds and nether stars is an EMC-like route the pack excludes. The silver, steel and tin variants use empty `forge:` tags and never load; the script records them as already absent instead of aborting |
 | `reliquary:uncrafting/spawn_egg` | removed | — | Spawn eggs from charm fragments would retype vanilla spawners and bypass the staged RFTools/IF/HNN mob routes |
 

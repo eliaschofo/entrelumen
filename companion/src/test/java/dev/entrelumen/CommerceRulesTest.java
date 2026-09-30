@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 
 class CommerceRulesTest {
   private static final Path DATA = Path.of("src/main/resources/data/entrelumen");
+  private static final String SHARD = "entrelumen:sour_light_shard";
 
   private static Map<String, CommerceRules.Table> tables(String directory, boolean natives) throws IOException {
     Map<String, CommerceRules.Table> tables = new TreeMap<>();
@@ -120,9 +121,54 @@ class CommerceRulesTest {
         assertFalse(item.startsWith("entrelumen:luminosity_") && offer != table.luminosity(),
             table.id() + " sells a Luminosity outside a native's offer");
         assertNotEquals(item, offer.price().item(), table.id() + " trades " + item + " for itself");
-        assertTrue(offer.price().item().equals(CommerceRules.EMERALD) || offer.price().item().equals("minecraft:emerald_block"),
-            table.id() + " is not priced in emeralds");
+        assertTrue(offer.price().item().equals(CommerceRules.EMERALD) || offer.price().item().equals("minecraft:emerald_block")
+                || (table.id().equals("rarities") && offer.price().item().equals(SHARD)),
+            table.id() + " is not priced in emeralds (only Cenit takes sour light shards)");
       }
+    }
+  }
+
+  /**
+   * The Envés's shards buy the reforging loop and a second life at Cenit, all late (docs/design/
+   * solsticio-commerce.md, "Sour light shards"): one stack at most per trade, nothing before act VI, flat
+   * prices, no Luminosity and nothing the story keeps for the world.
+   */
+  @Test
+  void sourLightShardsBuyOnlyTheWaitingRaritiesAtCenit() throws IOException {
+    var shops = tables("solsticio_shops", false);
+    var natives = tables("solsticio_natives", true);
+    List<CommerceRules.OfferSpec> shardTrades = new ArrayList<>();
+    for (var table : shops.values())
+      for (var offer : table.offers()) {
+        boolean pays = offer.price().item().equals(SHARD) || (offer.extra() != null && offer.extra().item().equals(SHARD));
+        if (!pays) continue;
+        assertEquals("rarities", table.id(), "Only Cenit takes shards");
+        shardTrades.add(offer);
+      }
+    for (var table : natives.values())
+      for (var offer : all(table))
+        assertFalse(offer.price().item().equals(SHARD) || (offer.extra() != null && offer.extra().item().equals(SHARD)),
+            table.id() + " takes shards: Luminosities are decided with Elias");
+    assertTrue(shardTrades.size() >= 5 && shardTrades.size() <= 10, "The shard table is " + shardTrades.size() + " trades");
+    Set<String> allowed = Set.of("apotheosis:gem_dust", "apotheosis:luminous_crystal_shard", "apotheosis:arcane_sands",
+        "apotheosis:sigil_of_rebirth", "apotheosis:sigil_of_socketing", "apotheosis:sigil_of_withdrawal",
+        "minecraft:totem_of_undying");
+    Set<String> sold = new HashSet<>();
+    for (var offer : shardTrades) {
+      String item = offer.sell().item();
+      assertTrue(allowed.contains(item), "Shards buy " + item);
+      assertTrue(sold.add(item), item + " is sold twice for shards");
+      assertNull(offer.extra(), item + " asks a second cost besides its shards");
+      assertTrue(offer.price().count() >= 1 && offer.price().count() <= 64, item + " costs more than one stack of shards");
+      assertTrue(offer.gate().act() >= 6, item + " opens before Solsticio's act");
+      assertEquals(0F, offer.priceMultiplier(), item + " gets dearer with demand: its price is the table's");
+    }
+    assertEquals(allowed, sold, "The shard table drifted from the document");
+    // Nothing that is a Nether star, a mythic material or a Luminosity in disguise.
+    for (String item : sold) {
+      assertNotEquals("minecraft:nether_star", item);
+      assertNotEquals("apotheosis:godforged_pearl", item);
+      assertFalse(item.startsWith("entrelumen:luminosity_"), item);
     }
   }
 
