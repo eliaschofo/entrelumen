@@ -152,7 +152,8 @@
     {"id": "clock_glow", "glow": [23.16, -1.16], "r": 1.3, "tint": "#FFE9A8", "alpha": 160, "reveal": "entrelumen_solsticio_toy_bell", "order": -3},
     {"id": "finale_sun", "picture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 31.2, "y": -3.2, "w": 2.6, "h": 2.6, "reveal": "entrelumen_solsticio_close", "order": -3},
     {"id": "finale_glow", "glow": [31.2, -3.2], "r": 3.8, "alpha": 90, "reveal": "entrelumen_solsticio_close", "order": -4},
-    {"id": "finale", "glow": [15.0, 0.6], "r": 13.0, "tint": "#FFF1B8", "alpha": 60, "reveal": "entrelumen_solsticio_close", "order": 3}
+    {"id": "finale", "glow": [15.0, 0.6], "r": 13.0, "tint": "#FFF1B8", "alpha": 60, "reveal": "entrelumen_solsticio_close", "order": 3},
+    {"id": "shards", "scatter": ["entrelumen:textures/item/sour_light_shard.png"], "region": [19.2, 3.0, 20.9, 3.5], "count": 3, "size": [0.4, 0.5], "seed": 3, "reveal": "entrelumen_solsticio_shards", "order": -2}
   ],
   "quests": [
     {
@@ -322,6 +323,28 @@
                  "{page}",
                  "Y doce más, de semillas a curiosidades."]},
       "sources": ["repo:docs/design/solsticio-commerce.md", "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/bookstore.json", "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/rarities.json", "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/parts.json"]
+    },
+    {
+      "key": "entrelumen_solsticio_shards", "deps": ["entrelumen_solsticio_shops"], "type": "item", "item": "entrelumen:sour_light_shard", "optional": true, "layout": {"x": 19.3, "y": 4.7, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "What the Envés Leftovers Buy",
+        "text": ["[lead] Cenit takes [item:entrelumen:sour_light_shard|Sour Light Shards] from act [hl|VI] on, and never more than one stack per trade.",
+                 "[li] Gem dust, rare and epic materials",
+                 "[li] Sigils of Rebirth, Socketing and Withdrawal",
+                 "[li] A [item:minecraft:totem_of_undying|totem of undying] for [hl|54]",
+                 "Prices stay put, and the liberation lowers them like any other.",
+                 "{page}",
+                 "So the shards that pile up after the gate finally have a use.",
+                 "Nether stars and Luminosities still don't come with them."]},
+      "es_es": {"title": "En qué se gastan las sobras del Envés",
+        "text": ["[lead] Cenit acepta [item:entrelumen:sour_light_shard|esquirlas de luz agria] desde el acto [hl|VI], y nunca más de una pila por trato.",
+                 "[li] Polvo de gema, materiales raros y épicos",
+                 "[li] Sellos de Renacimiento, de Acoplamiento y de Retirada",
+                 "[li] Un [item:minecraft:totem_of_undying|tótem de la inmortalidad] por [hl|54]",
+                 "Los precios no se mueven, y la liberación los baja como a todos.",
+                 "{page}",
+                 "Así las esquirlas que sobran después de la puerta por fin sirven.",
+                 "Estrellas del Nether y Luminosidades siguen sin venir con ellas."]},
+      "sources": ["repo:docs/design/solsticio-commerce.md", "repo:docs/design/dungeon-enves.md", "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/rarities.json"]
     },
     {
       "key": "entrelumen_solsticio_gated_offers", "deps": ["entrelumen_solsticio_shops"], "type": "item", "item": "minecraft:elytra", "optional": true, "layout": {"x": 23.4, "y": 7.7, "size": 1.0, "shape": "pentagon"},

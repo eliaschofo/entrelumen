@@ -310,6 +310,10 @@ class Sectors(unittest.TestCase):
         self.assertEqual(self.quests[stable_id("quest:crb_alloy")]["id"], stable_id("quest:crb_alloy"))
         self.assertIn(stable_id("quest:arsspell_book"), self.quests)
 
+    # Short chapters of the pack's own systems, exempt from the chain standard: Terra's garden is six nodes
+    # by request (plan, ghost, build, wake, first harvest, ten million; docs/design/terra-garden.md).
+    SMALL_SECTORS = {"sector_entrelumen_terra_garden": (6, 12)}
+
     def test_sector_standard_is_met(self):
         # docs/design/quest-book-v3.md, "Estándar de una cadena".
         counts = {"sector_create_kinetics": (45, 90), "sector_create_logistics": (45, 90),
@@ -318,6 +322,11 @@ class Sectors(unittest.TestCase):
         for name, data in self.sectors.items():
             roles = [q["role"] for q in data["quests"] if quest_art.is_counted(q)]   # decor is never content
             with self.subTest(sector=name):
+                if name in self.SMALL_SECTORS:   # a short ENTRELUMEN system chapter: one path, entry to capstone
+                    lo, hi = self.SMALL_SECTORS[name]
+                    self.assertTrue(lo <= len(roles) <= hi, len(roles))
+                    self.assertEqual((roles.count("entry"), roles.count("capstone")), (1, 1))
+                    continue
                 lo, hi = counts.get(name, (20, 90))  # the standard for chapters without their own range
                 self.assertTrue(lo <= len(roles) <= hi, len(roles))
                 self.assertEqual(roles.count("capstone"), 1)

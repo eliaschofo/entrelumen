@@ -85,9 +85,18 @@ def when_item_exists(path, item_id, why):
     return {'path': path, 'op': 'item_exists', 'item': item_id, 'why': why}
 
 
-def disabled(path, why):
-    """Disable a broken upstream data file with a neoforge:false condition."""
-    return {'path': path, 'op': 'disable', 'why': why}
+DISABLED_STUB = {'neoforge:conditions': [{'type': 'neoforge:false'}]}
+
+
+def disabled(path, why, *, stub=False):
+    """Disable a broken upstream data file with a neoforge:false condition.
+
+    By default the file keeps the upstream body under the condition. `stub=True` writes the condition alone
+    and nothing of the mod's file: for a mod whose license does not let the repository copy its data
+    (tools/check_loot_tables.py --copies), and for whatever a disabled file never needed (NeoForge reads the
+    conditions of a recipe, advancement, loot table or datapack registry entry first and drops the entry
+    without parsing the rest)."""
+    return {'path': path, 'op': 'disable', 'why': why, 'stub': stub}
 
 
 def renamed_key(path, field, old, new, why, *, more=None):
@@ -100,6 +109,17 @@ def renamed_key(path, field, old, new, why, *, more=None):
 def with_value(path, field, value, why, *, limit):
     """Append one element to a list in an upstream data file (bounded by the mod's own slot limit)."""
     return {'path': path, 'op': 'append', 'field': field, 'value': value, 'limit': limit, 'why': why}
+
+
+def authored(path, to, spec, field, value, why, *, limit):
+    """Replace an upstream data file of a mod whose license reserves its data with a file of our own.
+
+    `path` is written as the false condition alone (the upstream entry never loads) and `spec`, our own
+    JSON, is written at `to`, an ID of ours. The upstream file must equal `spec` without its last `field`
+    element `value`, so the entry keeps every native behaviour and adds exactly that element (bounded by
+    the mod's own slot `limit`). Nothing of the mod's file is copied; a changed upstream fails --check."""
+    return {'path': path, 'op': 'authored', 'to': to, 'spec': spec, 'field': field, 'value': value,
+            'limit': limit, 'why': why}
 
 
 def without_values(path, field, values, why):
@@ -201,8 +221,10 @@ ETERNA_TIERS = ('haven', 'frontier', 'ascent', 'summit', 'pinnacle')
 
 
 def eterna_ceiling(tier):
-    """Set a World Tier's max_eterna augment to the ceiling eterna_ceilings derives for it."""
+    """Set a World Tier's max_eterna to the ceiling eterna_ceilings derives for it: the Apotheosis augment at
+    `path` goes off and our own augment at `to` carries the value (see eterna_override)."""
     return {'path': f'data/apotheosis/tier_augments/{tier}/max_eterna.json', 'op': 'eterna_ceiling', 'tier': tier,
+            'to': f'data/entrelumen/tier_augments/{tier}/max_eterna.json',
             'why': 'The Eterna ceiling equals the best Eterna of the shelves the story unlocks by then'}
 
 
@@ -294,6 +316,19 @@ LUMINOUS_MATERIAL_ACTS = {'naturesaura:sky_ingot': 'V', 'mekanism:alloy_atomic':
 UNCRAFTABLE_CREATIVE = ('create:creative_crate', 'ae2:creative_storage_cell', 'mekanism:creative_bin',
                         'functionalstorage:creative_vending_upgrade', 'modularrouters:creative_module',
                         'sophisticatedbackpacks:infinity_upgrade', 'sophisticatedstorage:infinity_upgrade')
+
+
+# The Luminous Ingot also grows: Mystical Agriculture's supremium (tier 5) crop `luminous_ingot`, declared
+# in pack/config/mysticalcustomization/crops/luminous_ingot.json. Its seed costs four ingots and four
+# supremium essence (MA's own dynamic infusion recipe, generated from the crop's `ingredient`), so the first
+# ingot still needs the six Luminosities. The Luminosities themselves have no crop: villager trades only.
+# The essence-to-ingot recipe is the one authorised second producer of the ingot; it follows the ratio of
+# MA's rarest supremium ingots (netherite and draconium: a ring of eight essences gives one ingot).
+LUMINOUS_CROP = 'luminous_ingot'
+LUMINOUS_CROP_FILE = ROOT / f'pack/config/mysticalcustomization/crops/{LUMINOUS_CROP}.json'
+LUMINOUS_ESSENCE = f'mysticalagriculture:{LUMINOUS_CROP}_essence'
+LUMINOUS_SEEDS = f'mysticalagriculture:{LUMINOUS_CROP}_seeds'
+LUMINOUS_CROP_LANG = ROOT / 'pack/resourcepacks/entrelumen/assets/mysticalcustomization/lang'
 
 
 def created_shaped(recipe_id, output, pattern, key, why, *, components=None, disciplines=()):
@@ -447,6 +482,10 @@ PINGPONG_BROKEN_RECIPES = [
     ('mekanism:sawing/trapdoor/glacian', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
     ('mekanism:sawing/trapdoor/strophar', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
 ]
+
+# Mods of PINGPONG_BROKEN_RECIPES whose license reserves their data (all rights reserved): their disabled
+# recipes are written as the false condition alone, with no part of the mod's file.
+ARR_RECIPE_NAMESPACES = {'createdeco', 'malum'}
 
 # Ad Astra 1.16.19 keeps its chest loot in the 1.20 folder, which 1.21.1 never loads, so every chest of its
 # planet structures got the empty table (28 September 2026). The templates' LootTable tags name exactly
@@ -699,11 +738,35 @@ QUEEN_STAR_BUCKET = dict(QUEEN_STAR, xp_reward=50, weight=80)
 # optional built-in datapack. Its pack source never adds itself (RoomTemplatePackSource.shouldAddAutomatically
 # is false), so a new world has no template and no machine recipe until an operator runs
 # /compactmachines enable_basic_templates and restarts. The pack loads those files unchanged instead.
+# Our own Hephaestus ritual for the Eternal Stella (Forbidden Arcanus is all rights reserved: its file is not
+# copied). Same essences, forge tier, circle, main item, result and pedestal items as the native ritual, which
+# `authored` checks against the pinned JAR, plus the containment seal on a third pedestal.
+ETERNAL_STELLA_RITUAL = {
+    'essences': {'aureal': 82, 'blood': 1000, 'souls': 1},
+    'forge_tier': 3,
+    'inputs': [
+        {'amount': 3, 'ingredient': {'item': 'forbidden_arcanus:xpetrified_orb'}},
+        {'amount': 1, 'ingredient': {'item': 'forbidden_arcanus:stellarite_piece'}},
+        {'amount': 1, 'ingredient': {'item': CS}},
+    ],
+    'magic_circle': 'forbidden_arcanus:create_item',
+    'main_ingredient': {'item': 'minecraft:diamond'},
+    'result': {'type': 'forbidden_arcanus:create_item',
+               'result_item': {'count': 1, 'id': 'forbidden_arcanus:eternal_stella'}},
+}
+
 CM_BASIC = 'data/compactmachines/datapacks/basic_templates/'
 CM_ROOMS = ('tiny', 'small', 'normal', 'large', 'giant', 'colossal', 'soaryn', 'farming')
 CM_ROOM_FILES = tuple(f'data/compactmachines/{path}.json' for room in CM_ROOMS
                       for path in (f'compactmachines/room_templates/{room}', f'recipe/new_machine_{room}',
                                    f'advancement/recipes/misc/new_machine_{room}'))
+
+LUMINOUS_FARMED = [
+    created_shaped('entrelumen:luminous_ingot_from_essence', LUMINOUS_INGOT, ['EEE', 'E E', 'EEE'],
+                   {'E': item(LUMINOUS_ESSENCE)},
+                   'Eight supremium essences of the luminous crop, like netherite: one ingot'),
+]
+
 
 FAMILIES = {
     'industrial': {
@@ -801,14 +864,16 @@ FAMILIES = {
                 'gravel', 'gunpowder', 'iron_ingot', 'lapis_lazuli', 'nether_star', 'netherrack', 'obsidian', 'sand',
                 'sandstone', 'silver_ingot', 'soul_sand', 'steel_ingot', 'tin_ingot')],
         'data': [
-            with_value('data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/eternal_stella.json', 'inputs',
-                       {'amount': 1, 'ingredient': {'item': CS}}, 'Unbreakable-tool modifier', limit=8),  # eight forge pedestals
+            authored('data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/eternal_stella.json',
+                     'data/entrelumen/forbidden_arcanus/hephaestus_forge/ritual/eternal_stella.json',
+                     ETERNAL_STELLA_RITUAL, 'inputs', {'amount': 1, 'ingredient': {'item': CS}},
+                     'Unbreakable-tool modifier', limit=8),  # eight forge pedestals
             renamed_key('data/create_enchantment_industry/data_maps/fluid/unit/experience.json', 'values',
                         'reliquary:xp_juice_still', 'reliquary:xp_still', "Reliquary registers its experience fluid as xp_still;"
                         " Ender IO 8.2 (mod ping-pong) registers fluid_xp_juice_still",
                         more={'enderio:xpjuice': 'enderio:fluid_xp_juice_still'}),
             disabled('data/irons_jewelry/loot_table/generate_jewelry_test_materials.json',
-                     "Developer test table whose material keys are tags, which the loot codec rejects"),
+                     "Developer test table whose material keys are tags, which the loot codec rejects", stub=True),
         ],
     },
     'apotheosis': {
@@ -918,7 +983,8 @@ FAMILIES = {
         ],
         # Upstream recipes that fail to parse on 1.21.1 (pre-1.21 result/ingredient formats, forge: tags or
         # removed spirit keys); disabled so the log stays clean, listed in docs/design/mod-pingpong.md.
-        'data': [disabled(f"data/{rid.split(':')[0]}/recipe/{rid.split(':')[1]}.json", why)
+        'data': [disabled(f"data/{rid.split(':')[0]}/recipe/{rid.split(':')[1]}.json", why,
+                          stub=rid.split(':')[0] in ARR_RECIPE_NAMESPACES)
                  for rid, why in PINGPONG_BROKEN_RECIPES] + [
             # The Orb of Prophecy recipe above is the act IV gate to Starlight, but the Gatekeeper, whose
             # portal ruins spawn across the Overworld, dropped an Orb on the first win and sold more for one
@@ -970,9 +1036,11 @@ FAMILIES = {
             # advancements name the missing parent minecraft:root and fail to load, and wander_add_map
             # rewards a function the JAR does not ship; disabled so the log stays clean.
             disabled('data/minecraft/advancement/give_quest_trader_trade.json',
-                     "Dungeons and Taverns quest-trader hook whose parent minecraft:root does not exist in 1.21.1"),
+                     "Dungeons and Taverns quest-trader hook whose parent minecraft:root does not exist in 1.21.1",
+                     stub=True),
             disabled('data/minecraft/advancement/wander_add_map.json',
-                     "Dungeons and Taverns wandering-trader hook with a missing parent and a missing reward function"),
+                     "Dungeons and Taverns wandering-trader hook with a missing parent and a missing reward function",
+                     stub=True),
         ],
     },
     # Round 5 of the mod ping-pong, batch 3 (docs/design/mod-pingpong.md, «Lote 3»): compat between systems the
@@ -1143,6 +1211,7 @@ FAMILIES = {
         'changes': [],
         'removals': [],
         'creations': LUMINOUS_RECIPES,
+        'farmed': LUMINOUS_FARMED,
         'uncraftable': list(UNCRAFTABLE_CREATIVE) + [LUMINOSITY[d] for d in DISCIPLINES],
         'data': [
             # Farmer's Delight 1.3.3 ships its Silent Gear netherwood cutting recipe in the pre-1.21
@@ -1670,9 +1739,26 @@ def build_data(name, found=None, templates=None):
                 assert eterna_augment_paths(found) <= covered, \
                     f'Unhandled max_eterna augments: {sorted(eterna_augment_paths(found) - covered)}'
             ETERNA_REPORT[name] = {tier: row['ceiling'] for tier, row in model['tiers'].items()}
-            text = eterna_override(spec, sources, model)
-            if text is not None:  # a tier without an upstream augment already sits at the base
-                outputs_by_path[spec['path'][len('data/'):]] = text
+            for target, text in eterna_override(spec, sources, model).items():
+                assert target not in outputs_by_path, f'{target}: written twice'
+                assert target == spec['path'][len('data/'):] or not found.get('data/' + target), f'{target}: a pinned JAR ships it'
+                outputs_by_path[target] = text  # a tier without an upstream augment already sits at the base
+            continue
+        if spec['op'] == 'authored':
+            assert len(sources) == 1, f"{spec['path']}: expected one pinned upstream file, found {len(sources)}"
+            assert not found.get(spec['to']), f"{spec['to']}: a pinned JAR ships this path"
+            original = json.loads(sources[0][2])
+            assert 'neoforge:conditions' not in original, f"{spec['path']}: already conditional upstream"
+            values = spec['spec'][spec['field']]
+            assert values and values[-1] == spec['value'], f"{spec['to']}: {spec['field']} must end with the added element"
+            occupied = sum(v.get('amount', 1) for v in values)
+            assert occupied <= spec['limit'], f"{spec['to']}: {spec['field']} overflows the mod's {spec['limit']} slots"
+            reverse = copy.deepcopy(spec['spec'])
+            reverse[spec['field']] = values[:-1]
+            assert reverse == original, f"{spec['path']}: upstream differs from the spec without the added element"
+            for target, text in ((spec['path'], DISABLED_STUB), (spec['to'], spec['spec'])):
+                assert target[len('data/'):] not in outputs_by_path, f'{target}: written twice'
+                outputs_by_path[target[len('data/'):]] = json.dumps(text, indent=2, ensure_ascii=False) + '\n'
             continue
         if spec['op'] == 'tag_values':
             # Tags merge across datapacks, so the pack file carries only the new values.
@@ -1725,6 +1811,9 @@ def build_data(name, found=None, templates=None):
             # A file that is already conditional keeps its conditions after the leading neoforge:false.
             kept = original.get('neoforge:conditions', [])
             assert {'type': 'neoforge:false'} not in kept, f"{spec['path']}: already disabled"
+            if spec['stub']:  # nothing of the upstream body is written; the check above still watches the file
+                outputs_by_path[spec['path'][len('data/'):]] = json.dumps(DISABLED_STUB, indent=2) + '\n'
+                continue
             result = {**original, 'neoforge:conditions': [{'type': 'neoforge:false'}] + kept}
             if not kept:
                 result = {'neoforge:conditions': result.pop('neoforge:conditions'), **result}
@@ -2083,36 +2172,33 @@ def walk_ladder(recipes, stats, world, acts_by_tier, low, high):
 
 
 def eterna_override(spec, sources, model):
-    """The tier's upstream max_eterna augment carrying ceiling - base, or disabled (neoforge:false before
-    its own condition) when that is 0; type, target, sort index, ID and condition stay native. A tier
-    without an upstream augment must already sit at the base. Fails when the upstream file changes shape."""
+    """{path below pack/kubejs/data: JSON text} that set a tier's max_eterna to ceiling - base.
+
+    Apotheosis's own augment (its license reserves its assets, and Placebo's registry has no merge) is written
+    as the false condition alone and our augment, at an ID of ours, carries the whole value. Placebo's
+    registry reads every namespace and the tier applies every augment it lists, so nothing of the mod's file
+    is copied. At 0 the stub alone leaves the tier at the base. A tier without an upstream augment must
+    already sit at the base. Fails when the upstream file changes shape."""
     tier, ceiling = spec['tier'], model['tiers'][spec['tier']]['ceiling']
     value = ceiling - model['base']
     assert model['min'] <= ceiling <= model['max'], f"{tier}: ceiling {ceiling} outside the attribute's range"
     if not sources:
         assert value == 0, f"{spec['path']}: no upstream augment to carry {value}"
-        return None
+        return {}
     assert len(sources) == 1 and sources[0][0].startswith('Apotheosis-'), f"{spec['path']}: expected Apotheosis alone"
     original = json.loads(sources[0][2])
     modifier = original.get('modifier', {})
-    assert set(original) == AUGMENT_FIELDS and original['type'] == 'apotheosis:attribute' \
-        and original['target'] == 'players' and original['tier'] == tier \
-        and original['modifier_id'] == f'apotheosis:{tier}/max_eterna' and isinstance(original['sort_index'], int) \
-        and original['neoforge:conditions'] == [{'type': 'neoforge:mod_loaded', 'modid': 'apothic_enchanting'}] \
-        and set(modifier) == {'attribute', 'operation', 'value'} and modifier['attribute'] == MAX_ETERNA \
-        and modifier['operation'] == 'add_value' and isinstance(modifier['value'], (int, float)), \
-        f"{spec['path']}: upstream augment changed shape"
-    if value == 0:
-        conditions = [{'type': 'neoforge:false'}] + original['neoforge:conditions']
-        result = {'neoforge:conditions': conditions, **{k: v for k, v in original.items() if k != 'neoforge:conditions'}}
-        reverse = dict(result, **{'neoforge:conditions': conditions[1:]})
-    else:
-        result = copy.deepcopy(original)
-        result['modifier']['value'] = value
-        reverse = copy.deepcopy(result)
-        reverse['modifier']['value'] = modifier['value']
-    assert reverse == original, f"{spec['path']}: unrelated upstream data changed"
-    return json.dumps(result, indent=2, ensure_ascii=False) + '\n'
+    assert set(original) == AUGMENT_FIELDS and original['type'] == 'apotheosis:attribute'         and original['target'] == 'players' and original['tier'] == tier         and original['modifier_id'] == f'apotheosis:{tier}/max_eterna' and isinstance(original['sort_index'], int)         and original['neoforge:conditions'] == [{'type': 'neoforge:mod_loaded', 'modid': 'apothic_enchanting'}]         and set(modifier) == {'attribute', 'operation', 'value'} and modifier['attribute'] == MAX_ETERNA         and modifier['operation'] == 'add_value' and isinstance(modifier['value'], (int, float)),         f"{spec['path']}: upstream augment changed shape"
+    written = {spec['path'][len('data/'):]: json.dumps(DISABLED_STUB, indent=2) + '\n'}
+    if value != 0:
+        # The fields of the augment codec, valued from our ceiling; the native order and sort index stay as displayed.
+        own = {'neoforge:conditions': [{'type': 'neoforge:mod_loaded', 'modid': 'apothic_enchanting'}],
+               'type': 'apotheosis:attribute',
+               'modifier': {'attribute': MAX_ETERNA, 'operation': 'add_value', 'value': value},
+               'modifier_id': f'entrelumen:{tier}/max_eterna', 'sort_index': original['sort_index'],
+               'target': 'players', 'tier': tier}
+        written[spec['to'][len('data/'):]] = json.dumps(own, indent=2, ensure_ascii=False) + '\n'
+    return written
 
 
 def eterna_augment_paths(found):
@@ -2229,7 +2315,7 @@ def creation_inputs(spec):
 def creation_files(name):
     """{path below pack/kubejs/data: JSON text}. Pure, so CI can compare it without the pinned JARs."""
     out = {}
-    for spec in FAMILIES[name].get('creations', []):
+    for spec in FAMILIES[name].get('creations', []) + FAMILIES[name].get('farmed', []):
         namespace, path = spec['id'].split(':', 1)
         out[f'{namespace}/recipe/{path}.json'] = json.dumps(creation_json(spec), indent=2, ensure_ascii=False) + '\n'
     return out
@@ -2288,7 +2374,35 @@ def check_creations_static(name):
     if ingot:
         assert sorted(i for i in creation_inputs(ingot[0]) if i in luminosities) == sorted(luminosities), \
             'The ingot must use each Luminosity exactly once'
+    check_farmed_static(name)
     return uses
+
+
+def check_farmed_static(name):
+    """The luminous crop: the only second producer of the Luminous Ingot. Its recipe is a ring of eight of the
+    crop's essences, gives one ingot and needs no Luminosity (the seed needs the ingot instead), and the crop
+    file, the seed's ingredient and the display name in both languages agree with it."""
+    family = FAMILIES[name]
+    farmed = family.get('farmed', [])
+    if not farmed:
+        return
+    ids = [s['id'] for s in family.get('creations', [])] + [s['id'] for s in farmed]
+    assert len(ids) == len(set(ids)), 'Duplicate creation or farmed ID'
+    creations = {s['output'] for s in family.get('creations', [])}
+    for spec in farmed:
+        assert spec['kind'] == 'shaped' and spec['output'] == LUMINOUS_INGOT and spec['output'] in creations, spec['id']
+        ring = (spec['pattern'], spec['key']) == (['EEE', 'E E', 'EEE'], {'E': item(LUMINOUS_ESSENCE)})
+        assert ring, f"{spec['id']}: the essence recipe is a ring of eight essences"
+        assert not spec['components'] and not spec['disciplines'] and spec['act'] == LUMINOUS_ACT, spec['id']
+        assert not any(i in LUMINOSITY.values() for i in creation_inputs(spec)), f"{spec['id']}: a Luminosity"
+    assert not set(LUMINOSITY.values()) & {LUMINOUS_ESSENCE, LUMINOUS_SEEDS}, 'A Luminosity has a crop'
+    crop = read(LUMINOUS_CROP_FILE)
+    assert crop['tier'] == 'mysticalagriculture:5' and crop['type'] == 'mysticalagriculture:resource', crop
+    assert crop['ingredient'] == {'item': LUMINOUS_INGOT}, 'The luminous seed must be paid with the ingot itself'
+    assert not {'essence', 'seeds', 'recipes', 'enabled'} & set(crop), 'The crop keeps the recipes MA generates'
+    for language in ('en_us', 'es_es'):
+        names = read(LUMINOUS_CROP_LANG / f'{language}.json')
+        assert names.get(f'crop.mysticalcustomization.{LUMINOUS_CROP}'), f'{language}: the crop has no name'
 
 
 def item_model_sources():
@@ -2473,18 +2587,28 @@ def check_creations(name, recipes):
     exclusive = {s['output'] for s in specs} | set(family['uncraftable'])
     for recipe in local:
         assert not outputs(recipe) & exclusive, f'A pack or companion recipe produces {outputs(recipe) & exclusive}'
-    loops = find_loops(specs, [r for r, _ in recipes.values()] + local, tag_members(), set(LUMINOSITY.values()))
+    farmed = family.get('farmed', [])
+    if farmed:
+        # The crop lives in Mystical Agriculture (its essence, seeds and infusion recipe) and is declared by
+        # Mystical Customization; both JARs must be pinned for the essence recipe's input to exist.
+        for mod_id in ('mysticalagriculture', 'mysticalcustomization'):
+            entry = next((e for e in lock['mods'] if mod_id in {m['id'] for m in e['metadata']['mods']}), None)
+            assert entry, f'{mod_id} is not pinned, but the luminous crop needs it'
+            used[entry['filename']] = entry['sha256']
+    loops = find_loops(specs, [r for r, _ in recipes.values()] + local + [creation_json(s) for s in farmed],
+                       tag_members(), set(LUMINOSITY.values()))
     assert not loops, f'Recipe loops through the luminous creations: {loops}'
     return dict(sorted(used.items()))
 
 
 CREATIONS_RUNTIME = '''
 ServerEvents.recipes(event => {
-  // Exclusive outputs: any other recipe for a creation's output, or for an uncraftable item, goes.
+  // Exclusive outputs: any other recipe for a creation's output, or for an uncraftable item, goes; the
+  // farmed recipes listed in a row (the luminous crop's essence ring) are its only authorised extras.
   var displaced = [];
   CREATIONS.forEach(row => {
     event.findRecipeIds({output: row.output}).forEach(id => {
-      if (String(id) !== row.id) displaced.push({recipe: String(id), output: row.output});
+      if (String(id) !== row.id && row.farmed.indexOf(String(id)) < 0) displaced.push({recipe: String(id), output: row.output});
     });
   });
   UNCRAFTABLE.forEach(output => {
@@ -2499,7 +2623,11 @@ ServerEvents.afterRecipes(event => {
   CREATIONS.forEach(row => {
     var own = event.countRecipes({id: row.id, output: row.output});
     var producers = event.countRecipes({output: row.output});
-    if (own !== 1 || producers !== 1) failed.push({recipe: row.id, loadedOutput: own, producers: producers});
+    var farmed = 0;
+    row.farmed.forEach(id => { farmed += event.countRecipes({id: id, output: row.output}); });
+    if (own !== 1 || farmed !== row.farmed.length || producers !== 1 + row.farmed.length) {
+      failed.push({recipe: row.id, loadedOutput: own, farmedLoaded: farmed, producers: producers});
+    }
   });
   UNCRAFTABLE.forEach(output => {
     var producers = event.countRecipes({output: output});
@@ -2515,10 +2643,11 @@ def render_creations(family, prefix):
     specs = family.get('creations', [])
     if not specs:
         return ''
-    rows = [{'id': s['id'], 'output': s['output'], 'kind': s['kind'],
-             'disciplines': list(s['disciplines'])} for s in specs]
-    payload = json.dumps({'creations': [creation_json(s) for s in specs], 'uncraftable': family['uncraftable']},
-                         ensure_ascii=False, separators=(',', ':'), sort_keys=True)
+    farmed = family.get('farmed', [])
+    rows = [{'id': s['id'], 'output': s['output'], 'kind': s['kind'], 'disciplines': list(s['disciplines']),
+             'farmed': [f['id'] for f in farmed if f['output'] == s['output']]} for s in specs]
+    payload = json.dumps({'creations': [creation_json(s) for s in specs], 'farmed': [creation_json(s) for s in farmed],
+                          'uncraftable': family['uncraftable']}, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
     return (f'const {prefix}CreationsSignature = {json.dumps(hashlib.sha256(payload.encode("utf-8")).hexdigest())};\n'
             f'const {prefix}Creations = {json.dumps(rows, ensure_ascii=False, separators=(",", ":"))};\n'
             f'const {prefix}Uncraftable = {json.dumps(family["uncraftable"])};\n'
@@ -2612,7 +2741,8 @@ def render(name, rows, removals, used_files):
             .replace('SIGNATURE', prefix + 'Signature').replace('TAG', family['tag']))
     if not rows and not removals and family.get('creations'):
         body = ''  # a creation-only family edits no native recipe
-    scope = ('new recipes with exclusive outputs; Luminosities and item duplicators stay uncraftable'
+    scope = ('new recipes with exclusive outputs (the Luminous Ingot also grows from its Mystical Agriculture crop); '
+             'Luminosities and item duplicators stay uncraftable'
              if family.get('creations') else 'native acquisition only')
     return (f'// Generated by tools/generate_family_balance.py --family {name}; {scope}.\n'
             '// No team, act, use, dimension, origin, gift or reward checks.\n'

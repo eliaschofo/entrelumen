@@ -46,7 +46,7 @@ Required libraries resolved automatically: Cloth Config 15.0.140 (348521 / 57291
 | `fluxnetworks:flux_controller` | routing matrix (empty slot) | III | Network hub and inventory charging |
 | `justdirethings:portalgun`, `portalgun_v2` | routing matrix (one blazegold ingot) | III | Portal teleportation |
 | `justdirethings:upgrade_flight` | horizon chart (one phantom membrane) | IV | Flight upgrade for JDT armour |
-| `justdirethings:time_wand` | renewal engine (one blazegold ingot) | V | Block tick acceleration |
+| `justdirethings:time_wand` | renewal engine (one blazegold ingot) | V | Block tick acceleration, capped at 8x instead of 256x by `pack/defaultconfigs/justdirethings-server.toml` ([mod-pingpong](mod-pingpong.md#balance-del-29-9-varita-del-tiempo-y-semillas-luminosas)) |
 | `justdirethings:paradoxmachine` | Ark bus (one eclipse alloy ingot) | V | Area snapshot/restoration |
 | `compactmachines:personal_shrinking_device` | reinforced alloy (one iron ingot) | III | Entering and building compact rooms |
 | `hostilenetworks:sim_chamber` | ecosystem capsule (in place of the obsidian) | IV | Entity-free mob drops |
