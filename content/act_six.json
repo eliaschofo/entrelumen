@@ -1,325 +1,264 @@
 {
   "chapter": "solsticio",
   "act": 6,
-  "book": {"sun": {"x": 0, "y": 0, "scale": 3}, "panels": false, "finale_sun": false, "finale_medallion": true},
-  "title": {
-    "en_us": "VI · Solsticio",
-    "es_es": "VI · Solsticio"
-  },
+  "title": {"en_us": "VI · Solsticio", "es_es": "VI · Solsticio"},
   "subtitle": {
-    "en_us": [
-      "The capital of Heliodor, frozen inside the Entrelumen. Cross with the Light Key: the voices are waiting in person."
-    ],
-    "es_es": [
-      "La capital de Heliodor, congelada dentro del Entrelumen. Cruzá con la Llave de Luz: las voces te esperan en persona."
-    ]
+    "en_us": ["The capital of Heliodor, frozen inside the Entrelumen. Cross with the Light Key: the voices are waiting in person."],
+    "es_es": ["La capital de Heliodor, congelada dentro del Entrelumen. Cruzá con la Llave de Luz: las voces te esperan en persona."]
   },
   "autofocus": "solsticio_arrival",
-  "layout_groups": {
-    "arrival": {
-      "en_us": "The Light Key · The crossing",
-      "es_es": "La Llave de Luz · El cruce"
-    },
-    "town_hall": {
-      "en_us": "Aurelia · The town hall",
-      "es_es": "Aurelia · El Ayuntamiento"
-    },
-    "gardens": {
-      "en_us": "Juan · The gardens",
-      "es_es": "Juan · Los jardines"
-    },
-    "workshop": {
-      "en_us": "Terra · The workshop",
-      "es_es": "Terra · El taller"
-    },
-    "chapel": {
-      "en_us": "Bodhi · The chapel",
-      "es_es": "Bodhi · La capilla"
-    },
-    "portal": {
-      "en_us": "The portal · The Entrelumen",
-      "es_es": "El portal · El Entrelumen"
-    }
-  },
-  "milestones": [
-    "solsticio_arrival",
-    "solsticio_mayor",
-    "solsticio_seeds",
-    "solsticio_harvest",
-    "solsticio_power",
-    "solsticio_terraprism",
-    "solsticio_good_works",
-    "solsticio_blessing",
-    "solsticio_accord",
-    "solsticio_portal",
-    "solsticio_elections"
+  "layout_groups": {"arrival": {"en_us": "The Light Key · The crossing", "es_es": "La Llave de Luz · El cruce"}, "town_hall": {"en_us": "Aurelia · The town hall", "es_es": "Aurelia · El Ayuntamiento"}, "gardens": {"en_us": "Juan · The gardens", "es_es": "Juan · Los jardines"}, "workshop": {"en_us": "Terra · The workshop", "es_es": "Terra · El taller"}, "chapel": {"en_us": "Bodhi · The chapel", "es_es": "Bodhi · La capilla"}, "portal": {"en_us": "The portal · The Entrelumen", "es_es": "El portal · El Entrelumen"}},
+  "milestones": ["solsticio_arrival", "solsticio_mayor", "solsticio_seeds", "solsticio_harvest", "solsticio_power", "solsticio_terraprism", "solsticio_good_works", "solsticio_blessing", "solsticio_accord", "solsticio_portal", "solsticio_elections"],
+  "book": {"sun": {"x": 0, "y": 0, "scale": 3}, "panels": false, "finale_sun": false, "finale_medallion": true},
+  "presentation": 2,
+  "art": [
+    {"id": "sheet", "frame": [-12.4, -12.0, 12.4, 18.8], "color": "#8A7F6E", "thickness_px": 2.0, "alpha": 190, "corners": true, "sketch": true, "reveal": "solsticio_arrival", "order": -12},
+    {"id": "island_frozen", "mosaic": [-10.799999999999999, 10.4], "cell": 0.6, "rows": ["dddddddddddddddddddddddddddddddddddd", " dddddddddddddddddddddddddddddddddd ", "  ssssssssssssssssssssssssssssssss  ", "   ssssssssssssssssssssssssssssss   ", "    ssssssssssssssssssssssssssss    ", "      ssssssssssssssssssssssss      ", "        ssssssssssssssssssss        ", "          kkkkkkkkkkkkkkkk          ", "            kkkkkkkkkkkk            ", "             kkkkkkkkkk             ", "               kkkkkk               ", "                 kk                 "], "alpha": 90, "legend": {"d": "#6B4A2F", "s": "#6E6A62", "k": "#4F4B45"}, "order": -8},
+    {"id": "island", "mosaic": [-10.799999999999999, 10.4], "cell": 0.6, "rows": ["dddddddddddddddddddddddddddddddddddd", " dddddddddddddddddddddddddddddddddd ", "  ssssssssssssssssssssssssssssssss  ", "   ssssssssssssssssssssssssssssss   ", "    ssssssssssssssssssssssssssss    ", "      ssssssssssssssssssssssss      ", "        ssssssssssssssssssss        ", "          kkkkkkkkkkkkkkkk          ", "            kkkkkkkkkkkk            ", "             kkkkkkkkkk             ", "               kkkkkk               ", "                 kk                 "], "legend": {"d": "#6B4A2F", "s": "#6E6A62", "k": "#4F4B45"}, "reveal": "solsticio_arrival", "order": -7},
+    {"id": "grass", "path": [[-10.7, 10.55], [10.7, 10.55]], "texture": "minecraft:textures/block/grass_block_top.png", "tint": "#7DB85A", "width": 0.35, "step": 1.53, "sketch": true, "reveal": "solsticio_arrival", "order": 3},
+    {"id": "axis_w_frozen", "path": [[-1.0, 10.5], [-2.6, 13.55]], "texture": "minecraft:textures/block/quartz_block_bottom.png", "width": 0.45, "step": 0.62, "order": 2, "alpha": 80},
+    {"id": "axis_w", "path": [[-1.0, 10.5], [-2.6, 13.55]], "texture": "minecraft:textures/block/quartz_block_bottom.png", "width": 0.45, "step": 0.62, "order": 3, "reveal": "solsticio_accord"},
+    {"id": "axis_e_frozen", "path": [[1.0, 10.5], [2.6, 13.55]], "texture": "minecraft:textures/block/quartz_block_bottom.png", "width": 0.45, "step": 0.62, "order": 2, "alpha": 80},
+    {"id": "axis_e", "path": [[1.0, 10.5], [2.6, 13.55]], "texture": "minecraft:textures/block/quartz_block_bottom.png", "width": 0.45, "step": 0.62, "order": 3, "reveal": "solsticio_accord"},
+    {"id": "plaza_frozen", "picture": "minecraft:textures/block/quartz_block_bottom.png", "x": 0, "y": 13.75, "w": 6.6, "h": 0.35, "order": 2, "alpha": 80},
+    {"id": "plaza", "picture": "minecraft:textures/block/quartz_block_bottom.png", "x": 0, "y": 13.75, "w": 6.6, "h": 0.35, "order": 3, "reveal": "solsticio_accord"},
+    {"id": "cascade_ice", "path": [[9.9, 10.700000000000001], [9.9, 17.2]], "texture": "minecraft:textures/block/packed_ice.png", "width": 0.6, "step": 0.9, "turn": true, "tint": "#F2FAFF", "alpha": 120, "order": 2},
+    {"id": "cascade", "path": [[9.9, 10.700000000000001], [9.9, 17.2]], "sprite": "minecraft:block/water_flow", "tint": "#3F76E4", "width": 0.62, "step": 0.9, "turn": true, "reveal": "solsticio_portal", "order": 3},
+    {"id": "rim_cherries", "scatter": ["minecraft:textures/block/cherry_leaves.png", "minecraft:textures/block/pink_petals.png"], "region": [-10.6, 9.4, 10.6, 10.2], "count": 8, "size": [0.6, 0.85], "alphas": [60, 85], "seed": 17, "avoid": [[0, 9.4, 2.4], [-5.6, 9.6, 2.3], [3.6, 9.6, 1.4], [6.8, 9.6, 2.0]], "order": 2},
+    {"id": "dome_frozen", "picture": "entrelumen:textures/gui/quests/medallion.png", "x": 0, "y": 6.0, "w": 4.6, "h": 4.6, "tint": "#C9783F", "order": -1, "alpha": 80},
+    {"id": "dome", "picture": "entrelumen:textures/gui/quests/medallion.png", "x": 0, "y": 6.0, "w": 4.6, "h": 4.6, "tint": "#C9783F", "order": 0, "reveal": "solsticio_mayor"},
+    {"id": "tower_frozen", "mosaic": [-0.55, -4.9], "cell": 1.1, "rows": ["p", "p", "p", "p", "p", "p", "p", "p"], "legend": {"p": "minecraft:textures/block/quartz_pillar.png"}, "order": 0, "alpha": 80},
+    {"id": "tower", "mosaic": [-0.55, -4.9], "cell": 1.1, "rows": ["p", "p", "p", "p", "p", "p", "p", "p"], "legend": {"p": "minecraft:textures/block/quartz_pillar.png"}, "order": 1, "reveal": "solsticio_mayor"},
+    {"id": "tower_cap_frozen", "picture": "minecraft:textures/block/gold_block.png", "x": 0, "y": -5.1, "w": 1.5, "h": 0.45, "order": 1, "alpha": 80},
+    {"id": "tower_cap", "picture": "minecraft:textures/block/gold_block.png", "x": 0, "y": -5.1, "w": 1.5, "h": 0.45, "order": 2, "reveal": "solsticio_mayor"},
+    {"id": "palace_frozen", "mosaic": [-2.2, 6.0], "cell": 1.1, "rows": ["qqqq", "qqqq", "qqqq", "qqqq"], "legend": {"q": "minecraft:textures/block/quartz_bricks.png"}, "order": 1, "alpha": 80},
+    {"id": "palace", "mosaic": [-2.2, 6.0], "cell": 1.1, "rows": ["qqqq", "qqqq", "qqqq", "qqqq"], "legend": {"q": "minecraft:textures/block/quartz_bricks.png"}, "order": 2, "reveal": "solsticio_mayor"},
+    {"id": "palace_windows", "sprite": "minecraft:block/yellow_stained_glass", "cells": [[-1.65, 7.65], [1.65, 7.65], [-1.65, 9.75], [1.65, 9.75]], "w": 0.5, "h": 0.7, "reveal": "solsticio_mayor", "order": 3},
+    {"id": "aurelia", "text": {"en_us": "Aurelia", "es_es": "Aurelia"}, "x": 0, "y": 4.55, "scale": 2, "tint": "#E8DCB5", "reveal": "solsticio_mayor"},
+    {"id": "light_gold", "item": "minecraft:lantern", "x": -1.55, "y": 5.55, "size": 0.6, "reveal": "solsticio_accord", "order": 3},
+    {"id": "light_gold_glow", "glow": [-1.55, 5.6], "r": 1.0, "tint": "#FFD27A", "alpha": 210, "reveal": "solsticio_accord", "order": 2},
+    {"id": "light_turquoise", "item": "minecraft:lantern", "x": 1.55, "y": 5.55, "size": 0.6, "reveal": "solsticio_accord", "order": 3},
+    {"id": "light_turquoise_glow", "glow": [1.55, 5.6], "r": 1.0, "tint": "#7FE8D8", "alpha": 210, "reveal": "solsticio_accord", "order": 2},
+    {"id": "gate_frozen", "frame": [-0.95, 8.0, 0.95, 10.4], "color": "#E8B04A", "thickness_px": 4.0, "corners": false, "order": 2, "alpha": 80},
+    {"id": "gate", "frame": [-0.95, 8.0, 0.95, 10.4], "color": "#E8B04A", "thickness_px": 4.0, "corners": false, "order": 3, "reveal": "solsticio_portal"},
+    {"id": "portal", "sprite": "minecraft:block/nether_portal", "x": 0, "y": 9.2, "w": 1.7, "h": 2.3, "tint": "#FFD86B", "alpha": 210, "reveal": "solsticio_portal", "order": 2},
+    {"id": "portal_glow", "glow": [0, 9.2], "r": 2.4, "tint": "#FFE9A8", "alpha": 200, "reveal": "solsticio_portal", "order": 1},
+    {"id": "relic_1", "item": "entrelumen:heliodor_relic_1", "x": -0.75, "y": 7.55, "size": 0.55, "reveal": "solsticio_portal", "order": 4},
+    {"id": "relic_2", "item": "entrelumen:heliodor_relic_2", "x": 0.0, "y": 7.55, "size": 0.55, "reveal": "solsticio_portal", "order": 4},
+    {"id": "relic_3", "item": "entrelumen:heliodor_relic_3", "x": 0.75, "y": 7.55, "size": 0.55, "reveal": "solsticio_portal", "order": 4},
+    {"id": "gardens_frozen", "frame": [-7.8, 4.4, -3.5, 10.4], "color": "#B9B19C", "thickness_px": 2.0, "corners": false, "fill": "#E9E4D6", "fill_alpha": 70, "order": 0, "alpha": 80},
+    {"id": "gardens", "frame": [-7.8, 4.4, -3.5, 10.4], "color": "#B9B19C", "thickness_px": 2.0, "corners": false, "fill": "#E9E4D6", "fill_alpha": 240, "order": 1, "reveal": "solsticio_seeds"},
+    {"id": "greenhouse_frozen", "frame": [-7.5, 0.8, -3.8, 4.4], "color": "#4F9E8E", "thickness_px": 3.0, "corners": false, "fill": "#BFEFFF", "fill_alpha": 70, "order": 0, "alpha": 80},
+    {"id": "greenhouse", "frame": [-7.5, 0.8, -3.8, 4.4], "color": "#4F9E8E", "thickness_px": 3.0, "corners": false, "fill": "#BFEFFF", "fill_alpha": 80, "order": 1, "reveal": "solsticio_harvest"},
+    {"id": "greenhouse_gable_frozen", "path": [[-7.5, 0.8], [-5.65, -0.15], [-3.8, 0.8]], "color": "#4F9E8E", "width": 0.14, "order": 1, "alpha": 80},
+    {"id": "greenhouse_gable", "path": [[-7.5, 0.8], [-5.65, -0.15], [-3.8, 0.8]], "color": "#4F9E8E", "width": 0.14, "order": 2, "reveal": "solsticio_harvest"},
+    {"id": "tree_frozen", "path": [[-5.64, 4.3], [-5.64, -1.2]], "texture": "minecraft:textures/block/cherry_log.png", "width": 0.45, "step": 0.92, "turn": true, "order": -1, "alpha": 80},
+    {"id": "tree", "path": [[-5.64, 4.3], [-5.64, -1.2]], "texture": "minecraft:textures/block/cherry_log.png", "width": 0.45, "step": 0.92, "turn": true, "order": 0, "reveal": "solsticio_seeds"},
+    {"id": "canopy_frozen", "scatter": ["minecraft:textures/block/azalea_leaves.png", "minecraft:textures/block/cherry_leaves.png"], "region": [-7.8, -4.0, -3.5, -0.4], "count": 8, "size": [0.8, 1.2], "alphas": [55, 85], "seed": 3, "avoid": [[-5.64, -2.05, 0.9]], "order": 0},
+    {"id": "canopy", "scatter": ["minecraft:textures/block/flowering_azalea_leaves.png", "minecraft:textures/block/cherry_leaves.png", "minecraft:textures/block/pink_petals.png"], "region": [-7.8, -4.0, -3.5, -0.4], "count": 9, "size": [0.8, 1.2], "seed": 4, "avoid": [[-5.64, -2.05, 0.9]], "reveal": "solsticio_seeds", "order": 1},
+    {"id": "seeds", "scatter": ["minecraft:textures/item/wheat_seeds.png", "minecraft:textures/item/beetroot_seeds.png", "minecraft:textures/item/melon_seeds.png", "minecraft:textures/item/cocoa_beans.png"], "region": [-7.6, -0.2, -3.7, 0.7], "count": 5, "size": [0.35, 0.45], "seed": 6, "reveal": "solsticio_seeds", "order": 3},
+    {"id": "crops", "scatter": ["minecraft:textures/block/wheat_stage7.png", "minecraft:textures/block/carrots_stage3.png"], "region": [-7.3, 3.4, -4.0, 4.2], "count": 5, "size": [0.5, 0.6], "seed": 2, "avoid": [[-5.64, 2.05, 0.95]], "reveal": "solsticio_harvest", "order": 3},
+    {"id": "greenhouse_glow", "glow": [-5.64, 2.5], "r": 2.1, "tint": "#FFF0B0", "alpha": 170, "reveal": "solsticio_harvest", "order": 0},
+    {"id": "gardens_windows", "sprite": "minecraft:block/yellow_stained_glass", "cells": [[-7.0, 7.2], [-4.3, 7.2], [-7.0, 9.3], [-4.3, 9.3]], "w": 0.5, "h": 0.7, "reveal": "solsticio_harvest", "order": 3},
+    {"id": "juan", "text": {"en_us": "Juan", "es_es": "Juan"}, "x": -5.64, "y": 6.0, "scale": 2, "tint": "#4A3B2A", "shadow": false, "reveal": "solsticio_seeds"},
+    {"id": "lake_frozen", "sprite": "minecraft:block/water_still", "x": -9.15, "y": 10.0, "w": 2.3, "h": 0.5, "tint": "#3F76E4", "order": 1, "alpha": 80},
+    {"id": "lake", "sprite": "minecraft:block/water_still", "x": -9.15, "y": 10.0, "w": 2.3, "h": 0.5, "tint": "#3F76E4", "order": 2, "reveal": "solsticio_harvest"},
+    {"id": "workshop_frozen", "frame": [2.35, 4.4, 4.75, 10.4], "color": "#6B3526", "thickness_px": 2.0, "corners": false, "fill": "#9C5B45", "fill_alpha": 70, "order": 0, "alpha": 80},
+    {"id": "workshop", "frame": [2.35, 4.4, 4.75, 10.4], "color": "#6B3526", "thickness_px": 2.0, "corners": false, "fill": "#9C5B45", "fill_alpha": 240, "order": 1, "reveal": "solsticio_power"},
+    {"id": "sawtooth_frozen", "path": [[2.35, 4.4], [2.95, 3.7], [3.55, 4.4], [4.15, 3.7], [4.75, 4.4]], "color": "#5FA894", "width": 0.18, "order": 1, "alpha": 80},
+    {"id": "sawtooth", "path": [[2.35, 4.4], [2.95, 3.7], [3.55, 4.4], [4.15, 3.7], [4.75, 4.4]], "color": "#5FA894", "width": 0.18, "order": 2, "reveal": "solsticio_power"},
+    {"id": "chimney_frozen", "picture": "minecraft:textures/block/bricks.png", "x": 4.5, "y": 3.3, "w": 0.45, "h": 1.6, "order": 0, "alpha": 80},
+    {"id": "chimney", "picture": "minecraft:textures/block/bricks.png", "x": 4.5, "y": 3.3, "w": 0.45, "h": 1.6, "order": 1, "reveal": "solsticio_power"},
+    {"id": "smoke", "scatter": "minecraft:textures/particle/big_smoke_0.png", "region": [4.1, 1.0, 5.0, 2.3], "count": 3, "size": [0.35, 0.55], "alphas": [110, 160], "seed": 2, "reveal": "solsticio_power", "order": 2},
+    {"id": "mast_frozen", "path": [[3.0, 3.7], [3.0, -0.3]], "color": "#7A5A3A", "width": 0.2, "order": -1, "alpha": 80},
+    {"id": "mast", "path": [[3.0, 3.7], [3.0, -0.3]], "color": "#7A5A3A", "width": 0.2, "order": 0, "reveal": "solsticio_power"},
+    {"id": "sail_0_frozen", "picture": "create:textures/block/sail/canvas_white.png", "x": 3.919, "y": 0.619, "w": 0.55, "h": 1.7, "rotation": 135, "order": -1, "alpha": 80},
+    {"id": "sail_0", "picture": "create:textures/block/sail/canvas_white.png", "x": 3.919, "y": 0.619, "w": 0.55, "h": 1.7, "rotation": 135, "order": 0, "reveal": "solsticio_power"},
+    {"id": "sail_1_frozen", "picture": "create:textures/block/sail/canvas_white.png", "x": 2.081, "y": 0.619, "w": 0.55, "h": 1.7, "rotation": 225, "order": -1, "alpha": 80},
+    {"id": "sail_1", "picture": "create:textures/block/sail/canvas_white.png", "x": 2.081, "y": 0.619, "w": 0.55, "h": 1.7, "rotation": 225, "order": 0, "reveal": "solsticio_power"},
+    {"id": "sail_2_frozen", "picture": "create:textures/block/sail/canvas_white.png", "x": 2.081, "y": -1.219, "w": 0.55, "h": 1.7, "rotation": 315, "order": -1, "alpha": 80},
+    {"id": "sail_2", "picture": "create:textures/block/sail/canvas_white.png", "x": 2.081, "y": -1.219, "w": 0.55, "h": 1.7, "rotation": 315, "order": 0, "reveal": "solsticio_power"},
+    {"id": "sail_3_frozen", "picture": "create:textures/block/sail/canvas_white.png", "x": 3.919, "y": -1.219, "w": 0.55, "h": 1.7, "rotation": 405, "order": -1, "alpha": 80},
+    {"id": "sail_3", "picture": "create:textures/block/sail/canvas_white.png", "x": 3.919, "y": -1.219, "w": 0.55, "h": 1.7, "rotation": 405, "order": 0, "reveal": "solsticio_power"},
+    {"id": "forge", "glow": [3.55, 9.6], "r": 1.0, "tint": "#FF9A3A", "alpha": 200, "reveal": "solsticio_power", "order": 2},
+    {"id": "prism_in", "path": [[0.7, 0.9], [2.4, 2.1]], "color": "#FFF3C4", "width": 0.1, "alpha": 220, "reveal": "solsticio_terraprism", "order": 1},
+    {"id": "prism_out_0", "path": [[3.5, 2.8], [4.6, 3.0]], "color": "#FF6A5A", "width": 0.08, "alpha": 230, "reveal": "solsticio_terraprism", "order": 1},
+    {"id": "prism_out_1", "path": [[3.5, 2.8], [4.5, 3.5]], "color": "#7FE87A", "width": 0.08, "alpha": 230, "reveal": "solsticio_terraprism", "order": 1},
+    {"id": "prism_out_2", "path": [[3.5, 2.8], [4.3, 3.95]], "color": "#6AA8FF", "width": 0.08, "alpha": 230, "reveal": "solsticio_terraprism", "order": 1},
+    {"id": "workshop_windows", "sprite": "minecraft:block/yellow_stained_glass", "cells": [[2.95, 7.4], [4.15, 7.4]], "w": 0.45, "h": 0.65, "reveal": "solsticio_terraprism", "order": 3},
+    {"id": "terra", "text": {"en_us": "Terra", "es_es": "Terra"}, "x": 3.55, "y": 6.0, "scale": 2, "tint": "#E8DCB5", "reveal": "solsticio_power"},
+    {"id": "belfry_frozen", "frame": [5.0, -1.2, 6.3, 10.4], "color": "#B9B19C", "thickness_px": 2.0, "corners": false, "fill": "#E9E4D6", "fill_alpha": 70, "order": 0, "alpha": 80},
+    {"id": "belfry", "frame": [5.0, -1.2, 6.3, 10.4], "color": "#B9B19C", "thickness_px": 2.0, "corners": false, "fill": "#E9E4D6", "fill_alpha": 240, "order": 1, "reveal": "solsticio_good_works"},
+    {"id": "spire_frozen", "mosaic": [4.989999999999999, -4.45], "cell": 0.26, "rows": ["    pp    ", "   pppp   ", "  pppppp  ", " pppppppp ", "pppppppppp"], "legend": {"p": "#E8A0B8"}, "order": 1, "alpha": 80},
+    {"id": "spire", "mosaic": [4.989999999999999, -4.45], "cell": 0.26, "rows": ["    pp    ", "   pppp   ", "  pppppp  ", " pppppppp ", "pppppppppp"], "legend": {"p": "#E8A0B8"}, "order": 2, "reveal": "solsticio_good_works"},
+    {"id": "nave_frozen", "frame": [6.3, 5.0, 8.7, 10.4], "color": "#B9B19C", "thickness_px": 2.0, "corners": false, "fill": "#E9E4D6", "fill_alpha": 70, "order": 0, "alpha": 80},
+    {"id": "nave", "frame": [6.3, 5.0, 8.7, 10.4], "color": "#B9B19C", "thickness_px": 2.0, "corners": false, "fill": "#E9E4D6", "fill_alpha": 240, "order": 1, "reveal": "solsticio_blessing"},
+    {"id": "nave_roof_frozen", "path": [[6.2, 5.0], [7.5, 4.1], [8.8, 5.0]], "color": "#E8A0B8", "width": 0.3, "order": 1, "alpha": 80},
+    {"id": "nave_roof", "path": [[6.2, 5.0], [7.5, 4.1], [8.8, 5.0]], "color": "#E8A0B8", "width": 0.3, "order": 2, "reveal": "solsticio_blessing"},
+    {"id": "candles", "glow": [6.9, 7.2], "r": 0.6, "tint": "#FFC266", "alpha": 220, "reveal": "solsticio_good_works", "order": 2},
+    {"id": "candles_2", "glow": [8.1, 7.2], "r": 0.6, "tint": "#FFC266", "alpha": 220, "reveal": "solsticio_good_works", "order": 2},
+    {"id": "bell_glow", "glow": [5.64, -2.05], "r": 1.3, "tint": "#FFE08A", "alpha": 170, "reveal": "solsticio_good_works", "order": 0},
+    {"id": "rose_window", "path": [[5.64, 0.9], [6.215, 1.054], [6.636, 1.475], [6.79, 2.05], [6.636, 2.625], [6.215, 3.046], [5.64, 3.2], [5.065, 3.046], [4.644, 2.625], [4.49, 2.05], [4.644, 1.475], [5.065, 1.054]], "closed": true, "color": "#F4A6C8", "width": 0.14, "alpha": 230, "reveal": "solsticio_blessing", "order": 2},
+    {"id": "rose_glow", "glow": [5.64, 2.05], "r": 1.6, "tint": "#FFB8D8", "alpha": 190, "reveal": "solsticio_blessing", "order": 0},
+    {"id": "bodhi", "text": {"en_us": "Bodhi", "es_es": "Bodhi"}, "x": 7.5, "y": 6.3, "scale": 2, "tint": "#4A3B2A", "shadow": false, "reveal": "solsticio_good_works"},
+    {"id": "house_w_frozen", "frame": [-3.45, 6.9, -2.3, 10.4], "color": "#B29A6A", "thickness_px": 2.0, "corners": false, "fill": "#D9C79A", "fill_alpha": 70, "order": 0, "alpha": 80},
+    {"id": "house_w", "frame": [-3.45, 6.9, -2.3, 10.4], "color": "#B29A6A", "thickness_px": 2.0, "corners": false, "fill": "#D9C79A", "fill_alpha": 240, "order": 1, "reveal": "solsticio_portal"},
+    {"id": "house_w_roof_frozen", "picture": "minecraft:textures/block/orange_terracotta.png", "x": -2.875, "y": 6.7, "w": 1.4500000000000004, "h": 0.4, "order": 1, "alpha": 80},
+    {"id": "house_w_roof", "picture": "minecraft:textures/block/orange_terracotta.png", "x": -2.875, "y": 6.7, "w": 1.4500000000000004, "h": 0.4, "order": 2, "reveal": "solsticio_portal"},
+    {"id": "house_e_frozen", "frame": [8.85, 7.4, 10.3, 10.4], "color": "#B29A6A", "thickness_px": 2.0, "corners": false, "fill": "#D9C79A", "fill_alpha": 70, "order": 0, "alpha": 80},
+    {"id": "house_e", "frame": [8.85, 7.4, 10.3, 10.4], "color": "#B29A6A", "thickness_px": 2.0, "corners": false, "fill": "#D9C79A", "fill_alpha": 240, "order": 1, "reveal": "solsticio_portal"},
+    {"id": "house_e_roof_frozen", "picture": "minecraft:textures/block/terracotta.png", "x": 9.575, "y": 7.2, "w": 1.750000000000001, "h": 0.4, "order": 1, "alpha": 80},
+    {"id": "house_e_roof", "picture": "minecraft:textures/block/terracotta.png", "x": 9.575, "y": 7.2, "w": 1.750000000000001, "h": 0.4, "order": 2, "reveal": "solsticio_portal"},
+    {"id": "house_park_frozen", "frame": [-10.3, 8.1, -8.2, 10.4], "color": "#B29A6A", "thickness_px": 2.0, "corners": false, "fill": "#E3D2A6", "fill_alpha": 70, "order": 0, "alpha": 80},
+    {"id": "house_park", "frame": [-10.3, 8.1, -8.2, 10.4], "color": "#B29A6A", "thickness_px": 2.0, "corners": false, "fill": "#E3D2A6", "fill_alpha": 240, "order": 1, "reveal": "solsticio_portal"},
+    {"id": "house_park_roof_frozen", "picture": "minecraft:textures/block/orange_terracotta.png", "x": -9.25, "y": 7.8999999999999995, "w": 2.4000000000000012, "h": 0.4, "order": 1, "alpha": 80},
+    {"id": "house_park_roof", "picture": "minecraft:textures/block/orange_terracotta.png", "x": -9.25, "y": 7.8999999999999995, "w": 2.4000000000000012, "h": 0.4, "order": 2, "reveal": "solsticio_portal"},
+    {"id": "house_windows", "sprite": "minecraft:block/yellow_stained_glass", "cells": [[-2.87, 8.3], [9.57, 8.6], [-9.25, 9.2]], "w": 0.45, "h": 0.6, "reveal": "solsticio_portal", "order": 3},
+    {"id": "key_ring", "path": [[0.0, -10.85], [0.675, -10.669], [1.169, -10.175], [1.35, -9.5], [1.169, -8.825], [0.675, -8.331], [0.0, -8.15], [-0.675, -8.331], [-1.169, -8.825], [-1.35, -9.5], [-1.169, -10.175], [-0.675, -10.669]], "closed": true, "color": "#E8B04A", "width": 0.1, "alpha": 230, "reveal": "solsticio_arrival", "order": 1},
+    {"id": "broken_key", "item": "entrelumen:light_key_broken", "x": 2.0, "y": -9.5, "size": 0.8, "reveal": "solsticio_arrival", "order": 2},
+    {"id": "confetti_0", "scatter": ["minecraft:textures/particle/glitter_1.png", "minecraft:textures/particle/glitter_3.png", "minecraft:textures/particle/glitter_5.png"], "region": [-6.5, 11.3, 6.5, 16.5], "count": 6, "size": [0.25, 0.4], "tint": "#FFD27A", "seed": 31, "avoid": [[0, 12.75, 1.6]], "reveal": "solsticio_elections", "order": 4},
+    {"id": "confetti_1", "scatter": ["minecraft:textures/particle/glitter_1.png", "minecraft:textures/particle/glitter_3.png", "minecraft:textures/particle/glitter_5.png"], "region": [-6.5, 11.3, 6.5, 16.5], "count": 6, "size": [0.25, 0.4], "tint": "#F4A6C8", "seed": 32, "avoid": [[0, 12.75, 1.6]], "reveal": "solsticio_elections", "order": 4},
+    {"id": "confetti_2", "scatter": ["minecraft:textures/particle/glitter_1.png", "minecraft:textures/particle/glitter_3.png", "minecraft:textures/particle/glitter_5.png"], "region": [-6.5, 11.3, 6.5, 16.5], "count": 6, "size": [0.25, 0.4], "tint": "#7FE8D8", "seed": 33, "avoid": [[0, 12.75, 1.6]], "reveal": "solsticio_elections", "order": 4},
+    {"id": "ballots", "item": "minecraft:paper", "x": -2.2, "y": 13.2, "size": 0.55, "reveal": "solsticio_elections", "order": 4}
   ],
   "quests": [
     {
-      "key": "solsticio_arrival",
-      "deps": [
-        "horizon_last"
-      ],
-      "en_us": [
-        "Inside the light",
-        "Hold use with your Light Key until the ring closes. It carries you into Solsticio and breaks as you cross; what is left takes you home and back.\n\nNoon over copper and glass, and nobody has aged a day. Terra is already waving."
-      ],
-      "es_es": [
-        "Adentro de la luz",
-        "Mantené apretado el uso de la Llave de Luz hasta que se cierre el anillo. Te lleva a Solsticio y se rompe al cruzar; lo que queda te lleva a casa y de vuelta.\n\nMediodía sobre cobre y vidrio, y nadie envejeció un día. Terra ya te está saludando."
-      ],
-      "layout": {
-        "group": "arrival",
-        "x": 0,
-        "y": -9.5,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "solsticio_arrival",
-      "icon": "entrelumen:light_key"
+      "key": "solsticio_arrival", "deps": ["horizon_last"], "milestone": "solsticio_arrival", "layout": {"group": "arrival", "x": 0, "y": -9.5, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:light_key",
+      "en_us": {"title": "Inside the light",
+        "text": ["[lead] Hold use with your [item:entrelumen:light_key|Light Key] until the ring closes.",
+                 "It carries you into Solsticio and breaks as you cross; what is left takes you home and back.",
+                 "Noon over copper and glass, and nobody has aged a day. Terra is already waving."]},
+      "es_es": {"title": "Adentro de la luz",
+        "text": ["[lead] Mantené apretado el uso de la [item:entrelumen:light_key|Llave de Luz] hasta que se cierre el anillo.",
+                 "Te lleva a Solsticio y se rompe al cruzar; lo que queda te lleva a casa y de vuelta.",
+                 "Mediodía sobre cobre y vidrio, y nadie envejeció un día. Terra ya te está saludando."]}
     },
     {
-      "key": "solsticio_mayor",
-      "deps": [
-        "solsticio_arrival"
-      ],
-      "en_us": [
-        "The City That Never Dawns",
-        "Talk to Aurelia in the town hall, beside the portal.\n\n'Three relics and the key that brought you. Juan, Terra and Bodhi each hold one. The Heart of Heliodor I would keep myself, of course.'"
-      ],
-      "es_es": [
-        "La ciudad que no amanece",
-        "Hablá con Aurelia en el Ayuntamiento, junto al portal.\n\n«Tres reliquias y la llave que te trajo. Juan, Terra y Bodhi tienen una cada uno. El Corazón de Heliodor lo guardaría yo, por supuesto.»"
-      ],
-      "layout": {
-        "group": "town_hall",
-        "x": 0,
-        "y": -6,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "solsticio_mayor",
-      "icon": "minecraft:bell"
+      "key": "solsticio_mayor", "deps": ["solsticio_arrival"], "milestone": "solsticio_mayor", "layout": {"group": "town_hall", "x": 0, "y": -6.0, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "minecraft:bell",
+      "en_us": {"title": "The City That Never Dawns",
+        "text": ["[lead] Talk to Aurelia in the town hall, beside the portal.",
+                 "'Three relics and the key that brought you. Juan, Terra and Bodhi each hold one. The Heart of Heliodor I would keep myself, of course.'"]},
+      "es_es": {"title": "La ciudad que no amanece",
+        "text": ["[lead] Hablá con Aurelia en el Ayuntamiento, junto al portal.",
+                 "«Tres reliquias y la llave que te trajo. Juan, Terra y Bodhi tienen una cada uno. El Corazón de Heliodor lo guardaría yo, por supuesto.»"]}
     },
     {
-      "key": "solsticio_seeds",
-      "deps": [
-        "solsticio_mayor"
-      ],
-      "en_us": [
-        "Seeds of the World",
-        "Bring Juan seeds of eight different species from outside: wheat, beetroot, melon, carrot, potato, berries, cocoa, Farmer's Delight crops...\n\n'Same seeds since the light fell. The beds are tired. Variety, not sacks.'"
-      ],
-      "es_es": [
-        "Semillas del mundo",
-        "Llevale a Juan semillas de ocho especies distintas de afuera: trigo, remolacha, melón, zanahoria, patata, bayas, cacao, cultivos de Farmer's Delight...\n\n«Las mismas semillas desde que cayó la luz. Los canteros están cansados. Variedad, no bolsas.»"
-      ],
-      "layout": {
-        "group": "gardens",
-        "x": -5.196,
-        "y": -3,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "solsticio_seeds",
-      "icon": "minecraft:wheat_seeds"
+      "key": "solsticio_seeds", "deps": ["solsticio_mayor"], "milestone": "solsticio_seeds", "layout": {"group": "gardens", "x": -5.64, "y": -2.05, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "minecraft:wheat_seeds",
+      "en_us": {"title": "Seeds of the World",
+        "text": ["[lead] Bring Juan seeds of eight different species from outside.",
+                 "Wheat, beetroot, melon, carrot, potato, berries, cocoa, Farmer's Delight crops...",
+                 "'Same seeds since the light fell. The beds are tired. Variety, not sacks.'"]},
+      "es_es": {"title": "Semillas del mundo",
+        "text": ["[lead] Llevale a Juan semillas de ocho especies distintas de afuera.",
+                 "Trigo, remolacha, melón, zanahoria, patata, bayas, cacao, cultivos de Farmer's Delight...",
+                 "«Las mismas semillas desde que cayó la luz. Los canteros están cansados. Variedad, no bolsas.»"]}
     },
     {
-      "key": "solsticio_harvest",
-      "deps": [
-        "solsticio_seeds"
-      ],
-      "en_us": [
-        "A Harvest for Everyone",
-        "Bring Juan four different Farmer's Delight meals, sixteen of each; Central Kitchen or Slice and Dice can cook them. He gives you the Luminous Seed.\n\n'A city eats every day. Feed it, and the seed that carries the light is yours.'"
-      ],
-      "es_es": [
-        "Una cosecha para todos",
-        "Llevale a Juan cuatro platos distintos de Farmer's Delight, dieciséis de cada uno; Central Kitchen o Slice and Dice los cocinan. Te da la Semilla Luminosa.\n\n«Una ciudad come todos los días. Dale de comer y la semilla que lleva la luz es tuya.»"
-      ],
-      "layout": {
-        "group": "gardens",
-        "x": -5.196,
-        "y": 3,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "solsticio_harvest",
-      "icon": "entrelumen:heliodor_relic_1"
+      "key": "solsticio_harvest", "deps": ["solsticio_seeds"], "milestone": "solsticio_harvest", "layout": {"group": "gardens", "x": -5.64, "y": 2.05, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:heliodor_relic_1",
+      "en_us": {"title": "A Harvest for Everyone",
+        "text": ["[lead] Bring Juan four different Farmer's Delight meals, sixteen of each.",
+                 "Central Kitchen or Slice and Dice can cook them. He gives you the [item:entrelumen:heliodor_relic_1|Luminous Seed].",
+                 "'A city eats every day. Feed it, and the seed that carries the light is yours.'"]},
+      "es_es": {"title": "Una cosecha para todos",
+        "text": ["[lead] Llevale a Juan cuatro platos distintos de Farmer's Delight, dieciséis de cada uno.",
+                 "Central Kitchen o Slice and Dice los cocinan. Te da la [item:entrelumen:heliodor_relic_1|Semilla Luminosa].",
+                 "«Una ciudad come todos los días. Dale de comer y la semilla que lleva la luz es tuya.»"]}
     },
     {
-      "key": "solsticio_power",
-      "deps": [
-        "solsticio_mayor"
-      ],
-      "en_us": [
-        "Power from Outside",
-        "Bring Terra four Generator Coils, two Advanced Solar Heating Plates and a charged battery from any energy mod (100,000 FE or more). She gives you the Terraprism diagram.\n\n'Frozen light runs machines badly. I need power from outside. Charged means full.'"
-      ],
-      "es_es": [
-        "Energía de afuera",
-        "Llevale a Terra cuatro bobinas del generador, dos placas solares avanzadas y una batería cargada de cualquier mod de energía (100.000 FE o más). Te da el diagrama del Terraprisma.\n\n«La luz congelada mueve mal las máquinas. Necesito energía de afuera. Cargada quiere decir llena.»"
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": 0,
-        "y": -1.7,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "solsticio_power",
-      "icon": "minecraft:lightning_rod"
+      "key": "solsticio_power", "deps": ["solsticio_mayor"], "milestone": "solsticio_power", "layout": {"group": "workshop", "x": 3.0, "y": -0.3, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "minecraft:lightning_rod",
+      "en_us": {"title": "Power from Outside",
+        "text": ["[lead] Bring Terra power that is not frozen light:",
+                 "[li] Four [item:create_new_age:generator_coil|Generator Coils]",
+                 "[li] Two [item:create_new_age:advanced_solar_heating_plate|Advanced Solar Heating Plates]",
+                 "[li] A charged battery from any energy mod ([hl|100,000] FE or more)",
+                 "She gives you the Terraprism diagram.",
+                 "{page}",
+                 "'Frozen light runs machines badly. I need power from outside. Charged means full.'"]},
+      "es_es": {"title": "Energía de afuera",
+        "text": ["[lead] Llevale a Terra energía que no sea luz congelada:",
+                 "[li] Cuatro [item:create_new_age:generator_coil|bobinas del generador]",
+                 "[li] Dos [item:create_new_age:advanced_solar_heating_plate|placas solares avanzadas]",
+                 "[li] Una batería cargada de cualquier mod de energía ([hl|100.000] FE o más)",
+                 "Te da el diagrama del Terraprisma.",
+                 "{page}",
+                 "«La luz congelada mueve mal las máquinas. Necesito energía de afuera. Cargada quiere decir llena.»"]}
     },
     {
-      "key": "solsticio_terraprism",
-      "deps": [
-        "solsticio_power"
-      ],
-      "en_us": [
-        "Channelling the Light",
-        "Bring Terra one Luminosity of each discipline, all six; the natives of the trading hall sell them once they have seen their biome. She gives you the Terraprism.\n\n'It takes the light and gives it back as power people can use. That is all I ever wanted it to do.'"
-      ],
-      "es_es": [
-        "Canalizar la luz",
-        "Llevale a Terra una Luminosidad de cada disciplina, las seis; las venden los nativos de la sala de comercio cuando conocen su bioma. Te da el Terraprisma.\n\n«Toma la luz y la devuelve como energía que la gente puede usar. Es todo lo que siempre quise que hiciera.»"
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": 0,
-        "y": 1.7,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "solsticio_terraprism",
-      "icon": "entrelumen:heliodor_relic_2"
+      "key": "solsticio_terraprism", "deps": ["solsticio_power"], "milestone": "solsticio_terraprism", "layout": {"group": "workshop", "x": 3.0, "y": 2.5, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:heliodor_relic_2",
+      "en_us": {"title": "Channelling the Light",
+        "text": ["[lead] Bring Terra one Luminosity of each discipline, all six.",
+                 "The natives of the trading hall sell them once they have seen their biome. She gives you the [item:entrelumen:heliodor_relic_2|Terraprism].",
+                 "'It takes the light and gives it back as power people can use. That is all I ever wanted it to do.'"]},
+      "es_es": {"title": "Canalizar la luz",
+        "text": ["[lead] Llevale a Terra una Luminosidad de cada disciplina, las seis.",
+                 "Las venden los nativos de la sala de comercio cuando conocen su bioma. Te da el [item:entrelumen:heliodor_relic_2|Terraprisma].",
+                 "«Toma la luz y la devuelve como energía que la gente puede usar. Es todo lo que siempre quise que hiciera.»"]}
     },
     {
-      "key": "solsticio_good_works",
-      "deps": [
-        "solsticio_mayor"
-      ],
-      "en_us": [
-        "Good Works",
-        "Do the errands of the four innkeepers, two each. Every errand raises your relation with Bodhi; at five, he listens.\n\n'I do not bless on request. Help the people here; I will hear about it.'"
-      ],
-      "es_es": [
-        "Buenas obras",
-        "Hacé los encargos de los cuatro posaderos, dos cada uno. Cada encargo sube tu relación con Bodhi; con cinco, te escucha.\n\n«No bendigo por encargo. Ayudá a la gente de acá; me voy a enterar.»"
-      ],
-      "layout": {
-        "group": "chapel",
-        "x": 5.196,
-        "y": -3,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "solsticio_good_works",
-      "icon": "minecraft:candle"
+      "key": "solsticio_good_works", "deps": ["solsticio_mayor"], "milestone": "solsticio_good_works", "layout": {"group": "chapel", "x": 5.64, "y": -2.05, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "minecraft:candle",
+      "en_us": {"title": "Good Works",
+        "text": ["[lead] Do the errands of the four innkeepers, two each.",
+                 "Every errand raises your relation with Bodhi; at five, he listens.",
+                 "'I do not bless on request. Help the people here; I will hear about it.'"]},
+      "es_es": {"title": "Buenas obras",
+        "text": ["[lead] Hacé los encargos de los cuatro posaderos, dos cada uno.",
+                 "Cada encargo sube tu relación con Bodhi; con cinco, te escucha.",
+                 "«No bendigo por encargo. Ayudá a la gente de acá; me voy a enterar.»"]}
     },
     {
-      "key": "solsticio_blessing",
-      "deps": [
-        "solsticio_good_works"
-      ],
-      "en_us": [
-        "The Blessing",
-        "Talk to Bodhi: your Atlas gives back the Heart of Heliodor. Hand it to him and it becomes the Blessed Heart of Heliodor. If the Sun Spirit still has it, beat it first.\n\n'It was never a machine's heart. With love, then.'"
-      ],
-      "es_es": [
-        "La bendición",
-        "Hablá con Bodhi: tu Atlas devuelve el Corazón de Heliodor. Dáselo y se convierte en el Corazón de Heliodor bendito. Si el Espíritu del Sol todavía lo tiene, vencelo primero.\n\n«Nunca fue el corazón de una máquina. Con amor, entonces.»"
-      ],
-      "layout": {
-        "group": "chapel",
-        "x": 5.196,
-        "y": 3,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "solsticio_blessing",
-      "icon": "entrelumen:heliodor_relic_3"
+      "key": "solsticio_blessing", "deps": ["solsticio_good_works"], "milestone": "solsticio_blessing", "layout": {"group": "chapel", "x": 5.64, "y": 2.05, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:heliodor_relic_3",
+      "en_us": {"title": "The Blessing",
+        "text": ["[lead] Talk to Bodhi: your Atlas gives back the Heart of Heliodor.",
+                 "Hand it to him and it becomes the [item:entrelumen:heliodor_relic_3|Blessed Heart of Heliodor]. If the Sun Spirit still has it, beat it first.",
+                 "'It was never a machine's heart. With love, then.'"]},
+      "es_es": {"title": "La bendición",
+        "text": ["[lead] Hablá con Bodhi: tu Atlas devuelve el Corazón de Heliodor.",
+                 "Dáselo y se convierte en el [item:entrelumen:heliodor_relic_3|Corazón de Heliodor bendito]. Si el Espíritu del Sol todavía lo tiene, vencelo primero.",
+                 "«Nunca fue el corazón de una máquina. Con amor, entonces.»"]}
     },
     {
-      "key": "solsticio_accord",
-      "deps": [
-        "solsticio_harvest",
-        "solsticio_terraprism",
-        "solsticio_blessing"
-      ],
-      "en_us": [
-        "The Table of Two Lights",
-        "With the three relics, talk to Aurelia in the town hall and to Bodhi in the chapel, in either order.\n\nShe wants the crystal to rule the light; he fears a second fusion. The only way out is that nobody keeps it."
-      ],
-      "es_es": [
-        "La mesa de las dos luces",
-        "Con las tres reliquias, hablá con Aurelia en el Ayuntamiento y con Bodhi en la capilla, en cualquier orden.\n\nElla quiere el cristal para mandar sobre la luz; él teme otra fusión. La única salida es que nadie se lo quede."
-      ],
-      "layout": {
-        "group": "town_hall",
-        "x": 0,
-        "y": 6,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "solsticio_accord",
-      "icon": "minecraft:lantern"
+      "key": "solsticio_accord", "deps": ["solsticio_harvest", "solsticio_terraprism", "solsticio_blessing"], "milestone": "solsticio_accord", "layout": {"group": "town_hall", "x": 0, "y": 6.0, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "minecraft:lantern",
+      "en_us": {"title": "The Table of Two Lights",
+        "text": ["[lead] With the three relics, talk to Aurelia in the town hall and to Bodhi in the chapel.",
+                 "The order does not matter.",
+                 "She wants the crystal to rule the light; he fears a second fusion. The only way out is that nobody keeps it."]},
+      "es_es": {"title": "La mesa de las dos luces",
+        "text": ["[lead] Con las tres reliquias, hablá con Aurelia en el Ayuntamiento y con Bodhi en la capilla.",
+                 "El orden da igual.",
+                 "Ella quiere el cristal para mandar sobre la luz; él teme otra fusión. La única salida es que nadie se lo quede."]}
     },
     {
-      "key": "solsticio_portal",
-      "deps": [
-        "solsticio_accord"
-      ],
-      "en_us": [
-        "The Portal",
-        "Right-click the town hall portal with each of your three relics, then with your own Broken Light Key in your pack. The first team to open it frees the Entrelumen for everyone, and every shop gets cheaper.\n\nStill a shelter. No longer a prison."
-      ],
-      "es_es": [
-        "El portal",
-        "Clic derecho en el portal del Ayuntamiento con cada una de tus tres reliquias y después con tu propia Llave de Luz rota encima. El primer equipo que lo abre libera el Entrelumen para todos, y bajan los precios de todas las tiendas.\n\nSigue siendo un refugio. Ya no es una prisión."
-      ],
-      "layout": {
-        "group": "portal",
-        "x": 0,
-        "y": 9,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "solsticio_portal",
-      "icon": "entrelumen:light_key_broken"
+      "key": "solsticio_portal", "deps": ["solsticio_accord"], "milestone": "solsticio_portal", "layout": {"group": "portal", "x": 0, "y": 9.0, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:light_key_broken",
+      "en_us": {"title": "The Portal",
+        "text": ["[lead] [icon:right_click] Right-click the town hall portal with each of your three relics, then with your own [item:entrelumen:light_key_broken|Broken Light Key] in your pack.",
+                 "The first team to open it frees the Entrelumen for everyone, and every shop gets cheaper.",
+                 "Still a shelter. No longer a prison."]},
+      "es_es": {"title": "El portal",
+        "text": ["[lead] [icon:right_click] Clic derecho en el portal del Ayuntamiento con cada una de tus tres reliquias y después con tu propia [item:entrelumen:light_key_broken|Llave de Luz rota] encima.",
+                 "El primer equipo que lo abre libera el Entrelumen para todos, y bajan los precios de todas las tiendas.",
+                 "Sigue siendo un refugio. Ya no es una prisión."]}
     },
     {
-      "key": "solsticio_elections",
-      "deps": [
-        "solsticio_portal"
-      ],
-      "en_us": [
-        "Elections in Solsticio",
-        "Three days after the portal first opens, the square votes. Then talk to Aurelia.\n\n'Elected. It sounds different from appointed.' Nobody asks too loudly about the new windows."
-      ],
-      "es_es": [
-        "Elecciones en Solsticio",
-        "Tres días después de la primera apertura del portal, la plaza vota. Después hablá con Aurelia.\n\n«Elegida. Suena distinto de designada.» Nadie pregunta muy fuerte por los ventanales nuevos."
-      ],
-      "layout": {
-        "group": "town_hall",
-        "x": 0,
-        "y": 12.75,
-        "size": 3.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "solsticio_elections",
-      "icon": "minecraft:paper"
+      "key": "solsticio_elections", "deps": ["solsticio_portal"], "milestone": "solsticio_elections", "layout": {"group": "town_hall", "x": 0, "y": 12.75, "size": 3.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "minecraft:paper",
+      "en_us": {"title": "Elections in Solsticio",
+        "text": ["[lead] Three days after the portal first opens, the square votes.",
+                 "Then talk to Aurelia.",
+                 "'Elected. It sounds different from appointed.' Nobody asks too loudly about the new windows."]},
+      "es_es": {"title": "Elecciones en Solsticio",
+        "text": ["[lead] Tres días después de la primera apertura del portal, la plaza vota.",
+                 "Después hablá con Aurelia.",
+                 "«Elegida. Suena distinto de designada.» Nadie pregunta muy fuerte por los ventanales nuevos."]}
     }
   ]
 }
