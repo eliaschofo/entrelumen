@@ -42,7 +42,7 @@ Every villager is a vanilla `Villager` with persistent data `entrelumen_commerce
 
 ## Prices
 
-- **Currency.** Emeralds up to 64, emerald blocks (9 emeralds) above. Everything is sold, nothing is bought: no shop turns items into emeralds, so there is no arbitrage loop, and prices sit above what vanilla villagers pay for the same items.
+- **Currency.** Emeralds up to 64, emerald blocks (9 emeralds) above. Everything is sold, nothing is bought: no shop turns items into emeralds, so there is no arbitrage loop, and prices sit above what vanilla villagers pay for the same items. The one exception is Cenit, who also takes the Envés's sour light shards for seven offers ([below](#sour-light-shards-30-september-2026)); shards never turn into emeralds either.
 - **Restock.** Lazy: when someone opens a merchant's trades and `restockTicks` (default 24000, one day of game time) passed since the last one, its offers are rebuilt from the current table. Demand carries over as in vanilla (bought-out offers get dearer; demand kept in 0–50), so a `/reload` takes effect at the next restock. Settled villagers get `villager.restock()` on the same schedule, on top of vanilla's job-site restocks.
 - **Multipliers** (server config `entrelumen-commerce-server.toml`), applied to the first cost when a player starts trading, on top of vanilla reputation and Hero of the Village, and undone when trading stops:
 
@@ -85,7 +85,7 @@ Every villager is a vanilla `Villager` with persistent data `entrelumen_commerce
 | Shop | Keeper (EN / ES) | Profession | Offers | What stands out | Gated |
 | --- | --- | --- | --- | --- | --- |
 | `bookstore` | Lucerna, Bookseller / la librera | librarian | 24 | Enchanted books at vanilla maximum: **Mending** 40 + book, Unbreaking III, Efficiency V, Fortune III, Silk Touch, Looting III, Protection IV, Sharpness V, Power V, Infinity, Frost Walker II, trident and fishing books | Soul Speed III (3), Swift Sneak III and Wind Burst III (5) |
-| `rarities` | Cenit, Dealer in Rarities / comerciante de rarezas | weaponsmith | 8 | Elytra 32 blocks, totem 12, 2 shulker shells 6, heart of the sea 10, trident 12, netherite scrap 4, echo shard 2, 2 breeze rods 2 (blocks) | elytra (6); totem, shells (5); heart, trident, scrap, breeze rods (4); echo shard (3) |
+| `rarities` | Cenit, Dealer in Rarities / comerciante de rarezas | weaponsmith | 15 | Elytra 32 blocks, totem 12, 2 shulker shells 6, heart of the sea 10, trident 12, netherite scrap 4, echo shard 2, 2 breeze rods 2 (blocks); and, for **sour light shards**, gem dust, rare and epic materials, three Apotheosis sigils and a totem (7 offers, 16 to 56 shards) | elytra (6); totem, shells (5); heart, trident, scrap, breeze rods (4); echo shard (3); every shard offer (6) |
 | `parts` | Brasa, Parts Dealer / repuestos | toolsmith | 33 | Create precision mechanisms, electron tubes, sturdy sheets; Mekanism circuits and alloys; IE components and circuit boards; AE2 processors; PneumaticCraft PCBs; Powah capacitors; IF and RFTools frames; flux cores; LaserIO logic chips; Sophisticated upgrade bases; Actually Additions coils | whole shop (3); elite and ultimate circuits, reinforced alloy, advanced electronics, engineering processors, blazing capacitors, advanced frame, flux cores (4–5) |
 | `seeds` | Albor, Seed Merchant / semillero | farmer | 24 | Torchflower seeds and pitcher pods (sniffer only), nether wart, cocoa, glow berries, fungi, Farmer's Delight and Supplementaries seeds | chorus flowers (5) |
 | `smithy` | Fulgor, Smith / el herrero | armorer | 19 | Netherite upgrade 48, all 18 armor trims (silence 64, ward and spire 40) | netherite upgrade (4), spire (5) |
@@ -102,6 +102,84 @@ Every villager is a vanilla `Villager` with persistent data `entrelumen_commerce
 | `curiosities` | Quimera, Curio Dealer / curiosidades | fletcher | 23 | All eight goat horns, heavy core, trial and ominous keys, ominous bottle, light blocks, dragon and mob heads, nautilus shells, Artifacts' whoopee cushion, drinking hat, umbrella and cloud in a bottle | heavy core, dragon head, cloud in a bottle (5); ominous key and bottle, light (4) |
 
 Never sold (a JUnit test enforces it): emeralds, nether stars, dragon eggs, sponges, beacons, wither skulls, spawners and spawn eggs, the Luminous ingot and its three rare ingredients, Light Keys, the portal relics, and any Luminosity outside its native.
+
+## Sour light shards (30 September 2026)
+
+Branch `feature/solsticio-shard-trades`. The Envés's currency ([dungeon-enves.md](dungeon-enves.md)) gets its sink. Elias, 27/9: the shards «también se tradean en Solsticio por cosas (mucho más adelante) así que tiene sentido que sobren para que la ofrenda sea más que nada inicial». Elias, 29/9, on the Luminosities: «no tienen otro método de conseguir que no sea tradeándolas (son baratas y no necesitás muchas...)».
+
+### Who trades: Cenit, no new stall
+
+The city template has 16 stalls, one `shop:` marker each, and it belongs to the controller: a 17th trader would need a marker that `city.nbt` does not have. Cenit («rarezas») is the fit. The Envés's loot is Apotheosis rarities, and he already sells what a deep dungeon is measured by (elytra, totems, shulker shells, echo shards). His table takes shards at the end of its list; the eight emerald offers he had do not change.
+
+### The table
+
+Seven offers in `rarities.json`, priced in `entrelumen:sour_light_shard`. A price is one item slot, so 64 is the ceiling (also the Envés's door). Every offer is gated at **act 6**, like the elytra, and has `price_multiplier` 0 so demand never moves it. The liberation still takes its 40% off (rounding as everywhere: never below one, always at least one less).
+
+| Trade | Shards | Liberated | Uses per restock | Why |
+| --- | ---: | ---: | ---: | --- |
+| 8 gem dust | 16 | 10 | 16 | Every purity step of the gem cutting table asks dust (1, 3, 5, 7, 9): 25 for the whole climb, 50 shards at two apiece. |
+| 4 luminous crystal shards (rare material) | 32 | 19 | 8 | 8 each. The cutting table asks 1 to 27 per step; the flawless step asks 27. |
+| 2 arcane sands (epic material) | 40 | 24 | 8 | 20 each, two and a half rares: epic is where the Envés's chests thin out. The flawless step asks 9. |
+| 3 Sigils of Rebirth | 48 | 29 | 8 | 16 each. The Reforging Table's fuel; Apotheosis crafts them six at a time from slate and dust. |
+| 1 Sigil of Socketing | 56 | 34 | 4 | The gear lever players chase most: one more socket. Priced above the fuel. |
+| 1 Sigil of Withdrawal | 40 | 24 | 4 | Takes the gems out to try others, so gems stop being a one-way road. |
+| 1 totem of undying | 54 | 32 | 2 | The dungeon's second life. Cenit's emerald totem (12 blocks, act 5) is worth 54 shards at the rate below. |
+
+Buying the whole list once costs **286 shards** (172 liberated). Ids and recipes checked against the pinned `Apotheosis-1.21.1-8.7.0.jar` (items, `rarities/*.json` materials, gem cutting and sigil recipes). If Apotheosis is absent its offers are skipped like any missing item; the totem remains.
+
+### Why these prices
+
+- **The rate.** A repeat full descent nets about 141 shards (below), and an elytra costs 32 emerald blocks (288 emeralds): **one shard is about two emeralds, one full descent about one elytra.** The totem, the only item with an emerald twin, sits exactly on that rate. The rest are rungs of the reforging loop: dust 2, rare material 8, epic 20, fuel 16, sockets 56.
+- **Fuel, not power.** Shards buy more of what the Envés already drops (dust, materials) and the levers Apotheosis players use to steer it (sigils). The surplus turns a random loop into a chosen one, which is what a currency is for in a roguelite. Nothing is a stat stick, and nothing skips a gate.
+- **The ladder is the sink.** The top gem step needs 27 rare materials, 9 epic and 9 dust: about 414 shards (216 + 180 + 18), three repeat descents, for one gem. The three godforged pearls it also asks stay unsold (mythic material, an ingredient of the Luminous ingot). So players who cut gems keep spending; players who do not have a small, finite shopping list.
+- **Late.** Every offer waits for act VI. The Envés opens with Frontier (act III), so a team arrives in Solsticio with the surplus of acts III to V already in its pockets and had nothing to spend it on before.
+- **Generous uses.** A merchant's uses are shared by everyone who trades with it, so the caps are high on purpose: the price is the throttle, not the daily cap. The table stays far from making the door's 64 shards hurt again.
+- **No loop.** Nothing buys shards back and shards never become emeralds. The totem costs the same in both currencies at the rate above, so neither is the better road.
+
+### Against what the Envés drops
+
+Expected shards per descent, from `EnvesContentDataTest` (200 descents; the group crosses 70% of the rooms and solves three of four vaults; one player):
+
+| | Shards |
+| --- | ---: |
+| Floor I | 19 |
+| Floors I to III | 80 |
+| Full descent, first boss | 141 |
+| Full descent, repeat boss (the chest gives 64 more instead of the Sour Shackle) | 205 |
+| The door | -64 |
+| **Net of a first full descent / of a repeat** | **77 / 141** |
+
+- The whole table once is 286 shards: two repeat descents, or 1.2 at liberated prices. One repeat descent alone pays a totem, a socket sigil and three rebirth sigils at liberated prices (95) and leaves change.
+- Five full descents across acts III to V bring about 640 shards (77 + 4 x 141): two trips through the table. In a group each player has their own Lootr chests, so the chest shards multiply with the party and the echoes' stay shared.
+- Floors I to III barely pay the door (80 against 64), as designed: the surplus is the reward for going deeper, and it is not enough to make the door trivial or the shards worthless.
+
+### What it keeps
+
+- **The Wither stays the only source of Nether stars.** No offer sells a star, a beacon or a wither skull; the door's «star or 64 shards» is untouched.
+- **Act gates.** Each shard offer carries act 6 in the same `ActGate` as the elytra.
+- **Luminosities only by trading with their native.** Shards buy no Luminosity, no Luminous ingot and none of its three rare ingredients.
+- **Never sold** is unchanged. `CommerceRulesTest` now also enforces the shard table: only Cenit takes shards, one stack at most, act 6 or later, no second cost, flat price, exactly these seven items, and no native takes them.
+
+### Para decidir (Elias)
+
+The defaults are the safe side; each is a small data change.
+
+1. **Shards for Luminosities.** Default: no. The six natives keep asking emeralds plus a catalyst, and the biome trip stays the only road (Elias, 29/9). If yes: a second Luminosity offer per native at **64 shards** (32 awake, 19 once liberated) plus the same catalyst, still asleep until the native has been to its biome. The 54 Luminosities of a gear set plus the 48 of the creative items would then be a real shard sink (about 1,000 shards a set). The catch: «son baratas» would mean one run instead of emerald blocks.
+2. **A second Sour Shackle.** Default: no («uno solo, con un efecto que se note», 29/9). A player who loses the Grillete cannot get another, because the mark stays. A replacement at 64 shards would be the answer; it is left out until Elias says so.
+3. **More power for shards.** Default: no. Sigils of Supremacy (overcharges every affix) and Malice, the Invader Summoner and strong Artifacts curios were left out because they are power, not fuel: each would make the Envés the best road to top gear.
+4. **The rate.** One shard about two emeralds, the totem at 54, the ceiling of 64 a trade. If the table should weigh more, scale the prices; the limits are the ceiling and the balance between the reforge rungs.
+5. **Liberation discount on shards.** Default: yes, they are a shop price like any other. To make shards hold their price, `SolsticioCommerce` would have to skip non-emerald costs.
+6. **Shared uses.** On a big server the sockets' and the totem's daily uses may run out. Raise `max_uses` (128 at most) if the playtest shows it.
+
+### Text and quest
+
+- The shard's tooltip gets a third dark-grey line, `item.entrelumen.sour_light_shard.trade` (EN/ES): «Late in the game, Cenit in Solsticio trades them for rarities.» / «Más adelante, Cenit, en Solsticio, las cambia por rarezas.»
+- The Solsticio guide (`content/guides/guide_entrelumen_solsticio.json`) gets an optional node after the shops, `entrelumen_solsticio_shards` («What the Envés Leftovers Buy» / «En qué se gastan las sobras del Envés»), and the book is regenerated.
+
+### Tests
+
+- JUnit `CommerceRulesTest.sourLightShardsBuyOnlyTheWaitingRaritiesAtCenit`; the emerald-only assertion now names Cenit as the one exception.
+- GameTest `RuntimeGameTestsCommerce.cenitTakesSourLightShardsOnlyFromActSix`: the shard totem is closed at act 5 while the emerald totem is open, open at act 6 at its nominal price and paid with exactly its shards, and cheaper once liberated. **Pending**: GameTests go to the end of the project (Elias, 29/9), so it only compiles today.
 
 ## Natives and Luminosities
 
@@ -138,7 +216,7 @@ A villager without a Solsticio role that is inside the trading hall zone becomes
 
 ## Tests
 
-- JUnit `CommerceRulesTest` (15): every table parses cleanly and covers the 16 types; the shops sell what Elias asked for (Mending, elytra at act 6, totems at act 5, netherite template and 18 trims, 19 discs plus the tag, surveys, lore books, 23 sherds); natives ask for distinct biomes and sell only their own Luminosity; nothing forbidden is sold and everything costs emeralds; parsing drops bad offers with reasons; multipliers, rounding (liberation always lowers any price from 2 up), vanilla-exact price adjustment with demand, reputation and clamping; lazy restock; cap spread; hall box; innkeeper order; sites from markers, kept UUIDs and round trip; `SolsticioData` keeps the liberation and the commerce. `CityLayoutTest.commerceMarkersCarryTheirArgument` covers the new marker syntax.
+- JUnit `CommerceRulesTest` (16): every table parses cleanly and covers the 16 types; the shops sell what Elias asked for (Mending, elytra at act 6, totems at act 5, netherite template and 18 trims, 19 discs plus the tag, surveys, lore books, 23 sherds); natives ask for distinct biomes and sell only their own Luminosity; nothing forbidden is sold and everything costs emeralds, except Cenit's seven shard offers (checked by a test of their own: one stack, act 6, flat, no Luminosity); parsing drops bad offers with reasons; multipliers, rounding (liberation always lowers any price from 2 up), vanilla-exact price adjustment with demand, reputation and clamping; lazy restock; cap spread; hall box; innkeeper order; sites from markers, kept UUIDs and round trip; `SolsticioData` keeps the liberation and the commerce. `CityLayoutTest.commerceMarkersCarryTheirArgument` covers the new marker syntax.
 - GameTests `RuntimeGameTestsCommerce` (5, isolated server, fixture template `commerce_fixture` from `tools/build_commerce_fixture.py`, never shipped):
   - the fixture's markers go through the loader's partition and parser; three shopkeepers (no AI, invulnerable, persistent, Master, named), the Mending book and a survey map on sale, six natives on distinct spots with their Luminosity, the innkeeper's line and the side-quest hook, two common villagers under a cap of 2, the easter egg, the unknown marker ignored, and a second population spawns nothing;
   - the rarities keeper keeps elytra and echo shards closed at act 1 (restored after trading), sells the elytra at 32 blocks in act 6 and at 19 once liberated, and the discount ends with the trade;
@@ -154,4 +232,5 @@ A villager without a Solsticio role that is inside the trading hall zone becomes
 - ~~Heliodor clothing~~: done on 24 September. `entrelumen:heliodor` is a registered villager type (texture `entrelumen:textures/entity/villager/type/heliodor.png`, `art/authoring/draw_villager_heliodor.py`) worn by every villager the city spawns, shopkeepers and natives included: the tables' `villager_type` no longer applies to the city's own merchants, only their profession does. Villagers placed before are re-dressed when they load; settled villagers from elsewhere keep their clothes. Pending art: the four characters' distinctive pieces (profession textures, transparent placeholders today; see act-six.md).
 - In-game review on a client: trading screens, out-of-stock gated offers, survey map charting in a real world (not exercised by the flat test world), awakening particles, text EN/ES.
 - Full-pack check: modded offers, Easy Villagers carrying natives and settling newcomers, Carry On refused on fixed NPCs, Jade tooltips.
-- Balance playtest: emerald income against these prices and the Luminosity rhythm (54 for the gear, 48 for the creative items).
+- Balance playtest: emerald income against these prices and the Luminosity rhythm (54 for the gear, 48 for the creative items), and the shard table against a real Envés stash ([shards](#sour-light-shards-30-september-2026)).
+- The shard GameTest `cenitTakesSourLightShardsOnlyFromActSix` has not run (tests go to the end of the project).
