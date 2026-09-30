@@ -876,14 +876,18 @@
       "icon": {"texture": "psi:textures/item/encyclopaedia_psionica.png"},
       "at": {"x": -21.5, "y": 12.6},
       "en_us": {"title": "Encyclopaedia Psionica", "subtitle": "The manual, every piece included.",
-        "text": ["[lead] With empty hands, [key:psimisc.keybind] opens Psi's book wherever you are.",
+        "text": ["[lead] Psionic Utilities turns off [key:psimisc.keybind] as a shortcut to the manual: open the book itself.",
                  "For a copy on the shelf, drop a book and use a CAD with no spell selected next to it.",
+                 "{page}",
+                 "[note] The setting is the addon's own, client-side and on by default; the pack does not change it.",
                  "[note] In this pack the recipe has its own ID, because PneumaticCraft's manual used the same one."]},
       "es_es": {"title": "Encyclopaedia Psionica", "subtitle": "El manual, con todas las piezas adentro.",
-        "text": ["[lead] Con las manos vacías, [key:psimisc.keybind] abre el libro de Psi donde estés.",
+        "text": ["[lead] Psionic Utilities apaga [key:psimisc.keybind] como atajo al manual: abrí el libro mismo.",
                  "Para tenerlo en la biblioteca, tirá un libro y usá al lado un CAD sin hechizo elegido.",
+                 "{page}",
+                 "[note] El ajuste es del propio complemento, del lado del cliente y prendido por defecto; el pack no lo cambia.",
                  "[note] En este pack la receta tiene su propio ID, porque el manual de PneumaticCraft usaba el mismo."]},
-      "sources": ["repo:pack/kubejs/data/psi/recipe/encyclopaedia_psionica.json", "repo:docs/design/mod-pingpong.md#Otras integraciones", "jar:Psi-neoforge-1.21.1-110.jar:vazkii/psi/client/core/handler/KeybindHandler.class", "repo:pack/config/defaultoptions/keybindings.txt#key_psimisc.keybind"]
+      "sources": ["repo:pack/kubejs/data/psi/recipe/encyclopaedia_psionica.json", "repo:docs/design/mod-pingpong.md#Otras integraciones", "jar:Psi-neoforge-1.21.1-110.jar:vazkii/psi/client/core/handler/KeybindHandler.class", "repo:pack/config/defaultoptions/keybindings.txt#key_psimisc.keybind", "jar:psionicutilities-1.21-1.4.jar:gdavid/psionicutilities/Config.class#disableGuideBookHotkey (client config, default true)", "jar:psionicutilities-1.21-1.4.jar:gdavid/psionicutilities/mixin/KeybindHandlerMixin.class#disableGuideBookHotkey (cancels openBookGUI)", "repo:pack/config (no psionicutilities config: the default applies)"]
     },
     {
       "key": "psi_battery", "role": "side", "deps": ["psi_components"],
