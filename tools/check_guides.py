@@ -1118,7 +1118,7 @@ def check_reward_tables(errors):
             errors.append(f'reward table {name}: icon {spec["icon"]} not found')
 
 
-def image_budget(warnings, flt=''):
+def image_budget(warnings, flt=()):
     """Images of every compiled chapter: a warning above IMAGE_BUDGET or for a v2 chapter that does not start as a
     sketch; prints the book total and the heaviest chapters."""
     import generate_quests
@@ -1130,7 +1130,7 @@ def image_budget(warnings, flt=''):
             continue
         images = json.loads(text).get('images', [])
         counts[path.stem] = len(images)
-        if flt and flt not in path.stem:
+        if not picked(path.stem, flt):
             continue
         if len(images) > IMAGE_BUDGET:
             warnings.append(f'{path.stem}: {len(images)} images, over the budget of {IMAGE_BUDGET}: one large picture '
@@ -1147,13 +1147,18 @@ def image_budget(warnings, flt=''):
           + ', '.join(f'{name} {n}' for name, n in ranked[:3]))
 
 
+def picked(name, flt, *others):
+    """Whether a chapter matches the command line: no names means all of them; any name (a substring) picks it."""
+    return not flt or any(f in n for f in flt for n in (name,) + others)
+
+
 def main():
-    flt = sys.argv[1] if len(sys.argv) > 1 else ''
+    flt = tuple(sys.argv[1:])   # chapter names or substrings; several are allowed
     errors, chapters, keys, warnings = [], set(), set(), []
     total = 0
     files = sorted(GUIDES.glob('*.json'))
     for p in files:
-        if flt and flt not in p.stem:
+        if not picked(p.stem, flt):
             continue
         total += check_chapter(p, chapters, keys, errors)
         warnings += copy_warnings(p)
@@ -1169,7 +1174,7 @@ def main():
     for p in sector_files:
         all_keys |= {q['key'] for q in json.loads(p.read_text(encoding='utf-8'))['quests']}
     for p in sector_files:
-        if flt and flt not in p.stem:
+        if not picked(p.stem, flt):
             continue
         total += check_sector(p, errors, all_keys)
         warnings += quest_art.lint(json.loads(p.read_text(encoding='utf-8')))   # notes no player would see
@@ -1178,7 +1183,7 @@ def main():
     story = 0
     for name in generate_quests.CHAPTER_SOURCES:   # story chapters in presentation v2: their text and art
         data = json.loads((ROOT / 'content' / name).read_text(encoding='utf-8'))
-        if data.get('presentation', 1) < 2 or (flt and flt not in data['chapter'] and flt not in name):
+        if data.get('presentation', 1) < 2 or not picked(data['chapter'], flt, name):
             continue
         check_v2_refs(data, name, errors)
         warnings += quest_art.lint(data)
