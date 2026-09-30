@@ -33,7 +33,20 @@ La receta es simétrica: las seis Luminosidades ocupan las columnas laterales y 
 - `apotheosis:godforged_pearl`: material de rareza mítica. Sólo sale de desguazar botín mítico, que aparece desde el World Tier Summit. Desde la renumeración del 24/9 Summit abre con el acto V, el Arca ([act-renumbering.md](act-renumbering.md)), así que la perla es del acto V. Las recetas que la piden igual quedan en el VI por las Luminosidades.
 - `mekanism:alloy_atomic`: tecnología de etapa V.
 
-Da un lingote por receta: seis Luminosidades por lingote. Es fireproof y repara todo el equipo luminoso en el yunque.
+Da un lingote por receta: seis Luminosidades por lingote. Con uno en mano se puede cultivar más ([abajo](#el-lingote-luminoso-también-crece)). Es fireproof y repara todo el equipo luminoso en el yunque.
+
+## El Lingote Luminoso también crece
+
+Pedido de Elias del 29 de septiembre: «hacete unas semillas de luminosity INGOTS, las luminosidades NO, las luminosidades no tienen otro método de conseguir que no sea tradeándolas... pero los ingots de la armor y eso SÍ». Sólo el lingote tiene cultivo; las seis Luminosidades siguen sin receta y sin cultivo (el generador lo comprueba).
+
+- **Cultivo de Mystical Agriculture, nivel 5 (supremium).** `pack/config/mysticalcustomization/crops/luminous_ingot.json`: tipo recurso, ingrediente `entrelumen:luminous_ingot`, color `#F3E3B0`. Crea `mysticalagriculture:luminous_ingot_seeds`, `luminous_ingot_essence` y el bloque del cultivo. Nivel 5 porque el lingote es del acto VI, por encima de la netherita, el diamante y el draconio, que son de ese nivel.
+- **Por qué Mystical Customization.** El JAR fijado de MA (8.0.27) no lee JSON ni datapacks de cultivos; sólo su API de plugins agrega cultivos. Mystical Customization, del mismo autor, es ese plugin y lee la carpeta de arriba. Es un mod nuevo de 49 KB, MIT, de la instancia ATM10 con el SHA-1 de CurseForge verificado, y **queda pendiente la aprobación de Elias** (ver [mod-pingpong.md](mod-pingpong.md#balance-del-29-9-varita-del-tiempo-y-semillas-luminosas)).
+- **La semilla necesita el lingote.** La receta de infusión de la semilla la genera MA en tiempo de carga (`DynamicRecipeManager`) desde el ingrediente: cuatro lingotes, cuatro esencias de supremium y una base de semilla de prosperidad; la versión de mesa de crafteo lleva lo mismo (`MEM/ESE/MEM`). Sin un lingote forjado con las seis Luminosidades no hay primera semilla, y el cultivo sólo devuelve lingotes cuando ya se pagaron cuatro.
+- **De esencia a lingote:** `entrelumen:luminous_ingot_from_essence`, `EEE/E E/EEE`, ocho esencias por un lingote. Es la razón que MA usa para sus supremium más caros (netherita, draconio, cráneo de esqueleto wither; las aleaciones de nivel 5 dan dos por ocho). El generador la escribe en `pack/kubejs/data/entrelumen/recipe/luminous_ingot_from_essence.json`.
+- **Texturas y nombre.** Las plantillas en blanco de MA para lingotes, teñidas con `#F3E3B0`; sin arte nuevo. El nombre («Lingote Luminoso» / «Luminous Ingot») viene de `pack/resourcepacks/entrelumen/assets/mysticalcustomization/lang/`, y MA arma «Esencia de …» y «Semillas de …».
+- **Exclusividad.** La salida del lingote sigue exclusiva: el script luminoso quita al cargar cualquier otra receta que lo produzca **salvo** esa receta, que cada fila de creación lista como su único extra autorizado (`farmed`), y `afterRecipes` cuenta exactamente esas dos. `check_creations` da por buenos los mismos dos productores y sigue sin permitir a ningún otro archivo del pack o del companion.
+- **Sin ciclos.** La receta no devuelve una Luminosidad ni una entrada de una creación (el chequeo de ciclos la incluye), y ningún camino lleva del lingote a una Luminosidad. Lo que cambia es que el segundo lingote y los siguientes ya no cuestan seis Luminosidades cada uno; ése es el costo de balance que Elias eligió.
+- **Quest:** `ma_crop_luminous` en `sector_ma_essence`, en el cantero de supremium, con dependencia del nodo del lingote (`entrelumen_luminous_ingot`); el texto del lingote en la guía luminosa menciona el cultivo.
 
 ## Equipo luminoso
 

@@ -296,6 +296,19 @@ UNCRAFTABLE_CREATIVE = ('create:creative_crate', 'ae2:creative_storage_cell', 'm
                         'sophisticatedbackpacks:infinity_upgrade', 'sophisticatedstorage:infinity_upgrade')
 
 
+# The Luminous Ingot also grows: Mystical Agriculture's supremium (tier 5) crop `luminous_ingot`, declared
+# in pack/config/mysticalcustomization/crops/luminous_ingot.json. Its seed costs four ingots and four
+# supremium essence (MA's own dynamic infusion recipe, generated from the crop's `ingredient`), so the first
+# ingot still needs the six Luminosities. The Luminosities themselves have no crop: villager trades only.
+# The essence-to-ingot recipe is the one authorised second producer of the ingot; it follows the ratio of
+# MA's rarest supremium ingots (netherite and draconium: a ring of eight essences gives one ingot).
+LUMINOUS_CROP = 'luminous_ingot'
+LUMINOUS_CROP_FILE = ROOT / f'pack/config/mysticalcustomization/crops/{LUMINOUS_CROP}.json'
+LUMINOUS_ESSENCE = f'mysticalagriculture:{LUMINOUS_CROP}_essence'
+LUMINOUS_SEEDS = f'mysticalagriculture:{LUMINOUS_CROP}_seeds'
+LUMINOUS_CROP_LANG = ROOT / 'pack/resourcepacks/entrelumen/assets/mysticalcustomization/lang'
+
+
 def created_shaped(recipe_id, output, pattern, key, why, *, components=None, disciplines=()):
     return {'kind': 'shaped', 'id': recipe_id, 'output': output, 'pattern': pattern, 'key': key, 'why': why,
             'components': components, 'disciplines': tuple(disciplines), 'act': LUMINOUS_ACT}
@@ -704,6 +717,13 @@ CM_ROOMS = ('tiny', 'small', 'normal', 'large', 'giant', 'colossal', 'soaryn', '
 CM_ROOM_FILES = tuple(f'data/compactmachines/{path}.json' for room in CM_ROOMS
                       for path in (f'compactmachines/room_templates/{room}', f'recipe/new_machine_{room}',
                                    f'advancement/recipes/misc/new_machine_{room}'))
+
+LUMINOUS_FARMED = [
+    created_shaped('entrelumen:luminous_ingot_from_essence', LUMINOUS_INGOT, ['EEE', 'E E', 'EEE'],
+                   {'E': item(LUMINOUS_ESSENCE)},
+                   'Eight supremium essences of the luminous crop, like netherite: one ingot'),
+]
+
 
 FAMILIES = {
     'industrial': {
@@ -1143,6 +1163,7 @@ FAMILIES = {
         'changes': [],
         'removals': [],
         'creations': LUMINOUS_RECIPES,
+        'farmed': LUMINOUS_FARMED,
         'uncraftable': list(UNCRAFTABLE_CREATIVE) + [LUMINOSITY[d] for d in DISCIPLINES],
         'data': [
             # Farmer's Delight 1.3.3 ships its Silent Gear netherwood cutting recipe in the pre-1.21
@@ -2229,7 +2250,7 @@ def creation_inputs(spec):
 def creation_files(name):
     """{path below pack/kubejs/data: JSON text}. Pure, so CI can compare it without the pinned JARs."""
     out = {}
-    for spec in FAMILIES[name].get('creations', []):
+    for spec in FAMILIES[name].get('creations', []) + FAMILIES[name].get('farmed', []):
         namespace, path = spec['id'].split(':', 1)
         out[f'{namespace}/recipe/{path}.json'] = json.dumps(creation_json(spec), indent=2, ensure_ascii=False) + '\n'
     return out
@@ -2288,7 +2309,35 @@ def check_creations_static(name):
     if ingot:
         assert sorted(i for i in creation_inputs(ingot[0]) if i in luminosities) == sorted(luminosities), \
             'The ingot must use each Luminosity exactly once'
+    check_farmed_static(name)
     return uses
+
+
+def check_farmed_static(name):
+    """The luminous crop: the only second producer of the Luminous Ingot. Its recipe is a ring of eight of the
+    crop's essences, gives one ingot and needs no Luminosity (the seed needs the ingot instead), and the crop
+    file, the seed's ingredient and the display name in both languages agree with it."""
+    family = FAMILIES[name]
+    farmed = family.get('farmed', [])
+    if not farmed:
+        return
+    ids = [s['id'] for s in family.get('creations', [])] + [s['id'] for s in farmed]
+    assert len(ids) == len(set(ids)), 'Duplicate creation or farmed ID'
+    creations = {s['output'] for s in family.get('creations', [])}
+    for spec in farmed:
+        assert spec['kind'] == 'shaped' and spec['output'] == LUMINOUS_INGOT and spec['output'] in creations, spec['id']
+        ring = (spec['pattern'], spec['key']) == (['EEE', 'E E', 'EEE'], {'E': item(LUMINOUS_ESSENCE)})
+        assert ring, f"{spec['id']}: the essence recipe is a ring of eight essences"
+        assert not spec['components'] and not spec['disciplines'] and spec['act'] == LUMINOUS_ACT, spec['id']
+        assert not any(i in LUMINOSITY.values() for i in creation_inputs(spec)), f"{spec['id']}: a Luminosity"
+    assert not set(LUMINOSITY.values()) & {LUMINOUS_ESSENCE, LUMINOUS_SEEDS}, 'A Luminosity has a crop'
+    crop = read(LUMINOUS_CROP_FILE)
+    assert crop['tier'] == 'mysticalagriculture:5' and crop['type'] == 'mysticalagriculture:resource', crop
+    assert crop['ingredient'] == {'item': LUMINOUS_INGOT}, 'The luminous seed must be paid with the ingot itself'
+    assert not {'essence', 'seeds', 'recipes', 'enabled'} & set(crop), 'The crop keeps the recipes MA generates'
+    for language in ('en_us', 'es_es'):
+        names = read(LUMINOUS_CROP_LANG / f'{language}.json')
+        assert names.get(f'crop.mysticalcustomization.{LUMINOUS_CROP}'), f'{language}: the crop has no name'
 
 
 def item_model_sources():
@@ -2473,18 +2522,28 @@ def check_creations(name, recipes):
     exclusive = {s['output'] for s in specs} | set(family['uncraftable'])
     for recipe in local:
         assert not outputs(recipe) & exclusive, f'A pack or companion recipe produces {outputs(recipe) & exclusive}'
-    loops = find_loops(specs, [r for r, _ in recipes.values()] + local, tag_members(), set(LUMINOSITY.values()))
+    farmed = family.get('farmed', [])
+    if farmed:
+        # The crop lives in Mystical Agriculture (its essence, seeds and infusion recipe) and is declared by
+        # Mystical Customization; both JARs must be pinned for the essence recipe's input to exist.
+        for mod_id in ('mysticalagriculture', 'mysticalcustomization'):
+            entry = next((e for e in lock['mods'] if mod_id in {m['id'] for m in e['metadata']['mods']}), None)
+            assert entry, f'{mod_id} is not pinned, but the luminous crop needs it'
+            used[entry['filename']] = entry['sha256']
+    loops = find_loops(specs, [r for r, _ in recipes.values()] + local + [creation_json(s) for s in farmed],
+                       tag_members(), set(LUMINOSITY.values()))
     assert not loops, f'Recipe loops through the luminous creations: {loops}'
     return dict(sorted(used.items()))
 
 
 CREATIONS_RUNTIME = '''
 ServerEvents.recipes(event => {
-  // Exclusive outputs: any other recipe for a creation's output, or for an uncraftable item, goes.
+  // Exclusive outputs: any other recipe for a creation's output, or for an uncraftable item, goes; the
+  // farmed recipes listed in a row (the luminous crop's essence ring) are its only authorised extras.
   var displaced = [];
   CREATIONS.forEach(row => {
     event.findRecipeIds({output: row.output}).forEach(id => {
-      if (String(id) !== row.id) displaced.push({recipe: String(id), output: row.output});
+      if (String(id) !== row.id && row.farmed.indexOf(String(id)) < 0) displaced.push({recipe: String(id), output: row.output});
     });
   });
   UNCRAFTABLE.forEach(output => {
@@ -2499,7 +2558,11 @@ ServerEvents.afterRecipes(event => {
   CREATIONS.forEach(row => {
     var own = event.countRecipes({id: row.id, output: row.output});
     var producers = event.countRecipes({output: row.output});
-    if (own !== 1 || producers !== 1) failed.push({recipe: row.id, loadedOutput: own, producers: producers});
+    var farmed = 0;
+    row.farmed.forEach(id => { farmed += event.countRecipes({id: id, output: row.output}); });
+    if (own !== 1 || farmed !== row.farmed.length || producers !== 1 + row.farmed.length) {
+      failed.push({recipe: row.id, loadedOutput: own, farmedLoaded: farmed, producers: producers});
+    }
   });
   UNCRAFTABLE.forEach(output => {
     var producers = event.countRecipes({output: output});
@@ -2515,10 +2578,11 @@ def render_creations(family, prefix):
     specs = family.get('creations', [])
     if not specs:
         return ''
-    rows = [{'id': s['id'], 'output': s['output'], 'kind': s['kind'],
-             'disciplines': list(s['disciplines'])} for s in specs]
-    payload = json.dumps({'creations': [creation_json(s) for s in specs], 'uncraftable': family['uncraftable']},
-                         ensure_ascii=False, separators=(',', ':'), sort_keys=True)
+    farmed = family.get('farmed', [])
+    rows = [{'id': s['id'], 'output': s['output'], 'kind': s['kind'], 'disciplines': list(s['disciplines']),
+             'farmed': [f['id'] for f in farmed if f['output'] == s['output']]} for s in specs]
+    payload = json.dumps({'creations': [creation_json(s) for s in specs], 'farmed': [creation_json(s) for s in farmed],
+                          'uncraftable': family['uncraftable']}, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
     return (f'const {prefix}CreationsSignature = {json.dumps(hashlib.sha256(payload.encode("utf-8")).hexdigest())};\n'
             f'const {prefix}Creations = {json.dumps(rows, ensure_ascii=False, separators=(",", ":"))};\n'
             f'const {prefix}Uncraftable = {json.dumps(family["uncraftable"])};\n'
@@ -2612,7 +2676,8 @@ def render(name, rows, removals, used_files):
             .replace('SIGNATURE', prefix + 'Signature').replace('TAG', family['tag']))
     if not rows and not removals and family.get('creations'):
         body = ''  # a creation-only family edits no native recipe
-    scope = ('new recipes with exclusive outputs; Luminosities and item duplicators stay uncraftable'
+    scope = ('new recipes with exclusive outputs (the Luminous Ingot also grows from its Mystical Agriculture crop); '
+             'Luminosities and item duplicators stay uncraftable'
              if family.get('creations') else 'native acquisition only')
     return (f'// Generated by tools/generate_family_balance.py --family {name}; {scope}.\n'
             '// No team, act, use, dimension, origin, gift or reward checks.\n'
