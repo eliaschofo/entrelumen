@@ -227,6 +227,59 @@
         "text": ["[lead] Cruzá el arbusto con pantalones y botas y no pincha.",
                  "Con las piernas al aire, cada espina se siente."]},
       "sources": ["jar:heyberryshutup-1.21.0-2.0.4.jar:cy/jdkdigital/heyberryshutup/Config$Common.class"]
+    },
+    {
+      "key": "qol_world_harvest", "deps": ["qol_world_ultimine_rightclick"], "type": "checkmark", "optional": true, "layout": {"x": 9, "y": -1.5, "size": 1.0, "shape": "circle"},
+      "icon": "minecraft:wheat",
+      "en_us": {"title": "Right Click Harvest", "subtitle": "Harvest and replant in one click.",
+        "text": ["[lead] Right-click a ripe crop and it is harvested and replanted in one go.",
+                 "[li] No hoe needed, and no hunger or experience cost",
+                 "[li] Holding a hoe harvests the crops around it too, more with better hoes",
+                 "[li] Cocoa, sugar cane and cactus stay out of that area harvest",
+                 "{page}",
+                 "[note] It respects claims: on another team's land the harvest is refused."]},
+      "es_es": {"title": "Right Click Harvest", "subtitle": "Cosechá y replantá con un clic.",
+        "text": ["[lead] Clic derecho sobre un cultivo maduro y se cosecha y se replanta de una.",
+                 "[li] No hace falta azada, y no cuesta hambre ni experiencia",
+                 "[li] Con una azada en la mano cosecha también los cultivos de alrededor, más con mejores azadas",
+                 "[li] El cacao, la caña de azúcar y el cactus quedan fuera de esa cosecha en área",
+                 "{page}",
+                 "[note] Respeta los reclamos: en tierra de otro equipo la cosecha se rechaza."]},
+      "sources": ["repo:docs/design/mod-pingpong.md", "jar:rightclickharvest-neoforge-4.6.1+1.21.1.jar:assets/rightclickharvest/lang/en_us.json", "jar:rightclickharvest-neoforge-4.6.1+1.21.1.jar:io/github/jamalam360/rightclickharvest/Config.class", "jar:rightclickharvest-neoforge-4.6.1+1.21.1.jar:data/rightclickharvest/tags/block/radius_harvest_blacklist.json", "jar:rightclickharvest-neoforge-4.6.1+1.21.1.jar:data/rightclickharvest/tags/item/high_tier_hoes.json", "jar:rightclickharvest-neoforge-4.6.1+1.21.1.jar:io/github/jamalam360/rightclickharvest/neoforge/RightClickHarvestPlatformImpl.class"]
+    },
+    {
+      "key": "qol_world_bridging", "deps": ["qol_world_ultimine_rightclick"], "type": "checkmark", "optional": true, "layout": {"x": 9, "y": -4, "size": 1.0, "shape": "diamond"},
+      "icon": "minecraft:scaffolding",
+      "en_us": {"title": "Bridging Mod: Build Off the Edge",
+        "text": ["[lead] Stand at an edge and place blocks outward, with no backing up and no crouching.",
+                 "[li] On by default: arrows around the crosshair show where the block will attach",
+                 "[li] Toggle it with [key:key.bridgingmod.toggle_bridging]",
+                 "[li] Slabs and trapdoors line up with your height while you bridge",
+                 "{page}",
+                 "[note] The pack moves the toggle off the comma key, which Iron Jetpacks uses to lower thrust.",
+                 "Its config can limit bridging to sneaking or to one axis."]},
+      "es_es": {"title": "Bridging Mod: construí desde el borde",
+        "text": ["[lead] Parate en un borde y poné bloques hacia afuera, sin retroceder ni agacharte.",
+                 "[li] Viene prendido: unas flechas alrededor de la mira muestran dónde se va a apoyar el bloque",
+                 "[li] Se prende y se apaga con [key:key.bridgingmod.toggle_bridging]",
+                 "[li] Las losas y trampillas se alinean con tu altura mientras hacés el puente",
+                 "{page}",
+                 "[note] El pack mueve el interruptor fuera de la coma, que Iron Jetpacks usa para bajar el empuje.",
+                 "Su configuración puede limitar el puente a cuando te agachás o a un solo eje."]},
+      "sources": ["repo:pack/config/entrelumen/client-preset.json", "repo:pack/config/defaultoptions/keybindings.txt", "repo:docs/design/mod-pingpong.md", "jar:BridgingMod-2.6.2+1.21.1.neoforge-release.jar:assets/bridgingmod/lang/en_us.json", "jar:BridgingMod-2.6.2+1.21.1.neoforge-release.jar:me/cg360/mod/bridging/config/BridgingConfig.class", "jar:BridgingMod-2.6.2+1.21.1.neoforge-release.jar:me/cg360/mod/bridging/BridgingKeyMappings.class"]
+    },
+    {
+      "key": "qol_world_wits", "deps": ["qol_world_small_fixes"], "type": "checkmark", "optional": true, "layout": {"x": 12.5, "y": -2.5, "size": 1.0, "shape": "diamond"},
+      "icon": "minecraft:compass",
+      "en_us": {"title": "Tip: Which Structure Is This?",
+        "text": ["[tip] Type [hl|/wits] and it names the structures at your position.",
+                 "If there are none, it says so.",
+                 "[note] Operators can check any spot with [hl|/witsop <dimension> <position>]."]},
+      "es_es": {"title": "Truco: ¿qué estructura es esta?",
+        "text": ["[tip] Escribí [hl|/wits] y te nombra las estructuras que hay en tu posición.",
+                 "Si no hay ninguna, lo dice.",
+                 "[note] Los operadores pueden revisar cualquier lugar con [hl|/witsop <dimensión> <posición>]."]},
+      "sources": ["repo:docs/design/mod-pingpong.md", "jar:wits-neoforge-1.3.1.jar:com/telepathicgrunt/wits/commands/WITSCommand.class"]
     }
   ],
   "art": [
@@ -307,6 +360,10 @@
     {"id": "hit_1", "text": {"en_us": "7", "es_es": "7"}, "x": 17.4, "y": 2.2, "scale": 2, "tint": "#E8DCB5", "reveal": "qol_world_toy_hit"},
     {"id": "hit_2", "text": {"en_us": "31", "es_es": "31"}, "x": 20.2, "y": 2.3, "scale": 2, "tint": "#E5533D", "reveal": "qol_world_toy_hit"},
     {"id": "boots", "item": "minecraft:leather_boots", "x": 15.65, "y": 4.3, "size": 0.9, "reveal": "qol_world_toy_prickle"},
-    {"id": "boots_ok", "text": {"en_us": "OK", "es_es": "OK"}, "x": 15.65, "y": 3.45, "scale": 2, "tint": "#7FD65C", "reveal": "qol_world_toy_prickle"}
+    {"id": "boots_ok", "text": {"en_us": "OK", "es_es": "OK"}, "x": 15.65, "y": 3.45, "scale": 2, "tint": "#7FD65C", "reveal": "qol_world_toy_prickle"},
+    {"id": "sprout_0", "picture": "minecraft:textures/block/wheat_stage0.png", "x": 6.3, "y": 5.15, "w": 0.4, "h": 0.4, "reveal": "qol_world_harvest", "order": -3},
+    {"id": "sprout_1", "picture": "minecraft:textures/block/wheat_stage0.png", "x": 6.85, "y": 5.15, "w": 0.4, "h": 0.4, "reveal": "qol_world_harvest", "order": -3},
+    {"id": "sprout_2", "picture": "minecraft:textures/block/wheat_stage0.png", "x": 7.4, "y": 5.15, "w": 0.4, "h": 0.4, "reveal": "qol_world_harvest", "order": -3},
+    {"id": "sprout_3", "picture": "minecraft:textures/block/wheat_stage0.png", "x": 7.95, "y": 5.15, "w": 0.4, "h": 0.4, "reveal": "qol_world_harvest", "order": -3}
   ]
 }
