@@ -1,835 +1,599 @@
 {
   "chapter": "voices_of_the_atlas",
   "act": 4,
-  "title": {
-    "en_us": "IV · Voices of the Atlas",
-    "es_es": "IV · Las voces del Atlas"
-  },
+  "title": {"en_us": "IV · Voices of the Atlas", "es_es": "IV · Las voces del Atlas"},
   "subtitle": {
-    "en_us": [
-      "From an observatory on a cliff, Heliodor watched the sky. In the Temple of the Sacred Light it tried to seize it. In the Aether, the Sun Spirit stopped it."
-    ],
-    "es_es": [
-      "Desde un observatorio en un risco, Heliodor miraba el cielo. En el Templo de la Luz Sagrada quiso apoderarse de él. En el Aether, el Espíritu del Sol lo detuvo."
-    ]
+    "en_us": ["From an observatory on a cliff, Heliodor watched the sky. In the Temple of the Sacred Light it tried to seize it. In the Aether, the Sun Spirit stopped it."],
+    "es_es": ["Desde un observatorio en un risco, Heliodor miraba el cielo. En el Templo de la Luz Sagrada quiso apoderarse de él. En el Aether, el Espíritu del Sol lo detuvo."]
   },
   "autofocus": "voices_welcome",
-  "layout_groups": {
-    "archive": {
-      "en_us": "The Observatory · The witnesses",
-      "es_es": "El Observatorio · Los testigos"
-    },
-    "journeys": {
-      "en_us": "Journeys recorded by the team",
-      "es_es": "Viajes registrados por el equipo"
-    },
-    "spectral": {
-      "en_us": "Listen to the fragments",
-      "es_es": "Escuchar los fragmentos"
-    },
-    "horizon": {
-      "en_us": "Compare distant skies",
-      "es_es": "Comparar cielos lejanos"
-    },
-    "ecology": {
-      "en_us": "Juan · A living agreement",
-      "es_es": "Juan · Un acuerdo vivo"
-    },
-    "memory": {
-      "en_us": "The Temple · What was sealed",
-      "es_es": "El Templo · Lo que quedó sellado"
-    },
-    "sun": {
-      "en_us": "The Aether · The Sun Spirit",
-      "es_es": "El Aether · El Espíritu del Sol"
-    }
-  },
-  "milestones": [
-    "aether_arrival",
-    "twilight_arrival",
-    "bumblezone_arrival",
-    "spectral_archive",
-    "horizon_survey",
-    "pollinator_treaty",
-    "sealed_memory",
-    "heart_recovered",
-    "heliodor_heart",
-    "arcane_module",
-    "atlas_voices"
+  "layout_groups": {"archive": {"en_us": "The Observatory · The witnesses", "es_es": "El Observatorio · Los testigos"}, "journeys": {"en_us": "Journeys recorded by the team", "es_es": "Viajes registrados por el equipo"}, "spectral": {"en_us": "Listen to the fragments", "es_es": "Escuchar los fragmentos"}, "horizon": {"en_us": "Compare distant skies", "es_es": "Comparar cielos lejanos"}, "ecology": {"en_us": "Juan · A living agreement", "es_es": "Juan · Un acuerdo vivo"}, "memory": {"en_us": "The Temple · What was sealed", "es_es": "El Templo · Lo que quedó sellado"}, "sun": {"en_us": "The Aether · The Sun Spirit", "es_es": "El Aether · El Espíritu del Sol"}},
+  "milestones": ["aether_arrival", "twilight_arrival", "bumblezone_arrival", "spectral_archive", "horizon_survey", "pollinator_treaty", "sealed_memory", "heart_recovered", "heliodor_heart", "arcane_module", "atlas_voices"],
+  "book": {"panels": false},
+  "presentation": 2,
+  "art": [
+    {"id": "sky_0", "picture": "forbidden_arcanus:textures/gui/research/background.png", "x": -6.7, "y": 3.1, "w": 13.4, "h": 13.8, "sketch": {"alpha": 48}, "reveal": "voices_welcome", "order": -12},
+    {"id": "sky_1", "picture": "forbidden_arcanus:textures/gui/research/background.png", "x": 6.7, "y": 3.1, "w": 13.4, "h": 13.8, "sketch": {"alpha": 48}, "reveal": "voices_welcome", "order": -12},
+    {"id": "chart", "frame": [-13.4, -3.8, 13.4, 10.0], "color": "#8A7F6E", "thickness_px": 2.0, "alpha": 200, "corners": true, "sketch": true, "reveal": "voices_welcome", "order": -5},
+    {"id": "static", "scatter": ["minecraft:textures/particle/sga_a.png", "minecraft:textures/particle/sga_b.png", "minecraft:textures/particle/sga_c.png", "minecraft:textures/particle/sga_e.png", "minecraft:textures/particle/sga_h.png", "minecraft:textures/particle/sga_k.png", "minecraft:textures/particle/sga_m.png", "minecraft:textures/particle/sga_n.png", "minecraft:textures/particle/sga_r.png", "minecraft:textures/particle/sga_s.png", "minecraft:textures/particle/sga_t.png", "minecraft:textures/particle/sga_w.png", "minecraft:textures/particle/sga_y.png"], "region": [-13.1, -3.5, 13.1, 9.4], "count": 30, "size": [0.26, 0.4], "alphas": [40, 85], "tint": "#B9A7FF", "seed": 7, "order": -10},
+    {"id": "clear_welcome", "glow": [0, -2.6], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_welcome", "order": -9},
+    {"id": "clear_portals", "glow": [-8.2, -0.5], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_portals", "order": -9},
+    {"id": "clear_ambrosium", "glow": [-10.4, 0.7], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_ambrosium", "order": -9},
+    {"id": "clear_ironwood", "glow": [-11.6, 2.5], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_ironwood", "order": -9},
+    {"id": "clear_provisions", "glow": [-11.0, 4.3], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_provisions", "order": -9},
+    {"id": "clear_chart", "glow": [-9.0, 5.4], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_chart", "order": -9},
+    {"id": "clear_hive_route", "glow": [-4.3, -0.4], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_hive_route", "order": -9},
+    {"id": "clear_pollen", "glow": [-5.9, 0.8], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_pollen", "order": -9},
+    {"id": "clear_wax", "glow": [-2.7, 0.8], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_wax", "order": -9},
+    {"id": "clear_matrices", "glow": [-5.9, 2.7], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_matrices", "order": -9},
+    {"id": "clear_capsule", "glow": [-2.7, 2.7], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_capsule", "order": -9},
+    {"id": "clear_crystal", "glow": [3.6, -0.4], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_crystal", "order": -9},
+    {"id": "clear_spirits", "glow": [1.5, 1.8], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_spirits", "order": -9},
+    {"id": "clear_mechanism", "glow": [5.7, 1.8], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_mechanism", "order": -9},
+    {"id": "clear_frame", "glow": [3.6, 1.9], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_frame", "order": -9},
+    {"id": "clear_lens", "glow": [3.6, 4.1], "r": 1.35, "tint": "#170B2F", "alpha": 255, "reveal": "voices_lens", "order": -9},
+    {"id": "clear_sun", "glow": [10.4, -0.8], "r": 2.2, "tint": "#170B2F", "alpha": 255, "reveal": "voices_sun_spirit", "order": -9},
+    {"id": "clear_all_0", "glow": [-10.4, 0.2], "r": 4.6, "tint": "#170B2F", "alpha": 255, "reveal": "voices_heart", "order": -9},
+    {"id": "clear_all_1", "glow": [-10.4, 5.5], "r": 4.6, "tint": "#170B2F", "alpha": 255, "reveal": "voices_heart", "order": -9},
+    {"id": "clear_all_2", "glow": [-3.5, 0.2], "r": 4.6, "tint": "#170B2F", "alpha": 255, "reveal": "voices_heart", "order": -9},
+    {"id": "clear_all_3", "glow": [-3.5, 5.5], "r": 4.6, "tint": "#170B2F", "alpha": 255, "reveal": "voices_heart", "order": -9},
+    {"id": "clear_all_4", "glow": [3.5, 0.2], "r": 4.6, "tint": "#170B2F", "alpha": 255, "reveal": "voices_heart", "order": -9},
+    {"id": "clear_all_5", "glow": [3.5, 5.5], "r": 4.6, "tint": "#170B2F", "alpha": 255, "reveal": "voices_heart", "order": -9},
+    {"id": "clear_all_6", "glow": [10.4, 1.2], "r": 4.6, "tint": "#170B2F", "alpha": 255, "reveal": "voices_heart", "order": -9},
+    {"id": "clear_all_7", "glow": [10.4, 5.6], "r": 4.6, "tint": "#170B2F", "alpha": 255, "reveal": "voices_heart", "order": -9},
+    {"id": "two_skies", "through": ["voices_portals", "voices_ambrosium", "voices_ironwood", "voices_provisions", "voices_chart"], "smooth": 2, "grow": true, "sketch": true, "color": "#CFD8FF", "width": 0.07, "alpha": 185, "order": -6},
+    {"id": "two_skies_inner", "path": [[-8.2, -0.5], [-9.4, 1.1], [-9.95, 2.6], [-9.7, 4.1], [-9.0, 5.4]], "smooth": 2, "reveal": "voices_chart", "color": "#CFD8FF", "width": 0.07, "alpha": 185, "order": -6},
+    {"id": "treaty", "through": ["voices_hive_route", "voices_wax", "voices_capsule", [-4.3, 3.9], "voices_matrices", "voices_pollen", "voices_hive_route"], "grow": ["voices_wax", "voices_capsule", "voices_capsule", "voices_capsule", "voices_matrices", "voices_pollen"], "sketch": true, "color": "#CFD8FF", "width": 0.07, "alpha": 185, "order": -6},
+    {"id": "treaty_star", "picture": "minecraft:textures/particle/glitter_3.png", "x": -4.3, "y": 3.9, "w": 0.45, "h": 0.45, "tint": "#FFF4C2", "sketch": true, "reveal": "voices_capsule", "order": -5},
+    {"id": "lens_lid", "through": ["voices_spirits", [2.45, 0.35], "voices_crystal", [4.75, 0.35], "voices_mechanism"], "smooth": 2, "grow": ["voices_spirits", "voices_spirits", "voices_mechanism", "voices_mechanism"], "sketch": true, "color": "#CFD8FF", "width": 0.07, "alpha": 185, "order": -6},
+    {"id": "lens_rim", "through": ["voices_spirits", [2.45, 3.25], "voices_lens", [4.75, 3.25], "voices_mechanism"], "smooth": 2, "grow": ["voices_lens", "voices_lens", "voices_lens", "voices_lens"], "sketch": true, "color": "#CFD8FF", "width": 0.07, "alpha": 185, "order": -6},
+    {"id": "guide_portals", "through": ["voices_welcome", "voices_portals"], "color": "#CFD8FF", "width": 0.04, "alpha": 80, "grow": true, "order": -7},
+    {"id": "guide_hive_route", "through": ["voices_welcome", "voices_hive_route"], "color": "#CFD8FF", "width": 0.04, "alpha": 80, "grow": true, "order": -7},
+    {"id": "guide_crystal", "through": ["voices_welcome", "voices_crystal"], "color": "#CFD8FF", "width": 0.04, "alpha": 80, "grow": true, "order": -7},
+    {"id": "moon", "glow": [-10.75, 2.6], "r": 1.0, "tint": "#B6C8FF", "alpha": 190, "reveal": "voices_chart", "order": -5},
+    {"id": "comb", "picture": "minecraft:textures/item/honeycomb.png", "x": -4.3, "y": 1.75, "w": 0.9, "h": 0.9, "sketch": true, "reveal": "voices_capsule", "order": -4},
+    {"id": "pupil", "glow": [3.6, 1.9], "r": 1.45, "tint": "#C9A8FF", "alpha": 200, "reveal": "voices_lens", "order": -5},
+    {"id": "pole", "glow": [0, -2.6], "r": 1.0, "tint": "#FFFFFF", "alpha": 150, "reveal": "voices_welcome", "order": -5},
+    {"id": "runes_two_skies", "text": {"en_us": "Two Skies", "es_es": "Dos cielos"}, "x": -10.6, "y": -1.75, "scale": 2, "font": "minecraft:alt", "tint": "#B9A7FF", "alpha": 85, "shadow": false, "order": 3},
+    {"id": "hush_two_skies", "picture": "#170B2F", "x": -10.6, "y": -1.75, "w": 4.9, "h": 0.95, "reveal": "voices_chart", "order": 4},
+    {"id": "name_two_skies", "text": {"en_us": "Two Skies", "es_es": "Dos cielos"}, "x": -10.6, "y": -1.75, "scale": 2, "tint": "#E8DCB5", "reveal": "voices_chart"},
+    {"id": "runes_treaty", "text": {"en_us": "The Treaty", "es_es": "El tratado"}, "x": -4.3, "y": 4.85, "scale": 2, "font": "minecraft:alt", "tint": "#B9A7FF", "alpha": 85, "shadow": false, "order": 3},
+    {"id": "hush_treaty", "picture": "#170B2F", "x": -4.3, "y": 4.85, "w": 4.9, "h": 0.95, "reveal": "voices_capsule", "order": 4},
+    {"id": "name_treaty", "text": {"en_us": "The Treaty", "es_es": "El tratado"}, "x": -4.3, "y": 4.85, "scale": 2, "tint": "#E8DCB5", "reveal": "voices_capsule"},
+    {"id": "runes_lens", "text": {"en_us": "The Lens", "es_es": "La lente"}, "x": 3.6, "y": 5.3, "scale": 2, "font": "minecraft:alt", "tint": "#B9A7FF", "alpha": 85, "shadow": false, "order": 3},
+    {"id": "hush_lens", "picture": "#170B2F", "x": 3.6, "y": 5.3, "w": 3.9, "h": 0.95, "reveal": "voices_lens", "order": 4},
+    {"id": "name_lens", "text": {"en_us": "The Lens", "es_es": "La lente"}, "x": 3.6, "y": 5.3, "scale": 2, "tint": "#E8DCB5", "reveal": "voices_lens"},
+    {"id": "sun_faint", "glow": [10.4, -0.8], "r": 2.0, "tint": "#FF7A2A", "alpha": 70, "order": -8},
+    {"id": "sun_burning", "glow": [10.4, -0.8], "r": 2.2, "tint": "#FF8A2A", "alpha": 220, "reveal": "voices_aether", "order": -8},
+    {"id": "cloud_0", "glow": [7.9, 2.0], "r": 0.9, "tint": "#FFF1CC", "alpha": 150, "reveal": "voices_aether", "order": -7},
+    {"id": "cloud_1", "glow": [8.9, 1.7], "r": 1.1, "tint": "#FFF1CC", "alpha": 150, "reveal": "voices_aether", "order": -7},
+    {"id": "cloud_2", "glow": [10.0, 2.1], "r": 1.0, "tint": "#FFF1CC", "alpha": 150, "reveal": "voices_aether", "order": -7},
+    {"id": "cloud_3", "glow": [11.1, 1.6], "r": 1.15, "tint": "#FFF1CC", "alpha": 150, "reveal": "voices_aether", "order": -7},
+    {"id": "cloud_4", "glow": [12.3, 2.0], "r": 0.95, "tint": "#FFF1CC", "alpha": 150, "reveal": "voices_aether", "order": -7},
+    {"id": "cloud_5", "glow": [9.4, 2.4], "r": 0.8, "tint": "#FFF1CC", "alpha": 150, "reveal": "voices_aether", "order": -7},
+    {"id": "cloud_6", "glow": [11.8, 2.5], "r": 0.8, "tint": "#FFF1CC", "alpha": 150, "reveal": "voices_aether", "order": -7},
+    {"id": "aether_name", "text": {"en_us": "The Aether", "es_es": "El Aether"}, "x": 10.4, "y": 3.35, "scale": 2, "tint": "#E8DCB5", "reveal": "voices_aether"},
+    {"id": "circled", "path": [[10.4, -2.4], [11.094, -2.242], [11.651, -1.798], [11.96, -1.156], [11.96, -0.444], [11.651, 0.198], [11.094, 0.642], [10.4, 0.8], [9.706, 0.642], [9.149, 0.198], [8.84, -0.444], [8.84, -1.156], [9.149, -1.798], [9.706, -2.242]], "closed": true, "color": "#F2C14E", "width": 0.07, "alpha": 230, "reveal": "voices_horizon", "order": -6},
+    {"id": "frozen", "glow": [10.4, -0.8], "r": 1.4, "tint": "#A8DCFF", "alpha": 230, "reveal": "voices_sun_spirit", "order": -7},
+    {"id": "ice", "scatter": "minecraft:textures/particle/glitter_5.png", "region": [8.6, -2.6, 12.2, 1.0], "count": 7, "size": [0.3, 0.45], "tint": "#DDF6FF", "seed": 3, "avoid": [[10.4, -0.8, 1.0]], "reveal": "voices_sun_spirit", "order": -4},
+    {"id": "falling_heart", "path": [[10.6, 0.2], [10.95, 2.8], [10.55, 5.4], [10.0, 7.2]], "smooth": 2, "color": "#FFD27A", "width": 0.09, "alpha": 220, "reveal": "voices_sun_spirit", "order": -6},
+    {"id": "rock", "picture": "#3A342F", "x": 0, "y": 16.75, "w": 27.2, "h": 13.3, "alpha": 150, "reveal": "voices_welcome", "order": -12, "sketch": {"alpha": 40}},
+    {"id": "grass", "path": [[-13.6, 10.05], [13.6, 10.05]], "texture": "minecraft:textures/block/grass_block_top.png", "tint": "#7DB85A", "width": 0.4, "step": 1.7, "sketch": true, "reveal": "voices_welcome", "order": -5},
+    {"id": "strata", "scatter": ["minecraft:textures/block/stone.png", "minecraft:textures/block/tuff.png", "minecraft:textures/block/andesite.png", "minecraft:textures/block/deepslate.png"], "region": [-13.2, 10.5, 13.2, 23.1], "count": 16, "size": [0.5, 0.8], "alphas": [35, 70], "seed": 11, "avoid": [[0, 18, 8.4], [-9.4, 11.9, 1.3], [-3.7, 11.9, 1.3]], "order": -11},
+    {"id": "dome", "picture": "entrelumen:textures/gui/quests/medallion.png", "x": 0, "y": 6.6, "w": 3.4, "h": 3.4, "tint": "#5FA894", "sketch": true, "reveal": "voices_welcome", "order": -8},
+    {"id": "walls_chalk", "picture": "minecraft:textures/block/tuff_bricks.png", "x": 0, "y": 8.3, "w": 3.4, "h": 3.4, "tint": "#E8DCB5", "alpha": 60, "order": -8},
+    {"id": "walls", "mosaic": [-1.7, 6.6], "cell": 0.85, "rows": ["tttt", "tctt", "ttct", "tttt"], "legend": {"t": "minecraft:textures/block/tuff_bricks.png", "c": "minecraft:textures/block/chiseled_tuff_bricks.png"}, "reveal": "voices_welcome", "order": -7},
+    {"id": "telescope", "picture": "entrelumen:textures/item/voices_eyepiece.png", "x": 0.2, "y": 3.55, "w": 2.0, "h": 2.0, "rotation": -46, "sketch": true, "reveal": "voices_mechanism", "order": -6},
+    {"id": "windows", "sprite": "minecraft:block/yellow_stained_glass", "cells": [[-1.05, 7.2], [1.05, 7.2]], "w": 0.45, "h": 0.7, "reveal": "voices_crystal", "order": -5},
+    {"id": "sightline", "path": [[0.1, 2.0], [0.0, -1.9]], "dots": "#F2C14E", "size": 0.1, "step": 0.55, "sketch": true, "reveal": "voices_archive", "order": -6},
+    {"id": "playback", "glow": [0, 8.2], "r": 1.6, "tint": "#C9A8FF", "alpha": 190, "reveal": "voices_archive", "order": -5},
+    {"id": "aether_frame", "frame": [-12.55, 6.75, -10.05, 9.95], "color": "#F2D16B", "thickness_px": 5.0, "corners": false, "sketch": true, "reveal": "voices_portals", "order": -6},
+    {"id": "aether_portal", "sprite": "aether:block/miscellaneous/aether_portal", "x": -11.3, "y": 8.35, "w": 2.3, "h": 3.0, "alpha": 190, "reveal": "voices_aether", "order": -7},
+    {"id": "twilight_pool", "sprite": "minecraft:block/water_still", "x": -7.5, "y": 9.62, "w": 2.2, "h": 0.55, "tint": "#6B4FA8", "sketch": true, "reveal": "voices_portals", "order": -6},
+    {"id": "twilight_flowers", "scatter": ["minecraft:textures/block/poppy.png", "minecraft:textures/block/allium.png", "minecraft:textures/block/cornflower.png", "minecraft:textures/block/oxeye_daisy.png"], "region": [-9.1, 9.25, -5.9, 9.75], "count": 6, "size": [0.45, 0.55], "seed": 8, "avoid": [[-7.5, 9.6, 1.05]], "reveal": "voices_portals", "order": -5},
+    {"id": "twilight_shimmer", "glow": [-7.5, 8.6], "r": 1.4, "tint": "#8A6BE0", "alpha": 170, "reveal": "voices_twilight", "order": -7},
+    {"id": "nest", "item": "minecraft:bee_nest", "x": -3.7, "y": 9.55, "size": 0.85, "reveal": "voices_hive_route"},
+    {"id": "pearl_arc", "path": [[-5.9, 6.6], [-5.0, 6.3], [-4.3, 7.0]], "smooth": 4, "dots": "#4FB5A5", "size": 0.1, "step": 0.35, "reveal": "voices_hive_route", "order": -5},
+    {"id": "honey_glow", "glow": [-3.7, 8.3], "r": 1.4, "tint": "#FFB43A", "alpha": 170, "reveal": "voices_bumblezone", "order": -7},
+    {"id": "antechamber", "frame": [8.5, 6.6, 11.5, 10.0], "color": "#C96B3C", "thickness_px": 4.0, "corners": false, "fill": "#4A2418", "fill_alpha": 120, "sketch": true, "reveal": "voices_sun_spirit", "order": -7},
+    {"id": "sun_key", "picture": "entrelumen:textures/item/sun_key.png", "x": 10.0, "y": 6.2, "w": 0.7, "h": 0.7, "rotation": -45, "reveal": "voices_heart", "order": -3},
+    {"id": "heart_rays", "picture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 10.0, "y": 8.2, "w": 3.3, "h": 3.3, "alpha": 235, "reveal": "voices_heart", "order": -4},
+    {"id": "heart_glow", "glow": [10.0, 8.2], "r": 2.7, "tint": "#FFD27A", "alpha": 210, "reveal": "voices_heart", "order": -5},
+    {"id": "repose", "item": "entrelumen:repose_altar", "x": -7.55, "y": 12.3, "size": 0.9, "reveal": "voices_horizon"},
+    {"id": "renewal", "item": "entrelumen:renewal_altar", "x": -1.85, "y": 12.3, "size": 0.9, "reveal": "voices_pollinators"},
+    {"id": "temple", "frame": [-7.8, 13.6, 7.8, 22.8], "color": "#6A5A80", "thickness_px": 2.0, "alpha": 200, "fill": "#120C18", "fill_alpha": 160, "sketch": true, "reveal": "voices_dark_gems", "order": -8},
+    {"id": "temple_name", "text": {"en_us": "Temple of the Sacred Light", "es_es": "Templo de la Luz Sagrada"}, "x": 0, "y": 23.35, "scale": 2, "tint": "#E8DCB5", "reveal": "voices_dark_gems"},
+    {"id": "dark_ring", "through": ["voices_seal", "voices_dark_gems", "voices_soul_steel", "voices_spare_lens", "voices_testimony", "voices_seal_item", [-1.578, 21.236], [-3.179, 19.69], [-3.565, 17.499], "voices_arcane", "voices_seal"], "smooth": 2, "texture": "evilcraft:textures/block/dark_brick.png", "width": 0.55, "step": 0.9, "sketch": true, "grow": ["voices_dark_gems", "voices_soul_steel", "voices_spare_lens", "voices_testimony", "voices_seal_item", "voices_seal", "voices_seal", "voices_seal", "voices_seal", "voices_seal"], "order": -6},
+    {"id": "altar_stone", "picture": "entrelumen:textures/block/altar_stone.png", "x": 0, "y": 19.75, "w": 2.2, "h": 0.4, "sketch": true, "reveal": "voices_dark_gems", "order": -5},
+    {"id": "sacred_flame", "picture": "entrelumen:textures/item/sacred_flame.png", "x": 0, "y": 20.3, "w": 0.7, "h": 0.7, "reveal": "voices_archive", "order": -3},
+    {"id": "beam", "picture": "minecraft:textures/entity/beacon_beam.png", "x": -6.0, "y": 15.9, "w": 0.55, "h": 3.2, "tint": "#FFF1A8", "alpha": 220, "sketch": true, "reveal": "voices_seal", "order": -5},
+    {"id": "machine", "item": "create:large_cogwheel", "x": -6.0, "y": 18.2, "size": 1.8, "reveal": "voices_seal"},
+    {"id": "crater", "scatter": ["minecraft:textures/block/crying_obsidian.png", "minecraft:textures/block/blackstone.png"], "region": [-7.4, 19.4, -4.6, 20.5], "count": 6, "size": [0.45, 0.7], "alphas": [170, 230], "seed": 4, "reveal": "voices_seal", "order": -5},
+    {"id": "seal_icon", "picture": "entrelumen:textures/item/containment_seal.png", "x": 6.0, "y": 17.6, "w": 1.3, "h": 1.3, "sketch": true, "reveal": "voices_seal_item", "order": -4},
+    {"id": "time", "item": "entrelumen:time_altar", "x": 6.0, "y": 20.3, "size": 0.9, "reveal": "voices_seal"},
+    {"id": "overflow", "glow": [-3.053, 16.092], "r": 1.5, "tint": "#B48CFF", "alpha": 200, "reveal": "voices_arcane", "order": -5},
+    {"id": "mana", "scatter": "minecraft:textures/particle/glitter_2.png", "region": [-3.7, 16.9, -1.9, 17.8], "count": 5, "size": [0.25, 0.4], "tint": "#D9C2FF", "seed": 6, "reveal": "voices_arcane", "order": -4},
+    {"id": "voice_archive", "path": [[0, 9.1], [0, 16.7]], "reveal": "voices_archive", "color": "#F2C14E", "width": 0.07, "alpha": 210, "order": -6},
+    {"id": "voice_horizon", "path": [[-9.4, 12.8], [-6.3, 14.2], [-3.9, 17.6], [-1.35, 17.95]], "reveal": "voices_horizon", "color": "#F2C14E", "width": 0.07, "alpha": 210, "order": -6},
+    {"id": "voice_pollinators", "path": [[-3.7, 12.8], [-2.3, 14.9], [-1.6, 16.9]], "reveal": "voices_pollinators", "color": "#F2C14E", "width": 0.07, "alpha": 210, "order": -6},
+    {"id": "voice_heart", "path": [[10.0, 9.1], [8.6, 14.2], [5.2, 17.0], [1.4, 17.7]], "reveal": "voices_heart", "color": "#F2C14E", "width": 0.07, "alpha": 210, "order": -6},
+    {"id": "voice_seal", "path": [[-0.9, 15.45], [-0.5, 16.75]], "reveal": "voices_seal", "color": "#F2C14E", "width": 0.07, "alpha": 210, "order": -6},
+    {"id": "voice_arcane", "path": [[-2.3, 16.6], [-1.2, 17.35]], "reveal": "voices_arcane", "color": "#F2C14E", "width": 0.07, "alpha": 210, "order": -6},
+    {"id": "one_second", "scatter": ["minecraft:textures/particle/glitter_1.png", "minecraft:textures/particle/glitter_3.png", "minecraft:textures/particle/glitter_5.png", "minecraft:textures/particle/glitter_7.png"], "region": [-13.1, -3.5, 13.1, 6.4], "count": 16, "size": [0.25, 0.45], "alphas": [170, 240], "tint": "#FFF6D8", "seed": 21, "reveal": "voices_shutter", "order": -5},
+    {"id": "candle_0", "glow": [0.0, 13.45], "r": 0.55, "tint": "#FFC266", "alpha": 220, "reveal": "voices_candles", "order": -4},
+    {"id": "candle_1", "glow": [3.94, 15.725], "r": 0.55, "tint": "#FFC266", "alpha": 220, "reveal": "voices_candles", "order": -4},
+    {"id": "candle_2", "glow": [3.94, 20.275], "r": 0.55, "tint": "#FFC266", "alpha": 220, "reveal": "voices_candles", "order": -4},
+    {"id": "candle_3", "glow": [0.0, 22.55], "r": 0.55, "tint": "#FFC266", "alpha": 220, "reveal": "voices_candles", "order": -4},
+    {"id": "candle_4", "glow": [-3.94, 20.275], "r": 0.55, "tint": "#FFC266", "alpha": 220, "reveal": "voices_candles", "order": -4},
+    {"id": "candle_5", "glow": [-3.94, 15.725], "r": 0.55, "tint": "#FFC266", "alpha": 220, "reveal": "voices_candles", "order": -4}
   ],
   "quests": [
     {
-      "key": "voices_welcome",
-      "deps": [
-        "exchange_archive"
-      ],
-      "en_us": [
-        "The missing witnesses",
-        "Four routes lead to this act's Atlas projects, and a fifth ends at the Sun Spirit; arrivals in other worlds are recorded on their own when your team gets there.\n\nThe Cliffside Observatory still points at the same patch of sky. Its log ends on a single line: 'The light answered.'"
-      ],
-      "es_es": [
-        "Los testigos que faltan",
-        "Cuatro rutas llevan a los proyectos de este acto en el Atlas y una quinta termina en el Espíritu del Sol; las llegadas a otros mundos se registran solas cuando tu equipo llega.\n\nEl Observatorio del risco sigue apuntando al mismo pedazo de cielo. Su bitácora termina en una sola línea: «La luz respondió»."
-      ],
-      "layout": {
-        "group": "archive",
-        "x": 0,
-        "y": 0,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "type": "checkmark",
-      "optional": true,
-      "icon": "minecraft:book"
+      "key": "voices_welcome", "deps": ["exchange_archive"], "type": "checkmark", "optional": true, "layout": {"group": "archive", "x": 0, "y": -2.6, "size": 0.75, "shape": "circle", "hide_dependent_lines": true},
+      "icon": "minecraft:book",
+      "en_us": {"title": "The missing witnesses",
+        "text": ["[lead] Four routes lead to this act's Atlas projects; a fifth ends at the Sun Spirit.",
+                 "Arrivals in other worlds record themselves when your team gets there.",
+                 "The Cliffside Observatory still points at the same patch of sky. Its log ends on a single line: 'The light [glitch|answ]ered.'"]},
+      "es_es": {"title": "Los testigos que faltan",
+        "text": ["[lead] Cuatro rutas llevan a los proyectos de este acto en el Atlas; una quinta termina en el Espíritu del Sol.",
+                 "Las llegadas a otros mundos se registran solas cuando tu equipo llega.",
+                 "El Observatorio del risco sigue apuntando al mismo pedazo de cielo. Su bitácora termina en una sola línea: «La luz [glitch|resp]ondió»."]}
     },
     {
-      "key": "voices_aether",
-      "deps": [],
-      "en_us": [
-        "Aether: a witnessed arrival",
-        "Reach the Aether with anyone on your team; arriving, logging in or respawning there counts, even in an earlier act. Clicking this task does nothing: the server records the journey.\n\nThe Observatory's telescope pointed here. Heliodor went up to ask the sky a question."
-      ],
-      "es_es": [
-        "Aether: una llegada registrada",
-        "Llegá al Aether con cualquier integrante de tu equipo; cuenta llegar, entrar al servidor o reaparecer allí, incluso en un acto anterior. Pulsar esta tarea no hace nada: el servidor registra el viaje.\n\nEl telescopio del Observatorio apuntaba acá. Heliodor subió a hacerle una pregunta al cielo."
-      ],
-      "layout": {
-        "group": "journeys",
-        "x": -10.125,
-        "y": 11.25,
-        "size": 2.0,
-        "shape": "octagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "aether_arrival",
-      "icon": "entrelumen:atlas"
+      "key": "voices_aether", "deps": [], "milestone": "aether_arrival", "layout": {"group": "journeys", "x": -11.3, "y": 8.1, "size": 2.0, "shape": "octagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Aether: a witnessed arrival",
+        "text": ["[lead] Reach the Aether with anyone on your team.",
+                 "Arriving, logging in or respawning there counts, even in an earlier act. Clicking this task does nothing: the server records the journey.",
+                 "The Observatory's telescope pointed here. Heliodor went up to ask the sky a question."]},
+      "es_es": {"title": "Aether: una llegada registrada",
+        "text": ["[lead] Llegá al Aether con cualquier integrante de tu equipo.",
+                 "Cuenta llegar, entrar al servidor o reaparecer allí, incluso en un acto anterior. Pulsar esta tarea no hace nada: el servidor registra el viaje.",
+                 "El telescopio del Observatorio apuntaba acá. Heliodor subió a hacerle una pregunta al cielo."]}
     },
     {
-      "key": "voices_twilight",
-      "deps": [],
-      "en_us": [
-        "Twilight Forest: a witnessed arrival",
-        "Reach the Twilight Forest with anyone on your team; arriving, logging in or respawning there counts, even in an earlier act. The server records it and there is nothing to deliver.\n\nHeliodor's gardeners called this forest the rehearsal: a world where the light never quite arrives. Juan kept a sanctuary here."
-      ],
-      "es_es": [
-        "Twilight Forest: una llegada registrada",
-        "Llegá a Twilight Forest con cualquier integrante de tu equipo; cuenta llegar, entrar al servidor o reaparecer allí, incluso en un acto anterior. Lo registra el servidor y no hay nada que entregar.\n\nLos jardineros de Heliodor llamaban a este bosque el ensayo: un mundo donde la luz nunca termina de llegar. Juan tenía un santuario acá."
-      ],
-      "layout": {
-        "group": "journeys",
-        "x": -7.875,
-        "y": 11.25,
-        "size": 2.0,
-        "shape": "octagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "twilight_arrival",
-      "icon": "entrelumen:atlas"
+      "key": "voices_twilight", "deps": [], "milestone": "twilight_arrival", "layout": {"group": "journeys", "x": -7.5, "y": 8.1, "size": 2.0, "shape": "octagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Twilight Forest: a witnessed arrival",
+        "text": ["[lead] Reach the Twilight Forest with anyone on your team.",
+                 "Arriving, logging in or respawning there counts, even in an earlier act. The server records it; there is nothing to deliver.",
+                 "{page}",
+                 "Heliodor's gardeners called this forest the rehearsal: a world where the light never quite arrives. Juan kept a sanctuary here."]},
+      "es_es": {"title": "Twilight Forest: una llegada registrada",
+        "text": ["[lead] Llegá a Twilight Forest con cualquier integrante de tu equipo.",
+                 "Cuenta llegar, entrar al servidor o reaparecer allí, incluso en un acto anterior. Lo registra el servidor y no hay nada que entregar.",
+                 "{page}",
+                 "Los jardineros de Heliodor llamaban a este bosque el ensayo: un mundo donde la luz nunca termina de llegar. Juan tenía un santuario acá."]}
     },
     {
-      "key": "voices_bumblezone",
-      "deps": [],
-      "en_us": [
-        "Bumblezone: a witnessed arrival",
-        "Reach the Bumblezone with anyone on your team; arriving, logging in or respawning there counts, even in an earlier act. The server records it and there is nothing to claim.\n\nJuan's bees came from here. Heliodor signed a treaty with them, and the bees still keep their side."
-      ],
-      "es_es": [
-        "Bumblezone: una llegada registrada",
-        "Llegá a Bumblezone con cualquier integrante de tu equipo; cuenta llegar, entrar al servidor o reaparecer allí, incluso en un acto anterior. Lo registra el servidor y no hay nada que reclamar.\n\nLas abejas de Juan vinieron de acá. Heliodor firmó un tratado con ellas, y las abejas todavía cumplen su parte."
-      ],
-      "layout": {
-        "group": "journeys",
-        "x": -4.5,
-        "y": 11.25,
-        "size": 2.0,
-        "shape": "octagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "bumblezone_arrival",
-      "icon": "entrelumen:atlas"
+      "key": "voices_bumblezone", "deps": [], "milestone": "bumblezone_arrival", "layout": {"group": "journeys", "x": -3.7, "y": 8.1, "size": 2.0, "shape": "octagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Bumblezone: a witnessed arrival",
+        "text": ["[lead] Reach the Bumblezone with anyone on your team.",
+                 "Arriving, logging in or respawning there counts, even in an earlier act. The server records it; there is nothing to claim.",
+                 "Juan's bees came from here. Heliodor signed a treaty with them, and the bees still keep their side."]},
+      "es_es": {"title": "Bumblezone: una llegada registrada",
+        "text": ["[lead] Llegá a Bumblezone con cualquier integrante de tu equipo.",
+                 "Cuenta llegar, entrar al servidor o reaparecer allí, incluso en un acto anterior. Lo registra el servidor y no hay nada que reclamar.",
+                 "Las abejas de Juan vinieron de acá. Heliodor firmó un tratado con ellas, y las abejas todavía cumplen su parte."]}
     },
     {
-      "key": "voices_crystal",
-      "deps": [
-        "voices_welcome"
-      ],
-      "en_us": [
-        "A crystal tuned to listening",
-        "Make Spirit Fire (drop datura and light it with flint and steel), turn four diamonds into four spirit-attuned gems in it, and craft the gems 2×2 into one spirit-attuned crystal.\n\nThe Observatory listened as well as looked. Its crystals still catch voices nobody is speaking."
-      ],
-      "es_es": [
-        "Un cristal para escuchar",
-        "Hacé Spirit Fire (tirá datura y encendela con pedernal y acero), transformá cuatro diamantes en cuatro gemas sintonizadas con espíritus en ese fuego y combiná las gemas en 2×2 para obtener un cristal sintonizado.\n\nEl Observatorio escuchaba además de mirar. Sus cristales todavía atrapan voces que nadie está diciendo."
-      ],
-      "layout": {
-        "group": "spectral",
-        "x": 0,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "occultism:spirit_attuned_crystal",
-      "count": 1
+      "key": "voices_crystal", "deps": ["voices_welcome"], "item": "occultism:spirit_attuned_crystal", "count": 1, "layout": {"group": "spectral", "x": 3.6, "y": -0.4, "size": 1.0, "shape": "square", "hide_dependent_lines": false},
+      "en_us": {"title": "A crystal tuned to listening",
+        "text": ["[lead] Spirit Fire turns diamonds into gems that listen.",
+                 "[li] Drop [item:occultism:datura|datura] and light it with [item:minecraft:flint_and_steel|flint and steel]",
+                 "[li] Turn four diamonds into four [item:occultism:spirit_attuned_gem|spirit-attuned gems] in it",
+                 "[li] Craft the gems [hl|2×2] into one [item:occultism:spirit_attuned_crystal|spirit-attuned crystal]",
+                 "{page}",
+                 "The Observatory listened as well as looked. Its crystals still catch [glitch|voi]ces nobody is speaking."]},
+      "es_es": {"title": "Un cristal para escuchar",
+        "text": ["[lead] El Spirit Fire convierte diamantes en gemas que escuchan.",
+                 "[li] Tirá [item:occultism:datura|datura] y encendela con [item:minecraft:flint_and_steel|pedernal y acero]",
+                 "[li] Transformá cuatro diamantes en cuatro [item:occultism:spirit_attuned_gem|gemas sintonizadas] en ese fuego",
+                 "[li] Combiná las gemas en [hl|2×2] para obtener un [item:occultism:spirit_attuned_crystal|cristal sintonizado]",
+                 "{page}",
+                 "El Observatorio escuchaba además de mirar. Sus cristales todavía atrapan [glitch|vo]ces que nadie está diciendo."]}
     },
     {
-      "key": "voices_spirits",
-      "deps": [
-        "voices_crystal"
-      ],
-      "en_us": [
-        "Two fragments of testimony",
-        "Make Malum's crude scythe (three iron ingots, one refined soulstone and two wooden rods) and kill a witch with it for arcane spirits. Keep two for each spectral lens.\n\nEvery spirit the scythe frees carries a scrap of something it saw. Heliodor's scraps all end in the same flash."
-      ],
-      "es_es": [
-        "Dos fragmentos de testimonio",
-        "Hacé la guadaña rudimentaria de Malum (tres lingotes de hierro, una piedra de alma refinada y dos varillas de madera) y matá una bruja con ella para obtener espíritus arcanos. Guardá dos por cada lente espectral.\n\nCada espíritu que libera la guadaña lleva un retazo de algo que vio. Los de Heliodor terminan todos en el mismo destello."
-      ],
-      "layout": {
-        "group": "spectral",
-        "x": 0,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "malum:arcane_spirit",
-      "count": 2
+      "key": "voices_spirits", "deps": ["voices_crystal"], "item": "malum:arcane_spirit", "count": 2, "layout": {"group": "spectral", "x": 1.5, "y": 1.8, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Two fragments of testimony",
+        "text": ["[lead] Kill a witch with Malum's [item:malum:crude_scythe|crude scythe] for [item:malum:arcane_spirit|arcane spirits]; keep two for each spectral lens.",
+                 "The scythe takes three iron ingots, one [item:malum:refined_soulstone|refined soulstone] and two wooden rods.",
+                 "{page}",
+                 "Every spirit the scythe frees carries a scrap of something it saw. Heliodor's scraps all end in the same [glitch|fla]sh."]},
+      "es_es": {"title": "Dos fragmentos de testimonio",
+        "text": ["[lead] Matá una bruja con la [item:malum:crude_scythe|guadaña rudimentaria] de Malum para obtener [item:malum:arcane_spirit|espíritus arcanos]; guardá dos por cada lente espectral.",
+                 "La guadaña lleva tres lingotes de hierro, una [item:malum:refined_soulstone|piedra de alma refinada] y dos varillas de madera.",
+                 "{page}",
+                 "Cada espíritu que libera la guadaña lleva un retazo de algo que vio. Los de Heliodor terminan todos en el mismo [glitch|dest]ello."]}
     },
     {
-      "key": "voices_mechanism",
-      "deps": [
-        "voices_spirits"
-      ],
-      "en_us": [
-        "A patient shutter",
-        "Prepare one Create precision mechanism for the spectral lens; its assembly can fail, so budget a few attempts.\n\nThe Observatory's shutter opened for one second a night. Terra built it; the order to open it wider came from someone else."
-      ],
-      "es_es": [
-        "Un obturador paciente",
-        "Prepará un mecanismo de precisión de Create para la lente espectral; su armado puede fallar, así que reservá varios intentos.\n\nEl obturador del Observatorio se abría un segundo por noche. Lo hizo Terra; la orden de abrirlo más vino de otra persona."
-      ],
-      "layout": {
-        "group": "spectral",
-        "x": 0,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "create:precision_mechanism",
-      "count": 1
+      "key": "voices_mechanism", "deps": ["voices_spirits"], "item": "create:precision_mechanism", "count": 1, "layout": {"group": "spectral", "x": 5.7, "y": 1.8, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "A patient shutter",
+        "text": ["[lead] Prepare one Create [item:create:precision_mechanism|precision mechanism] for the spectral lens.",
+                 "Its assembly can fail, so budget a few attempts.",
+                 "The Observatory's shutter opened for one second a night. Terra built it; the order to open it wider came from someone else."]},
+      "es_es": {"title": "Un obturador paciente",
+        "text": ["[lead] Prepará un [item:create:precision_mechanism|mecanismo de precisión] de Create para la lente espectral.",
+                 "Su armado puede fallar, así que reservá varios intentos.",
+                 "El obturador del Observatorio se abría un segundo por noche. Lo hizo Terra; la orden de abrirlo más vino de otra persona."]}
     },
     {
-      "key": "voices_frame",
-      "deps": [
-        "voices_mechanism"
-      ],
-      "en_us": [
-        "The familiar frame",
-        "Craft a calibration frame from two iron sheets, two copper wires and a raw lens; the spectral lens consumes it.\n\nTerra's frame again, the same measure as in the first workshop. She built everything to fit together. That was the problem."
-      ],
-      "es_es": [
-        "El marco conocido",
-        "Fabricá un marco de calibración con dos láminas de hierro, dos alambres de cobre y una lente en bruto; la lente espectral lo consume.\n\nOtra vez el marco de Terra, la misma medida del primer taller. Hizo todo para que encajara. Ese fue el problema."
-      ],
-      "layout": {
-        "group": "spectral",
-        "x": 0,
-        "y": 6.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "entrelumen:calibration_frame",
-      "count": 1
+      "key": "voices_frame", "deps": ["voices_mechanism"], "item": "entrelumen:calibration_frame", "count": 1, "layout": {"group": "spectral", "x": 3.6, "y": 1.9, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "The familiar frame",
+        "text": ["[lead] The spectral lens consumes one [item:entrelumen:calibration_frame|calibration frame].",
+                 "Copy it as in act II: infuse a [item:entrelumen:raw_lens|raw lens] with redstone in your [item:mekanism:metallurgic_infuser|metallurgic infuser].",
+                 "Terra's frame again, the same measure as in the first workshop. She built everything to fit together. That was the problem."]},
+      "es_es": {"title": "El marco conocido",
+        "text": ["[lead] La lente espectral consume un [item:entrelumen:calibration_frame|marco de calibración].",
+                 "Copialo como en el acto II: infundí redstone en una [item:entrelumen:raw_lens|lente en bruto] con tu [item:mekanism:metallurgic_infuser|infusor metalúrgico].",
+                 "Otra vez el marco de Terra, la misma medida del primer taller. Hizo todo para que encajara. Ese fue el problema."]}
     },
     {
-      "key": "voices_lens",
-      "deps": [
-        "voices_frame"
-      ],
-      "en_us": [
-        "Assemble the spectral lens",
-        "Combine a spirit-attuned crystal, two arcane spirits, a precision mechanism and a calibration frame into one spectral lens. Plan two lenses: the archive takes one and the containment seal another.\n\nThrough the lens the static thins. You can hear several voices now, and one of them is giving orders."
-      ],
-      "es_es": [
-        "Ensamblar la lente espectral",
-        "Combiná un cristal sintonizado, dos espíritus arcanos, un mecanismo de precisión y un marco de calibración en una lente espectral. Planificá dos lentes: el archivo consume una y el sello de contención, otra.\n\nA través de la lente la estática se afina. Ahora se oyen varias voces, y una de ellas da órdenes."
-      ],
-      "layout": {
-        "group": "spectral",
-        "x": 0,
-        "y": 8,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "entrelumen:spectral_lens",
-      "count": 1
+      "key": "voices_lens", "deps": ["voices_frame"], "item": "entrelumen:spectral_lens", "count": 1, "layout": {"group": "spectral", "x": 3.6, "y": 4.1, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Assemble the spectral lens",
+        "text": ["[lead] One [item:entrelumen:spectral_lens|spectral lens] takes:",
+                 "[li] A spirit-attuned crystal and two arcane spirits",
+                 "[li] A precision mechanism and a calibration frame",
+                 "Plan two lenses: the archive takes one and the containment seal another.",
+                 "Through the lens the static thins. You can hear several voices now, and one of them is giving orders."]},
+      "es_es": {"title": "Ensamblar la lente espectral",
+        "text": ["[lead] Una [item:entrelumen:spectral_lens|lente espectral] lleva:",
+                 "[li] Un cristal sintonizado y dos espíritus arcanos",
+                 "[li] Un mecanismo de precisión y un marco de calibración",
+                 "Planificá dos lentes: el archivo consume una y el sello de contención, otra.",
+                 "A través de la lente la estática se afina. Ahora se oyen varias voces, y una de ellas da órdenes."]}
     },
     {
-      "key": "voices_portals",
-      "deps": [
-        "voices_welcome"
-      ],
-      "en_us": [
-        "A route with a return",
-        "Optional: the Aether portal is a glowstone frame lit with water; the Twilight Forest opens when you throw a diamond into a 2×2 pool ringed with flowers (lightning strikes, so stand back). Pack food and mark the way home.\n\nThe Observatory's charts mark both doors. Heliodor never went through one without a way back."
-      ],
-      "es_es": [
-        "Un camino con regreso",
-        "Opcional: el portal del Aether es un marco de piedra luminosa activado con agua; Twilight Forest se abre al tirar un diamante en una poza de 2×2 rodeada de flores (cae un rayo, así que alejate). Llevá comida y marcá el regreso.\n\nLas cartas del Observatorio marcan las dos puertas. Heliodor nunca cruzó una sin saber cómo volver."
-      ],
-      "layout": {
-        "group": "horizon",
-        "x": -9,
-        "y": 2,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "type": "checkmark",
-      "optional": true,
-      "icon": "minecraft:book"
+      "key": "voices_portals", "deps": ["voices_welcome"], "type": "checkmark", "optional": true, "layout": {"group": "horizon", "x": -8.2, "y": -0.5, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
+      "icon": "minecraft:book",
+      "en_us": {"title": "A route with a return",
+        "text": ["[lead] Optional: two doors, each with a way back.",
+                 "[li] The Aether: a glowstone frame lit with water",
+                 "[li] The Twilight Forest: a diamond thrown into a [hl|2×2] pool ringed with flowers; lightning strikes, so stand back",
+                 "Pack food and mark the way home.",
+                 "{page}",
+                 "The Observatory's charts mark both doors. Heliodor never went through one without a way back."]},
+      "es_es": {"title": "Un camino con regreso",
+        "text": ["[lead] Opcional: dos puertas, cada una con regreso.",
+                 "[li] El Aether: un marco de piedra luminosa activado con agua",
+                 "[li] Twilight Forest: un diamante tirado en una poza de [hl|2×2] rodeada de flores; cae un rayo, así que alejate",
+                 "Llevá comida y marcá el regreso.",
+                 "{page}",
+                 "Las cartas del Observatorio marcan las dos puertas. Heliodor nunca cruzó una sin saber cómo volver."]}
     },
     {
-      "key": "voices_ambrosium",
-      "deps": [
-        "voices_portals"
-      ],
-      "en_us": [
-        "Light above the clouds",
-        "Mine ambrosium ore in the Aether for two ambrosium shards, and keep them apart from your expedition supplies.\n\nThe Aether's light is not the sun's. Heliodor noticed first, and wanted it."
-      ],
-      "es_es": [
-        "Luz sobre las nubes",
-        "Picá mena de ambrosio en el Aether hasta tener dos fragmentos y guardalos aparte de las provisiones del viaje.\n\nLa luz del Aether no es la del sol. Heliodor lo notó primero, y la quiso para sí."
-      ],
-      "layout": {
-        "group": "horizon",
-        "x": -9,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "aether:ambrosium_shard",
-      "count": 2
+      "key": "voices_ambrosium", "deps": ["voices_portals"], "item": "aether:ambrosium_shard", "count": 2, "layout": {"group": "horizon", "x": -10.4, "y": 0.7, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Light above the clouds",
+        "text": ["[lead] Mine [item:aether:ambrosium_ore|ambrosium ore] in the Aether for two [item:aether:ambrosium_shard|ambrosium shards].",
+                 "Keep them apart from your expedition supplies.",
+                 "The Aether's light is not the sun's. Heliodor noticed first, and wanted it."]},
+      "es_es": {"title": "Luz sobre las nubes",
+        "text": ["[lead] Picá [item:aether:ambrosium_ore|mena de ambrosio] en el Aether hasta tener dos [item:aether:ambrosium_shard|fragmentos de ambrosio].",
+                 "Guardalos aparte de las provisiones del viaje.",
+                 "La luz del Aether no es la del sol. Heliodor lo notó primero, y la quiso para sí."]}
     },
     {
-      "key": "voices_ironwood",
-      "deps": [
-        "voices_ambrosium"
-      ],
-      "en_us": [
-        "A forest worked into metal",
-        "Craft raw ironwood from liveroot, raw iron and a gold nugget, and smelt it into two ironwood ingots.\n\nJuan's sanctuary in the forest kept samples of everything, labelled with the place and the date. The last label has no date."
-      ],
-      "es_es": [
-        "Un bosque convertido en metal",
-        "Fabricá madera de hierro cruda con liveroot, hierro en bruto y una pepita de oro, y fundila hasta tener dos lingotes de madera de hierro.\n\nEl santuario de Juan en el bosque guardaba muestras de todo, rotuladas con lugar y fecha. El último rótulo no tiene fecha."
-      ],
-      "layout": {
-        "group": "horizon",
-        "x": -9,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "twilightforest:ironwood_ingot",
-      "count": 2
+      "key": "voices_ironwood", "deps": ["voices_ambrosium"], "item": "twilightforest:ironwood_ingot", "count": 2, "layout": {"group": "horizon", "x": -11.6, "y": 2.5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "A forest worked into metal",
+        "text": ["[lead] Craft [item:twilightforest:raw_ironwood|raw ironwood] from [item:twilightforest:liveroot|liveroot], raw iron and a gold nugget.",
+                 "Smelt it into two [item:twilightforest:ironwood_ingot|ironwood ingots].",
+                 "Juan's sanctuary in the forest kept samples of everything, labelled with the place and the date. The last label has no date."]},
+      "es_es": {"title": "Un bosque convertido en metal",
+        "text": ["[lead] Fabricá [item:twilightforest:raw_ironwood|madera de hierro cruda] con [item:twilightforest:liveroot|liveroot], hierro en bruto y una pepita de oro.",
+                 "Fundila hasta tener dos [item:twilightforest:ironwood_ingot|lingotes de madera de hierro].",
+                 "El santuario de Juan en el bosque guardaba muestras de todo, rotuladas con lugar y fecha. El último rótulo no tiene fecha."]}
     },
     {
-      "key": "voices_provisions",
-      "deps": [
-        "voices_ironwood"
-      ],
-      "en_us": [
-        "Food for the record and the road",
-        "Make a spare pack of Travel Rations (two vegetable soups and two cooked fish fillets); the horizon chart consumes one, along with survey notes, which can be crafted again. Bring separate food to eat.\n\nJuan packed rations for the Observatory's night crews. The last order asked for double, 'for the ceremony'."
-      ],
-      "es_es": [
-        "Comida para el registro y el camino",
-        "Hacé unas provisiones de viaje de reserva (dos sopas de verduras y dos filetes de pescado cocidos); la carta de horizontes consume unas, junto con notas de relevamiento, que se pueden volver a fabricar. Llevá comida aparte para comer.\n\nJuan preparaba raciones para las guardias nocturnas del Observatorio. El último pedido era doble, «para la ceremonia»."
-      ],
-      "layout": {
-        "group": "horizon",
-        "x": -9,
-        "y": 6.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "entrelumen:ration_bundle",
-      "count": 1
+      "key": "voices_provisions", "deps": ["voices_ironwood"], "item": "entrelumen:ration_bundle", "count": 1, "layout": {"group": "horizon", "x": -11.0, "y": 4.3, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Food for the record and the road",
+        "text": ["[lead] Make a spare pack of [item:entrelumen:ration_bundle|Travel Rations]: two [item:farmersdelight:vegetable_soup|vegetable soups] and two [item:aquaculture:fish_fillet_cooked|cooked fish fillets].",
+                 "The horizon chart consumes it, along with [item:entrelumen:survey_notes|survey notes], which can be crafted again. Bring separate food to eat.",
+                 "{page}",
+                 "Juan packed rations for the Observatory's night crews. The last order asked for double, 'for the ceremony'."]},
+      "es_es": {"title": "Comida para el registro y el camino",
+        "text": ["[lead] Hacé unas [item:entrelumen:ration_bundle|provisiones de viaje] de reserva: dos [item:farmersdelight:vegetable_soup|sopas de verduras] y dos [item:aquaculture:fish_fillet_cooked|filetes de pescado cocidos].",
+                 "La carta de horizontes las consume, junto con [item:entrelumen:survey_notes|notas de relevamiento], que se pueden volver a fabricar. Llevá comida aparte para comer.",
+                 "{page}",
+                 "Juan preparaba raciones para las guardias nocturnas del Observatorio. El último pedido era doble, «para la ceremonia»."]}
     },
     {
-      "key": "voices_chart",
-      "deps": [
-        "voices_provisions"
-      ],
-      "en_us": [
-        "Two skies on one page",
-        "Craft a horizon chart from two ambrosium shards, two ironwood ingots, survey notes and Travel Rations. Before delivering it, check that your team has arrived in both the Aether and the Twilight Forest.\n\nOn one page, two skies that disagree about the colour of morning. The Observatory kept both."
-      ],
-      "es_es": [
-        "Dos cielos en una página",
-        "Fabricá una carta de horizontes con dos fragmentos de ambrosio, dos lingotes de madera de hierro, notas de relevamiento y provisiones de viaje. Antes de entregarla, comprobá que tu equipo haya llegado al Aether y a Twilight Forest.\n\nEn una página, dos cielos que no se ponen de acuerdo sobre el color de la mañana. El Observatorio guardó los dos."
-      ],
-      "layout": {
-        "group": "horizon",
-        "x": -9,
-        "y": 8,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "entrelumen:horizon_chart",
-      "count": 1
+      "key": "voices_chart", "deps": ["voices_provisions"], "item": "entrelumen:horizon_chart", "count": 1, "layout": {"group": "horizon", "x": -9.0, "y": 5.4, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Two skies on one page",
+        "text": ["[lead] One [item:entrelumen:horizon_chart|horizon chart] takes:",
+                 "[li] Two ambrosium shards and two ironwood ingots",
+                 "[li] Survey notes and Travel Rations",
+                 "Before delivering it, check that your team has arrived in both the Aether and the Twilight Forest.",
+                 "{page}",
+                 "On one page, two skies that disagree about the colour of morning. The Observatory kept both."]},
+      "es_es": {"title": "Dos cielos en una página",
+        "text": ["[lead] Una [item:entrelumen:horizon_chart|carta de horizontes] lleva:",
+                 "[li] Dos fragmentos de ambrosio y dos lingotes de madera de hierro",
+                 "[li] Notas de relevamiento y provisiones de viaje",
+                 "Antes de entregarla, comprobá que tu equipo haya llegado al Aether y a Twilight Forest.",
+                 "{page}",
+                 "En una página, dos cielos que no se ponen de acuerdo sobre el color de la mañana. El Observatorio guardó los dos."]}
     },
     {
-      "key": "voices_hive_route",
-      "deps": [
-        "voices_welcome"
-      ],
-      "en_us": [
-        "Enter as a guest",
-        "Optional: throw an ender pearl at a beehive or bee nest to enter the Bumblezone. Mark where you left and learn the way back first; hitting bees or taking honey carelessly brings Wrath.\n\nJuan's treaty had one clause: take nothing you cannot give back."
-      ],
-      "es_es": [
-        "Entrar como visita",
-        "Opcional: tirá una perla de ender a una colmena o nido de abejas para entrar a Bumblezone. Marcá de dónde saliste y aprendé antes el regreso; golpear abejas o sacar miel sin cuidado provoca Wrath.\n\nEl tratado de Juan tenía una sola cláusula: no tomar nada que no se pueda devolver."
-      ],
-      "layout": {
-        "group": "ecology",
-        "x": -4.5,
-        "y": 2,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "type": "checkmark",
-      "optional": true,
-      "icon": "minecraft:book"
+      "key": "voices_hive_route", "deps": ["voices_welcome"], "type": "checkmark", "optional": true, "layout": {"group": "ecology", "x": -4.3, "y": -0.4, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
+      "icon": "minecraft:book",
+      "en_us": {"title": "Enter as a guest",
+        "text": ["[lead] Optional: throw an [item:minecraft:ender_pearl|ender pearl] at a [item:minecraft:beehive|beehive] or [item:minecraft:bee_nest|bee nest] to enter the Bumblezone.",
+                 "Mark where you left and learn the way back first.",
+                 "[careful] Hitting bees or taking honey carelessly brings Wrath.",
+                 "Juan's treaty had one clause: take nothing you cannot give back."]},
+      "es_es": {"title": "Entrar como visita",
+        "text": ["[lead] Opcional: tirá una [item:minecraft:ender_pearl|perla de ender] a una [item:minecraft:beehive|colmena] o a un [item:minecraft:bee_nest|nido de abejas] para entrar a Bumblezone.",
+                 "Marcá de dónde saliste y aprendé antes el regreso.",
+                 "[careful] Golpear abejas o sacar miel sin cuidado provoca Wrath.",
+                 "El tratado de Juan tenía una sola cláusula: no tomar nada que no se pueda devolver."]}
     },
     {
-      "key": "voices_pollen",
-      "deps": [
-        "voices_hive_route"
-      ],
-      "en_us": [
-        "Carry a little of the meadow",
-        "Gather two pollen puffs from pollen piles in the Bumblezone, using a tool without Silk Touch.\n\nPollen from the treaty meadow. Juan's bees still remember the smell of the greenhouse."
-      ],
-      "es_es": [
-        "Llevar un poco del prado",
-        "Juntá dos bocanadas de polen de las acumulaciones de polen de Bumblezone, con una herramienta sin Toque de Seda.\n\nPolen del prado del tratado. Las abejas de Juan todavía recuerdan el olor del invernadero."
-      ],
-      "layout": {
-        "group": "ecology",
-        "x": -4.5,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "the_bumblezone:pollen_puff",
-      "count": 2
+      "key": "voices_pollen", "deps": ["voices_hive_route"], "item": "the_bumblezone:pollen_puff", "count": 2, "layout": {"group": "ecology", "x": -5.9, "y": 0.8, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Carry a little of the meadow",
+        "text": ["[lead] Gather two [item:the_bumblezone:pollen_puff|pollen puffs] from [item:the_bumblezone:pile_of_pollen|pollen piles] in the Bumblezone.",
+                 "Use a tool without Silk Touch.",
+                 "Pollen from the treaty meadow. Juan's bees still remember the smell of the greenhouse."]},
+      "es_es": {"title": "Llevar un poco del prado",
+        "text": ["[lead] Juntá dos [item:the_bumblezone:pollen_puff|bocanadas de polen] de las [item:the_bumblezone:pile_of_pollen|pilas de polen] de Bumblezone.",
+                 "Usá una herramienta sin Toque de Seda.",
+                 "Polen del prado del tratado. Las abejas de Juan todavía recuerdan el olor del invernadero."]}
     },
     {
-      "key": "voices_wax",
-      "deps": [
-        "voices_pollen"
-      ],
-      "en_us": [
-        "Wax from the treaty hives",
-        "Prepare two Productive Bees wax: ordinary honeycomb goes through the centrifuge, with no special breeding needed.\n\nThe treaty was sealed in wax: Juan's way of saying it could be melted and made again."
-      ],
-      "es_es": [
-        "Cera de las colmenas del tratado",
-        "Prepará dos ceras de Productive Bees: el panal común pasa por la centrífuga, sin cría especial.\n\nEl tratado se selló con cera: la forma de Juan de decir que se podía derretir y volver a hacer."
-      ],
-      "layout": {
-        "group": "ecology",
-        "x": -4.5,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "productivebees:wax",
-      "count": 2
+      "key": "voices_wax", "deps": ["voices_pollen"], "item": "productivebees:wax", "count": 2, "layout": {"group": "ecology", "x": -2.7, "y": 0.8, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Wax from the treaty hives",
+        "text": ["[lead] Prepare two Productive Bees [item:productivebees:wax|wax].",
+                 "Ordinary [item:minecraft:honeycomb|honeycomb] goes through the [item:productivebees:centrifuge|centrifuge], with no special breeding needed.",
+                 "The treaty was sealed in wax: Juan's way of saying it could be melted and made again."]},
+      "es_es": {"title": "Cera de las colmenas del tratado",
+        "text": ["[lead] Prepará dos [item:productivebees:wax|ceras] de Productive Bees.",
+                 "El [item:minecraft:honeycomb|panal] común pasa por la [item:productivebees:centrifuge|centrífuga], sin cría especial.",
+                 "El tratado se selló con cera: la forma de Juan de decir que se podía derretir y volver a hacer."]}
     },
     {
-      "key": "voices_matrices",
-      "deps": [
-        "voices_wax"
-      ],
-      "en_us": [
-        "Two living supports",
-        "Prepare two living matrices, each from two magebloom fibers, two source gems and a calibration frame.\n\nTerra's frame, Juan's fibers, B.'s gems: the three of them still hold together in one object."
-      ],
-      "es_es": [
-        "Dos soportes vivos",
-        "Prepará dos matrices vivas, cada una con dos fibras de flor mágica, dos gemas de fuente y un marco de calibración.\n\nEl marco de Terra, las fibras de Juan, las gemas de B.: los tres siguen unidos en un mismo objeto."
-      ],
-      "layout": {
-        "group": "ecology",
-        "x": -4.5,
-        "y": 6.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "entrelumen:living_matrix",
-      "count": 2
+      "key": "voices_matrices", "deps": ["voices_wax"], "item": "entrelumen:living_matrix", "count": 2, "layout": {"group": "ecology", "x": -5.9, "y": 2.7, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Two living supports",
+        "text": ["[lead] Prepare two [item:entrelumen:living_matrix|living matrices].",
+                 "Each takes two [item:ars_nouveau:magebloom_fiber|magebloom fibers], two [item:ars_nouveau:source_gem|source gems] and a calibration frame.",
+                 "Terra's frame, Juan's fibers, B.'s gems: the three of them still hold together in one object."]},
+      "es_es": {"title": "Dos soportes vivos",
+        "text": ["[lead] Prepará dos [item:entrelumen:living_matrix|matrices vivas].",
+                 "Cada una lleva dos [item:ars_nouveau:magebloom_fiber|fibras de flor mágica], dos [item:ars_nouveau:source_gem|gemas de fuente] y un marco de calibración.",
+                 "El marco de Terra, las fibras de Juan, las gemas de B.: los tres siguen unidos en un mismo objeto."]}
     },
     {
-      "key": "voices_capsule",
-      "deps": [
-        "voices_matrices"
-      ],
-      "en_us": [
-        "A small agreement",
-        "Combine two pollen puffs, two Productive Bees wax and two living matrices into one ecosystem capsule.\n\nA whole meadow's agreement, small enough to carry. Heliodor's Altar of Renewal was built around one of these."
-      ],
-      "es_es": [
-        "Un acuerdo pequeño",
-        "Combiná dos bocanadas de polen, dos ceras de Productive Bees y dos matrices vivas en una cápsula de ecosistema.\n\nEl acuerdo de todo un prado, en algo que cabe en la mano. El Altar de Renovación de Heliodor se construyó alrededor de una de estas."
-      ],
-      "layout": {
-        "group": "ecology",
-        "x": -4.5,
-        "y": 8,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "entrelumen:ecosystem_capsule",
-      "count": 1
+      "key": "voices_capsule", "deps": ["voices_matrices"], "item": "entrelumen:ecosystem_capsule", "count": 1, "layout": {"group": "ecology", "x": -2.7, "y": 2.7, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "A small agreement",
+        "text": ["[lead] Combine into one [item:entrelumen:ecosystem_capsule|ecosystem capsule]:",
+                 "[li] Two pollen puffs",
+                 "[li] Two Productive Bees wax",
+                 "[li] Two living matrices",
+                 "A whole meadow's agreement, small enough to carry. Heliodor's Altar of Renewal was built around one of these."]},
+      "es_es": {"title": "Un acuerdo pequeño",
+        "text": ["[lead] Combiná en una [item:entrelumen:ecosystem_capsule|cápsula de ecosistema]:",
+                 "[li] Dos bocanadas de polen",
+                 "[li] Dos ceras de Productive Bees",
+                 "[li] Dos matrices vivas",
+                 "El acuerdo de todo un prado, en algo que cabe en la mano. El Altar de Renovación de Heliodor se construyó alrededor de una de estas."]}
     },
     {
-      "key": "voices_dark_gems",
-      "deps": [
-        "voices_welcome"
-      ],
-      "en_us": [
-        "A dark edge for the vessel",
-        "Mine EvilCraft dark ore for two dark gems; check the tool tier and the Origins of Darkness guide first.\n\nThe Temple of the Sacred Light is ringed with dark stone. Its builders knew the light needed a boundary."
-      ],
-      "es_es": [
-        "Un borde oscuro para el recipiente",
-        "Picá mena oscura de EvilCraft hasta tener dos gemas oscuras; antes revisá el nivel de herramienta y la guía Origins of Darkness.\n\nEl Templo de la Luz Sagrada está rodeado de piedra oscura. Quienes lo levantaron sabían que la luz necesitaba un límite."
-      ],
-      "layout": {
-        "group": "memory",
-        "x": 4.5,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "evilcraft:dark_gem",
-      "count": 2
+      "key": "voices_dark_gems", "deps": ["voices_welcome"], "item": "evilcraft:dark_gem", "count": 2, "layout": {"group": "memory", "x": 1.112, "y": 14.576, "size": 1.0, "shape": "square", "hide_dependent_lines": false},
+      "en_us": {"title": "A dark edge for the vessel",
+        "text": ["[lead] Mine EvilCraft [item:evilcraft:dark_ore|dark ore] for two [item:evilcraft:dark_gem|dark gems].",
+                 "Check the tool tier and the Origins of Darkness guide first.",
+                 "The Temple of the Sacred Light is ringed with dark stone. Its builders knew the light needed a boundary."]},
+      "es_es": {"title": "Un borde oscuro para el recipiente",
+        "text": ["[lead] Picá [item:evilcraft:dark_ore|mena oscura] de EvilCraft hasta tener dos [item:evilcraft:dark_gem|gemas oscuras].",
+                 "Antes revisá el nivel de herramienta y la guía Origins of Darkness.",
+                 "El Templo de la Luz Sagrada está rodeado de piedra oscura. Quienes lo levantaron sabían que la luz necesitaba un límite."]}
     },
     {
-      "key": "voices_soul_steel",
-      "deps": [
-        "voices_dark_gems"
-      ],
-      "en_us": [
-        "Steel with a remembered purpose",
-        "At Malum's Spirit Altar, an iron ingot, four refined soulstone, three wicked, one earthen and one arcane spirit make one soul-stained steel ingot. For two, gather eight refined soulstone, six wicked, two earthen and two arcane spirits.\n\nB. was Bodhi, the temple's priest. He forged the sanctuary's seals from this steel, and he was the one who said no."
-      ],
-      "es_es": [
-        "Acero con un propósito recordado",
-        "En el Altar espiritual de Malum, un lingote de hierro, cuatro piedras de alma refinadas, tres espíritus perversos, uno terrestre y uno arcano dan un lingote de acero teñido de almas. Para dos, juntá ocho piedras refinadas, seis perversos, dos terrestres y dos arcanos.\n\nB. era Bodhi, el sacerdote del templo. Forjó con este acero los sellos del santuario, y fue el que dijo que no."
-      ],
-      "layout": {
-        "group": "memory",
-        "x": 4.5,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "malum:soul_stained_steel_ingot",
-      "count": 2
+      "key": "voices_soul_steel", "deps": ["voices_dark_gems"], "item": "malum:soul_stained_steel_ingot", "count": 2, "layout": {"group": "memory", "x": 3.053, "y": 16.092, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Steel with a remembered purpose",
+        "text": ["[lead] Malum's [item:malum:spirit_altar|Spirit Altar] makes one [item:malum:soul_stained_steel_ingot|soul-stained steel ingot] from:",
+                 "[li] An iron ingot and four refined soulstone",
+                 "[li] Three [item:malum:wicked_spirit|wicked], one [item:malum:earthen_spirit|earthen] and one arcane spirit",
+                 "For two, gather eight refined soulstone, six wicked, two earthen and two arcane spirits.",
+                 "{page}",
+                 "B. was Bodhi, the temple's priest. He forged the sanctuary's seals from this steel, and he was the one who said no."]},
+      "es_es": {"title": "Acero con un propósito recordado",
+        "text": ["[lead] El [item:malum:spirit_altar|Altar espiritual] de Malum da un [item:malum:soul_stained_steel_ingot|lingote de acero teñido de almas] con:",
+                 "[li] Un lingote de hierro y cuatro piedras de alma refinadas",
+                 "[li] Tres espíritus [item:malum:wicked_spirit|perversos], uno [item:malum:earthen_spirit|terrestre] y uno arcano",
+                 "Para dos, juntá ocho piedras refinadas, seis perversos, dos terrestres y dos arcanos.",
+                 "{page}",
+                 "B. era Bodhi, el sacerdote del templo. Forjó con este acero los sellos del santuario, y fue el que dijo que no."]}
     },
     {
-      "key": "voices_spare_lens",
-      "deps": [
-        "voices_soul_steel"
-      ],
-      "en_us": [
-        "A second listening glass",
-        "Craft a second spectral lens for the containment seal, with the same crystal, spirits, mechanism and frame.\n\nOne lens for the archive, one for the seal. Bodhi's note: 'Whatever you listen to, you must also be able to close.'"
-      ],
-      "es_es": [
-        "Un segundo cristal para escuchar",
-        "Fabricá una segunda lente espectral para el sello de contención, con el mismo cristal, espíritus, mecanismo y marco.\n\nUna lente para el archivo y otra para el sello. Nota de Bodhi: «Lo que se escucha también se tiene que poder cerrar»."
-      ],
-      "layout": {
-        "group": "memory",
-        "x": 4.5,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "entrelumen:spectral_lens",
-      "count": 1
+      "key": "voices_spare_lens", "deps": ["voices_soul_steel"], "item": "entrelumen:spectral_lens", "count": 1, "layout": {"group": "memory", "x": 3.565, "y": 18.501, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "A second listening glass",
+        "text": ["[lead] Craft a second spectral lens for the containment seal.",
+                 "Use the same crystal, spirits, mechanism and frame as the first.",
+                 "One lens for the archive, one for the seal. Bodhi's note: 'Whatever you listen to, you must also be able to close.'"]},
+      "es_es": {"title": "Un segundo cristal para escuchar",
+        "text": ["[lead] Fabricá una segunda lente espectral para el sello de contención.",
+                 "Con el mismo cristal, espíritus, mecanismo y marco que la primera.",
+                 "Una lente para el archivo y otra para el sello. Nota de Bodhi: «Lo que se escucha también se tiene que poder cerrar»."]}
     },
     {
-      "key": "voices_testimony",
-      "deps": [
-        "voices_spare_lens"
-      ],
-      "en_us": [
-        "Keep the silence legible",
-        "Optional: set the archive's materials apart from the seal's and check which lens each one consumes.\n\nIn the temple, one line of testimony stays unreadable. Bodhi left it that way on purpose: some gaps should not be filled with a convenient answer."
-      ],
-      "es_es": [
-        "Conservar el silencio",
-        "Opcional: separá los materiales del archivo de los del sello y revisá qué lente consume cada uno.\n\nEn el templo, una línea del testimonio sigue ilegible. Bodhi la dejó así a propósito: hay huecos que no se llenan con una respuesta cómoda."
-      ],
-      "layout": {
-        "group": "memory",
-        "x": 4.5,
-        "y": 6.5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "type": "checkmark",
-      "optional": true,
-      "icon": "minecraft:book"
+      "key": "voices_testimony", "deps": ["voices_spare_lens"], "type": "checkmark", "optional": true, "layout": {"group": "memory", "x": 2.59, "y": 20.501, "size": 0.75, "shape": "circle", "hide_dependent_lines": false}, "hide_lines": true,
+      "icon": "minecraft:book",
+      "en_us": {"title": "Keep the silence legible",
+        "text": ["[lead] Optional: set the archive's materials apart from the seal's.",
+                 "Check which lens each one consumes.",
+                 "In the temple, one line of testimony stays unreadable. Bodhi left it that way on purpose: some gaps should not be filled with a convenient answer."]},
+      "es_es": {"title": "Conservar el silencio",
+        "text": ["[lead] Opcional: separá los materiales del archivo de los del sello.",
+                 "Revisá qué lente consume cada uno.",
+                 "En el templo, una línea del testimonio sigue ilegible. Bodhi la dejó así a propósito: hay huecos que no se llenan con una respuesta cómoda."]}
     },
     {
-      "key": "voices_seal_item",
-      "deps": [
-        "voices_testimony"
-      ],
-      "en_us": [
-        "Close the vessel gently",
-        "Craft one containment seal from two dark gems, two soul-stained steel ingots and a spectral lens; reactor rods for thorium fission ask for one as well.\n\nThe seal is Bodhi's answer to the temple's machine: not a cage for the light, a boundary around it."
-      ],
-      "es_es": [
-        "Cerrar el recipiente con cuidado",
-        "Fabricá un sello de contención con dos gemas oscuras, dos lingotes de acero teñido de almas y una lente espectral; las varillas de reactor de torio también piden uno.\n\nEl sello es la respuesta de Bodhi a la máquina del templo: no una jaula para la luz, un límite a su alrededor."
-      ],
-      "layout": {
-        "group": "memory",
-        "x": 4.5,
-        "y": 8,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "item": "entrelumen:containment_seal",
-      "count": 1
+      "key": "voices_seal_item", "deps": ["voices_testimony"], "item": "entrelumen:containment_seal", "count": 1, "layout": {"group": "memory", "x": 0.625, "y": 21.545, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "hide_lines": true,
+      "en_us": {"title": "Close the vessel gently",
+        "text": ["[lead] One [item:entrelumen:containment_seal|containment seal] takes two dark gems, two soul-stained steel ingots and a spectral lens.",
+                 "Reactor rods for thorium fission ask for one as well.",
+                 "The seal is Bodhi's answer to the temple's machine: not a cage for the light, a boundary around it."]},
+      "es_es": {"title": "Cerrar el recipiente con cuidado",
+        "text": ["[lead] Un [item:entrelumen:containment_seal|sello de contención] lleva dos gemas oscuras, dos lingotes de acero teñido de almas y una lente espectral.",
+                 "Las varillas de reactor de torio también piden uno.",
+                 "El sello es la respuesta de Bodhi a la máquina del templo: no una jaula para la luz, un límite a su alrededor."]}
     },
     {
-      "key": "voices_archive",
-      "deps": [
-        "exchange_archive"
-      ],
-      "en_us": [
-        "Voices in the Glass",
-        "Open the Atlas and deliver one spectral lens to Voices in the Glass; keep the second lens for the seal. Bring the Eyepiece of Voices (Cliff Observatory), the Forest Testimony (Sanctuary) and the Sacred Flame (Temple) as well. Reinforced energisers and motors also take a spectral lens.\n\nThe Observatory's crystal plays back a council session. A woman's voice, calm and certain: 'We will not worship the light. We will &mown&r… hold it.' The others call her Aurelia."
-      ],
-      "es_es": [
-        "Voces en el cristal",
-        "Abrí el Atlas y entregá una lente espectral en Voces en el cristal; guardá la segunda para el sello. Llevá también el Ocular de las Voces (Observatorio del Risco), el Testimonio del Bosque (Santuario) y la Llama Sagrada (Templo). El energizador y el motor reforzados también llevan una lente espectral.\n\nEl cristal del Observatorio reproduce una sesión del Consejo. Una voz de mujer, tranquila y segura: «No vamos a adorar la luz. Vamos a &madueñarnos&r… a sostenerla». Los demás la llaman Aurelia."
-      ],
-      "layout": {
-        "group": "spectral",
-        "x": 0,
-        "y": 14.75,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "spectral_archive",
-      "icon": "entrelumen:atlas"
+      "key": "voices_archive", "deps": ["exchange_archive"], "milestone": "spectral_archive", "layout": {"group": "spectral", "x": 0, "y": 8.2, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Voices in the Glass",
+        "text": ["[lead] Open the Atlas and deliver one spectral lens to Voices in the Glass; keep the second for the seal.",
+                 "Bring these as well:",
+                 "[li:entrelumen:voices_eyepiece] The [item:entrelumen:voices_eyepiece|Eyepiece of Voices] (Cliff Observatory)",
+                 "[li:entrelumen:forest_testimony] The [item:entrelumen:forest_testimony|Forest Testimony] (Sanctuary)",
+                 "[li:entrelumen:sacred_flame] The [item:entrelumen:sacred_flame|Sacred Flame] (Temple)",
+                 "{page}",
+                 "[item:create_new_age:reinforced_energiser|Reinforced energisers] and [item:create_new_age:reinforced_motor|motors] also take a spectral lens.",
+                 "The Observatory's crystal plays back a council session. A woman's voice, calm and certain: 'We will not worship the light. We will [strike|own]… hold it.' The others call her Aurelia."]},
+      "es_es": {"title": "Voces en el cristal",
+        "text": ["[lead] Abrí el Atlas y entregá una lente espectral en Voces en el cristal; guardá la segunda para el sello.",
+                 "Llevá también:",
+                 "[li:entrelumen:voices_eyepiece] El [item:entrelumen:voices_eyepiece|Ocular de las Voces] (Observatorio del Risco)",
+                 "[li:entrelumen:forest_testimony] El [item:entrelumen:forest_testimony|Testimonio del Bosque] (Santuario)",
+                 "[li:entrelumen:sacred_flame] La [item:entrelumen:sacred_flame|Llama Sagrada] (Templo)",
+                 "{page}",
+                 "El [item:create_new_age:reinforced_energiser|energizador] y el [item:create_new_age:reinforced_motor|motor] reforzados también llevan una lente espectral.",
+                 "El cristal del Observatorio reproduce una sesión del Consejo. Una voz de mujer, tranquila y segura: «No vamos a adorar la luz. Vamos a [strike|adueñarnos]… a sostenerla». Los demás la llaman Aurelia."]}
     },
     {
-      "key": "voices_horizon",
-      "deps": [
-        "exchange_archive",
-        "voices_aether",
-        "voices_twilight"
-      ],
-      "en_us": [
-        "Above and Beyond the Canopy",
-        "Once your team has arrived in the Aether and the Twilight Forest, deliver one horizon chart to Above and Beyond the Canopy in the Atlas. It gives you an Altar of Repose, a small chest that slowly mends the gear inside.\n\nThe Observatory's last chart marks a point above the Aether's clouds, circled in gold: where the light came from."
-      ],
-      "es_es": [
-        "Más allá del dosel",
-        "Cuando tu equipo haya llegado al Aether y a Twilight Forest, entregá una carta de horizontes en Más allá del dosel desde el Atlas. Te da un Altar de Reposo, un cofre chico que repara despacio el equipo que guarda.\n\nLa última carta del Observatorio marca un punto sobre las nubes del Aether, rodeado en dorado: de ahí vino la luz."
-      ],
-      "layout": {
-        "group": "horizon",
-        "x": -9,
-        "y": 14.75,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "horizon_survey",
-      "icon": "entrelumen:atlas"
+      "key": "voices_horizon", "deps": ["exchange_archive", "voices_aether", "voices_twilight"], "milestone": "horizon_survey", "layout": {"group": "horizon", "x": -9.4, "y": 11.9, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Above and Beyond the Canopy",
+        "text": ["[lead] Deliver one horizon chart to Above and Beyond the Canopy in the Atlas.",
+                 "Your team has to have arrived in the Aether and the Twilight Forest first.",
+                 "It gives you an [item:entrelumen:repose_altar|Altar of Repose], a small chest that slowly mends the gear inside.",
+                 "{page}",
+                 "The Observatory's last chart marks a point above the Aether's clouds, circled in gold: where the light came from."]},
+      "es_es": {"title": "Más allá del dosel",
+        "text": ["[lead] Entregá una carta de horizontes en Más allá del dosel desde el Atlas.",
+                 "Antes, tu equipo tiene que haber llegado al Aether y a Twilight Forest.",
+                 "Te da un [item:entrelumen:repose_altar|Altar de Reposo], un cofre chico que repara despacio el equipo que guarda.",
+                 "{page}",
+                 "La última carta del Observatorio marca un punto sobre las nubes del Aether, rodeado en dorado: de ahí vino la luz."]}
     },
     {
-      "key": "voices_pollinators",
-      "deps": [
-        "exchange_archive",
-        "voices_bumblezone"
-      ],
-      "en_us": [
-        "The Pollinators Agreement",
-        "Once your team has arrived in the Bumblezone, deliver one ecosystem capsule to The Pollinators Agreement in the Atlas. It gives you an Altar of Renewal, which grows the trees and flowers of its biome around it, with a dye garden that makes every colour.\n\nJuan's treaty still holds: the bees kept working after the witnesses left. Some promises outlive the people who made them."
-      ],
-      "es_es": [
-        "El acuerdo de los polinizadores",
-        "Cuando tu equipo haya llegado a Bumblezone, entregá una cápsula de ecosistema en El acuerdo de los polinizadores desde el Atlas. Te da un Altar de Renovación, que hace crecer a su alrededor los árboles y las flores de su bioma, con un jardín que da todos los tintes.\n\nEl tratado de Juan sigue en pie: las abejas siguieron trabajando cuando los testigos se fueron. Hay promesas que duran más que quienes las hicieron."
-      ],
-      "layout": {
-        "group": "ecology",
-        "x": -4.5,
-        "y": 14.75,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "pollinator_treaty",
-      "icon": "entrelumen:atlas"
+      "key": "voices_pollinators", "deps": ["exchange_archive", "voices_bumblezone"], "milestone": "pollinator_treaty", "layout": {"group": "ecology", "x": -3.7, "y": 11.9, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "The Pollinators Agreement",
+        "text": ["[lead] Deliver one ecosystem capsule to The Pollinators Agreement in the Atlas.",
+                 "Your team has to have arrived in the Bumblezone first.",
+                 "It gives you an [item:entrelumen:renewal_altar|Altar of Renewal], which grows the trees and flowers of its biome around it, with a dye garden that makes every colour.",
+                 "{page}",
+                 "Juan's treaty still holds: the bees kept working after the witnesses left. Some promises outlive the people who made them."]},
+      "es_es": {"title": "El acuerdo de los polinizadores",
+        "text": ["[lead] Entregá una cápsula de ecosistema en El acuerdo de los polinizadores desde el Atlas.",
+                 "Antes, tu equipo tiene que haber llegado a Bumblezone.",
+                 "Te da un [item:entrelumen:renewal_altar|Altar de Renovación], que hace crecer a su alrededor los árboles y las flores de su bioma, con un jardín que da todos los tintes.",
+                 "{page}",
+                 "El tratado de Juan sigue en pie: las abejas siguieron trabajando cuando los testigos se fueron. Hay promesas que duran más que quienes las hicieron."]}
     },
     {
-      "key": "voices_seal",
-      "deps": [
-        "exchange_archive",
-        "voices_archive"
-      ],
-      "en_us": [
-        "A Vessel for Restless Memory",
-        "After Voices in the Glass, deliver one containment seal to A Vessel for Restless Memory in the Atlas. It gives you an Altar of Time: hostile creatures around it move in slow motion and drop far more.\n\nIn the Temple of the Sacred Light the memory opens. Aurelia's council fused the sacred light with Terra's machines to build a god that would obey. Bodhi warned them; the crater is what his warning looked like."
-      ],
-      "es_es": [
-        "Un recipiente para la memoria",
-        "Después de Voces en el cristal, entregá un sello de contención en Un recipiente para la memoria desde el Atlas. Te da un Altar del Tiempo: las criaturas hostiles a su alrededor se mueven en cámara lenta y sueltan mucho más.\n\nEn el Templo de la Luz Sagrada la memoria se abre. El Consejo de Aurelia fusionó la luz sagrada con las máquinas de Terra para fabricar un dios que obedeciera. Bodhi les advirtió; el cráter es la forma que tomó su advertencia."
-      ],
-      "layout": {
-        "group": "memory",
-        "x": 4.5,
-        "y": 14.75,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "sealed_memory",
-      "icon": "entrelumen:atlas"
+      "key": "voices_seal", "deps": ["exchange_archive", "voices_archive"], "milestone": "sealed_memory", "layout": {"group": "memory", "x": -1.112, "y": 14.576, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "A Vessel for Restless Memory",
+        "text": ["[lead] After Voices in the Glass, deliver one containment seal to A Vessel for Restless Memory in the Atlas.",
+                 "It gives you an [item:entrelumen:time_altar|Altar of Time]: hostile creatures around it move in slow motion and drop far more.",
+                 "{page}",
+                 "In the Temple of the Sacred Light the memory opens. Aurelia's council fused the sacred light with Terra's machines to build a god that would obey. Bodhi warned them; the crater is what his warning looked like."]},
+      "es_es": {"title": "Un recipiente para la memoria",
+        "text": ["[lead] Después de Voces en el cristal, entregá un sello de contención en Un recipiente para la memoria desde el Atlas.",
+                 "Te da un [item:entrelumen:time_altar|Altar del Tiempo]: las criaturas hostiles a su alrededor se mueven en cámara lenta y sueltan mucho más.",
+                 "{page}",
+                 "En el Templo de la Luz Sagrada la memoria se abre. El Consejo de Aurelia fusionó la luz sagrada con las máquinas de Terra para fabricar un dios que obedeciera. Bodhi les advirtió; el cráter es la forma que tomó su advertencia."]}
     },
     {
-      "key": "voices_sun_spirit",
-      "deps": [],
-      "en_us": [
-        "The Sun Spirit",
-        "Defeat a Sun Spirit in one of the Aether's gold dungeons; the compass leads there after the silver dungeon. Only its own ice crystals, struck back at it, can wound it. The first one your team defeats drops the Heart of Heliodor, and the server records it.\n\nIt did not destroy Heliodor: it stopped it, and kept the Heart so no one could try again. Bodhi, through the noise: 'It was never &mtheirs&r… never anyone's to take.'"
-      ],
-      "es_es": [
-        "El Espíritu del Sol",
-        "Vencé a un Espíritu del Sol en una de las mazmorras de oro del Aether; la brújula te lleva ahí después de la mazmorra de plata. Sólo lo hieren sus propios cristales de hielo, devueltos de un golpe. El primero que vence tu equipo suelta el Corazón de Heliodor, y el servidor lo registra.\n\nNo destruyó Heliodor: la detuvo, y se quedó con el Corazón para que nadie volviera a intentarlo. Bodhi, entre el ruido: «Nunca fue &msuyo&r… nunca fue de nadie para quitarlo»."
-      ],
-      "layout": {
-        "group": "sun",
-        "x": 9,
-        "y": 11.25,
-        "size": 2.0,
-        "shape": "octagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "heart_recovered",
-      "icon": "entrelumen:heart_of_heliodor"
+      "key": "voices_sun_spirit", "deps": [], "milestone": "heart_recovered", "layout": {"group": "sun", "x": 10.4, "y": -0.8, "size": 2.0, "shape": "octagon", "hide_dependent_lines": false},
+      "icon": "entrelumen:heart_of_heliodor",
+      "en_us": {"title": "The Sun Spirit",
+        "text": ["[lead] Defeat a Sun Spirit in one of the Aether's gold dungeons; the compass leads there after the silver dungeon.",
+                 "Only its own ice crystals, struck back at it, can wound it.",
+                 "The first one your team defeats drops the [item:entrelumen:heart_of_heliodor|Heart of Heliodor], and the server records it.",
+                 "{page}",
+                 "It did not destroy Heliodor: it stopped it, and kept the Heart so no one could try again. Bodhi, through the noise: 'It was never [strike|theirs]… never anyone's to take.'"]},
+      "es_es": {"title": "El Espíritu del Sol",
+        "text": ["[lead] Vencé a un Espíritu del Sol en una de las mazmorras de oro del Aether; la brújula te lleva ahí después de la mazmorra de plata.",
+                 "Sólo lo hieren sus propios cristales de hielo, devueltos de un golpe.",
+                 "El primero que vence tu equipo suelta el [item:entrelumen:heart_of_heliodor|Corazón de Heliodor], y el servidor lo registra.",
+                 "{page}",
+                 "No destruyó Heliodor: la detuvo, y se quedó con el Corazón para que nadie volviera a intentarlo. Bodhi, entre el ruido: «Nunca fue [strike|suyo]… nunca fue de nadie para quitarlo»."]}
     },
     {
-      "key": "voices_heart",
-      "deps": [
-        "exchange_archive",
-        "voices_sun_spirit"
-      ],
-      "en_us": [
-        "A Clear Voice",
-        "Deliver the Heart of Heliodor to A Clear Voice in the Atlas. Bring the Sun Key, from the Sun Antechamber, as well. Only your team's own Heart counts, the one your Sun Spirit dropped. The Atlas keeps it; you will need it again in Solsticio.\n\nThe crystal settles into the Atlas like a key into a lock, and the noise falls away. Terra, whole for the first time: 'There you are. We have always been able to hear you.'"
-      ],
-      "es_es": [
-        "Una voz clara",
-        "Entregá el Corazón de Heliodor en Una voz clara desde el Atlas. Llevá también la Llave del Sol, de la Antesala del Sol. Sólo cuenta el Corazón de tu equipo, el que soltó tu Espíritu del Sol. El Atlas lo guarda: lo vas a necesitar otra vez en Solsticio.\n\nEl cristal entra en el Atlas como una llave en su cerradura, y el ruido se apaga. Terra, entera por primera vez: «Ahí estás. Siempre pudimos escucharte»."
-      ],
-      "layout": {
-        "group": "sun",
-        "x": 9,
-        "y": 14.75,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "heliodor_heart",
-      "icon": "entrelumen:heart_of_heliodor"
+      "key": "voices_heart", "deps": ["exchange_archive", "voices_sun_spirit"], "milestone": "heliodor_heart", "layout": {"group": "sun", "x": 10.0, "y": 8.2, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false}, "hide_lines": true,
+      "icon": "entrelumen:heart_of_heliodor",
+      "en_us": {"title": "A Clear Voice",
+        "text": ["[lead] Deliver the [item:entrelumen:heart_of_heliodor|Heart of Heliodor] to A Clear Voice in the Atlas.",
+                 "[li:entrelumen:sun_key] Bring the [item:entrelumen:sun_key|Sun Key] too, from the Sun Antechamber",
+                 "[li] Only your team's own Heart counts, the one your Sun Spirit dropped",
+                 "[li] The Atlas keeps it; you will need it again in Solsticio",
+                 "{page}",
+                 "The crystal settles into the Atlas like a key into a lock, and the noise falls away. Terra, whole for the first time: 'There you are. We have always been able to hear you.'"]},
+      "es_es": {"title": "Una voz clara",
+        "text": ["[lead] Entregá el [item:entrelumen:heart_of_heliodor|Corazón de Heliodor] en Una voz clara desde el Atlas.",
+                 "[li:entrelumen:sun_key] Llevá también la [item:entrelumen:sun_key|Llave del Sol], de la Antesala del Sol",
+                 "[li] Sólo cuenta el Corazón de tu equipo, el que soltó tu Espíritu del Sol",
+                 "[li] El Atlas lo guarda: lo vas a necesitar otra vez en Solsticio",
+                 "{page}",
+                 "El cristal entra en el Atlas como una llave en su cerradura, y el ruido se apaga. Terra, entera por primera vez: «Ahí estás. Siempre pudimos escucharte»."]}
     },
     {
-      "key": "voices_arcane",
-      "deps": [
-        "exchange_archive"
-      ],
-      "milestone": "arcane_module",
+      "key": "voices_arcane", "deps": ["exchange_archive"], "milestone": "arcane_module", "layout": {"group": "memory", "x": -3.053, "y": 16.092, "size": 2.0, "shape": "hexagon"},
       "icon": "entrelumen:arcane_module",
-      "en_us": [
-        "Mana that overflows",
-        "Deliver one spectral lens, sixteen amethyst shards and sixteen lapis lazuli to Arcane Module in the Atlas. In its place in the Ark your team's maximum mana and its regeneration rise by half, in every magic that shows them.\n\nBodhi never trusted a power that had to be taken. 'Let it overflow,' he wrote, 'and nobody has to fight over the cup.'"
-      ],
-      "es_es": [
-        "Maná que desborda",
-        "Entregá una lente espectral, dieciséis fragmentos de amatista y dieciséis lapislázulis en Módulo arcano desde el Atlas. En su lugar del Arca el maná máximo de tu equipo y su regeneración suben a la mitad más, en toda magia que los muestre.\n\nBodhi nunca confió en un poder que hubiera que tomar. «Dejá que desborde», escribió, «y nadie tiene que pelearse por la copa»."
-      ],
-      "layout": {
-        "group": "memory",
-        "x": 13.5,
-        "y": 14.75,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
+      "en_us": {"title": "Mana that overflows",
+        "text": ["[lead] Deliver to Arcane Module in the Atlas:",
+                 "[li:entrelumen:spectral_lens] One spectral lens",
+                 "[li:minecraft:amethyst_shard] Sixteen [item:minecraft:amethyst_shard|amethyst shards]",
+                 "[li:minecraft:lapis_lazuli] Sixteen [item:minecraft:lapis_lazuli|lapis lazuli]",
+                 "In its place in the Ark your team's maximum mana and its regeneration rise by half, in every magic that shows them.",
+                 "{page}",
+                 "Bodhi never trusted a power that had to be taken. 'Let it overflow,' he wrote, 'and nobody has to fight over the cup.'"]},
+      "es_es": {"title": "Maná que desborda",
+        "text": ["[lead] Entregá en Módulo arcano desde el Atlas:",
+                 "[li:entrelumen:spectral_lens] Una lente espectral",
+                 "[li:minecraft:amethyst_shard] Dieciséis [item:minecraft:amethyst_shard|fragmentos de amatista]",
+                 "[li:minecraft:lapis_lazuli] Dieciséis [item:minecraft:lapis_lazuli|lapislázulis]",
+                 "En su lugar del Arca el maná máximo de tu equipo y su regeneración suben a la mitad más, en toda magia que los muestre.",
+                 "{page}",
+                 "Bodhi nunca confió en un poder que hubiera que tomar. «Dejá que desborde», escribió, «y nadie tiene que pelearse por la copa»."]}
     },
     {
-      "key": "voices_chorus",
-      "deps": [
-        "voices_archive",
-        "voices_horizon",
-        "voices_pollinators",
-        "voices_seal",
-        "voices_heart",
-        "voices_arcane"
-      ],
-      "en_us": [
-        "The Atlas keeps their voices",
-        "With the five projects recorded, the Heart among them, deliver three paper and one copper ingot to The Voices of the Atlas, then choose Advance.\n\nThe temple's last page, read aloud at last: the fusion did not destroy Heliodor, because the Sun Spirit stopped it first and froze everyone inside the light. Terra: 'Now you know what we did. Help us leave without doing it again.'"
-      ],
-      "es_es": [
-        "El Atlas conserva sus voces",
-        "Con los cinco proyectos registrados, el Corazón entre ellos, entregá tres papeles y un lingote de cobre en Las voces del Atlas y pulsá Avanzar.\n\nLa última página del templo, leída en voz alta por fin: la fusión no destruyó Heliodor porque el Espíritu del Sol la detuvo antes y congeló a todos adentro de la luz. Terra: «Ahora sabés lo que hicimos. Ayudanos a salir sin repetirlo»."
-      ],
-      "layout": {
-        "group": "archive",
-        "x": 0,
-        "y": 18.75,
-        "size": 3.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "milestone": "atlas_voices",
-      "icon": "entrelumen:atlas"
+      "key": "voices_chorus", "deps": ["voices_archive", "voices_horizon", "voices_pollinators", "voices_seal", "voices_heart", "voices_arcane"], "milestone": "atlas_voices", "layout": {"group": "archive", "x": 0.0, "y": 18.0, "size": 3.0, "shape": "hexagon", "hide_dependent_lines": false}, "hide_lines": true,
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "The Atlas keeps their voices",
+        "text": ["[lead] Five projects recorded, the Heart among them: the Atlas is ready to keep their voices.",
+                 "Deliver three paper and one copper ingot to The Voices of the Atlas, then choose Advance.",
+                 "{page}",
+                 "The temple's last page, read aloud at last: the fusion did not destroy Heliodor, because the Sun Spirit stopped it first and froze everyone inside the light. Terra: 'Now you know what we did. Help us leave without doing it again.'"]},
+      "es_es": {"title": "El Atlas conserva sus voces",
+        "text": ["[lead] Cinco proyectos registrados, el Corazón entre ellos: el Atlas ya puede guardar sus voces.",
+                 "Entregá tres papeles y un lingote de cobre en Las voces del Atlas y pulsá Avanzar.",
+                 "{page}",
+                 "La última página del templo, leída en voz alta por fin: la fusión no destruyó Heliodor porque el Espíritu del Sol la detuvo antes y congeló a todos adentro de la luz. Terra: «Ahora sabés lo que hicimos. Ayudanos a salir sin repetirlo»."]}
+    },
+    {
+      "key": "voices_shutter", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"group": "archive", "x": 1.25, "y": 9.45, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:lever",
+      "en_us": {"title": "One second a night",
+        "text": ["[lead] The shutter still opens, one second a night.",
+                 "For that second the whole sky shows at once, every voice in its place."]},
+      "es_es": {"title": "Un segundo por noche",
+        "text": ["[lead] El obturador todavía se abre, un segundo por noche.",
+                 "Durante ese segundo se ve el cielo entero, cada voz en su lugar."]}
+    },
+    {
+      "key": "voices_candles", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"group": "memory", "x": -6.0, "y": 21.7, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:candle",
+      "en_us": {"title": "The temple candles",
+        "text": ["[lead] Bodhi's candles still take a flame.",
+                 "Nobody has prayed here in a long time. The light does not seem to mind."]},
+      "es_es": {"title": "Las velas del templo",
+        "text": ["[lead] Las velas de Bodhi todavía prenden.",
+                 "Hace mucho que nadie reza acá. A la luz no parece importarle."]}
     }
   ]
 }
