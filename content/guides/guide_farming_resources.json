@@ -4,222 +4,257 @@
   "act": "II",
   "icon": "aquaculture:iron_fishing_rod",
   "emblem": "aquaculture:textures/item/iron_fishing_rod_uncast.png",
-  "title": {
-    "en_us": "Resource Farming: Fishing",
-    "es_es": "Granjas de recursos: pesca"
-  },
+  "title": {"en_us": "Resource Farming: Fishing", "es_es": "Granjas de recursos: pesca"},
   "subtitle": {
     "en_us": "Aquaculture: rods, hooks, fillets and treasure from the water.",
     "es_es": "Aquaculture: cañas, anzuelos, filetes y tesoros del agua."
   },
+  "presentation": 2,
+  "motif": "farm",
+  "medallion": {"x": -6.9, "y": 0.5},
+  "art": [
+    {"id": "title", "text": {"en_us": "Resource Farming: Fishing", "es_es": "Granjas de recursos: pesca"}, "x": -4.2, "y": -6.9, "scale": 3, "align": "start", "tint": "#FFC58A"},
+    {"id": "lbl_pier", "text": {"en_us": "The Pier", "es_es": "El muelle"}, "x": 5.4, "y": -2.3, "scale": 2, "align": "start", "tint": "#F2E0C0"},
+    {"id": "lbl_deep", "text": {"en_us": "The Deep", "es_es": "El fondo"}, "x": 0.4, "y": 11.4, "scale": 2, "align": "start", "tint": "#8FE0E8"},
+    {"id": "sky_a", "path": [[-9.0, -6.5], [23.0, -6.5]], "color": "#1A1B40", "alpha": 60, "width": 5.0, "order": -9},
+    {"id": "sky_b", "path": [[-9.0, -2.5], [23.0, -2.5]], "color": "#3B2A63", "alpha": 60, "width": 3.0, "order": -9},
+    {"id": "sky_c", "path": [[-9.0, 0.4], [23.0, 0.4]], "color": "#7A3F5E", "alpha": 60, "width": 2.8, "order": -9},
+    {"id": "sky_d", "path": [[-9.0, 3.0], [23.0, 3.0]], "color": "#C8643A", "alpha": 60, "width": 2.4, "order": -9},
+    {"id": "sky_ink_a", "path": [[-9.0, -6.5], [23.0, -6.5]], "color": "#1A1B40", "alpha": 140, "width": 5.0, "order": -9, "reveal": "farming_resources_fishing"},
+    {"id": "sky_ink_b", "path": [[-9.0, -2.5], [23.0, -2.5]], "color": "#3B2A63", "alpha": 140, "width": 3.0, "order": -9, "reveal": "farming_resources_fishing"},
+    {"id": "sky_ink_c", "path": [[-9.0, 0.4], [23.0, 0.4]], "color": "#7A3F5E", "alpha": 140, "width": 2.8, "order": -9, "reveal": "farming_resources_fishing"},
+    {"id": "sky_ink_d", "path": [[-9.0, 3.0], [23.0, 3.0]], "color": "#C8643A", "alpha": 120, "width": 2.4, "order": -9, "reveal": "farming_resources_fishing"},
+    {"id": "stars", "scatter": ["minecraft:textures/particle/spark_1.png", "minecraft:textures/particle/glitter_2.png", "minecraft:textures/particle/glitter_5.png"], "region": [-8.8, -8.8, 22.8, -1.0], "count": 16, "size": [0.25, 0.45], "alphas": [45, 90], "seed": 14, "order": -7, "avoid": [[2.0, -6.9, 8.0]]},
+    {"id": "water_wash", "path": [[-9.0, 8.9], [23.0, 8.9]], "color": "#1F5A8A", "alpha": 70, "width": 9.4, "order": -9},
+    {"id": "water", "sprite": "minecraft:block/water_still", "cells": [[-7.6, 5.5], [-5.0, 5.5], [-2.3999999999999995, 5.5], [0.20000000000000107, 5.5], [2.8000000000000007, 5.5], [5.4, 5.5], [8.000000000000002, 5.5], [10.6, 5.5], [13.200000000000001, 5.5], [15.800000000000002, 5.5], [18.4, 5.5], [21.0, 5.5]], "w": 2.6, "h": 2.6, "tint": "#3D86B8", "alpha": 200, "order": -6, "reveal": "farming_resources_welcome"},
+    {"id": "water_mid", "path": [[-9.0, 8.4], [23.0, 8.4]], "color": "#1F5A8A", "alpha": 175, "width": 3.4, "order": -7, "reveal": "farming_resources_welcome"},
+    {"id": "water_deep", "path": [[-9.0, 11.6], [23.0, 11.6]], "color": "#143A5E", "alpha": 195, "width": 3.4, "order": -7, "reveal": "farming_resources_welcome"},
+    {"id": "seabed", "path": [[-9.0, 13.4], [23.0, 13.4]], "color": "#B9A56A", "alpha": 215, "width": 0.7, "order": -6, "reveal": "farming_resources_welcome"},
+    {"id": "sand", "scatter": ["minecraft:textures/block/sand.png", "minecraft:textures/block/gravel.png"], "region": [-8.5, 13.1, 22.5, 13.7], "count": 8, "size": [0.4, 0.55], "seed": 6, "reveal": "farming_resources_welcome", "order": -5},
+    {"id": "kelp", "sprite": "minecraft:block/kelp", "cells": [[1.6, 12.7], [1.6, 12.1], [1.6, 11.5], [1.6, 10.9], [12.6, 12.7], [12.6, 12.1], [12.6, 11.5], [12.6, 10.9]], "w": 0.6, "h": 0.6, "reveal": "farming_resources_fishing", "order": -3},
+    {"id": "dusk_glow", "glow": [14.5, 4.0], "r": 8.0, "tint": "#FF9A4A", "alpha": 55, "order": -6},
+    {"id": "shore_line", "path": [[-4.2, 1.3], [1.2, 1.3]], "color": "#E8DCB5", "alpha": 70, "width": 0.07, "order": -6},
+    {"id": "grass", "path": [[-4.2, 1.28], [1.2, 1.28]], "color": "#5F9440", "alpha": 210, "width": 0.4, "order": -5, "reveal": "farming_resources_welcome"},
+    {"id": "sand_bank", "path": [[-4.2, 1.85], [1.3, 1.85]], "color": "#D8C88A", "alpha": 210, "width": 0.7, "order": -5, "reveal": "farming_resources_welcome"},
+    {"id": "reeds", "picture": "minecraft:textures/block/sugar_cane.png", "x": -3.6, "y": 0.55, "w": 0.6, "h": 0.9, "reveal": "farming_resources_welcome", "order": -3},
+    {"id": "reeds_b", "picture": "minecraft:textures/block/sugar_cane.png", "x": -2.9, "y": 0.6, "w": 0.6, "h": 0.8, "reveal": "farming_resources_welcome", "order": -3},
+    {"id": "hut_line", "frame": [-3.0, -1.1, -0.9, 1.1], "color": "#E8DCB5", "thickness_px": 1.0, "alpha": 70, "corners": false, "order": -6},
+    {"id": "hut", "mosaic": [-3.0, -1.1], "cell": 0.42, "rows": ["RRRRR", "PPPPP", "PP.PP", "PPDPP", "PPDPP"], "legend": {"R": "minecraft:textures/block/dark_oak_planks.png", "P": "minecraft:textures/block/spruce_planks.png", "D": "minecraft:textures/block/spruce_log.png"}, "reveal": "farming_resources_welcome", "order": -3},
+    {"id": "campfire", "item": "minecraft:campfire", "x": -0.7, "y": 0.85, "size": 0.55, "reveal": "farming_resources_welcome"},
+    {"id": "camp_glow", "glow": [-0.7, 0.85], "r": 1.4, "tint": "#FF9A4A", "alpha": 130, "reveal": "farming_resources_welcome"},
+    {"id": "deck", "path": [[1.2, 1.3], [5.4, 1.3], [9.0, 1.3], [13.6, 1.3], [18.6, 1.3]], "texture": "minecraft:textures/block/spruce_planks.png", "width": 0.4, "step": 0.8, "grow": ["farming_resources_fishing", "farming_resources_tackle_box", "farming_resources_hooks", "farming_resources_close"], "sketch": true, "order": -4},
+    {"id": "post_0", "picture": "minecraft:textures/block/oak_log.png", "x": 3.0, "y": 3.9, "w": 0.4, "h": 4.8, "reveal": "farming_resources_fishing", "order": -5},
+    {"id": "post_1", "picture": "minecraft:textures/block/oak_log.png", "x": 6.0, "y": 3.9, "w": 0.4, "h": 4.8, "reveal": "farming_resources_tackle_box", "order": -5},
+    {"id": "post_2", "picture": "minecraft:textures/block/oak_log.png", "x": 9.0, "y": 3.9, "w": 0.4, "h": 4.8, "reveal": "farming_resources_tackle_box", "order": -5},
+    {"id": "post_3", "picture": "minecraft:textures/block/oak_log.png", "x": 12.0, "y": 3.9, "w": 0.4, "h": 4.8, "reveal": "farming_resources_hooks", "order": -5},
+    {"id": "post_4", "picture": "minecraft:textures/block/oak_log.png", "x": 15.0, "y": 3.9, "w": 0.4, "h": 4.8, "reveal": "farming_resources_close", "order": -5},
+    {"id": "post_5", "picture": "minecraft:textures/block/oak_log.png", "x": 18.0, "y": 3.9, "w": 0.4, "h": 4.8, "reveal": "farming_resources_close", "order": -5},
+    {"id": "rod_a", "picture": "aquaculture:textures/item/iron_fishing_rod_cast.png", "x": 2.5, "y": 0.35, "w": 1.4, "h": 1.4, "order": -1, "reveal": "farming_resources_fishing", "sketch": true},
+    {"id": "cast_a", "path": [[3.15, -0.35], [4.4, -0.55], [5.2, 4.3]], "color": "#F2F2F8", "alpha": 200, "width": 0.045, "order": -3, "smooth": 3, "reveal": "farming_resources_fishing"},
+    {"id": "cast_a_ghost", "path": [[3.15, -0.35], [4.4, -0.55], [5.2, 4.3]], "color": "#E8DCB5", "alpha": 70, "width": 0.05, "smooth": 3, "order": -6},
+    {"id": "bobber_a", "picture": "aquaculture:textures/item/bobber.png", "x": 5.2, "y": 4.25, "w": 0.5, "h": 0.5, "order": -1, "reveal": "farming_resources_fishing"},
+    {"id": "cod", "picture": "aquaculture:textures/item/atlantic_cod.png", "x": 4.2, "y": 3.2, "w": 0.9, "h": 0.9, "order": -2, "reveal": "farming_resources_fishing", "sketch": true, "rotation": -30},
+    {"id": "tackle_item", "item": "aquaculture:tackle_box", "x": 8.4, "y": 0.72, "size": 0.75, "reveal": "farming_resources_tackle_box"},
+    {"id": "rod_b", "picture": "aquaculture:textures/item/iron_fishing_rod_cast.png", "x": 8.5, "y": 0.25, "w": 1.4, "h": 1.4, "order": -1, "reveal": "farming_resources_tackle_box", "sketch": true},
+    {"id": "cast_b", "path": [[9.15, -0.45], [10.3, -0.65], [9.9, 4.3]], "color": "#F2F2F8", "alpha": 200, "width": 0.045, "order": -3, "smooth": 3, "reveal": "farming_resources_tackle_box"},
+    {"id": "cast_b_ghost", "path": [[9.15, -0.45], [10.3, -0.65], [9.9, 4.3]], "color": "#E8DCB5", "alpha": 70, "width": 0.05, "smooth": 3, "order": -6},
+    {"id": "bobber_b", "picture": "aquaculture:textures/item/bobber.png", "x": 9.9, "y": 4.25, "w": 0.5, "h": 0.5, "order": -1, "reveal": "farming_resources_tackle_box"},
+    {"id": "trout", "picture": "aquaculture:textures/item/brown_trout.png", "x": 8.7, "y": 3.3, "w": 0.9, "h": 0.9, "order": -2, "reveal": "farming_resources_tackle_box", "sketch": true, "rotation": 25},
+    {"id": "thread_0", "path": [[9.7, 1.5], [9.7, 2.15]], "color": "#F2F2F8", "alpha": 200, "width": 0.03, "order": -3, "reveal": "farming_resources_hooks"},
+    {"id": "hook_0", "picture": "aquaculture:textures/item/iron_hook.png", "x": 9.7, "y": 2.4, "w": 0.55, "h": 0.55, "order": -2, "reveal": "farming_resources_hooks", "sketch": true},
+    {"id": "thread_1", "path": [[10.3, 1.5], [10.3, 2.15]], "color": "#F2F2F8", "alpha": 200, "width": 0.03, "order": -3, "reveal": "farming_resources_hooks"},
+    {"id": "hook_1", "picture": "aquaculture:textures/item/double_hook.png", "x": 10.3, "y": 2.4, "w": 0.55, "h": 0.55, "order": -2, "reveal": "farming_resources_hooks", "sketch": true},
+    {"id": "thread_2", "path": [[10.9, 1.5], [10.9, 2.15]], "color": "#F2F2F8", "alpha": 200, "width": 0.03, "order": -3, "reveal": "farming_resources_hooks"},
+    {"id": "hook_2", "picture": "aquaculture:textures/item/gold_hook.png", "x": 10.9, "y": 2.4, "w": 0.55, "h": 0.55, "order": -2, "reveal": "farming_resources_hooks", "sketch": true},
+    {"id": "thread_3", "path": [[11.5, 1.5], [11.5, 2.15]], "color": "#F2F2F8", "alpha": 200, "width": 0.03, "order": -3, "reveal": "farming_resources_hooks"},
+    {"id": "hook_3", "picture": "aquaculture:textures/item/glowstone_hook.png", "x": 11.5, "y": 2.4, "w": 0.55, "h": 0.55, "order": -2, "reveal": "farming_resources_hooks", "sketch": true},
+    {"id": "carp", "picture": "aquaculture:textures/item/carp.png", "x": 12.6, "y": 2.8, "w": 0.9, "h": 0.9, "order": -2, "reveal": "farming_resources_hooks", "sketch": true, "rotation": -20},
+    {"id": "boat_line", "path": [[13.4, 3.95], [18.4, 3.95], [17.6, 5.45], [14.2, 5.45]], "closed": true, "color": "#E8DCB5", "alpha": 70, "width": 0.07, "order": -6},
+    {"id": "boat", "mosaic": [12.2, 3.95], "cell": 0.5, "rows": ["DDDDDDDDDDDD", ".SSSSSSSSSS.", "..SSSSSSSS.."], "legend": {"D": "minecraft:textures/block/dark_oak_planks.png", "S": "minecraft:textures/block/spruce_planks.png"}, "reveal": "farming_resources_fillet_knife", "order": -3},
+    {"id": "rope", "through": [[12.0, 1.5], [12.15, 2.7], "farming_resources_fillet_knife"], "color": "#C8A26A", "alpha": 220, "width": 0.07, "grow": true, "sketch": true, "order": -4},
+    {"id": "knife", "picture": "aquaculture:textures/item/iron_fillet_knife.png", "x": 14.4, "y": 3.55, "w": 0.7, "h": 0.7, "order": -2, "reveal": "farming_resources_fillet_knife", "sketch": true, "rotation": -20},
+    {"id": "raw_fillet", "picture": "aquaculture:textures/item/fish_fillet_raw.png", "x": 15.0, "y": 3.6, "w": 0.6, "h": 0.6, "order": -2, "reveal": "farming_resources_fillet_knife", "sketch": true},
+    {"id": "fillet_0", "picture": "aquaculture:textures/item/fish_fillet_cooked.png", "x": 16.7, "y": 3.65, "w": 0.6, "h": 0.6, "order": -2, "reveal": "farming_resources_fillets", "sketch": true},
+    {"id": "fillet_1", "picture": "aquaculture:textures/item/fish_fillet_cooked.png", "x": 17.2, "y": 3.65, "w": 0.6, "h": 0.6, "order": -2, "reveal": "farming_resources_fillets", "sketch": true},
+    {"id": "rations", "item": "entrelumen:ration_bundle", "x": 17.8, "y": 3.5, "size": 0.7, "reveal": "farming_resources_fillets"},
+    {"id": "fillet_glow", "glow": [17.0, 3.6], "r": 1.6, "tint": "#FFC060", "alpha": 100, "reveal": "farming_resources_fillets"},
+    {"id": "fillet_chain", "through": ["farming_resources_fillets", "farming_resources_close"], "dots": "#FFE9A0", "size": 0.2, "step": 0.6, "grow": true, "order": -3},
+    {"id": "deep_line", "through": [[5.2, 4.5], [5.7, 7.0], [6.0, 8.5]], "color": "#F2F2F8", "alpha": 190, "width": 0.045, "smooth": 3, "grow": ["farming_resources_neptunium", "farming_resources_neptunium"], "sketch": true, "order": -3},
+    {"id": "deep_hook", "picture": "aquaculture:textures/item/iron_hook.png", "x": 6.0, "y": 8.55, "w": 0.5, "h": 0.5, "order": -2, "reveal": "farming_resources_neptunium"},
+    {"id": "nep_block_0", "picture": "aquaculture:textures/block/neptunium_block.png", "x": 5.2, "y": 13.0, "w": 0.7, "h": 0.7, "reveal": "farming_resources_neptunium", "order": -3},
+    {"id": "nep_block_1", "picture": "aquaculture:textures/block/neptunium_block.png", "x": 6.0, "y": 13.0, "w": 0.7, "h": 0.7, "reveal": "farming_resources_neptunium", "order": -3},
+    {"id": "nep_block_2", "picture": "aquaculture:textures/block/neptunium_block.png", "x": 6.8, "y": 13.0, "w": 0.7, "h": 0.7, "reveal": "farming_resources_neptunium", "order": -3},
+    {"id": "nep_ingot_a", "item": "aquaculture:neptunium_ingot", "x": 5.5, "y": 12.3, "size": 0.6, "reveal": "farming_resources_neptunium"},
+    {"id": "nep_ingot_b", "item": "aquaculture:neptunium_ingot", "x": 6.5, "y": 12.3, "size": 0.6, "reveal": "farming_resources_neptunium"},
+    {"id": "bounty", "item": "aquaculture:neptunes_bounty", "x": 8.2, "y": 12.7, "size": 0.8, "reveal": "farming_resources_neptunium"},
+    {"id": "nep_glow", "glow": [6.0, 12.6], "r": 3.0, "tint": "#66E0E0", "alpha": 110, "reveal": "farming_resources_neptunium"},
+    {"id": "bubbles", "through": ["farming_resources_neptunium", [12.0, 10.4], [19.4, 8.0], [19.8, 4.4], "farming_resources_close"], "dots": "#CFEFFF", "size": 0.22, "step": 1.0, "smooth": 3, "grow": true, "order": -3},
+    {"id": "sun", "mosaic": [11.7, 2.6], "cell": 0.4, "rows": ["....OOOOOO....", "..OOOYYYYYOO..", ".OOYYYYYYYYOO.", "OOYYYYYYYYYYOO"], "legend": {"O": "#FF8A3A", "Y": "#FFE9A0"}, "reveal": "farming_resources_close", "order": -7},
+    {"id": "sun_glow", "glow": [14.7, 3.6], "r": 6.0, "tint": "#FFB060", "alpha": 110, "reveal": "farming_resources_close"},
+    {"id": "sun_path", "path": [[14.7, 4.5], [14.7, 8.6]], "color": "#FFB060", "alpha": 90, "width": 1.5, "reveal": "farming_resources_close", "order": -6},
+    {"id": "school_0", "picture": "aquaculture:textures/item/atlantic_herring.png", "x": 19.4, "y": 3.2, "w": 0.8, "h": 0.8, "order": -2, "reveal": "farming_resources_close", "sketch": true, "rotation": 35},
+    {"id": "school_1", "picture": "aquaculture:textures/item/goldfish.png", "x": 20.4, "y": 4.1, "w": 0.8, "h": 0.8, "order": -2, "reveal": "farming_resources_close", "sketch": true, "rotation": -20},
+    {"id": "school_2", "picture": "aquaculture:textures/item/minnow.png", "x": 3.0, "y": 3.9, "w": 0.8, "h": 0.8, "order": -2, "reveal": "farming_resources_close", "sketch": true, "rotation": 20},
+    {"id": "end_lamp", "item": "minecraft:lantern", "x": 18.3, "y": 0.6, "size": 0.7, "reveal": "farming_resources_close"},
+    {"id": "end_lamp_glow", "glow": [18.3, 0.6], "r": 1.6, "tint": "#FFC060", "alpha": 130, "reveal": "farming_resources_close"},
+    {"id": "lamp_0", "item": "minecraft:lantern", "x": 3.0, "y": 0.55, "size": 0.6, "reveal": "farming_resources_toy_lanterns"},
+    {"id": "lamp_glow_0", "glow": [3.0, 0.55], "r": 1.5, "tint": "#FFC060", "alpha": 130, "reveal": "farming_resources_toy_lanterns"},
+    {"id": "lamp_1", "item": "minecraft:lantern", "x": 6.0, "y": 0.55, "size": 0.6, "reveal": "farming_resources_toy_lanterns"},
+    {"id": "lamp_glow_1", "glow": [6.0, 0.55], "r": 1.5, "tint": "#FFC060", "alpha": 130, "reveal": "farming_resources_toy_lanterns"},
+    {"id": "lamp_2", "item": "minecraft:lantern", "x": 12.0, "y": 0.55, "size": 0.6, "reveal": "farming_resources_toy_lanterns"},
+    {"id": "lamp_glow_2", "glow": [12.0, 0.55], "r": 1.5, "tint": "#FFC060", "alpha": 130, "reveal": "farming_resources_toy_lanterns"},
+    {"id": "lamp_3", "item": "minecraft:lantern", "x": 15.0, "y": 0.55, "size": 0.6, "reveal": "farming_resources_toy_lanterns"},
+    {"id": "lamp_glow_3", "glow": [15.0, 0.55], "r": 1.5, "tint": "#FFC060", "alpha": 130, "reveal": "farming_resources_toy_lanterns"},
+    {"id": "jump_fish", "picture": "aquaculture:textures/item/atlantic_herring.png", "x": 19.2, "y": 3.0, "w": 0.9, "h": 0.9, "order": -2, "reveal": "farming_resources_toy_bite", "rotation": 40},
+    {"id": "splash", "scatter": ["minecraft:textures/particle/glitter_2.png", "minecraft:textures/particle/spark_1.png"], "region": [18.4, 3.6, 20.6, 4.5], "count": 6, "size": [0.25, 0.4], "seed": 2, "tint": "#DFF4FF", "reveal": "farming_resources_toy_bite"}
+  ],
   "quests": [
     {
-      "key": "farming_resources_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Fish That Pay",
-        "Aquaculture fishes up metal, treasure and fillets: dozens of fish by biome, better rods, hooks and bait. Slow to start, endless once running, and the travel food the Atlas asks for in act II comes from here.\n\nProductive Bees has two chapters of its own; Mystical Agriculture too."
-      ],
-      "es_es": [
-        "Peces que rinden",
-        "Aquaculture pesca metal, tesoros y filetes: decenas de peces por bioma, mejores cañas, anzuelos y carnada. Arranca lento, no se agota nunca, y de acá sale la comida de viaje que pide el Atlas en el acto II.\n\nProductive Bees tiene dos capítulos propios; Mystical Agriculture también."
-      ],
-      "sources": [
-        "repo:content/integration-design.json",
-        "repo:content/sectors/sector_bees_apiary.json",
-        "repo:content/sectors/sector_ma_essence.json"
-      ]
+      "key": "farming_resources_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0.3, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Fish That Pay", "subtitle": "The pier opens at dusk.",
+        "text": ["[lead] Aquaculture fishes up metal, treasure and fillets.",
+                 "[li] Dozens of fish by biome",
+                 "[li] Better rods, hooks and bait",
+                 "Slow to start, endless once running, and the travel food the Atlas asks for in act [hl|II] comes from here.",
+                 "[note] Productive Bees has [chapter:sector_bees_apiary|chapters of its own]; so does Mystical Agriculture: [chapter:sector_ma_essence|Essence]."]},
+      "es_es": {"title": "Peces que rinden", "subtitle": "El muelle abre al atardecer.",
+        "text": ["[lead] Aquaculture pesca metal, tesoros y filetes.",
+                 "[li] Decenas de peces por bioma",
+                 "[li] Mejores cañas, anzuelos y carnada",
+                 "Arranca lento, no se agota nunca, y de acá sale la comida de viaje que pide el Atlas en el acto [hl|II].",
+                 "[note] Productive Bees tiene [chapter:sector_bees_apiary|capítulos propios]; Mystical Agriculture también: [chapter:sector_ma_essence|Esencia]."]},
+      "sources": ["repo:content/integration-design.json", "repo:content/sectors/sector_bees_apiary.json", "repo:content/sectors/sector_ma_essence.json"]
     },
     {
-      "key": "farming_resources_fishing",
-      "deps": [
-        "farming_resources_welcome"
-      ],
-      "type": "item",
-      "item": "aquaculture:iron_fishing_rod",
-      "layout": {
-        "x": 3,
-        "y": 2,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Aquaculture: Better Fishing",
-        "Dozens of biome fish, better rods (iron, gold, diamond, neptunium), hooks, bait like worms, lines and bobbers, a &eTackle Box&r for gear and a &eFillet Knife&r for fillets.\n\nIt also fishes up treasure: &eNeptune's Bounty&r chests hold neptunium, a metal for underwater gear."
-      ],
-      "es_es": [
-        "Aquaculture: mejor pesca",
-        "Decenas de peces por bioma, mejores cañas (hierro, oro, diamante, neptunio), anzuelos, carnada como gusanos, líneas y boyas, una &eCaja de pesca&r para el equipo y un &eCuchillo fileteador&r para los filetes.\n\nTambién pesca tesoros: los cofres de &eNeptune's Bounty&r traen neptunio, un metal para equipo submarino."
-      ],
-      "sources": [
-        "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"
-      ]
+      "key": "farming_resources_fishing", "deps": ["farming_resources_welcome"], "type": "item", "item": "aquaculture:iron_fishing_rod", "layout": {"x": 3.6, "y": 0.65, "size": 1.25, "shape": "circle"},
+      "en_us": {"title": "Aquaculture: Better Fishing",
+        "text": ["[lead] Dozens of biome fish, better rods and a whole tackle system.",
+                 "[li] Rods: iron, gold, diamond and neptunium",
+                 "[li] Hooks, bait like worms, lines and bobbers",
+                 "[li] A [item:aquaculture:tackle_box|Tackle Box] for gear and a [item:aquaculture:iron_fillet_knife|Fillet Knife] for fillets",
+                 "{page}",
+                 "It also fishes up treasure: [item:aquaculture:neptunes_bounty|Neptune's Bounty] chests hold neptunium, a metal for underwater gear."]},
+      "es_es": {"title": "Aquaculture: mejor pesca",
+        "text": ["[lead] Decenas de peces por bioma, mejores cañas y todo un sistema de pesca.",
+                 "[li] Cañas: hierro, oro, diamante y neptunio",
+                 "[li] Anzuelos, carnada como gusanos, líneas y boyas",
+                 "[li] Una [item:aquaculture:tackle_box|Caja de pesca] para el equipo y un [item:aquaculture:iron_fillet_knife|Cuchillo fileteador] para los filetes",
+                 "{page}",
+                 "También pesca tesoros: los cofres de [item:aquaculture:neptunes_bounty|Neptune's Bounty] traen neptunio, un metal para equipo submarino."]},
+      "sources": ["jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"]
     },
     {
-      "key": "farming_resources_tackle_box",
-      "deps": [
-        "farming_resources_fishing"
-      ],
-      "type": "item",
-      "item": "aquaculture:tackle_box",
-      "layout": {
-        "x": 6,
-        "y": 0.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The Tackle Box",
-        "Five iron, an iron block, a chest and two green dyes make a &eTackle Box&r: it stores the fishing gear, and a rod set in it takes a hook, a line, a bobber and bait."
-      ],
-      "es_es": [
-        "La caja de pesca",
-        "Cinco de hierro, un bloque de hierro, un cofre y dos tintes verdes hacen una &eCaja de pesca&r: guarda el equipo de pesca, y una caña puesta ahí acepta anzuelo, sedal, corcho y carnada."
-      ],
-      "sources": [
-        "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/tackle_box.json",
-        "jar:Aquaculture-1.21.1-2.7.21.jar:com/teammetallurgy/aquaculture/inventory/container/TackleBoxContainer.class"
-      ]
+      "key": "farming_resources_tackle_box", "deps": ["farming_resources_fishing"], "type": "item", "item": "aquaculture:tackle_box", "layout": {"x": 7.2, "y": 0.7, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "The Tackle Box",
+        "text": ["[lead] The [item:aquaculture:tackle_box|Tackle Box] stores the fishing gear.",
+                 "A rod set in it takes a hook, a line, a bobber and bait.",
+                 "Craft it from:",
+                 "[li] Five iron",
+                 "[li] An iron block",
+                 "[li] A chest",
+                 "[li] Two green dyes"]},
+      "es_es": {"title": "La caja de pesca",
+        "text": ["[lead] La [item:aquaculture:tackle_box|Caja de pesca] guarda el equipo de pesca.",
+                 "Una caña puesta ahí acepta anzuelo, sedal, corcho y carnada.",
+                 "Se fabrica con:",
+                 "[li] Cinco de hierro",
+                 "[li] Un bloque de hierro",
+                 "[li] Un cofre",
+                 "[li] Dos tintes verdes"]},
+      "sources": ["jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/tackle_box.json", "jar:Aquaculture-1.21.1-2.7.21.jar:com/teammetallurgy/aquaculture/inventory/container/TackleBoxContainer.class"]
     },
     {
-      "key": "farming_resources_hooks",
-      "deps": [
-        "farming_resources_tackle_box"
-      ],
-      "type": "item",
-      "item": "aquaculture:iron_hook",
-      "optional": true,
-      "layout": {
-        "x": 9,
-        "y": 0.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Hooks",
-        "Four iron nuggets make an &eIron Hook&r, which saves durability one cast in five, and two iron hooks make a &eDouble Hook&r that can land two catches at once. Gold and glowstone hooks add luck; redstone ones give you longer to reel in."
-      ],
-      "es_es": [
-        "Anzuelos",
-        "Cuatro pepitas de hierro hacen un &eAnzuelo de hierro&r, que ahorra durabilidad una vez de cada cinco, y dos anzuelos de hierro hacen un &eAnzuelo doble&r que puede sacar dos piezas de una. Los de oro y piedra luminosa dan suerte; los de redstone, más tiempo para recoger."
-      ],
-      "sources": [
-        "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/iron_hook.json",
-        "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/double_hook.json",
-        "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"
-      ]
+      "key": "farming_resources_hooks", "deps": ["farming_resources_tackle_box"], "type": "item", "item": "aquaculture:iron_hook", "optional": true, "layout": {"x": 10.8, "y": 0.7, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Hooks",
+        "text": ["[lead] Four iron nuggets make an [item:aquaculture:iron_hook|Iron Hook], which saves durability one cast in [hl|five].",
+                 "Two iron hooks make a [item:aquaculture:double_hook|Double Hook] that can land two catches at once.",
+                 "[li] Gold and glowstone hooks add luck",
+                 "[li] Redstone ones give you longer to reel in"]},
+      "es_es": {"title": "Anzuelos",
+        "text": ["[lead] Cuatro pepitas de hierro hacen un [item:aquaculture:iron_hook|Anzuelo de hierro], que ahorra durabilidad una vez de cada [hl|cinco].",
+                 "Dos anzuelos de hierro hacen un [item:aquaculture:double_hook|Anzuelo doble] que puede sacar dos piezas de una.",
+                 "[li] Los de oro y piedra luminosa dan suerte",
+                 "[li] Los de redstone, más tiempo para recoger"]},
+      "sources": ["jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/iron_hook.json", "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/double_hook.json", "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"]
     },
     {
-      "key": "farming_resources_fillet_knife",
-      "deps": [
-        "farming_resources_fishing"
-      ],
-      "type": "item",
-      "item": "aquaculture:iron_fillet_knife",
-      "layout": {
-        "x": 6,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The Fillet Knife",
-        "Two iron ingots and a stick make an &eIron Fillet Knife&r. A fish and the knife on a crafting grid become raw fillets, and the neptunium knife cuts more of them."
-      ],
-      "es_es": [
-        "El cuchillo fileteador",
-        "Dos lingotes de hierro y un palo hacen un &eCuchillo fileteador de hierro&r. Un pez y el cuchillo en la mesa de trabajo dan filetes crudos, y el de neptunio corta más."
-      ],
-      "sources": [
-        "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/iron_fillet_knife.json",
-        "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/fish_fillet.json",
-        "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"
-      ]
+      "key": "farming_resources_fillet_knife", "deps": ["farming_resources_fishing"], "type": "item", "item": "aquaculture:iron_fillet_knife", "layout": {"x": 13.6, "y": 3.45, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "The Fillet Knife",
+        "text": ["[lead] Two iron ingots and a stick make an [item:aquaculture:iron_fillet_knife|Iron Fillet Knife].",
+                 "A fish and the knife on a crafting grid become raw fillets, and the neptunium knife cuts more of them."]},
+      "es_es": {"title": "El cuchillo fileteador",
+        "text": ["[lead] Dos lingotes de hierro y un palo hacen un [item:aquaculture:iron_fillet_knife|Cuchillo fileteador de hierro].",
+                 "Un pez y el cuchillo en la mesa de trabajo dan filetes crudos, y el de neptunio corta más."]},
+      "sources": ["jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/iron_fillet_knife.json", "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/fish_fillet.json", "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"]
     },
     {
-      "key": "farming_resources_fillets",
-      "deps": [
-        "farming_resources_fillet_knife"
-      ],
-      "type": "item",
-      "item": "aquaculture:fish_fillet_cooked",
-      "layout": {
-        "x": 9,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Fillets for the Story",
-        "Two vegetable soups and two cooked Aquaculture fillets make the first &eTravel Rations&r, the travel food the Atlas asks for in act II.\n\nA &eWorm Farm&r keeps the bait coming."
-      ],
-      "es_es": [
-        "Filetes para la historia",
-        "Dos sopas de verduras y dos filetes cocidos de Aquaculture hacen las primeras &eProvisiones de viaje&r, la comida de viaje que pide el Atlas en el acto II.\n\nUna &eGranja de gusanos&r mantiene la carnada."
-      ],
-      "sources": [
-        "repo:content/integration-design.json",
-        "repo:docs/design/cooking-provisions-family.md"
-      ]
+      "key": "farming_resources_fillets", "deps": ["farming_resources_fillet_knife"], "type": "item", "item": "aquaculture:fish_fillet_cooked", "layout": {"x": 16.0, "y": 3.45, "size": 1.0, "shape": "pentagon"},
+      "en_us": {"title": "Fillets for the Story",
+        "text": ["[lead] Two vegetable soups and two cooked Aquaculture fillets make the first [item:entrelumen:ration_bundle|Travel Rations].",
+                 "They are the travel food the Atlas asks for in act [hl|II].",
+                 "[tip] A [item:aquaculture:worm_farm|Worm Farm] keeps the bait coming."]},
+      "es_es": {"title": "Filetes para la historia",
+        "text": ["[lead] Dos sopas de verduras y dos filetes cocidos de Aquaculture hacen las primeras [item:entrelumen:ration_bundle|Provisiones de viaje].",
+                 "Son la comida de viaje que pide el Atlas en el acto [hl|II].",
+                 "[tip] Una [item:aquaculture:worm_farm|Granja de gusanos] mantiene la carnada."]},
+      "sources": ["repo:content/integration-design.json", "repo:docs/design/cooking-provisions-family.md"]
     },
     {
-      "key": "farming_resources_neptunium",
-      "deps": [
-        "farming_resources_fishing"
-      ],
-      "type": "item",
-      "item": "aquaculture:neptunium_ingot",
-      "optional": true,
-      "layout": {
-        "x": 6,
-        "y": 6.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Neptunium Gear",
-        "Built for underwater: the rod gets faster bites, the helmet clearer vision, the chestplate breath, the leggings weightlessness and the boots speed; the pickaxe and shovel lose no speed underwater, and the hoe keeps farmland moist.\n\nOcean monuments will not know what hit them."
-      ],
-      "es_es": [
-        "Equipo de neptunio",
-        "Hecho para bajo el agua: la caña hace que piquen antes, el casco mejora la visión, la pechera deja respirar, los pantalones te hacen ingrávido y las botas nadan rápido; el pico y la pala no pierden velocidad bajo el agua, y la azada mantiene húmeda la tierra.\n\nLos monumentos oceánicos no van a saber qué los golpeó."
-      ],
-      "sources": [
-        "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"
-      ]
+      "key": "farming_resources_neptunium", "deps": ["farming_resources_fishing"], "type": "item", "item": "aquaculture:neptunium_ingot", "optional": true, "layout": {"x": 6.0, "y": 9.2, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "Neptunium Gear", "subtitle": "Ocean monuments beware.",
+        "text": ["[lead] Built for underwater.",
+                 "[li] Rod: faster bites",
+                 "[li] Helmet: clearer vision",
+                 "[li] Chestplate: breath",
+                 "[li] Leggings: weightlessness",
+                 "[li] Boots: speed",
+                 "[li] Pickaxe and shovel: no speed lost underwater; the hoe keeps farmland moist",
+                 "{page}",
+                 "Ocean monuments will not know what hit them."]},
+      "es_es": {"title": "Equipo de neptunio", "subtitle": "Que tiemblen los monumentos.",
+        "text": ["[lead] Hecho para bajo el agua.",
+                 "[li] Caña: pican antes",
+                 "[li] Casco: mejor visión",
+                 "[li] Pechera: deja respirar",
+                 "[li] Pantalones: te hacen ingrávido",
+                 "[li] Botas: nadan rápido",
+                 "[li] Pico y pala: no pierden velocidad bajo el agua; la azada mantiene húmeda la tierra",
+                 "{page}",
+                 "Los monumentos oceánicos no van a saber qué los golpeó."]},
+      "sources": ["jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"]
     },
     {
-      "key": "farming_resources_close",
-      "deps": [
-        "farming_resources_fillets",
-        "farming_resources_neptunium"
-      ],
-      "type": "checkmark",
+      "key": "farming_resources_close", "deps": ["farming_resources_fillets", "farming_resources_neptunium"], "type": "checkmark", "layout": {"x": 16.6, "y": 0.3, "size": 2.0, "shape": "hexagon"}, "hide_lines": true,
       "icon": "minecraft:honeycomb",
-      "layout": {
-        "x": 12,
-        "y": 2,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Endless Supplies",
-        "A fishing line that pays in treasure, fillets for the road and neptunium for the deep.\n\nSomewhere, a fish is swimming toward your hook right now."
-      ],
-      "es_es": [
-        "Suministro sin fin",
-        "Una caña que paga en tesoros, filetes para el camino y neptunio para lo profundo.\n\nEn algún lado, un pez está nadando hacia tu anzuelo ahora mismo."
-      ],
-      "sources": [
-        "repo:content/guides/README.md"
-      ]
+      "en_us": {"title": "Endless Supplies", "subtitle": "One more cast.",
+        "text": ["[lead] A fishing line that pays in treasure, fillets for the road and neptunium for the deep.",
+                 "Somewhere, a fish is swimming toward your hook right now."]},
+      "es_es": {"title": "Suministro sin fin", "subtitle": "Un lanzamiento más.",
+        "text": ["[lead] Una caña que paga en tesoros, filetes para el camino y neptunio para lo profundo.",
+                 "En algún lado, un pez está nadando hacia tu anzuelo ahora mismo."]},
+      "sources": ["repo:content/guides/README.md"]
+    },
+    {
+      "key": "farming_resources_toy_lanterns", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 1.8, "y": -1.9, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:lantern",
+      "en_us": {"title": "Light the Pier",
+        "text": ["[lead] Four posts, four lanterns, one click.",
+                 "Fish do not care about the light, but the fisher does."]},
+      "es_es": {"title": "Prender el muelle",
+        "text": ["[lead] Cuatro postes, cuatro faroles, un clic.",
+                 "A los peces la luz no les importa, pero a quien pesca, sí."]},
+      "sources": ["jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"]
+    },
+    {
+      "key": "farming_resources_toy_bite", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 19.8, "y": 2.4, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:cod",
+      "en_us": {"title": "Something Bites",
+        "text": ["[lead] The bobber dips, the line goes tight, the fish jumps clear.",
+                 "In the book one click is enough. In the world, time it."]},
+      "es_es": {"title": "Algo pica",
+        "text": ["[lead] La boya se hunde, el sedal se tensa, el pez salta.",
+                 "En el libro alcanza con un clic. En el mundo, es cuestión de timing."]},
+      "sources": ["jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"]
     }
   ]
 }
