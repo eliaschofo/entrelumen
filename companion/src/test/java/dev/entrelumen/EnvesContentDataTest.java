@@ -91,7 +91,8 @@ class EnvesContentDataTest {
   /** The loot tables the config and the echoes name, with the Envés's own vocabulary only. */
   @Test
   void theLootTablesExistAndGiveShards() throws IOException {
-    Set<String> known = Set.of("minecraft:item", "entrelumen:enves_gear", "entrelumen:enves_gem", "entrelumen:enves_material");
+    Set<String> known = Set.of("minecraft:item", "entrelumen:enves_gear", "entrelumen:enves_gem", "entrelumen:enves_material",
+        "entrelumen:sour_shackle");
     for (String name : List.of("room", "vault", "boss", "echo_elite", "echo_guardian", "echo_champion", "grottol")) {
       var table = json(DATA.resolve("loot_table/enves/" + name + ".json"));
       boolean shards = false;

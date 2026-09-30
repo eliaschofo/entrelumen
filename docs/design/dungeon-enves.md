@@ -205,7 +205,7 @@ Cada gancho recibe un `EnvesHooks.Floor`: el nivel, el intento (tier, semilla, p
   - gemas;
   - la bóveda paga más;
   - el cofre del jefe da tres piezas de la rareza alta del tier.
-- **Un curio único del jefe**, como los objetos que se persiguen en Diablo. Elias aprobó «uno solo, con un efecto que se note» (29/9); la propuesta está en [Curio único de la Luz Agria](#curio-único-de-la-luz-agria-propuesta-299) y no se construye hasta que la vea.
+- **Un curio único del jefe**, como los objetos que se persiguen en Diablo: el [Grillete Agrio](#el-grillete-agrio-299), construido el 29/9.
 
 ## Reglas del Envés
 
@@ -408,7 +408,7 @@ Entradas propias, resueltas en el momento: la de Apotheosis por reflexión, y si
 |---|---|
 | `enves/room` (25% de las salas quietas con marcador, Lootr) | 60% una pieza; 1–2 esquirlas + 0,35 por piso; 20% una gema; 30% un material; 50% un consumible (manzana dorada, curación II, resistencia al fuego larga, frascos de experiencia, flechas) |
 | `enves/vault` (Lootr) | dos piezas una rareza más arriba; 3–5 esquirlas + 0,5 por piso; una gema de pureza +1; un material +1; 75% un consumible |
-| `enves/boss` (Lootr, aparece al caer el jefe) | tres piezas de la rareza techo del tier; 12–16 esquirlas; dos gemas de pureza +1; dos materiales +2 |
+| `enves/boss` (Lootr, aparece al caer el jefe) | tres piezas de la rareza techo del tier; 12–16 esquirlas; dos gemas de pureza +1; dos materiales +2; el Grillete Agrio la primera vez de cada jugador, 64 esquirlas las siguientes |
 | `enves/echo_elite` | 1–2 esquirlas + 0,25 por piso; 8% una gema; 10% un material |
 | `enves/echo_guardian` | 2–3 esquirlas + 0,25 por piso; 35% una gema; 25% un material |
 | `enves/echo_champion` | 3–4 esquirlas + 1 por piso; una pieza una rareza más arriba; 50% una gema; 50% un material |
@@ -597,7 +597,7 @@ Ninguna textura ajena entra al repositorio: las referencias sólo se ven.
   - la lectura del aviso de la embestida;
   - si los mobs de Cataclysm con animación de muerte sueltan algo por fuera del evento de caídas.
 - Un modelo propio del jefe (hoy es el Wither vanilla repintado). El arte del altar, el brasero, el espejo y las piedras de glifo ya es propio (28/9).
-- El curio único del jefe (propuesta del 29/9, sin construir) y el canje de esquirlas en Solsticio.
+- Ver en el juego el [Grillete Agrio](#el-grillete-agrio-299) (sin probar en el juego) y hacer el canje de esquirlas en Solsticio.
 - Los tilesets II–V ya tienen plantillas propias (rama `feature/enves-tilesets`, en `main`). Con ellas pasaron los GameTests de los sellos del piso III (Fundición) y del jefe en la arena del V (El Eclipse); las cerraduras se probaron en el piso I. Las cerraduras y acertijos revisan el lugar y cambian de tipo si el arte no los deja: falta mirarlos en juego en II y IV.
 
 ## Decisiones de Elias (29/9)
@@ -606,36 +606,75 @@ Ninguna textura ajena entra al repositorio: las referencias sólo se ven.
 - **La bolsa de caídas.** Cada integrante suma 3 caídas **la primera vez que entra a ese intento**, una vez por jugador y por intento. La bolsa empieza en 0 y quien llega tarde también suma. Antes se contaba a los conectados al pagar. Salir y volver a entrar no suma. Un intento guardado antes del cambio da por pagos a los que ya estaban adentro (`EnvesData.Attempt.joined`). Al entrar, el grupo lee `entrelumen.enves.joined`; el aviso de la puerta al pagar (`entrelumen.enves.opened`) explica la regla.
 - **El corazón del sol conserva el pedestal en el centro.** Decidido: se abren las ocho celdas de afuera y quedan el centro y el pedestal, la única fuente de brújulas de los que llegan tarde ([heliodor-compass.md](heliodor-compass.md)). Sin cambios de código.
 - **Afrit y Marid cuentan como jefes.** Sólo el Afrit y el Marid desatados de Occultism (`occultism:afrit_wild` y `occultism:marid_unbound`, «Unbound Afrit» y «Unbound Marid» en el JAR fijado 1.224.4; los ligados `occultism:afrit` y `occultism:marid` no) entran en `#c:bosses` (familia `boss_drops` de `tools/generate_family_balance.py`) y en la lista negra de espíritus de EvilCraft: ninguna máquina los captura ni los genera. Los demás jefes de misión sin etiqueta siguen permitidos, con la razón «Elias 29/9: farmable»: el Warden, el hombre lobo de EvilCraft, el Fusilier, el Commando y el Bulwark de IE, la araña de hielo y el Permafrost. Ver [mod-pingpong.md](mod-pingpong.md#botines-de-jefe).
-- **Un curio único del jefe: «uno solo, con un efecto que se note».** Aprobado el concepto; falta que Elias vea la propuesta y el arte de abajo antes de construirlo.
+- **Un curio único del jefe: «uno solo, con un efecto que se note».** Construido con su especificación final: ver [El Grillete Agrio](#el-grillete-agrio-299).
 
-## Curio único de la Luz Agria (propuesta 29/9)
+## El Grillete Agrio (29/9)
 
-**Es sólo una propuesta: no hay código, datos ni textura en el juego.** Para que Elias la mire y decida.
+El curio único de la Luz Agria, construido con la especificación final de Elias del 29/9, que reemplaza la propuesta anterior donde difiere. Código: `SourShackle` y `SourShackleRules` (común), `client/SourShackleClient` y `client/SourShackleCurioRenderer` (cliente).
 
-- **Nombre:** *Grillete Agrio* (EN *Sour Shackle*). Un curio de la ranura `bracelet`, de a uno por jugador.
-- **Efecto, con números.** Un ciclo corto que se siente en cada pelea:
-  - **Marca:** cada golpe tuyo que conecta (cuerpo a cuerpo o proyectil) suma una marca al objetivo, hasta 5; dura 6 s desde la última.
-  - **Agriar:** al llegar a la 5.ª marca, la luz agria estalla: 3× el daño del golpe que puso la última marca, como daño mágico que ignora la mitad de la armadura, sobre el objetivo y a 3 bloques a su alrededor (a los de alrededor, la mitad), y marchita 3 s. Enfriamiento de 8 s. Contra jefes cuenta un 60%, así no le acorta la pelea a ningún jefe, la Luz Agria incluida.
-  - **Costo:** con el Grillete puesto, la regeneración natural es la mitad. Es la otra mitad de la decisión: querer el ciclo pide jugar agresivo y con sustain propio.
-  - Los números viven en `balance.json` y se afinan con el resto.
-- **Por qué no pisa a Apotheosis ni a los curios que hay:**
-  - Los afijos y las gemas de Apotheosis dan atributos (daño, crítico, robo de vida, resistencias). El Grillete es una mecánica con estado (las marcas y el estallido), no un atributo, así que no compite con una gema ni suma a esa cuenta; escala con tu golpe, no con un número propio.
-  - La ranura `bracelet` es la que menos gente usa. Verificado en los JAR fijados, con `data/curios/tags/item/*.json`: `charm` está llena (nuestros resonadores de veta, los tótems de Friends&Foes, los charms de Ars Additions y Twilight Forest, los imanes, Apotheosis y otros) y Artifacts usa `belt`, `curio`, `feet`, `hands`, `head` y `necklace`. En `bracelet` sólo hay los bangles de Ars Elemental y el brazalete de Silent Gear.
-  - Como la ranura tiene dueños, el Grillete cuesta elegirlo (contra un bangle de hechizos o el brazalete de Silent Gear) y cuesta la regeneración: no es mejor que otro curio en todo, sólo distinto.
-- **Regla de caída.** Sale del cofre del jefe (`enves/boss`, Lootr), una tirada por jugador y por victoria:
-  - Haven no lo da (es el tier de farmeo). Frontier 10%, Ascent 15%, Summit 20%, Pinnacle 30%.
-  - Protección contra la mala suerte: cada victoria sin curio suma +10% para ese jugador, hasta asegurarlo, y se reinicia cuando cae. Eso guarda un número por jugador (no por intento).
-  - Es único: si ya lo tenés, en su lugar caen 24 esquirlas de luz agria (la moneda del Envés, para el canje futuro en Solsticio).
-- **Lore.** La luz agria era la que Terra quería hacer buena. Cuando la fusión falló, Terra armó un recipiente para contenerla y Bodhi lo selló, a las apuradas, antes de que el Sun Spirit congelara todo. El Grillete es el sello de Bodhi, lo único del recipiente que no se rompió cuando la Luz Agria cayó: te lo ponés y contiene la luz por vos, a costa de tu propia fuerza. Descripción: «El sello que Bodhi puso sobre lo que Terra encerró. Late cuando pegás. Lo sostiene tu aliento.»
-- **Arte.** Borrador 16 × 16, simétrico, en la familia marfil y oro del jefe con la luz agria de las esquirlas: un anillo visto de frente, una gema de luz agria sobre el eje donde cierra y las dos bisagras espejadas. Se dibuja con `art/authoring/draw_enves_curio.py` (mitad izquierda a mano, la derecha por espejo, con un assert de simetría), que **no** escribe en `art/grids/item` y por eso `art/build_art.py` no lo exporta. Hoja de revisión: `E:/Temp/Elias/claude/C--Users-elias-Documents-Codex-2026-09-12-h/39181316-8996-4d78-bc8f-017b1c5c55c6/scratchpad/enves-curio/sour_shackle_review.png`.
-  - **Referencias vistas** (renderizadas desde los JAR fijados a 10×, con su rango y proporciones en la hoja): `artifacts:textures/item/withered_bracelet.png` (Artifacts 13.2.3; un anillo de unos 13 px con el agujero oscuro y la banda sombreada de arriba abajo), `ars_elemental:textures/item/fire_bangle.png` y `base_bangle.png` (Ars Elemental 0.7.10.1; un anillo de oro inclinado con la gema en la banda de abajo a la derecha, asimétrico), `minecraft:textures/item/nether_star.png` (una luz que sale del núcleo, simétrica) y nuestra `sour_light_shard`.
-  - Tomé la silueta de anillo, el agujero oscuro y el sombreado de arriba abajo; la gema lleva el color. Cambié lo asimétrico: el anillo se ve de frente, la gema va sobre el eje y las bisagras se espejan, que es el canon del pack.
-  - Falta verlo a escala real dentro del juego y en la ranura de Curios.
+- **Nombre y ranura.** *Grillete Agrio* (EN *Sour Shackle*), `entrelumen:sour_shackle`, épico, de a uno por pila. Va en la ranura `bracelet` de Curios. Está verificado en el JAR fijado (Curios 9.5.1): `data/curios/curios/slots/bracelet.json` valida con `curios:tag`, así que el ítem entra por la etiqueta `curios:bracelet`, y `entrelumen:curios/entities/sour_shackle.json` da esa ranura a los jugadores. El companion no se compila contra Curios: pregunta por `CuriosCompat`, como el Brazo de Terra.
+- **Caída.** El cofre del jefe (`enves/boss`) tiene un grupo propio con la entrada `entrelumen:sour_shackle`, que sale siempre.
+  - La primera vez que un jugador la tira, le da el Grillete. Desde entonces le da **64 esquirlas de luz agria** en una pila aparte, además de las 12–16 del cofre.
+  - «Ya tiene uno» es una marca guardada del jugador (`entrelumen:sour_shackle_owned`), que sobrevive a la muerte. Se pone cuando el cofre se lo tira y, por las dudas, cuando un Grillete pasa por su inventario. Tirarlo o guardarlo en un cofre no da otro.
+  - Lootr llena cada cofre una vez por jugador y le pasa el jugador a la tabla (`this_entity`; verificado en `DefaultLootFiller` de Lootr 1.11.38.124), así que en grupo cada uno recibe el suyo la primera vez. Si la tabla corre sin jugador, por ejemplo con una tolva bajo un cofre vanilla, da el Grillete.
+  - La calibración de esquirlas del descenso no cambia: cuenta la primera victoria. Cada victoria repetida suma 64, una puerta entera.
+- **Marcas.** Cada golpe cuerpo a cuerpo del portador que conecta suma una marca, hasta 5, le pegue a quien le pegue. Las marcas son del portador y se comparten entre enemigos. No se vencen con el tiempo: esperan al próximo golpe.
+  - Cuenta el golpe propio del swing: `AttackEntityEvent` nombra al blanco y cuenta el daño que ese swing le hace en el mismo tick.
+  - Los barridos de espada, las espinas, los proyectiles y el propio estallido no marcan. Un golpe que no hace daño (por ejemplo, durante los cuadros de invulnerabilidad del blanco) tampoco.
+- **El estallido.** La 5.ª marca estalla en el blanco que la recibió:
+  - **15 de daño** a todo ser vivo cuyos pies estén a **5 bloques o menos** de los pies del blanco, el blanco incluido;
+  - **45 contra jefes** (`#c:bosses`, un 300%);
+  - quedan afuera el portador, sus aliados (equipo vanilla o party de FTB Teams), los jugadores a los que no puede herir (PvP apagado), cualquier mascota domesticada y los soportes de armadura.
+  - Es un tipo de daño propio, `entrelumen:sour_burst`, y así se lee «daño 15»: **15 de daño mágico que ignora la armadura**. Lleva las etiquetas del `minecraft:magic` vanilla (`bypasses_armor`, `bypasses_wolf_armor`, `no_knockback`, `avoids_guardian_thorns`, `witch_resistant_to`, `panic_causes`, `always_triggers_silverfish`), `neoforge:is_magic` y `bypasses_cooldown`, para que el blanco recién golpeado lo reciba entero.
+  - Como la magia, no escala con la dificultad. Sí lo reducen Protección, Resistencia y la resistencia de las brujas a la magia: una bruja recibe el 15%.
+  - Lo acompañan partículas de luz agria y el sonido de la amatista.
+- **Enfriamiento.** Las marcas vuelven a 0 y durante **8 s** (160 ticks) los golpes no suman marcas. Después, el primer golpe vuelve a marcar.
+- **Sin contra.** Elias sacó la regeneración a la mitad de la propuesta.
+- **La Luz Agria es jefe.** El companion suma `entrelumen:white_wither` a `#c:bosses` (`data/c/tags/entity_type/bosses.json`), así el Grillete le hace 45. Cumple la regla del pack: muestra barra de jefe. De paso, las máquinas y herramientas que rechazan esa etiqueta la rechazan; EvilCraft ya la listaba.
+- **Texto** (EN y ES, dos líneas):
+  - «Cada golpe cuerpo a cuerpo suma una marca, a lo que sea, hasta 5.»
+  - «La última estalla: 15 de daño a 5 bloques a la redonda, ×3 a jefes; 8 s de recarga.»
+  - Los números salen de las constantes de `SourShackleRules`. También hay mensajes de muerte propios.
+- **Las marcas en la mano.** Un brazalete en la muñeca del brazo principal: una banda de marfil de 5 × 3 × 5 unidades, media unidad por fuera del brazo, por encima de la capa de la manga.
+  - Del lado de afuera tiene un engaste de oro con **cinco pernos** de 0,5 × 1 × 0,5, separados por media unidad. Cada marca enciende uno, a plena luz.
+  - Al estallar, los cinco quedan encendidos medio segundo. Durante el enfriamiento los pernos se apagan del todo y la banda se oscurece: el marfil baja dos tonos y el oro pasa a oliva muerta.
+  - Un texel por unidad en `textures/entity/sour_shackle/cuff.png`, de 64 × 16.
+  - **Primera persona, mano vacía:** `RenderArmEvent`, sobre el brazo que dibuja vanilla, con la pose que le da `PlayerRenderer.renderHand`.
+  - **Primera persona, con algo en la mano:** `RenderHandEvent`. Vanilla no dibuja el brazo y la muñeca real quedaría bajo el borde de la pantalla, así que el brazalete queda donde estaría la muñeca con la mano vacía y se mueve con el ítem, al equiparlo y al golpear.
+  - **Tercera persona:** el `ICurioRenderer` de Curios, sobre la parte del brazo del modelo. Lo ven los demás y lo esconde el botón de visibilidad de Curios. Se implementa con `LambdaMetafactory`, sin compilar contra Curios, y se registra en `AddLayers` antes de que Curios cargue sus renderers.
+  - Las marcas viven en el servidor. El paquete `entrelumen:sour_shackle_marks` (marcas, ticks de enfriamiento, si está puesto y si acaba de estallar) va al portador y a quien lo ve. Se manda con cada marca, al ponérselo o sacárselo, al empezar a verlo, al entrar, al reaparecer y al cambiar de dimensión.
+  - Nada se crea por cuadro en el código propio: el modelo se hornea una vez y las rotaciones reusan un cuaternión. Queda el `pushPose` de la pila de poses.
+- **Arte.** Hecho con `art/authoring/draw_enves_curio.py`, que escribe la grilla `art/grids/item/sour_shackle.txt` (la exporta `art/build_art.py`) y la textura del brazalete; `--check` compara con lo commiteado. La procedencia está en `art/grids/provenance.json` (`item.sour_shackle` y `entity.sour_shackle/cuff`).
+  - Segunda pasada tras la revisión de Elias («está bien pero no tiene su outline arriba y abajo, y es como demasiado grueso y grande»): el contorno oscuro ahora cierra arriba de la gema y abajo del aro. La banda tiene 2 texels a los lados en vez de 3. La pieza ocupa 15 × 12 en vez de 16 × 14.
+  - Sigue siendo simétrica por construcción, con asserts de simetría, contorno cerrado y tamaño. Las bisagras de oro quedan dentro de la banda.
+  - **Referencias vistas** (primera pasada, desde los JAR fijados): `artifacts:textures/item/withered_bracelet.png` (Artifacts 13.2.3), `ars_elemental:textures/item/fire_bangle.png` y `base_bangle.png` (Ars Elemental 0.7.10.1), `minecraft:textures/item/nether_star.png` y nuestra `sour_light_shard`.
+  - Para el brazalete, `PlayerModel` e `ItemInHandRenderer` de las fuentes de NeoForge 21.1.249: el brazo mide 4 (o 3, fino) × 12 × 4, con la manga a 0,25.
+  - Hoja de revisión, con el sprite nuevo contra el borrador, el ítem en ranuras y maquetas por software de la mano con 0, 3 y 5 marcas y en enfriamiento: `E:/Temp/Elias/claude/C--Users-elias-Documents-Codex-2026-09-12-h/39181316-8996-4d78-bc8f-017b1c5c55c6/scratchpad/enves-curio/sour_shackle_review.png`. No son capturas del juego.
+- **Pruebas.**
+  - **JUnit:**
+    - `SourShackleRulesTest`: el ciclo, los números y el radio inclusivo;
+    - `SourShackleDataTest`: el grupo del cofre, la ranura, las etiquetas del daño, `#c:bosses` y los textos EN/ES;
+    - `client/SourShackleCurioRendererTest`: el enlace con el `ICurioRenderer` real, contra el JAR fijado cuando `catalog/local-paths.json` lo lista; si no, se saltea.
+    - `EnvesContentDataTest` acepta la entrada nueva.
+  - **GameTests aislados** (`RuntimeGameTestsSourShackle`, un batch por caso):
+    - las marcas se juntan entre dos mobs;
+    - sin el Grillete no marca;
+    - el estallido hace 15 a 4,5 y a 5 bloques, también con armadura, y nada a 5,5, a una mascota ni al portador;
+    - hace 45 a la Luz Agria;
+    - el enfriamiento bloquea las marcas 8 s;
+    - la primera caída es el Grillete y las siguientes son 64 esquirlas, también después de tirarlo o de morir, y otro jugador recibe el suyo.
+  - **Pendientes para la fase final de pruebas** (regla de Elias del 29/9: los tests en el juego y los GameTests van al final). Hasta ahora sólo se compilaron.
+- **Falta en el juego:**
+  - cómo se ve el brazalete en primera persona, con y sin ítem;
+  - la tercera persona con Curios;
+  - el ítem en la ranura real de Curios;
+  - si los pernos se leen con la luz real.
 
 ## Para decidir
 
 - ~~El nombre del descenso y el del jefe.~~ Cerrado el 29/9: el Envés y la Luz Agria ([arriba](#decisiones-de-elias-299)).
-- ~~Si hay curios únicos del jefe.~~ Sí, uno solo; falta que Elias apruebe [la propuesta y el arte](#curio-único-de-la-luz-agria-propuesta-299).
+- ~~Si hay curios únicos del jefe.~~ Sí, uno solo: [el Grillete Agrio](#el-grillete-agrio-299), construido el 29/9.
+- El Grillete no tenía regla para las marcas sin golpes: hoy no se vencen, esperan al próximo golpe. Si Elias prefiere que se venzan, es un cambio chico en `SourShackleRules.Cycle`.
 - ~~La bolsa se cuenta con los integrantes conectados al pagar.~~ Cerrado el 29/9: cada integrante suma 3 la primera vez que entra.
 - ~~El corazón del sol: ¿otro lugar para el pedestal?~~ Cerrado el 29/9: se queda en el centro.
 - La escalera de la ruina inicial (arte de `sealed_stair()`) se baja caminando; para subir hay que saltar en las esquinas del anillo de 3 × 3. Su pie no llevaba a la antecámara: se le abrió una puerta y un piso.

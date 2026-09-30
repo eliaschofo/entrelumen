@@ -651,6 +651,17 @@
       ],
       "note": "The sour light shard, the Envés currency (docs/design/dungeon-enves.md)."
     },
+    "sour_shackle": {
+      "authoring": "art/authoring/draw_enves_curio.py",
+      "method": "hand-authored on the 16x16 grid (29 September 2026, second pass after Elias's review of the draft: the outline now closes above the gem and under the ring, the band is two texels thick at the sides instead of three, and the piece stands 15 by 12 instead of 16 by 14): a round ivory ring seen face-on, lit from above, with a dark hole, gold hinges set in the band on both sides and a drop of sour light on a gold setting on the axis; the left half is drawn and the right half mirrored, and the script asserts the symmetry, the closed outline and the footprint",
+      "reference_inspected": [
+        "artifacts:textures/item/withered_bracelet.png (Artifacts 13.2.3)",
+        "ars_elemental:textures/item/fire_bangle.png (Ars Elemental 0.7.10.1)",
+        "ars_elemental:textures/item/base_bangle.png (Ars Elemental 0.7.10.1)",
+        "minecraft:textures/item/nether_star.png"
+      ],
+      "note": "The Sour Shackle (Grillete Agrio), the Sour Light's unique curio (docs/design/dungeon-enves.md). Its cuff texture follows the same design, see entity/sour_shackle/cuff."
+    },
     "signal_ember": {
       "method": "hand-authored on the 16x16 grid (key pieces of the Heliodor ruins, 27 September)",
       "authoring": "art/authoring/draw_key_pieces.py",
@@ -1470,5 +1481,16 @@
     "reference_inspected": [
       "minecraft:textures/item/compass_00..31.png"
     ]
+  },
+  "entity": {
+    "sour_shackle/cuff": {
+      "authoring": "art/authoring/draw_enves_curio.py",
+      "target": "companion/src/main/resources/assets/entrelumen/textures/entity/sour_shackle/cuff.png",
+      "method": "hand-authored 64x16 box unwrap, one texel per unit: an ivory band 5x3x5 around the wrist (half a unit off the arm, clear of the sleeve layer) with a gold setting on its front where the five marks sit as 1x1x0.5 studs of sour light, and a gold hinge on each side; a dimmed variant (ivory darker, gold gone to dead olive) for the cooldown; studs lit (drawn full-bright), unlit and spent",
+      "reference_inspected": [
+        "net.minecraft.client.model.PlayerModel#createMesh (NeoForge 21.1.249 sources): arm boxes 4 x 12 x 4 (slim 3 x 12 x 4), sleeves inflated by 0.25",
+        "net.minecraft.client.renderer.ItemInHandRenderer#renderPlayerArm and PlayerRenderer#renderHand: the first-person arm pose"
+      ]
+    }
   }
 }

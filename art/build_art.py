@@ -30,6 +30,8 @@ ITEMS += ['augment_' + a for a in AUGMENTS]
 ITEMS += ['vein_resonator_%d' % tier for tier in range(1, 5)]
 # The Envés currency (art/authoring/draw_enves.py).
 ITEMS += ['sour_light_shard']
+# The Sour Light's unique curio, the Sour Shackle (art/authoring/draw_enves_curio.py).
+ITEMS += ['sour_shackle']
 # Luminous content: animated items are stored as frame grids <name>__f<N>.txt and exported as vertical strips.
 DISCIPLINES = ['engineering', 'arcane', 'nature', 'exploration', 'logistics', 'habitation']
 ANIMATED = {**{'luminosity_' + d: 8 for d in DISCIPLINES}, 'luminous_ingot': 8}

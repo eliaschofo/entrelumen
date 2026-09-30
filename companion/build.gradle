@@ -160,6 +160,17 @@ dependencies {
 }
 test { useJUnitPlatform() }
 
+// The pinned Curios JAR, when this machine lists it in catalog/local-paths.json (gitignored): only on the unit-test
+// runtime classpath, so SourShackleCurioRendererTest binds the cuff's renderer to the real ICurioRenderer. The mod
+// itself never compiles or runs against it; elsewhere that test is skipped.
+def localPaths = file('../catalog/local-paths.json')
+if (localPaths.exists()) {
+    def curiosJar = new groovy.json.JsonSlurper().parse(localPaths)['curios-neoforge-9.5.1+1.21.1.jar']
+    if (curiosJar != null && file(curiosJar).exists()) {
+        dependencies { testRuntimeOnly files(curiosJar) }
+    }
+}
+
 
 repositories {
     mavenCentral()
