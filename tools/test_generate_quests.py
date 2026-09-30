@@ -120,7 +120,7 @@ class ChapterContracts(unittest.TestCase):
   with self.assertRaisesRegex(AssertionError,'empty chapter'):generate_all([chapter])
  def test_first_hour_ids_unchanged(self):
   c=json.loads(generate_all(self.chapters)[OUT/'chapters/a_light_among_ruins.snbt'])
-  ids=[c['id']]+[i for q in c['quests'] for i in (q['id'],q['tasks'][0]['id'])]
+  ids=[c['id']]+[i for q in content(c['quests']) for i in (q['id'],q['tasks'][0]['id'])]
   # Ark v2: the Habitation Module quest joined act I.
   self.assertEqual(hashlib.sha256('\n'.join(ids).encode()).hexdigest(),'acf9d153068ce368d2bab9079c2b577aa9ee63592f43771219dd73605864c1a6')
  def test_cross_chapter_cycle_rejected(self):
@@ -176,6 +176,7 @@ class ChapterContracts(unittest.TestCase):
    if 'milestone' in q:authority_only(q['key'])
   files=generate_all(self.chapters)
   c=json.loads(files[OUT/'chapters/routes_of_exchange.snbt'])
+  c['quests']=content(c['quests'])
   self.assertEqual(len(c['quests']),28)
   self.assert_act_rewards(c,3)
   for q in c['quests']:
@@ -196,14 +197,14 @@ class ChapterContracts(unittest.TestCase):
    'exchange_mechanism':('probabilistic','probabilístico'),
    'exchange_archive':('three paper and one copper ingot','tres papeles y un lingote de cobre')}
   for key,terms in required.items():
-   for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,quests[key][locale][1])
+   for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,desc(quests[key],locale))
   for q in quests.values():
    for locale in ('en_us','es_es'):
-    for text in q[locale]:
+    for text in copy_texts(q,locale):
      self.assertNotIn('\ufffd',text)
      self.assertNotIn('\u00c3',text)
  def test_act_three_placeholder_mismatch_rejected(self):
-  self.chapters[2]['quests'][0]['es_es'][1]+=' %s'
+  add_to_description(self.chapters[2]['quests'][0],'es_es',' %s')
   with self.assertRaisesRegex(AssertionError,'placeholder mismatch'):generate_all(self.chapters)
  def test_all_campaign_dependencies_match_server(self):
   projects=json.loads((ROOT/'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8'))
@@ -258,7 +259,7 @@ class ChapterContracts(unittest.TestCase):
   self.assert_prefix_text_append_only(3,out)
  def test_act_three_ids_unchanged(self):
   c=json.loads(generate_all(self.chapters)[OUT/'chapters/routes_of_exchange.snbt'])
-  ids=[c['id']]+[i for q in c['quests'] for i in (q['id'],q['tasks'][0]['id'])]
+  ids=[c['id']]+[i for q in content(c['quests']) for i in (q['id'],q['tasks'][0]['id'])]
   # Ark v2: the Nature Module quest joined act III.
   self.assertEqual(hashlib.sha256(chr(10).join(ids).encode()).hexdigest(),'a6632786811972fa3b4678ef2be405bdad865ba67e155039455b3bc20d20eb9b')
  def test_act_four_campaign_and_observers(self):
@@ -286,10 +287,10 @@ class ChapterContracts(unittest.TestCase):
    'voices_sun_spirit':('ice crystals','cristales de hielo'),
    'voices_heart':('Heart of Heliodor','Corazón de Heliodor')}
   for key,terms in required.items():
-   for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,quests[key][locale][1])
+   for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,desc(quests[key],locale))
   for q in quests.values():
    for locale in ('en_us','es_es'):
-    for text in q[locale]:
+    for text in copy_texts(q,locale):
      self.assertNotIn('\ufffd',text);self.assertNotIn('\u00c3',text)
  def test_act_four_cycle_rejected(self):
   next(q for q in self.chapters[2]['quests'] if q['key']=='exchange_archive')['deps']=['voices_chorus']
@@ -510,6 +511,8 @@ class ChapterContracts(unittest.TestCase):
    for text in texts:
     self.assertIsNone(re.search(r'\b(Mara|Ivo|Sera)\b',text),'a voice of the old story remains')
     self.assertIn('Heliodor',text)
+   # The side chapter (the inventory that remembers) speaks with the same initials as act I.
+   self.assertIsNone(re.search(r'\b(Mara|Ivo|Sera)\b',self.act_text(self.chapters[7],locale)),'a voice of the old story remains')
    # The limbo of light is named only once the Atlas speaks clearly, in act V.
    self.assertTrue(all('Entrelumen' not in text for text in texts[:4]));self.assertIn('Entrelumen',texts[4])
    for name in ('Terra','Juan','Bodhi','Aurelia'):self.assertIn(name,'\n'.join(texts[:4]))
@@ -593,8 +596,8 @@ class ChapterContracts(unittest.TestCase):
    with self.subTest(text=bad):
     with self.assertRaises(AssertionError):check_formatting(bad,'bad',True)
   with self.assertRaises(AssertionError):check_formatting('&mTitle&r','title',False)
-  chapter=copy.deepcopy(self.chapters[0]);chapter['quests'][0]['es_es'][1]+=' &m'
-  with self.assertRaisesRegex(AssertionError,'formatting'):generate_all([chapter]+self.chapters[1:])
+  chapter=copy.deepcopy(self.chapters[0]);add_to_description(chapter['quests'][0],'es_es',' &m')
+  with self.assertRaisesRegex(AssertionError,'formatting|not & codes'):generate_all([chapter]+self.chapters[1:])
  def test_project_rewards_named_in_quest_text(self):
   projects=json.loads((ROOT/'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8'))
   names={locale:json.loads((ROOT/f'companion/src/main/resources/assets/entrelumen/lang/{locale}.json').read_text(encoding='utf-8'))

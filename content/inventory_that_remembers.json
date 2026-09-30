@@ -1,435 +1,323 @@
 {
   "chapter": "inventory_that_remembers",
   "act": 1,
-  "book": {"branch": true, "numeral": false},
-  "title": {
-    "en_us": "An Inventory That Remembers",
-    "es_es": "El inventario que recuerda"
-  },
+  "book": {"branch": true, "numeral": false, "panels": false},
+  "title": {"en_us": "An Inventory That Remembers", "es_es": "El inventario que recuerda"},
   "autofocus": "inventory_field_note",
   "milestones": [],
-  "layout_groups": {
-    "threshold": {
-      "en_us": "Mara's margin",
-      "es_es": "El margen de Mara"
-    },
-    "field": {
-      "en_us": "What travels with you",
-      "es_es": "Lo que llevás encima"
-    },
-    "workshop": {
-      "en_us": "A bench with a memory",
-      "es_es": "Un taller con memoria"
-    },
-    "return": {
-      "en_us": "The return route",
-      "es_es": "El camino de vuelta"
-    },
-    "future": {
-      "en_us": "One shelf stays local",
-      "es_es": "Un estante queda cerca"
-    }
-  },
+  "layout_groups": {"threshold": {"en_us": "J.'s margin", "es_es": "El margen de J."}, "field": {"en_us": "What travels with you", "es_es": "Lo que llevás encima"}, "workshop": {"en_us": "A bench with a memory", "es_es": "Un taller con memoria"}, "return": {"en_us": "The return route", "es_es": "El camino de vuelta"}, "future": {"en_us": "One shelf stays local", "es_es": "Un estante queda cerca"}},
   "quests": [
     {
-      "key": "inventory_field_note",
-      "deps": [
-        "signal"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "inventory_field_note", "deps": ["signal"], "type": "checkmark", "optional": true, "layout": {"group": "threshold", "x": 0, "y": 0, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
       "icon": "entrelumen:atlas",
-      "layout": {
-        "group": "threshold",
-        "x": 0,
-        "y": 0,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Self-check: Two columns in the margin",
-        "After the first light answered, Mara drew TAKE and LEAVE beside the map. Choose one supply to carry through a hurried return and one material to leave at the workshop. Decide which column each belongs in, then mark this note.\n\nThese notes are optional. A square fills when you carry its item and takes nothing from you; a circle is yours to mark after you try its exercise. Neither holds up the journey."
-      ],
-      "es_es": [
-        "Autoevaluación: Dos columnas en el margen",
-        "Después de la primera respuesta luminosa, Mara dibujó LLEVAR y DEJAR junto al mapa. Elegí una provisión que llevarías incluso en un regreso apurado y un material que dejarías en el taller. Decidí en qué columna va cada uno y después marcá esta nota.\n\nEstas notas son opcionales. Un cuadrado se completa cuando llevás su objeto, sin quitártelo; un círculo lo marcás vos después de probar el ejercicio. Ninguno detiene el viaje."
-      ]
+      "en_us": {"title": "Self-check: Two columns in the margin",
+        "text": ["[lead] After the first light answered, J. drew TAKE and LEAVE beside the map.",
+                 "Choose one supply to carry through a hurried return and one material to leave at the workshop. Decide which column each belongs in, then mark this note.",
+                 "{page}",
+                 "[note] Nothing here is taken from you: an item task only checks that you carry it, and each self-check is yours to mark after you try it. None of it holds up the journey."]},
+      "es_es": {"title": "Autoevaluación: Dos columnas al margen",
+        "text": ["[lead] Después de la primera respuesta luminosa, J. dibujó LLEVAR y DEJAR junto al mapa.",
+                 "Elegí una provisión que llevarías incluso en un regreso apurado y un material que dejarías en el taller. Decidí en qué columna va cada uno y después marcá esta nota.",
+                 "{page}",
+                 "[note] Acá no se te quita nada: una tarea de objeto sólo revisa que lo lleves, y cada autoevaluación la marcás vos después de probarla. Nada de esto detiene el viaje."]}
     },
     {
-      "key": "inventory_backpack",
-      "deps": [
-        "inventory_field_note"
-      ],
-      "item": "sophisticatedbackpacks:backpack",
-      "optional": true,
-      "layout": {
-        "group": "field",
-        "x": -4.5,
-        "y": 2,
-        "size": 1.0,
-        "shape": "diamond",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A bag for the road",
-        "Make a basic Sophisticated Backpack with leather, string and a wooden chest; check the recipe for their placement. Put an ordinary block inside, close the bag, then find and remove it again. Look for the backpack action under Controls if you want quick access. This basic bag is enough for the exercises ahead."
-      ],
-      "es_es": [
-        "Una mochila para el camino",
-        "Fabricá una mochila básica de Sophisticated Backpacks con cuero, hilo y un cofre de madera; mirá la receta para ver cómo se acomodan. Guardá un bloque común, cerrá la mochila y volvé a encontrarlo y sacarlo. Buscá la acción de la mochila en Controles si querés abrirla rápido. La mochila básica alcanza para estos ejercicios."
-      ]
+      "key": "inventory_backpack", "deps": ["inventory_field_note"], "item": "sophisticatedbackpacks:backpack", "optional": true, "layout": {"group": "field", "x": -4.5, "y": 2.25, "size": 1.0, "shape": "diamond", "hide_dependent_lines": false},
+      "en_us": {"title": "A bag for the road",
+        "text": ["[lead] A basic [item:sophisticatedbackpacks:backpack|Sophisticated Backpack] is enough for every exercise ahead.",
+                 "Make it with [item:minecraft:leather|leather], [item:minecraft:string|string] and a wooden [item:minecraft:chest|chest]; check the recipe for their placement.",
+                 "Put an ordinary block inside, close the bag, then find and remove it again.",
+                 "{page}",
+                 "Look for the backpack action under Controls if you want quick access."]},
+      "es_es": {"title": "Una mochila para el camino",
+        "text": ["[lead] La [item:sophisticatedbackpacks:backpack|mochila] básica de Sophisticated Backpacks alcanza para todos estos ejercicios.",
+                 "Fabricala con [item:minecraft:leather|cuero], [item:minecraft:string|hilo] y un [item:minecraft:chest|cofre] de madera; mirá la receta para ver cómo se acomodan.",
+                 "Guardá un bloque común, cerrá la mochila y volvé a encontrarlo y sacarlo.",
+                 "{page}",
+                 "Buscá la acción de la mochila en Controles si querés abrirla rápido."]}
     },
     {
-      "key": "inventory_workshop_chest",
-      "deps": [
-        "inventory_field_note"
-      ],
-      "item": "sophisticatedstorage:chest",
-      "optional": true,
-      "layout": {
-        "group": "workshop",
-        "x": 4.5,
-        "y": 2,
-        "size": 1.0,
-        "shape": "diamond",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A place that stays",
-        "Combine an ordinary chest and a lever to make a Sophisticated Storage chest. Set it beside the bench you use and give it one job: incoming stone, repair supplies or food for the next journey. Put a matching stack inside and leave room for your return. The bag travels with you; this chest tells anyone coming home where to look."
-      ],
-      "es_es": [
-        "Un lugar que permanece",
-        "Combiná un cofre común y una palanca para hacer un cofre de Sophisticated Storage. Ponelo junto a la mesa que usás y dale un oficio: piedra entrante, repuestos o comida para la próxima salida. Guardá una pila que corresponda y dejá lugar para el regreso. La mochila viaja con vos; este cofre le dice a quien vuelve dónde buscar."
-      ]
+      "key": "inventory_workshop_chest", "deps": ["inventory_field_note"], "item": "sophisticatedstorage:chest", "optional": true, "layout": {"group": "workshop", "x": 4.5, "y": 2.25, "size": 1.0, "shape": "diamond", "hide_dependent_lines": false},
+      "en_us": {"title": "A place that stays",
+        "text": ["[lead] The bag travels with you; this chest tells anyone coming home where to look.",
+                 "Combine an ordinary [item:minecraft:chest|chest] and a [item:minecraft:lever|lever] to make a [item:sophisticatedstorage:chest|Sophisticated Storage chest].",
+                 "Set it beside the bench you use and give it one job: incoming stone, repair supplies or food for the next journey.",
+                 "{page}",
+                 "Put a matching stack inside and leave room for your return."]},
+      "es_es": {"title": "Un lugar que permanece",
+        "text": ["[lead] La mochila viaja con vos; este cofre le dice a quien vuelve dónde buscar.",
+                 "Combiná un [item:minecraft:chest|cofre] común y una [item:minecraft:lever|palanca] para hacer un [item:sophisticatedstorage:chest|cofre de Sophisticated Storage].",
+                 "Ponelo junto a la mesa que usás y dale un oficio: piedra entrante, repuestos o comida para la próxima salida.",
+                 "{page}",
+                 "Guardá una pila que corresponda y dejá lugar para el regreso."]}
     },
     {
-      "key": "inventory_travel_reserve",
-      "deps": [
-        "inventory_backpack"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "inventory_travel_reserve", "deps": ["inventory_backpack"], "type": "checkmark", "optional": true, "layout": {"group": "field", "x": -4.5, "y": 3.75, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
       "icon": "minecraft:bread",
-      "layout": {
-        "group": "field",
-        "x": -3,
-        "y": 3.5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Self-check: What must stay aboard",
-        "Pack food for a short trip and a spare tool in places you can remember. Keep the working tool within reach; the spare is for a broken handle. Leave a food reserve at home so an empty return can still lead to another departure.\n\nBefore you leave, open the bag and the home chest and point to each reserve. Mark this note when you can find both without searching every slot."
-      ],
-      "es_es": [
-        "Autoevaluación: Lo que debe viajar",
-        "Guardá comida para una salida corta y una herramienta de repuesto en lugares que puedas recordar. Mantené a mano la herramienta en uso; la otra espera por si se rompe el mango. Dejá comida en casa para que un regreso sin botín no impida otra salida.\n\nAntes de partir, abrí la mochila y el cofre de casa e identificá cada reserva. Marcá esta nota cuando puedas encontrar ambas sin revisar cada ranura."
-      ]
+      "en_us": {"title": "Self-check: What must stay aboard",
+        "text": ["[lead] Pack food for a short trip and a spare tool in places you can remember.",
+                 "Keep the working tool within reach; the spare is for a broken handle. Leave a food reserve at home so an empty return can still lead to another departure.",
+                 "{page}",
+                 "Before you leave, open the bag and the home chest and point to each reserve. Mark this note when you can find both without searching every slot."]},
+      "es_es": {"title": "Autoevaluación: Lo que debe viajar",
+        "text": ["[lead] Guardá comida para una salida corta y una herramienta de repuesto en lugares que puedas recordar.",
+                 "Mantené a mano la herramienta en uso; la otra espera por si se rompe el mango. Dejá comida en casa para que un regreso sin botín no impida otra salida.",
+                 "{page}",
+                 "Antes de partir, abrí la mochila y el cofre de casa e identificá cada reserva. Marcá esta nota cuando puedas encontrar ambas sin revisar cada ranura."]}
     },
     {
-      "key": "inventory_slot_memory",
-      "deps": [
-        "inventory_workshop_chest"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "inventory_slot_memory", "deps": ["inventory_workshop_chest"], "type": "checkmark", "optional": true, "layout": {"group": "workshop", "x": 4.5, "y": 3.75, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
       "icon": "sophisticatedstorage:chest",
-      "layout": {
-        "group": "workshop",
-        "x": 4.5,
-        "y": 3.5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Self-check: An empty slot with a name",
-        "In the chest's settings, set Memory on one slot holding a common workshop material. Remove its last stack, then try putting the same material and a different one back. Notice where each goes. If the result differs from your plan, revisit the slot and its setting before using scarce stock. The empty space can keep a place for tomorrow's stone."
-      ],
-      "es_es": [
-        "Autoevaluación: Una ranura vacía con nombre",
-        "En la configuración del cofre, activá Memoria en una ranura con un material común del taller. Sacá la última pila y probá devolver ese material y otro distinto. Fijate dónde queda cada uno. Si el resultado difiere de tu plan, revisá la ranura y su configuración antes de guardar algo escaso. El espacio vacío puede conservar el lugar de la piedra de mañana."
-      ]
+      "en_us": {"title": "Self-check: An empty slot with a name",
+        "text": ["[lead] An empty space can keep a place for tomorrow's stone.",
+                 "In the chest's settings, set Memory on one slot holding a common workshop material. Remove its last stack, then try putting the same material and a different one back.",
+                 "Notice where each goes.",
+                 "{page}",
+                 "If the result differs from your plan, revisit the slot and its setting before using scarce stock."]},
+      "es_es": {"title": "Autoevaluación: Ranura vacía, con nombre",
+        "text": ["[lead] Un espacio vacío puede conservar el lugar de la piedra de mañana.",
+                 "En la configuración del cofre, activá Memoria en una ranura con un material común del taller. Sacá la última pila y probá devolver ese material y otro distinto.",
+                 "Fijate dónde queda cada uno.",
+                 "{page}",
+                 "Si el resultado difiere de tu plan, revisá la ranura y su configuración antes de guardar algo escaso."]}
     },
     {
-      "key": "inventory_pickup_upgrade",
-      "deps": [
-        "inventory_backpack"
-      ],
-      "item": "sophisticatedbackpacks:pickup_upgrade",
-      "optional": true,
-      "layout": {
-        "group": "field",
-        "x": -6,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "The bag learns to gather",
-        "The basic Pickup Upgrade uses an Upgrade Base, a sticky piston, string and redstone; check the recipe viewer for their placement. Put it in the backpack's upgrade slot and open its settings. Start with one plentiful block in the filter. Leave rare tools out of the first ground test; the next note follows two ordinary drops."
-      ],
-      "es_es": [
-        "La mochila aprende a recoger",
-        "La mejora básica de Recolección usa una base de mejora, un pistón pegajoso, hilo y redstone; mirá cómo se acomodan en el visor de recetas. Instalala en la ranura de mejoras de la mochila y abrí su configuración. Empezá con un bloque abundante en el filtro. Dejá las herramientas raras fuera de la primera prueba en el suelo; la próxima nota sigue dos objetos comunes."
-      ]
+      "key": "inventory_pickup_upgrade", "deps": ["inventory_backpack"], "item": "sophisticatedbackpacks:pickup_upgrade", "optional": true, "layout": {"group": "field", "x": -7.5, "y": 3.75, "size": 1.0, "shape": "diamond", "hide_dependent_lines": false},
+      "en_us": {"title": "The bag learns to gather",
+        "text": ["[lead] Choose what the bag picks up on its own.",
+                 "The basic [item:sophisticatedbackpacks:pickup_upgrade|Pickup Upgrade] uses an [item:sophisticatedbackpacks:upgrade_base|Upgrade Base], a [item:minecraft:sticky_piston|sticky piston], string and redstone; check the recipe viewer for their placement.",
+                 "Put it in the backpack's upgrade slot, open its settings and start with one plentiful block in the filter.",
+                 "{page}",
+                 "Leave rare tools out of the first ground test; the next note follows two ordinary drops."]},
+      "es_es": {"title": "La mochila aprende a recoger",
+        "text": ["[lead] Elegí qué junta la mochila por su cuenta.",
+                 "La [item:sophisticatedbackpacks:pickup_upgrade|mejora básica de Recolección] usa una [item:sophisticatedbackpacks:upgrade_base|base de mejora], un [item:minecraft:sticky_piston|pistón pegajoso], hilo y redstone; mirá cómo se acomodan en el visor de recetas.",
+                 "Instalala en la ranura de mejoras de la mochila, abrí su configuración y empezá con un bloque abundante en el filtro.",
+                 "{page}",
+                 "Dejá las herramientas raras fuera de la primera prueba en el suelo; la próxima nota sigue dos objetos comunes."]}
     },
     {
-      "key": "inventory_refill_upgrade",
-      "deps": [
-        "inventory_backpack"
-      ],
-      "item": "sophisticatedbackpacks:refill_upgrade",
-      "optional": true,
-      "layout": {
-        "group": "field",
-        "x": -4.5,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A second stack within reach",
-        "The Refill Upgrade can supply a selected inventory stack from the backpack. Its recipe uses an Upgrade Base, an ender pearl, a chest, iron and redstone; check the recipe viewer before crafting it. Keep spare torches in the bag for the first trial: each torch you use leaves a gap you can see. Keep another reserve at home before relying on the bag in a cave."
-      ],
-      "es_es": [
-        "Una segunda pila al alcance",
-        "La mejora de Rellenado puede abastecer una pila elegida de tu inventario desde la mochila. Su receta usa una base de mejora, una perla de ender, un cofre, hierro y redstone; mirá el visor de recetas antes de fabricarla. Guardá antorchas de repuesto en la mochila para la primera prueba: cada antorcha usada deja un hueco visible. Conservá otra reserva en casa antes de depender de la mochila en una cueva."
-      ]
+      "key": "inventory_refill_upgrade", "deps": ["inventory_backpack"], "item": "sophisticatedbackpacks:refill_upgrade", "optional": true, "layout": {"group": "field", "x": -6, "y": 3.75, "size": 1.0, "shape": "diamond", "hide_dependent_lines": false},
+      "en_us": {"title": "A second stack within reach",
+        "text": ["[lead] The [item:sophisticatedbackpacks:refill_upgrade|Refill Upgrade] can supply a selected inventory stack from the backpack.",
+                 "Its recipe uses an Upgrade Base, an [item:minecraft:ender_pearl|ender pearl], a chest, iron and redstone; check the recipe viewer before crafting it.",
+                 "{page}",
+                 "Keep spare torches in the bag for the first trial: each torch you use leaves a gap you can see. Keep another reserve at home before relying on the bag in a cave."]},
+      "es_es": {"title": "Una segunda pila al alcance",
+        "text": ["[lead] La [item:sophisticatedbackpacks:refill_upgrade|mejora de Rellenado] puede abastecer una pila elegida de tu inventario desde la mochila.",
+                 "Su receta usa una base de mejora, una [item:minecraft:ender_pearl|perla de ender], un cofre, hierro y redstone; mirá el visor de recetas antes de fabricarla.",
+                 "{page}",
+                 "Guardá antorchas de repuesto en la mochila para la primera prueba: cada antorcha usada deja un hueco visible. Conservá otra reserva en casa antes de depender de la mochila en una cueva."]}
     },
     {
-      "key": "inventory_storage_filter",
-      "deps": [
-        "inventory_workshop_chest"
-      ],
-      "item": "sophisticatedstorage:filter_upgrade",
-      "optional": true,
-      "layout": {
-        "group": "workshop",
-        "x": 3,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A rule at the workshop door",
-        "Make a Sophisticated Storage Filter Upgrade for the workshop chest. It governs items moved into or out of storage by a hopper or other transport; the backpack's Pickup Upgrade has a different job. Choose one plentiful block to allow and another cheap block to reject, then set the rule in the upgrade's controls. Test both before sending scarce materials through."
-      ],
-      "es_es": [
-        "Una regla en la puerta del taller",
-        "Fabricá una mejora de Filtro de Sophisticated Storage para el cofre del taller. Regula los objetos que entran o salen por una tolva u otro transporte; la Recolección de la mochila cumple otro oficio. Elegí un bloque abundante para admitir y otro barato para rechazar, y configurá esa regla en la mejora. Probá ambos antes de enviar materiales escasos."
-      ]
+      "key": "inventory_storage_filter", "deps": ["inventory_workshop_chest"], "item": "sophisticatedstorage:filter_upgrade", "optional": true, "layout": {"group": "workshop", "x": 6, "y": 3.75, "size": 1.0, "shape": "diamond", "hide_dependent_lines": false},
+      "en_us": {"title": "A rule at the workshop door",
+        "text": ["[lead] Decide what transport may bring into the workshop chest.",
+                 "Make a Sophisticated Storage [item:sophisticatedstorage:filter_upgrade|Filter Upgrade] for it. It governs items moved into or out of storage by a hopper or other transport; the backpack's Pickup Upgrade has a different job.",
+                 "{page}",
+                 "Choose one plentiful block to allow and another cheap block to reject, then set the rule in the upgrade's controls. Test both before sending scarce materials through."]},
+      "es_es": {"title": "Una regla en la puerta del taller",
+        "text": ["[lead] Decidí qué puede traer un transporte al cofre del taller.",
+                 "Fabricale una [item:sophisticatedstorage:filter_upgrade|mejora de Filtro] de Sophisticated Storage. Regula los objetos que entran o salen por una tolva u otro transporte; la Recolección de la mochila cumple otro oficio.",
+                 "{page}",
+                 "Elegí un bloque abundante para admitir y otro barato para rechazar, y configurá esa regla en la mejora. Probá ambos antes de enviar materiales escasos."]}
     },
     {
-      "key": "inventory_controller",
-      "deps": [
-        "inventory_workshop_chest"
-      ],
-      "item": "sophisticatedstorage:controller",
-      "optional": true,
-      "layout": {
-        "group": "workshop",
-        "x": 6,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A shared doorstep",
-        "A Storage Controller gives connected Sophisticated Storage blocks one place for deposits and external item transfer. Its recipe starts with a wooden storage block and comparators; check the recipe viewer for the arrangement. Place it near two stores you can inspect easily, with a different common material in each. Keep the individual stores useful so you can trace a deposit to its shelf."
-      ],
-      "es_es": [
-        "Una entrada compartida",
-        "Un Controlador de almacenamiento da a los bloques conectados de Sophisticated Storage un punto para depósitos y transporte externo. Su receta parte de un depósito de madera y comparadores; mirá la disposición en el visor de recetas. Ponelo cerca de dos depósitos que puedas revisar, con un material común distinto en cada uno. Mantené útiles los depósitos individuales para poder seguir cada entrega hasta su estante."
-      ]
+      "key": "inventory_controller", "deps": ["inventory_workshop_chest"], "item": "sophisticatedstorage:controller", "optional": true, "layout": {"group": "workshop", "x": 7.5, "y": 3.75, "size": 1.0, "shape": "diamond", "hide_dependent_lines": false},
+      "en_us": {"title": "A shared doorstep",
+        "text": ["[lead] One doorstep for several stores.",
+                 "A [item:sophisticatedstorage:controller|Storage Controller] gives connected Sophisticated Storage blocks one place for deposits and external item transfer. Its recipe starts with a wooden storage block and comparators; check the recipe viewer for the arrangement.",
+                 "{page}",
+                 "Place it near two stores you can inspect easily, with a different common material in each. Keep the individual stores useful so you can trace a deposit to its shelf."]},
+      "es_es": {"title": "Una entrada compartida",
+        "text": ["[lead] Una sola entrada para varios depósitos.",
+                 "Un [item:sophisticatedstorage:controller|Controlador de almacenamiento] da a los bloques conectados de Sophisticated Storage un punto para depósitos y transporte externo. Su receta parte de un depósito de madera y comparadores; mirá la disposición en el visor de recetas.",
+                 "{page}",
+                 "Ponelo cerca de dos depósitos que puedas revisar, con un material común distinto en cada uno. Mantené útiles los depósitos individuales para poder seguir cada entrega hasta su estante."]}
     },
     {
-      "key": "inventory_pickup_trial",
-      "deps": [
-        "inventory_pickup_upgrade"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "inventory_pickup_trial", "deps": ["inventory_pickup_upgrade"], "type": "checkmark", "optional": true, "layout": {"group": "field", "x": -7.5, "y": 5.25, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
       "icon": "sophisticatedbackpacks:pickup_upgrade",
-      "layout": {
-        "group": "field",
-        "x": -6,
-        "y": 5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Self-check: Two drops, one decision",
-        "Install Pickup and set its filter for one plentiful block. In a safe place, drop that block and a different expendable item, one at a time. Look in the backpack, your inventory and the ground to find both. If the route surprises you, adjust the filter and repeat with cheap materials. Mark this note when you can account for both drops."
-      ],
-      "es_es": [
-        "Autoevaluación: Dos objetos, una decisión",
-        "Instalá Recolección y configurá su filtro para un bloque abundante. En un lugar seguro, tirá ese bloque y otro objeto reemplazable, uno por vez. Revisá la mochila, tu inventario y el suelo hasta encontrar ambos. Si el recorrido te sorprende, corregí el filtro y repetí con materiales baratos. Marcá esta nota cuando puedas dar cuenta de los dos objetos."
-      ]
+      "en_us": {"title": "Self-check: Two drops, one decision",
+        "text": ["[lead] Install Pickup and set its filter for one plentiful block.",
+                 "In a safe place, drop that block and a different expendable item, one at a time. Look in the backpack, your inventory and the ground to find both.",
+                 "{page}",
+                 "If the route surprises you, adjust the filter and repeat with cheap materials. Mark this note when you can account for both drops."]},
+      "es_es": {"title": "Autoevaluación: Dos objetos, un filtro",
+        "text": ["[lead] Instalá Recolección y configurá su filtro para un bloque abundante.",
+                 "En un lugar seguro, tirá ese bloque y otro objeto reemplazable, uno por vez. Revisá la mochila, tu inventario y el suelo hasta encontrar ambos.",
+                 "{page}",
+                 "Si el recorrido te sorprende, corregí el filtro y repetí con materiales baratos. Marcá esta nota cuando puedas dar cuenta de los dos objetos."]}
     },
     {
-      "key": "inventory_refill_trial",
-      "deps": [
-        "inventory_refill_upgrade",
-        "inventory_travel_reserve"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "inventory_refill_trial", "deps": ["inventory_refill_upgrade", "inventory_travel_reserve"], "type": "checkmark", "optional": true, "layout": {"group": "field", "x": -6, "y": 5.25, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
       "icon": "minecraft:torch",
-      "layout": {
-        "group": "field",
-        "x": -4.5,
-        "y": 5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Self-check: The last torch is visible",
-        "The basic backpack has one upgrade slot. Remove Pickup or the previous upgrade and install Refill. Put spare torches in the bag and select torches in Refill's settings. Use one from your inventory, then compare the carried stack with the bag's reserve. Remove the spare torches and repeat to see what happens when the reserve runs out. Keep food and the spare tool in their own places, ready for the trip home."
-      ],
-      "es_es": [
-        "Autoevaluación: La última antorcha se ve",
-        "La mochila básica tiene una sola ranura de mejora. Retirá Recolección o la mejora anterior e instalá Rellenado. Guardá antorchas de repuesto en la mochila y elegí antorchas en la configuración de Rellenado. Usá una de tu inventario y compará la pila a mano con la reserva de la mochila. Sacá las antorchas de repuesto y repetí para ver qué pasa cuando se agota la reserva. Dejá comida y herramienta de repuesto en sus lugares para el regreso."
-      ]
+      "en_us": {"title": "Self-check: The last torch is visible",
+        "text": ["[lead] The basic backpack has one upgrade slot: remove Pickup or the previous upgrade and install Refill.",
+                 "Put spare torches in the bag and select torches in Refill's settings. Use one from your inventory, then compare the carried stack with the bag's reserve.",
+                 "{page}",
+                 "Remove the spare torches and repeat to see what happens when the reserve runs out. Keep food and the spare tool in their own places, ready for the trip home."]},
+      "es_es": {"title": "Autoevaluación: La última antorcha se ve",
+        "text": ["[lead] La mochila básica tiene una sola ranura de mejora: retirá Recolección o la mejora anterior e instalá Rellenado.",
+                 "Guardá antorchas de repuesto en la mochila y elegí antorchas en la configuración de Rellenado. Usá una de tu inventario y compará la pila a mano con la reserva de la mochila.",
+                 "{page}",
+                 "Sacá las antorchas de repuesto y repetí para ver qué pasa cuando se agota la reserva. Dejá comida y herramienta de repuesto en sus lugares para el regreso."]}
     },
     {
-      "key": "inventory_workshop_filter_trial",
-      "deps": [
-        "inventory_storage_filter",
-        "inventory_slot_memory"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "inventory_workshop_filter_trial", "deps": ["inventory_storage_filter", "inventory_slot_memory"], "type": "checkmark", "optional": true, "layout": {"group": "workshop", "x": 6, "y": 5.25, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
       "icon": "minecraft:hopper",
-      "layout": {
-        "group": "workshop",
-        "x": 3,
-        "y": 5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Self-check: The chest accepts one kind",
-        "Fit the Filter Upgrade to the workshop chest and feed it through a hopper. Try one permitted block, then one rejected block, separately. Check the hopper and chest after each attempt; a rejected item may wait upstream. Manual insertion and piped insertion can follow different rules. Mark this note once you know where both blocks ended, and clear the hopper before a real batch."
-      ],
-      "es_es": [
-        "Autoevaluación: El cofre recibe un tipo",
-        "Instalá la mejora de Filtro en el cofre del taller y alimentalo con una tolva. Probá un bloque permitido y después otro rechazado, por separado. Revisá la tolva y el cofre tras cada intento; un objeto rechazado puede quedar antes de la entrada. La inserción manual y la transportada pueden seguir reglas distintas. Marcá esta nota cuando sepas dónde quedó cada bloque y vaciá la tolva antes de una tanda real."
-      ]
+      "en_us": {"title": "Self-check: The chest accepts one kind",
+        "text": ["[lead] Fit the Filter Upgrade to the workshop chest and feed it through a [item:minecraft:hopper|hopper].",
+                 "Try one permitted block, then one rejected block, separately. Check the hopper and chest after each attempt; a rejected item may wait upstream.",
+                 "{page}",
+                 "Manual insertion and piped insertion can follow different rules. Mark this note once you know where both blocks ended, and clear the hopper before a real batch."]},
+      "es_es": {"title": "Autoevaluación: El cofre recibe un tipo",
+        "text": ["[lead] Instalá la mejora de Filtro en el cofre del taller y alimentalo con una [item:minecraft:hopper|tolva].",
+                 "Probá un bloque permitido y después otro rechazado, por separado. Revisá la tolva y el cofre tras cada intento; un objeto rechazado puede quedar antes de la entrada.",
+                 "{page}",
+                 "La inserción manual y la transportada pueden seguir reglas distintas. Marcá esta nota cuando sepas dónde quedó cada bloque y vaciá la tolva antes de una tanda real."]}
     },
     {
-      "key": "inventory_controller_trial",
-      "deps": [
-        "inventory_controller",
-        "inventory_slot_memory"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "inventory_controller_trial", "deps": ["inventory_controller", "inventory_slot_memory"], "type": "checkmark", "optional": true, "layout": {"group": "workshop", "x": 7.5, "y": 5.25, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
       "icon": "sophisticatedstorage:controller",
-      "layout": {
-        "group": "workshop",
-        "x": 6,
-        "y": 5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Self-check: One entrance, two shelves",
-        "Place the controller beside two connected Sophisticated Storage blocks. Put a different ordinary material in each store, then make a small deposit through the controller. Find the deposited items in the physical stores and take them back out. If nothing moves, inspect the connections before adding more shelves. Mark this note after you can follow the route in both directions."
-      ],
-      "es_es": [
-        "Autoevaluación: Una entrada, dos estantes",
-        "Colocá el controlador junto a dos bloques conectados de Sophisticated Storage. Guardá un material común distinto en cada depósito y hacé una entrega pequeña desde el controlador. Encontrá los objetos en los depósitos físicos y volvé a sacarlos. Si nada se mueve, revisá las conexiones antes de sumar estantes. Marcá esta nota cuando puedas seguir el recorrido en ambos sentidos."
-      ]
+      "en_us": {"title": "Self-check: One entrance, two shelves",
+        "text": ["[lead] Place the controller beside two connected Sophisticated Storage blocks.",
+                 "Put a different ordinary material in each store, then make a small deposit through the controller. Find the deposited items in the physical stores and take them back out.",
+                 "{page}",
+                 "If nothing moves, inspect the connections before adding more shelves. Mark this note after you can follow the route in both directions."]},
+      "es_es": {"title": "Autoevaluación: Una puerta, dos estantes",
+        "text": ["[lead] Colocá el controlador junto a dos bloques conectados de Sophisticated Storage.",
+                 "Guardá un material común distinto en cada depósito y hacé una entrega pequeña desde el controlador. Encontrá los objetos en los depósitos físicos y volvé a sacarlos.",
+                 "{page}",
+                 "Si nada se mueve, revisá las conexiones antes de sumar estantes. Marcá esta nota cuando puedas seguir el recorrido en ambos sentidos."]}
     },
     {
-      "key": "inventory_deposit_upgrade",
-      "deps": [
-        "inventory_backpack",
-        "inventory_workshop_chest"
-      ],
-      "item": "sophisticatedbackpacks:deposit_upgrade",
-      "optional": true,
-      "layout": {
-        "group": "return",
-        "x": 0,
-        "y": 5.5,
-        "size": 1.0,
-        "shape": "diamond",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "The return has a gesture",
-        "The Backpack Deposit Upgrade moves items from the bag into an inventory you sneak-right-click. Its recipe uses an Upgrade Base, a piston, a wooden chest, iron and redstone; check the recipe viewer for the layout. Put ordinary stone in the workshop chest and in your bag before trying Match Inventory Contents. Keep food and a spare tool in the bag so you can see what stays with you."
-      ],
-      "es_es": [
-        "El regreso tiene un gesto",
-        "La mejora de Depósito mueve objetos de la mochila al inventario sobre el que hacés clic derecho agachado. Su receta usa una base de mejora, un pistón, un cofre de madera, hierro y redstone; mirá la disposición en el visor de recetas. Guardá piedra común en el cofre del taller y en la mochila antes de probar Coincidir con el contenido del inventario. Dejá comida y una herramienta de repuesto en la mochila para ver qué permanece con vos."
-      ]
+      "key": "inventory_deposit_upgrade", "deps": ["inventory_backpack", "inventory_workshop_chest"], "item": "sophisticatedbackpacks:deposit_upgrade", "optional": true, "layout": {"group": "return", "x": 0, "y": 4.0, "size": 1.0, "shape": "diamond", "hide_dependent_lines": false},
+      "en_us": {"title": "The return has a gesture",
+        "text": ["[lead] Empty the bag into a chest with one move.",
+                 "The [item:sophisticatedbackpacks:deposit_upgrade|Backpack Deposit Upgrade] moves items from the bag into an inventory you sneak-right-click. Its recipe uses an Upgrade Base, a [item:minecraft:piston|piston], a wooden chest, iron and redstone; check the recipe viewer for the layout.",
+                 "{page}",
+                 "Put ordinary stone in the workshop chest and in your bag before trying Match Inventory Contents. Keep food and a spare tool in the bag so you can see what stays with you."]},
+      "es_es": {"title": "El regreso tiene un gesto",
+        "text": ["[lead] Vaciá la mochila en un cofre con un solo movimiento.",
+                 "La [item:sophisticatedbackpacks:deposit_upgrade|mejora de Depósito] mueve objetos de la mochila al inventario sobre el que hacés clic derecho agachado. Su receta usa una base de mejora, un [item:minecraft:piston|pistón], un cofre de madera, hierro y redstone; mirá la disposición en el visor de recetas.",
+                 "{page}",
+                 "Guardá piedra común en el cofre del taller y en la mochila antes de probar Coincidir con el contenido del inventario. Dejá comida y una herramienta de repuesto en la mochila para ver qué permanece con vos."]}
     },
     {
-      "key": "inventory_deposit_trial",
-      "deps": [
-        "inventory_deposit_upgrade",
-        "inventory_travel_reserve"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "inventory_deposit_trial", "deps": ["inventory_deposit_upgrade", "inventory_travel_reserve"], "type": "checkmark", "optional": true, "layout": {"group": "return", "x": 0, "y": 6.75, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
       "icon": "sophisticatedbackpacks:deposit_upgrade",
-      "layout": {
-        "group": "return",
-        "x": 0,
-        "y": 7,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Self-check: The bag comes home lighter",
-        "Swap the previous upgrade for Deposit in the basic backpack's single upgrade slot. Put a small stack of stone in the bag beside the food and spare tool you chose to keep. Stock the workshop chest with stone, set Deposit to Match Inventory Contents, and sneak-right-click that chest with the bag. Count stone in both places, then check the food and tool. If the result surprises you, retrieve the items and repeat with cheap stock. Mark this note after the travel reserve stays aboard."
-      ],
-      "es_es": [
-        "Autoevaluación: La mochila vuelve más liviana",
-        "Cambiá la mejora anterior por Depósito en la única ranura de la mochila básica. Guardá una pila pequeña de piedra junto a la comida y la herramienta de repuesto que querés conservar. Poné piedra en el cofre del taller, ajustá Depósito a Coincidir con el contenido del inventario y hacé clic derecho sobre ese cofre con la mochila mientras estás agachado. Contá la piedra en ambos lugares y revisá la comida y la herramienta. Si el resultado te sorprende, recuperá los objetos y repetí con materiales baratos. Marcá esta nota cuando la reserva de viaje siga a bordo."
-      ]
+      "en_us": {"title": "Self-check: The bag comes home lighter",
+        "text": ["[lead] Swap the previous upgrade for Deposit in the basic backpack's single upgrade slot.",
+                 "Put a small stack of stone in the bag beside the food and spare tool you chose to keep. Stock the workshop chest with stone and set Deposit to Match Inventory Contents.",
+                 "{page}",
+                 "Sneak-right-click that chest with the bag. Count stone in both places, then check the food and tool.",
+                 "If the result surprises you, retrieve the items and repeat with cheap stock. Mark this note after the travel reserve stays aboard."]},
+      "es_es": {"title": "Autoevaluación: Vuelve más liviana",
+        "text": ["[lead] Cambiá la mejora anterior por Depósito en la única ranura de la mochila básica.",
+                 "Guardá una pila pequeña de piedra junto a la comida y la herramienta de repuesto que querés conservar. Poné piedra en el cofre del taller y ajustá Depósito a Coincidir con el contenido del inventario.",
+                 "{page}",
+                 "Hacé clic derecho sobre ese cofre con la mochila mientras estás agachado. Contá la piedra en ambos lugares y revisá la comida y la herramienta.",
+                 "Si el resultado te sorprende, recuperá los objetos y repetí con materiales baratos. Marcá esta nota cuando la reserva de viaje siga a bordo."]}
     },
     {
-      "key": "inventory_local_cache",
-      "deps": [
-        "inventory_deposit_trial",
-        "inventory_workshop_filter_trial",
-        "inventory_controller_trial"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "inventory_local_cache", "deps": ["inventory_deposit_trial", "inventory_workshop_filter_trial", "inventory_controller_trial"], "type": "checkmark", "optional": true, "layout": {"group": "future", "x": 0, "y": 8.75, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
       "icon": "sophisticatedstorage:chest",
-      "layout": {
-        "group": "future",
-        "x": 0,
-        "y": 9.5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Self-check: A shelf after the network",
-        "Sera's later sketches show a digital network; Mara keeps a physical shelf beside the bench. When you have AE2, close its terminal and take one food stack and one repair supply from that local shelf. Decide which reserve should remain within reach if the network is unavailable. Mark this note after you can retrieve both without the terminal, then restock the shelf for the next return."
-      ],
-      "es_es": [
-        "Autoevaluación: Un estante después de la red",
-        "Los dibujos posteriores de Sera muestran una red digital; Mara conserva un estante físico junto a la mesa. Cuando tengas AE2, cerrá su terminal y sacá una pila de comida y un insumo de reparación de ese estante local. Decidí qué reserva debería seguir al alcance si la red no está disponible. Marcá esta nota cuando puedas retirar ambos sin usar el terminal y reponé el estante para el próximo regreso."
-      ]
+      "en_us": {"title": "Self-check: A shelf after the network",
+        "text": ["[lead] Once you have AE2, check that a physical reserve still works without it.",
+                 "Close its terminal and take one food stack and one repair supply from the local shelf. Decide which reserve should remain within reach if the network is unavailable.",
+                 "{page}",
+                 "Mark this note after you can retrieve both without the terminal, then restock the shelf for the next return.",
+                 "T.'s later sketches show a digital network; J. keeps a physical shelf beside the bench."]},
+      "es_es": {"title": "Autoevaluación: Un estante sin la red",
+        "text": ["[lead] Cuando tengas AE2, comprobá que una reserva física siga sirviendo sin ella.",
+                 "Cerrá su terminal y sacá una pila de comida y un insumo de reparación del estante local. Decidí qué reserva debería seguir al alcance si la red no está disponible.",
+                 "{page}",
+                 "Marcá esta nota cuando puedas retirar ambos sin usar el terminal y reponé el estante para el próximo regreso.",
+                 "Los dibujos posteriores de T. muestran una red digital; J. conserva un estante físico junto a la mesa."]}
+    },
+    {
+      "key": "inventory_toy_keepsake", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"group": "future", "x": 10.5, "y": 5.25, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:poppy",
+      "en_us": {"title": "The last slot",
+        "text": ["[lead] Someone left a pressed flower in the corner of the box.",
+                 "It takes no room anyone needed."]},
+      "es_es": {"title": "La última ranura",
+        "text": ["[lead] Alguien dejó una flor prensada en el rincón de la caja.",
+                 "No ocupa lugar que nadie necesitara."]}
     }
+  ],
+  "presentation": 2,
+  "art": [
+    {"id": "title", "text": {"en_us": "An Inventory That Remembers", "es_es": "El inventario que recuerda"}, "x": -11.9, "y": -2.3, "scale": 3, "align": "start", "tint": "#E8B04A"},
+    {"id": "box", "frame": [-12.1, -1.05, 12.1, 11.1], "color": "#8A6A48", "thickness_px": 2.0, "alpha": 220, "fill": "#1E1610", "fill_alpha": 100, "sketch": true, "reveal": "inventory_field_note", "order": -10},
+    {"id": "margin_note", "picture": "minecraft:textures/item/paper.png", "x": 0, "y": 0.05, "w": 1.5, "h": 1.5, "rotation": -6, "alpha": 150, "reveal": "inventory_field_note", "order": -6},
+    {"id": "take", "text": {"en_us": "TAKE", "es_es": "LLEVAR"}, "x": -7.5, "y": 0.35, "scale": 2, "tint": "#E8DCB5"},
+    {"id": "leave", "text": {"en_us": "LEAVE", "es_es": "DEJAR"}, "x": 7.5, "y": 0.35, "scale": 2, "tint": "#E8DCB5"},
+    {"id": "bag_panel", "frame": [-11.3, 1.45, -3.7, 6.05], "color": "#B08A5A", "thickness_px": 1.0, "alpha": 200, "fill": "#4A2E1A", "fill_alpha": 110, "corners": false, "sketch": true, "reveal": "inventory_backpack", "order": -9},
+    {"id": "bag_slot_0", "picture": "chipped:textures/gui/sprites/slot.png", "x": -10.5, "y": 2.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_1", "picture": "chipped:textures/gui/sprites/slot.png", "x": -10.5, "y": 3.75, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_2", "picture": "chipped:textures/gui/sprites/slot.png", "x": -10.5, "y": 5.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_3", "picture": "chipped:textures/gui/sprites/slot.png", "x": -9, "y": 2.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_4", "picture": "chipped:textures/gui/sprites/slot.png", "x": -9, "y": 3.75, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_5", "picture": "chipped:textures/gui/sprites/slot.png", "x": -9, "y": 5.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_6", "picture": "chipped:textures/gui/sprites/slot.png", "x": -7.5, "y": 2.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_7", "picture": "chipped:textures/gui/sprites/slot.png", "x": -7.5, "y": 3.75, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_8", "picture": "chipped:textures/gui/sprites/slot.png", "x": -7.5, "y": 5.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_9", "picture": "chipped:textures/gui/sprites/slot.png", "x": -6, "y": 2.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_10", "picture": "chipped:textures/gui/sprites/slot.png", "x": -6, "y": 3.75, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_11", "picture": "chipped:textures/gui/sprites/slot.png", "x": -6, "y": 5.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_12", "picture": "chipped:textures/gui/sprites/slot.png", "x": -4.5, "y": 2.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_13", "picture": "chipped:textures/gui/sprites/slot.png", "x": -4.5, "y": 3.75, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "bag_slot_14", "picture": "chipped:textures/gui/sprites/slot.png", "x": -4.5, "y": 5.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_backpack", "order": -8},
+    {"id": "chest_panel", "frame": [3.7, 1.45, 11.3, 6.05], "color": "#B08A5A", "thickness_px": 1.0, "alpha": 200, "fill": "#3A2C1C", "fill_alpha": 110, "corners": false, "sketch": true, "reveal": "inventory_workshop_chest", "order": -9},
+    {"id": "chest_slot_0", "picture": "chipped:textures/gui/sprites/slot.png", "x": 4.5, "y": 2.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_1", "picture": "chipped:textures/gui/sprites/slot.png", "x": 4.5, "y": 3.75, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_2", "picture": "chipped:textures/gui/sprites/slot.png", "x": 4.5, "y": 5.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_3", "picture": "chipped:textures/gui/sprites/slot.png", "x": 6, "y": 2.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_4", "picture": "chipped:textures/gui/sprites/slot.png", "x": 6, "y": 3.75, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_5", "picture": "chipped:textures/gui/sprites/slot.png", "x": 6, "y": 5.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_6", "picture": "chipped:textures/gui/sprites/slot.png", "x": 7.5, "y": 2.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_7", "picture": "chipped:textures/gui/sprites/slot.png", "x": 7.5, "y": 3.75, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_8", "picture": "chipped:textures/gui/sprites/slot.png", "x": 7.5, "y": 5.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_9", "picture": "chipped:textures/gui/sprites/slot.png", "x": 9, "y": 2.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_10", "picture": "chipped:textures/gui/sprites/slot.png", "x": 9, "y": 3.75, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_11", "picture": "chipped:textures/gui/sprites/slot.png", "x": 9, "y": 5.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_12", "picture": "chipped:textures/gui/sprites/slot.png", "x": 10.5, "y": 2.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_13", "picture": "chipped:textures/gui/sprites/slot.png", "x": 10.5, "y": 3.75, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "chest_slot_14", "picture": "chipped:textures/gui/sprites/slot.png", "x": 10.5, "y": 5.25, "w": 1.3, "h": 1.3, "sketch": {"alpha": 50}, "reveal": "inventory_workshop_chest", "order": -8},
+    {"id": "bag_block", "picture": "minecraft:textures/block/cobblestone.png", "x": -7.5, "y": 2.25, "w": 0.72, "h": 0.72, "reveal": "inventory_backpack", "order": -4},
+    {"id": "bag_bread", "picture": "minecraft:textures/item/bread.png", "x": -9.0, "y": 2.25, "w": 0.72, "h": 0.72, "reveal": "inventory_travel_reserve", "order": -4},
+    {"id": "bag_spare", "picture": "minecraft:textures/item/stone_pickaxe.png", "x": -10.5, "y": 2.25, "w": 0.72, "h": 0.72, "reveal": "inventory_travel_reserve", "order": -4},
+    {"id": "bag_torches", "picture": "minecraft:textures/block/torch.png", "x": -9.0, "y": 3.75, "w": 0.72, "h": 0.72, "reveal": "inventory_refill_trial", "order": -4},
+    {"id": "bag_dirt", "picture": "minecraft:textures/block/dirt.png", "x": -10.5, "y": 3.75, "w": 0.72, "h": 0.72, "reveal": "inventory_pickup_trial", "order": -4},
+    {"id": "bag_stone", "picture": "minecraft:textures/block/stone.png", "x": -6.0, "y": 2.25, "w": 0.72, "h": 0.72, "reveal": "inventory_deposit_upgrade", "order": -4},
+    {"id": "ground_stick", "picture": "minecraft:textures/item/stick.png", "x": -8.25, "y": 6.75, "w": 0.55, "h": 0.55, "reveal": "inventory_pickup_trial", "order": -4, "rotation": -30},
+    {"id": "gap_torch", "picture": "minecraft:textures/block/torch.png", "x": -4.5, "y": 5.25, "w": 0.72, "h": 0.72, "reveal": "inventory_refill_trial", "order": -4, "alpha": 60},
+    {"id": "chest_stone", "picture": "minecraft:textures/block/stone.png", "x": 6.0, "y": 2.25, "w": 0.72, "h": 0.72, "reveal": "inventory_workshop_chest", "order": -4},
+    {"id": "memory_ghost", "picture": "minecraft:textures/block/stone.png", "x": 7.5, "y": 2.25, "w": 0.72, "h": 0.72, "reveal": "inventory_slot_memory", "order": -4, "alpha": 70},
+    {"id": "memory_mark", "frame": [6.85, 1.6, 8.15, 2.9], "color": "#E8B04A", "thickness_px": 1.0, "alpha": 230, "corners": false, "reveal": "inventory_slot_memory", "order": -3},
+    {"id": "chest_allowed", "picture": "minecraft:textures/block/stone.png", "x": 4.5, "y": 5.25, "w": 0.72, "h": 0.72, "reveal": "inventory_workshop_filter_trial", "order": -4},
+    {"id": "hopper", "item": "minecraft:hopper", "x": 5.25, "y": 6.95, "size": 0.7, "reveal": "inventory_workshop_filter_trial"},
+    {"id": "rejected", "picture": "minecraft:textures/block/dirt.png", "x": 6.2, "y": 7.0, "w": 0.55, "h": 0.55, "reveal": "inventory_workshop_filter_trial", "order": -4},
+    {"id": "shelf_a", "picture": "minecraft:textures/block/oak_planks.png", "x": 9.0, "y": 3.75, "w": 0.72, "h": 0.72, "reveal": "inventory_controller_trial", "order": -4},
+    {"id": "shelf_b", "picture": "minecraft:textures/block/sand.png", "x": 9.0, "y": 5.25, "w": 0.72, "h": 0.72, "reveal": "inventory_controller_trial", "order": -4},
+    {"id": "second_store", "item": "sophisticatedstorage:barrel", "x": 8.4, "y": 7.0, "size": 0.75, "reveal": "inventory_controller_trial"},
+    {"id": "store_link", "path": [[7.5, 5.9], [8.2, 6.5]], "color": "#E8B04A", "width": 0.06, "reveal": "inventory_controller_trial", "order": -3},
+    {"id": "returned_1", "picture": "minecraft:textures/block/stone.png", "x": 9.0, "y": 2.25, "w": 0.72, "h": 0.72, "reveal": "inventory_deposit_trial", "order": -4},
+    {"id": "returned_2", "picture": "minecraft:textures/block/stone.png", "x": 10.5, "y": 2.25, "w": 0.72, "h": 0.72, "reveal": "inventory_deposit_trial", "order": -4},
+    {"id": "return_route", "through": [[-3.6, 5.6], "inventory_deposit_trial", [3.6, 5.6]], "smooth": 4, "dots": "minecraft:textures/block/cobblestone.png", "size": 0.26, "step": 0.55, "reveal": "inventory_deposit_trial", "sketch": true, "order": -5},
+    {"id": "shelf", "picture": "minecraft:textures/block/spruce_planks.png", "x": 0, "y": 10.05, "w": 4.2, "h": 0.3, "sketch": true, "reveal": "inventory_local_cache", "order": -5},
+    {"id": "shelf_brackets", "picture": "minecraft:textures/block/spruce_planks.png", "x": -1.8, "y": 10.45, "w": 0.2, "h": 0.55, "sketch": true, "reveal": "inventory_local_cache", "order": -6},
+    {"id": "shelf_brackets_r", "picture": "minecraft:textures/block/spruce_planks.png", "x": 1.8, "y": 10.45, "w": 0.2, "h": 0.55, "sketch": true, "reveal": "inventory_local_cache", "order": -6},
+    {"id": "shelf_food", "picture": "minecraft:textures/item/bread.png", "x": -1.1, "y": 9.55, "w": 0.6, "h": 0.6, "reveal": "inventory_local_cache", "order": -4},
+    {"id": "shelf_repair", "picture": "minecraft:textures/item/iron_ingot.png", "x": 1.1, "y": 9.55, "w": 0.6, "h": 0.6, "reveal": "inventory_local_cache", "order": -4},
+    {"id": "shelf_lamp", "item": "minecraft:lantern", "x": 2.6, "y": 9.5, "size": 0.5, "reveal": "inventory_local_cache"},
+    {"id": "network_drive", "picture": "ae2:textures/block/drive/drive_front.png", "x": 7.8, "y": 9.3, "w": 1.1, "h": 1.1, "alpha": 55, "order": -6},
+    {"id": "network_terminal", "picture": "ae2:textures/item/wireless_terminal.png", "x": 9.3, "y": 9.3, "w": 0.8, "h": 0.8, "alpha": 55, "order": -6},
+    {"id": "network_cable", "path": [[3.2, 9.3], [7.2, 9.3]], "color": "#E8DCB5", "width": 0.05, "alpha": 55, "order": -6},
+    {"id": "network_note", "text": {"en_us": "T.", "es_es": "T."}, "x": 10.4, "y": 10.2, "scale": 1, "font": "minecraft:alt", "tint": "#9DC3FF", "alpha": 90},
+    {"id": "keepsake_glow", "glow": [10.5, 5.25], "r": 0.8, "alpha": 140, "reveal": "inventory_toy_keepsake"},
+    {"id": "keepsake_petals", "scatter": ["minecraft:textures/particle/cherry_0.png", "minecraft:textures/particle/cherry_3.png"], "region": [9.9, 4.6, 11.1, 5.9], "count": 4, "size": [0.18, 0.28], "seed": 12, "spin": true, "reveal": "inventory_toy_keepsake", "avoid": [[10.5, 5.25, 0.35]], "order": -3}
   ]
 }
