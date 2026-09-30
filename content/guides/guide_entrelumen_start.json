@@ -4,416 +4,312 @@
   "act": "I",
   "icon": "entrelumen:heliodor_pedestal",
   "emblem": "entrelumen:textures/item/raw_lens.png",
-  "title": {
-    "en_us": "Waking Among Ruins",
-    "es_es": "Despertar entre ruinas"
-  },
+  "title": {"en_us": "Waking Among Ruins", "es_es": "Despertar entre ruinas"},
   "subtitle": {
     "en_us": "Empty pockets, a ruined sun patio and the light that guards Heliodor's places.",
     "es_es": "Bolsillos vacíos, un patio del sol en ruinas y la luz que cuida los lugares de Heliodor."
   },
+  "presentation": 2,
+  "motif": "travel",
+  "art": [
+    {"id": "title", "text": {"en_us": "Waking Among Ruins", "es_es": "Despertar entre ruinas"}, "x": -6.2, "y": -7.6, "scale": 3, "align": "start", "tint": "#E8B04A"},
+    {"id": "patio_label", "text": {"en_us": "The Sun Patio", "es_es": "El patio del sol"}, "x": 9.65, "y": -5.45, "scale": 2, "tint": "#E8DCB5"},
+    {"id": "meadow", "frame": [-1.4, -2.2, 4.3, 6.5], "color": "#5E8C4A", "alpha": 70, "fill": "#3E6B35", "fill_alpha": 40, "corners": false, "reveal": "entrelumen_start_welcome", "order": -7, "sketch": true},
+    {"id": "flowers", "scatter": ["minecraft:textures/block/poppy.png", "minecraft:textures/block/dandelion.png", "minecraft:textures/block/cornflower.png", "minecraft:textures/block/oxeye_daisy.png", "minecraft:textures/block/azure_bluet.png"], "region": [-1.2, -2.0, 4.1, 6.3], "count": 24, "size": [0.35, 0.5], "seed": 7, "reveal": "entrelumen_start_welcome", "avoid": [[0, 0, 1.3], [2.5, -2.5, 0.9], [2.5, 2.8, 0.8], [2.5, 5.3, 0.8], [4.3, 0, 1.0]]},
+    {"id": "ghost_book", "picture": "minecraft:textures/item/book.png", "x": 1.2, "y": -3.7, "w": 0.7, "h": 0.7, "alpha": 55, "rotation": -12},
+    {"id": "ghost_manual", "picture": "minecraft:textures/item/writable_book.png", "x": 3.8, "y": -3.5, "w": 0.7, "h": 0.7, "alpha": 55, "rotation": 10},
+    {"id": "ghost_blueprint", "picture": "minecraft:textures/item/enchanted_book.png", "x": 3.9, "y": -1.4, "w": 0.7, "h": 0.7, "alpha": 55, "rotation": 20},
+    {"id": "clouds", "mosaic": [-1.0, -7.3], "cell": 0.35, "legend": {"W": "#F4F8FF"}, "alpha": 190, "rows": ["..WWW...........WW..", ".WWWWWW.......WWWWW.", "WWWWWWWWW...WWWWWWWW", "..............WWWW.."], "reveal": "entrelumen_start_aether_gift", "order": -6},
+    {"id": "campfire", "item": "minecraft:campfire", "x": 3.7, "y": 3.7, "size": 0.7, "reveal": "entrelumen_start_respawn"},
+    {"id": "road_in", "through": ["entrelumen_start_welcome", "entrelumen_start_ruin"], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
+    {"id": "road_out", "through": ["entrelumen_start_first_steps", [14.6, 2.4], [16.4, 1.6], "entrelumen_start_close"], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
+    {"id": "inlay", "through": ["entrelumen_start_ruin", "entrelumen_start_pedestal", "entrelumen_start_first_steps"], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.32, "step": 0.4, "grow": true, "sketch": true, "order": -4},
+    {"id": "floor", "mosaic": [5.65, -4.0], "cell": 1.0, "rows": ["BTBTBTBT", "TCTCTCTB", "BTC..CTT", "TCT..TCB", "BTC..CT.", "TCTCTCTB", "B.TCTCTT", "TBTB.BTB"], "alpha": 130, "order": -8, "legend": {"T": "minecraft:textures/block/polished_tuff.png", "C": "minecraft:textures/block/calcite.png", "B": "minecraft:textures/block/tuff_bricks.png"}, "reveal": "entrelumen_start_ruin"},
+    {"id": "patio", "frame": [5.5, -4.15, 13.8, 4.15], "color": "#F2C14E", "thickness_px": 2.0, "alpha": 220, "reveal": "entrelumen_start_protected", "sketch": true},
+    {"id": "light", "glow": [9.65, 0.0], "r": 5.2, "alpha": 70, "reveal": "entrelumen_start_protected"},
+    {"id": "ray_h", "path": [[7.45, 0.0], [11.850000000000001, 0.0]], "texture": "minecraft:textures/block/oxidized_copper.png", "width": 0.42, "step": 0.44, "reveal": "entrelumen_start_ruin", "order": -5},
+    {"id": "ray_v", "path": [[9.65, -2.2], [9.65, 2.2]], "texture": "minecraft:textures/block/oxidized_copper.png", "width": 0.42, "step": 0.44, "reveal": "entrelumen_start_ruin", "order": -5},
+    {"id": "ray_d1", "path": [[8.05, -1.6], [11.25, 1.6]], "texture": "minecraft:textures/block/oxidized_copper.png", "width": 0.3, "step": 0.45, "reveal": "entrelumen_start_ruin", "order": -5},
+    {"id": "ray_d2", "path": [[8.05, 1.6], [11.25, -1.6]], "texture": "minecraft:textures/block/oxidized_copper.png", "width": 0.3, "step": 0.45, "reveal": "entrelumen_start_ruin", "order": -5},
+    {"id": "sun", "picture": "minecraft:textures/block/oxidized_chiseled_copper.png", "x": 9.65, "y": 0.0, "w": 1.9, "h": 1.9, "reveal": "entrelumen_start_ruin", "sketch": true, "order": -4},
+    {"id": "sun_gold", "picture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 9.65, "y": 0.0, "w": 3.4, "h": 3.4, "reveal": "entrelumen_start_toy_polish", "order": -3},
+    {"id": "pedestal_glow", "glow": [9.65, 0.0], "r": 1.7, "reveal": "entrelumen_start_pedestal"},
+    {"id": "columns", "sprite": "minecraft:block/quartz_pillar", "cells": [[6.25, -3.95], [8.35, -3.95], [10.95, -3.95], [13.1, -3.95]], "w": 0.7, "h": 1.7, "reveal": "entrelumen_start_ruin", "sketch": true, "order": -2},
+    {"id": "stumps", "sprite": "minecraft:block/quartz_pillar", "cells": [[6.25, 4.2], [8.35, 4.2], [10.95, 4.2], [13.1, 4.2]], "w": 0.7, "h": 0.8, "reveal": "entrelumen_start_ruin", "sketch": true, "order": -2},
+    {"id": "fallen", "sprite": "minecraft:block/quartz_pillar", "cells": [[6.8, 4.95], [8.9, 4.95], [11.5, 4.95], [13.65, 4.95]], "w": 0.7, "h": 0.9, "rotation": 90, "reveal": "entrelumen_start_ruin", "order": -2},
+    {"id": "lanterns", "item": "minecraft:lantern", "x": 6.25, "y": -5.0, "size": 0.55, "reveal": "entrelumen_start_toy_lanterns"},
+    {"id": "lantern_2", "item": "minecraft:lantern", "x": 8.35, "y": -5.0, "size": 0.55, "reveal": "entrelumen_start_toy_lanterns"},
+    {"id": "lantern_3", "item": "minecraft:lantern", "x": 10.95, "y": -5.0, "size": 0.55, "reveal": "entrelumen_start_toy_lanterns"},
+    {"id": "lantern_4", "item": "minecraft:lantern", "x": 13.1, "y": -5.0, "size": 0.55, "reveal": "entrelumen_start_toy_lanterns"},
+    {"id": "lantern_glow_1", "glow": [6.25, -5.0], "r": 0.9, "reveal": "entrelumen_start_toy_lanterns"},
+    {"id": "lantern_glow_2", "glow": [8.35, -5.0], "r": 0.9, "reveal": "entrelumen_start_toy_lanterns"},
+    {"id": "lantern_glow_3", "glow": [10.95, -5.0], "r": 0.9, "reveal": "entrelumen_start_toy_lanterns"},
+    {"id": "lantern_glow_4", "glow": [13.1, -5.0], "r": 0.9, "reveal": "entrelumen_start_toy_lanterns"},
+    {"id": "tnt", "item": "minecraft:tnt", "x": 6.2, "y": -1.35, "size": 0.65, "reveal": "entrelumen_start_why"},
+    {"id": "no_tnt", "path": [[5.8, -1.75], [6.6, -0.95]], "color": "#FF5A4A", "width": 0.1, "reveal": "entrelumen_start_why", "order": 0},
+    {"id": "no_tnt_2", "path": [[5.8, -0.95], [6.6, -1.75]], "color": "#FF5A4A", "width": 0.1, "reveal": "entrelumen_start_why", "order": 0},
+    {"id": "door", "item": "minecraft:oak_door", "x": 11.45, "y": -1.3, "size": 0.6, "reveal": "entrelumen_start_free_gated"},
+    {"id": "chest", "item": "minecraft:chest", "x": 12.2, "y": -1.3, "size": 0.6, "reveal": "entrelumen_start_free_gated"},
+    {"id": "anvil", "item": "minecraft:anvil", "x": 12.95, "y": -1.3, "size": 0.6, "reveal": "entrelumen_start_free_gated"},
+    {"id": "pickaxe", "item": "minecraft:iron_pickaxe", "x": 14.55, "y": 0.35, "size": 0.7, "rotation": -30, "reveal": "entrelumen_start_tools_quirk"},
+    {"id": "sherds", "scatter": ["minecraft:textures/item/archer_pottery_sherd.png", "minecraft:textures/item/danger_pottery_sherd.png", "minecraft:textures/item/heart_pottery_sherd.png"], "region": [14.9, -2.0, 17.4, 0.6], "count": 6, "size": [0.4, 0.5], "seed": 5, "spin": true, "reveal": "entrelumen_start_residual", "avoid": [[15.8, -0.6, 0.8], [13.8, -0.6, 0.8]]},
+    {"id": "city", "picture": "minecraft:textures/block/calcite.png", "x": 17.1, "y": -4.1, "w": 0.6, "h": 1.8, "reveal": "entrelumen_start_solsticio_link", "sketch": true},
+    {"id": "city_2", "picture": "minecraft:textures/block/calcite.png", "x": 17.8, "y": -4.5, "w": 0.6, "h": 2.6, "reveal": "entrelumen_start_solsticio_link", "sketch": true},
+    {"id": "city_3", "picture": "minecraft:textures/block/calcite.png", "x": 18.5, "y": -3.9, "w": 0.6, "h": 1.4, "reveal": "entrelumen_start_solsticio_link", "sketch": true},
+    {"id": "city_4", "picture": "minecraft:textures/block/calcite.png", "x": 19.2, "y": -4.3, "w": 0.6, "h": 2.2, "reveal": "entrelumen_start_solsticio_link", "sketch": true},
+    {"id": "city_sun", "picture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 18.2, "y": -6.6, "w": 1.5, "h": 1.5, "reveal": "entrelumen_start_solsticio_link"},
+    {"id": "bell", "item": "minecraft:bell", "x": 20.4, "y": 0.2, "size": 0.7, "reveal": "entrelumen_start_close"},
+    {"id": "vault", "item": "minecraft:vault", "x": 20.6, "y": 2.0, "size": 0.7, "reveal": "entrelumen_start_close"},
+    {"id": "road_on", "path": [[19.3, 1.0], [21.6, 1.1]], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.8, "step": 0.8, "reveal": "entrelumen_start_close", "sketch": true, "order": -6}
+  ],
   "quests": [
     {
-      "key": "entrelumen_start_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "You Wake Among Ruins",
-        "Every world starts the same: you appear beside a ruined sun patio with empty pockets. The ruin, its compass and the Atlas are your only guides.\n\nNo tutorial, no kit, no welcome committee. Heliodor has been busy being frozen."
-      ],
-      "es_es": [
-        "Despertás entre ruinas",
-        "Todo mundo empieza igual: aparecés al lado de un patio del sol en ruinas, con los bolsillos vacíos. La ruina, su brújula y el Atlas son tus únicas guías.\n\nSin tutorial, sin kit, sin comité de bienvenida. Heliodor estaba ocupado quedándose congelado."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-compass.md",
-        "repo:docs/design/story-bible.md"
-      ]
+      "key": "entrelumen_start_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "You Wake Among Ruins",
+        "text": ["[lead] Every world starts the same: empty pockets, beside a ruined sun patio.",
+                 "The ruin, its [item:entrelumen:heliodor_compass|compass] and the [item:entrelumen:atlas|Atlas] are your only guides.",
+                 "No tutorial, no kit, no welcome committee. Heliodor has been busy being frozen."]},
+      "es_es": {"title": "Despertás entre ruinas",
+        "text": ["[lead] Todo mundo empieza igual: bolsillos vacíos, al lado de un patio del sol en ruinas.",
+                 "La ruina, su [item:entrelumen:heliodor_compass|brújula] y el [item:entrelumen:atlas|Atlas] son tus únicas guías.",
+                 "Sin tutorial, sin kit, sin comité de bienvenida. Heliodor estaba ocupado quedándose congelado."]},
+      "sources": ["repo:docs/design/heliodor-compass.md", "repo:docs/design/story-bible.md"]
     },
     {
-      "key": "entrelumen_start_empty",
-      "deps": [
-        "entrelumen_start_welcome"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_start_empty", "deps": ["entrelumen_start_welcome"], "type": "checkmark", "layout": {"x": 2.5, "y": -2.5, "size": 1.25, "shape": "pentagon"},
       "icon": "minecraft:bundle",
-      "layout": {
-        "x": 3,
-        "y": -2,
-        "size": 1.25,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Empty Pockets, on Purpose",
-        "The pack turns off every join gift: Ars Nouveau's notebook, the Integrated Dynamics manual, Silent Gear's blueprints, the Actually Additions booklet and more. Every one of those books is still craftable.\n\nNothing is lost, only not gifted. Not even the plush toy."
-      ],
-      "es_es": [
-        "Bolsillos vacíos, a propósito",
-        "El pack apaga todos los regalos de bienvenida: la libreta de Ars Nouveau, el manual de Integrated Dynamics, los planos de Silent Gear, el folleto de Actually Additions y más. Todos esos libros se siguen fabricando.\n\nNo se pierde nada, sólo no se regala. Ni siquiera el peluche."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-compass.md",
-        "repo:pack/config/ars_nouveau-common.toml",
-        "repo:pack/config/silentgear-common.toml",
-        "repo:pack/config/modern_industrialization-server.toml",
-        "repo:pack/config/integrateddynamics-common.toml",
-        "repo:pack/config/actuallyadditions-common.toml"
-      ]
+      "en_us": {"title": "Empty Pockets, on Purpose",
+        "text": ["[lead] The pack turns off every join gift, and each of those books is still craftable:",
+                 "[li] Ars Nouveau's notebook",
+                 "[li] The Integrated Dynamics manual",
+                 "[li] Silent Gear's blueprints",
+                 "[li] The Actually Additions booklet, and more",
+                 "Nothing is lost, only not gifted. Not even the plush toy."]},
+      "es_es": {"title": "Bolsillos vacíos, a propósito",
+        "text": ["[lead] El pack apaga todos los regalos de bienvenida, y cada uno de esos libros se sigue fabricando:",
+                 "[li] La libreta de Ars Nouveau",
+                 "[li] El manual de Integrated Dynamics",
+                 "[li] Los planos de Silent Gear",
+                 "[li] El folleto de Actually Additions, y más",
+                 "No se pierde nada, sólo no se regala. Ni siquiera el peluche."]},
+      "sources": ["repo:docs/design/heliodor-compass.md", "repo:pack/config/ars_nouveau-common.toml", "repo:pack/config/silentgear-common.toml", "repo:pack/config/modern_industrialization-server.toml", "repo:pack/config/integrateddynamics-common.toml", "repo:pack/config/actuallyadditions-common.toml"]
     },
     {
-      "key": "entrelumen_start_aether_gift",
-      "deps": [
-        "entrelumen_start_empty"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_start_aether_gift", "deps": ["entrelumen_start_empty"], "type": "checkmark", "optional": true, "layout": {"x": 2.5, "y": -5.5, "size": 1.0, "shape": "diamond"},
       "icon": "aether:golden_parachute",
-      "layout": {
-        "x": 6,
-        "y": -3.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: the Aether Says Hi",
-        "One gift survives: the first time you enter the Aether, it hands you its Book of Lore and golden parachutes. It is not a login gift, it is a safety net.\n\nFloating islands, long drops. Take the hint."
-      ],
-      "es_es": [
-        "Particularidad: el Aether saluda",
-        "Un regalo sobrevive: la primera vez que entrás al Aether te da su Libro de Historia y paracaídas dorados. No es un regalo de bienvenida, es una red de seguridad.\n\nIslas flotantes, caídas largas. Captá la indirecta."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-compass.md",
-        "repo:pack/config/aether-common.toml",
-        "repo:docs/design/story-bible.md"
-      ]
+      "en_us": {"title": "Quirk: the Aether Says Hi",
+        "text": ["[lead] One gift survives: your first trip to the Aether hands you its Book of Lore and [item:aether:golden_parachute|golden parachutes].",
+                 "It is not a login gift, it is a safety net. Floating islands, long drops: take the hint."]},
+      "es_es": {"title": "Particularidad: el Aether saluda",
+        "text": ["[lead] Un regalo sobrevive: la primera vez que entrás al Aether te da su Libro de Historia y [item:aether:golden_parachute|paracaídas dorados].",
+                 "No es un regalo de bienvenida, es una red de seguridad. Islas flotantes, caídas largas: captá la indirecta."]},
+      "sources": ["repo:docs/design/heliodor-compass.md", "repo:pack/config/aether-common.toml", "repo:docs/design/story-bible.md"]
     },
     {
-      "key": "entrelumen_start_ruin",
-      "deps": [
-        "entrelumen_start_welcome"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_start_ruin", "deps": ["entrelumen_start_welcome"], "type": "checkmark", "layout": {"x": 5.5, "y": 0, "size": 1.5, "shape": "square"}, "hide_lines": true,
       "icon": "minecraft:chiseled_tuff",
-      "layout": {
-        "x": 3,
-        "y": 2,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "The Start Ruin",
-        "A new world places it once, on the flattest ground within 64 blocks of spawn: a tuff and calcite patio with an oxidized copper sun, eight quartz columns (four broken) and the &eHeliodor Pedestal&r in the middle.\n\nWorld spawn moves beside it, and your first login faces it."
-      ],
-      "es_es": [
-        "La ruina inicial",
-        "Un mundo nuevo la coloca una sola vez, en el terreno más plano a menos de 64 bloques del spawn: un patio de toba y calcita con un sol de cobre oxidado, ocho columnas de cuarzo (cuatro rotas) y el &ePedestal de Heliodor&r en el medio.\n\nEl spawn del mundo se muda a su lado, y tu primer ingreso la mira de frente."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-compass.md",
-        "repo:companion/src/main/java/dev/entrelumen/HeliodorRuins.java"
-      ]
+      "en_us": {"title": "The Start Ruin",
+        "text": ["[lead] A new world places it once, on the flattest ground within [hl|64] blocks of spawn.",
+                 "[li] A tuff and calcite patio with an oxidized copper sun",
+                 "[li] Eight quartz columns, four of them broken",
+                 "[li] The [item:entrelumen:heliodor_pedestal|Heliodor Pedestal] in the middle",
+                 "World spawn moves beside it, and your first login faces it."]},
+      "es_es": {"title": "La ruina inicial",
+        "text": ["[lead] Un mundo nuevo la coloca una sola vez, en el terreno más plano a menos de [hl|64] bloques del spawn.",
+                 "[li] Un patio de toba y calcita con un sol de cobre oxidado",
+                 "[li] Ocho columnas de cuarzo, cuatro de ellas rotas",
+                 "[li] El [item:entrelumen:heliodor_pedestal|Pedestal de Heliodor] en el medio",
+                 "El spawn del mundo se muda a su lado, y tu primer ingreso la mira de frente."]},
+      "sources": ["repo:docs/design/heliodor-compass.md", "repo:companion/src/main/java/dev/entrelumen/HeliodorRuins.java"]
     },
     {
-      "key": "entrelumen_start_pedestal",
-      "deps": [
-        "entrelumen_start_ruin"
-      ],
-      "type": "item",
-      "item": "entrelumen:heliodor_compass",
-      "layout": {
-        "x": 6,
-        "y": 2,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Take the Compass",
-        "Use the pedestal: it gives each player one &eHeliodor Compass&r per world, ever. Its first target is the ruin itself, until you wake the Atlas with a book and a copper ingot.\n\nEverything else about it: The Heliodor Compass chapter."
-      ],
-      "es_es": [
-        "Tomá la brújula",
-        "Usá el pedestal: le da a cada jugador una &eBrújula de Heliodor&r por mundo, para siempre. Su primer destino es la propia ruina, hasta que despiertes el Atlas con un libro y un lingote de cobre.\n\nTodo lo demás sobre ella: capítulo La Brújula de Heliodor."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-compass.md",
-        "repo:content/compass_targets.json"
-      ]
+      "key": "entrelumen_start_pedestal", "deps": ["entrelumen_start_ruin"], "type": "item", "item": "entrelumen:heliodor_compass", "layout": {"x": 9.65, "y": 0, "size": 1.25, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "Take the Compass",
+        "text": ["[lead] [icon:right_click] Use the pedestal: it gives each player one [item:entrelumen:heliodor_compass|Heliodor Compass] per world, ever.",
+                 "Its first target is the ruin itself, until you wake the Atlas with a [item:minecraft:book|book] and a [item:minecraft:copper_ingot|copper ingot].",
+                 "Everything else about it: [chapter:guide_entrelumen_compass|The Heliodor Compass]."]},
+      "es_es": {"title": "Tomá la brújula",
+        "text": ["[lead] [icon:right_click] Usá el pedestal: le da a cada jugador una [item:entrelumen:heliodor_compass|Brújula de Heliodor] por mundo, para siempre.",
+                 "Su primer destino es la propia ruina, hasta que despiertes el Atlas con un [item:minecraft:book|libro] y un [item:minecraft:copper_ingot|lingote de cobre].",
+                 "Todo lo demás sobre ella: [chapter:guide_entrelumen_compass|La Brújula de Heliodor]."]},
+      "sources": ["repo:docs/design/heliodor-compass.md", "repo:content/compass_targets.json"]
     },
     {
-      "key": "entrelumen_start_first_steps",
-      "deps": [
-        "entrelumen_start_pedestal"
-      ],
-      "type": "item",
-      "item": "minecraft:copper_ingot",
-      "layout": {
-        "x": 9,
-        "y": 2,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "First Steps That Work",
-        "Tree, wooden tools, crafting table, stone, coal. Then go after &ecopper&r: the Atlas and its first projects want copper ingots, paper and glass.\n\nThe compass will send you to a village for bread and paper, then to trial chambers, full of copper and tuff like the ruin."
-      ],
-      "es_es": [
-        "Primeros pasos que sirven",
-        "Árbol, herramientas de madera, mesa de crafteo, piedra, carbón. Después salí a buscar &ecobre&r: el Atlas y sus primeros proyectos piden lingotes de cobre, papel y vidrio.\n\nLa brújula te va a mandar a una aldea por pan y papel, y después a las cámaras de desafío, llenas de cobre y toba como la ruina."
-      ],
-      "sources": [
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
-        "repo:content/compass_targets.json"
-      ]
+      "key": "entrelumen_start_first_steps", "deps": ["entrelumen_start_pedestal"], "type": "item", "item": "minecraft:copper_ingot", "layout": {"x": 12.2, "y": 2.6, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "First Steps That Work",
+        "text": ["[lead] Tree, wooden tools, crafting table, stone, coal; then go after copper.",
+                 "The Atlas and its first projects want [item:minecraft:copper_ingot|copper ingots], [item:minecraft:paper|paper] and [item:minecraft:glass|glass]. Then the compass sends you on:",
+                 "[li:minecraft:bread] A village, for bread and paper",
+                 "[li:minecraft:trial_key] Trial chambers, full of copper and tuff like the ruin"]},
+      "es_es": {"title": "Primeros pasos que sirven",
+        "text": ["[lead] Árbol, herramientas de madera, mesa de crafteo, piedra, carbón; después, a buscar cobre.",
+                 "El Atlas y sus primeros proyectos piden [item:minecraft:copper_ingot|lingotes de cobre], [item:minecraft:paper|papel] y [item:minecraft:glass|vidrio]. Después la brújula te manda a:",
+                 "[li:minecraft:bread] Una aldea, por pan y papel",
+                 "[li:minecraft:trial_key] Las cámaras de desafío, llenas de cobre y toba como la ruina"]},
+      "sources": ["repo:companion/src/main/resources/data/entrelumen/campaign/projects.json", "repo:content/compass_targets.json"]
     },
     {
-      "key": "entrelumen_start_protected",
-      "deps": [
-        "entrelumen_start_ruin"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_start_protected", "deps": ["entrelumen_start_ruin"], "type": "checkmark", "layout": {"x": 9.65, "y": -2.6, "size": 1.5, "shape": "hexagon"},
       "icon": "minecraft:bedrock",
-      "layout": {
-        "x": 9,
-        "y": -1,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "The Light Keeps These Places",
-        "Inside a protected ruin nobody can break or place blocks, and neither can explosions, pistons, flowing fluids, spreading fire, griefing mobs or trampling. Frames, paintings and armor stands are safe too.\n\nThe server checks at the moment it happens: creative, spectator and noclip get the same polite no."
-      ],
-      "es_es": [
-        "La luz cuida estos lugares",
-        "Dentro de una ruina protegida nadie puede romper ni poner bloques, y tampoco las explosiones, los pistones, los fluidos, el fuego que se propaga, los mobs destructores ni el pisoteo. Marcos, cuadros y soportes de armadura también están a salvo.\n\nEl servidor lo revisa en el momento: creativo, espectador y noclip reciben el mismo «no» amable."
-      ],
-      "sources": [
-        "repo:companion/src/main/java/dev/entrelumen/StructureProtection.java",
-        "repo:docs/design/solsticio.md",
-        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
-      ]
+      "en_us": {"title": "The Light Keeps These Places",
+        "text": ["[lead] Inside a protected ruin nobody can break or place blocks, and neither can:",
+                 "[li] Explosions and pistons",
+                 "[li] Flowing fluids and spreading fire",
+                 "[li] Griefing mobs and trampling",
+                 "Frames, paintings and armor stands are safe too.",
+                 "{page}",
+                 "The server checks at the moment it happens: creative, spectator and noclip get the same polite no."]},
+      "es_es": {"title": "La luz cuida estos lugares",
+        "text": ["[lead] Dentro de una ruina protegida nadie puede romper ni poner bloques, y tampoco:",
+                 "[li] Las explosiones y los pistones",
+                 "[li] Los fluidos y el fuego que se propaga",
+                 "[li] Los mobs destructores y el pisoteo",
+                 "Marcos, cuadros y soportes de armadura también están a salvo.",
+                 "{page}",
+                 "El servidor lo revisa en el momento: creativo, espectador y noclip reciben el mismo «no» amable."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/StructureProtection.java", "repo:docs/design/solsticio.md", "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"]
     },
     {
-      "key": "entrelumen_start_free_gated",
-      "deps": [
-        "entrelumen_start_protected"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_start_free_gated", "deps": ["entrelumen_start_protected"], "type": "checkmark", "layout": {"x": 12.2, "y": -2.6, "size": 1.25, "shape": "circle"},
       "icon": "minecraft:lectern",
-      "layout": {
-        "x": 12,
-        "y": -2.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Free, Sealed and Locked",
-        "Right-clicks inside a protected place fall in three groups. &eFree&r: doors, buttons, levers, beds, simple workstations, ender chests and the pedestal. &eSealed&r: containers, lecterns and altars, which open when your team reaches that place's act. &eLocked&r: anything else that would change a block, and anvils.\n\nA frame's item can be taken once your team is unlocked; the frame stays."
-      ],
-      "es_es": [
-        "Libre, sellado y trabado",
-        "Los clics derechos dentro de un lugar protegido caen en tres grupos. &eLibres&r: puertas, botones, palancas, camas, estaciones de trabajo simples, cofres de ender y el pedestal. &eSellados&r: contenedores, atriles y altares, que se abren cuando tu equipo llega al acto de ese lugar. &eTrabados&r: todo lo demás que cambiaría un bloque, y los yunques.\n\nEl ítem de un marco se saca cuando tu equipo está habilitado; el marco se queda."
-      ],
-      "sources": [
-        "repo:docs/design/solsticio.md",
-        "repo:companion/src/main/resources/data/entrelumen/tags/block/protection/usable.json",
-        "repo:companion/src/main/resources/data/entrelumen/tags/block/protection/gated.json",
-        "repo:companion/src/main/resources/data/entrelumen/tags/block/protection/locked.json",
-        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
-      ]
+      "en_us": {"title": "Free, Sealed and Locked",
+        "text": ["[lead] [icon:right_click] Right-clicks inside a protected place fall in three groups:",
+                 "[li] [hl|Free]: doors, buttons, levers, beds, simple workstations, ender chests and the pedestal",
+                 "[li] [hl|Sealed]: containers, lecterns and altars; they open when your team reaches that place's act",
+                 "[li] [hl|Locked]: anything else that would change a block, and anvils",
+                 "{page}",
+                 "A frame's item can be taken once your team is unlocked; the frame stays."]},
+      "es_es": {"title": "Libre, sellado y trabado",
+        "text": ["[lead] [icon:right_click] Los clics derechos dentro de un lugar protegido caen en tres grupos:",
+                 "[li] [hl|Libres]: puertas, botones, palancas, camas, mesas de trabajo simples, cofres de ender y el pedestal",
+                 "[li] [hl|Sellados]: contenedores, atriles y altares; se abren cuando tu equipo llega al acto del lugar",
+                 "[li] [hl|Trabados]: lo demás que cambiaría un bloque, y los yunques",
+                 "{page}",
+                 "El ítem de un marco se saca cuando tu equipo está habilitado; el marco se queda."]},
+      "sources": ["repo:docs/design/solsticio.md", "repo:companion/src/main/resources/data/entrelumen/tags/block/protection/usable.json", "repo:companion/src/main/resources/data/entrelumen/tags/block/protection/gated.json", "repo:companion/src/main/resources/data/entrelumen/tags/block/protection/locked.json", "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"]
     },
     {
-      "key": "entrelumen_start_why",
-      "deps": [
-        "entrelumen_start_protected"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_start_why", "deps": ["entrelumen_start_protected"], "type": "checkmark", "optional": true, "layout": {"x": 7.1, "y": -2.6, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:written_book",
-      "layout": {
-        "x": 12,
-        "y": 0.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Why Ruins Are Protected",
-        "Ruins are the story's levels: their lore and key pieces open when your team gets there, whatever tricks anyone tries.\n\nIt also stops a friend from blowing up the exact spot the compass is pointing at. Do not ask how we know."
-      ],
-      "es_es": [
-        "Por qué se protegen las ruinas",
-        "Las ruinas son los niveles de la historia: su lore y sus piezas clave se abren cuando tu equipo llega, con los trucos que sean.\n\nAdemás evita que un amigo vuele justo el lugar al que apunta la brújula. No preguntes cómo lo sabemos."
-      ],
-      "sources": [
-        "repo:docs/design/story-bible.md",
-        "repo:docs/design/solsticio.md"
-      ]
+      "en_us": {"title": "Why Ruins Are Protected",
+        "text": ["[lead] Ruins are the story's levels: their lore and key pieces open when your team gets there.",
+                 "No trick opens them early.",
+                 "It also stops a friend from blowing up the exact spot the compass is pointing at. Do not ask how we know."]},
+      "es_es": {"title": "Por qué se protegen las ruinas",
+        "text": ["[lead] Las ruinas son los niveles de la historia: su lore y sus piezas clave se abren cuando tu equipo llega.",
+                 "Ningún truco las abre antes.",
+                 "Además evita que un amigo vuele justo el lugar al que apunta la brújula. No preguntes cómo lo sabemos."]},
+      "sources": ["repo:docs/design/story-bible.md", "repo:docs/design/solsticio.md"]
     },
     {
-      "key": "entrelumen_start_tools_quirk",
-      "deps": [
-        "entrelumen_start_free_gated"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_start_tools_quirk", "deps": ["entrelumen_start_free_gated"], "type": "checkmark", "optional": true, "layout": {"x": 13.8, "y": -0.6, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:iron_pickaxe",
-      "layout": {
-        "x": 12,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Tools Stop at the Edge",
-        "Ultimine, gadgets, construction sticks, Carry On and the land-shaping altars all act as a player, so they stop at a ruin's edge; Carry On's break check before lifting is refused too.\n\nBuild around a ruin, not into it."
-      ],
-      "es_es": [
-        "Particularidad: freno en el borde",
-        "Ultimine, los gadgets, las varas de construcción, Carry On y los altares que modifican el terreno actúan como un jugador, así que se frenan en el borde de la ruina; el chequeo de rotura de Carry On antes de levantar también se rechaza.\n\nConstruí alrededor de una ruina, no adentro."
-      ],
-      "sources": [
-        "repo:docs/design/mod-pingpong.md",
-        "repo:pack/config/carryon-common.toml",
-        "repo:docs/design/ark-altars.md"
-      ]
+      "en_us": {"title": "Quirk: Tools Stop at the Edge",
+        "text": ["[lead] Anything that acts as a player stops at a ruin's edge:",
+                 "[li] Ultimine and the gadgets",
+                 "[li] Construction sticks and Carry On",
+                 "[li] The land-shaping altars",
+                 "Carry On's break check before lifting is refused too. Build around a ruin, not into it."]},
+      "es_es": {"title": "Particularidad: freno en el borde",
+        "text": ["[lead] Todo lo que actúa como un jugador se frena en el borde de la ruina:",
+                 "[li] Ultimine y los gadgets",
+                 "[li] Las varas de construcción y Carry On",
+                 "[li] Los altares que modifican el terreno",
+                 "El chequeo de rotura de Carry On antes de levantar también se rechaza. Construí alrededor de una ruina, no adentro."]},
+      "sources": ["repo:docs/design/mod-pingpong.md", "repo:pack/config/carryon-common.toml", "repo:docs/design/ark-altars.md"]
     },
     {
-      "key": "entrelumen_start_solsticio_link",
-      "deps": [
-        "entrelumen_start_free_gated"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_start_solsticio_link", "deps": ["entrelumen_start_free_gated"], "type": "checkmark", "layout": {"x": 15.8, "y": -3.9, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:calcite",
-      "layout": {
-        "x": 15,
-        "y": -2.5,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "The Same Light Covers Solsticio",
-        "The city at the end of the story uses the same protection, gated by act VI. The exception is the player plots: 16 by 16, one per team, where only your team builds.\n\nHow to claim one: the Solsticio chapter."
-      ],
-      "es_es": [
-        "La misma luz cubre Solsticio",
-        "La ciudad del final de la historia usa la misma protección, habilitada en el acto VI. La excepción son los lotes de jugador: de 16 por 16, uno por equipo, donde sólo construye tu equipo.\n\nCómo reclamar uno: capítulo de Solsticio."
-      ],
-      "sources": [
-        "repo:docs/design/solsticio.md"
-      ]
+      "en_us": {"title": "The Same Light Covers Solsticio",
+        "text": ["[lead] The city at the end of the story uses the same protection, gated by act VI.",
+                 "The exception is the player plots, [big|16×16], one per team, where only your team builds.",
+                 "How to claim one: [chapter:guide_entrelumen_solsticio|the Solsticio chapter]."]},
+      "es_es": {"title": "La misma luz cubre Solsticio",
+        "text": ["[lead] La ciudad del final de la historia usa la misma protección, habilitada en el acto VI.",
+                 "La excepción son los lotes de jugador, de [big|16×16], uno por equipo, donde sólo construye tu equipo.",
+                 "Cómo reclamar uno: [chapter:guide_entrelumen_solsticio|capítulo de Solsticio]."]},
+      "sources": ["repo:docs/design/solsticio.md"]
     },
     {
-      "key": "entrelumen_start_respawn",
-      "deps": [
-        "entrelumen_start_ruin"
-      ],
-      "type": "item",
-      "item": "minecraft:red_bed",
-      "optional": true,
-      "layout": {
-        "x": 3,
-        "y": 5.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Your Spawn Is the Ruin",
-        "Until you sleep in a bed, you respawn at the start ruin. Set a bed or a Comforts sleeping spot near your first base early.\n\nTombstone keeps your items in a grave where you fall, so the walk back only costs you dignity."
-      ],
-      "es_es": [
-        "Truco: tu spawn es la ruina",
-        "Hasta que dormís en una cama, reaparecés en la ruina inicial. Poné una cama o un lugar para dormir de Comforts cerca de tu primera base, cuanto antes.\n\nTombstone guarda tus cosas en una tumba donde caés, así que la caminata de vuelta sólo te cuesta la dignidad."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-compass.md"
-      ]
+      "key": "entrelumen_start_respawn", "deps": ["entrelumen_start_ruin"], "type": "item", "item": "minecraft:red_bed", "optional": true, "layout": {"x": 2.5, "y": 2.8, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Tip: Your Spawn Is the Ruin",
+        "text": ["[lead] Until you sleep in a bed, you respawn at the start ruin.",
+                 "Set a [item:minecraft:red_bed|bed] or a Comforts sleeping spot near your first base early.",
+                 "Tombstone keeps your items in a grave where you fall, so the walk back only costs you dignity."]},
+      "es_es": {"title": "Truco: tu spawn es la ruina",
+        "text": ["[lead] Hasta que dormís en una cama, reaparecés en la ruina inicial.",
+                 "Poné una [item:minecraft:red_bed|cama] o un lugar para dormir de Comforts cerca de tu primera base, cuanto antes.",
+                 "Tombstone guarda tus cosas en una tumba donde caés, así que la caminata de vuelta sólo te cuesta la dignidad."]},
+      "sources": ["repo:docs/design/heliodor-compass.md"]
     },
     {
-      "key": "entrelumen_start_existing_worlds",
-      "deps": [
-        "entrelumen_start_respawn"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_start_existing_worlds", "deps": ["entrelumen_start_respawn"], "type": "checkmark", "optional": true, "layout": {"x": 2.5, "y": 5.3, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:command_block",
-      "layout": {
-        "x": 6,
-        "y": 5.5,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "For Operators: Older Worlds",
-        "Only brand-new worlds get the start ruin. In an older one, an operator places it with &e/entrelumen admin ruin&r (running it twice does nothing) and toggles a personal protection bypass for repairs with &e/entrelumen admin protection bypass&r."
-      ],
-      "es_es": [
-        "Para operadores: mundos viejos",
-        "Sólo los mundos nuevos reciben la ruina inicial. En uno anterior, un operador la coloca con &e/entrelumen admin ruin&r (repetirlo no hace nada) y activa para sí un bypass de protección para reparar con &e/entrelumen admin protection bypass&r."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-compass.md",
-        "repo:docs/design/solsticio.md",
-        "repo:companion/src/main/java/dev/entrelumen/Entrelumen.java"
-      ]
+      "en_us": {"title": "For Operators: Older Worlds",
+        "text": ["[lead] Only brand-new worlds get the start ruin.",
+                 "In an older one, an operator runs:",
+                 "[li] [hl|/entrelumen admin ruin] to place it; running it twice does nothing",
+                 "[li] [hl|/entrelumen admin protection bypass] to toggle a personal protection bypass for repairs"]},
+      "es_es": {"title": "Para operadores: mundos viejos",
+        "text": ["[lead] Sólo los mundos nuevos reciben la ruina inicial.",
+                 "En uno anterior, un operador usa:",
+                 "[li] [hl|/entrelumen admin ruin] para colocarla; repetirlo no hace nada",
+                 "[li] [hl|/entrelumen admin protection bypass] para activar un bypass de protección propio y reparar"]},
+      "sources": ["repo:docs/design/heliodor-compass.md", "repo:docs/design/solsticio.md", "repo:companion/src/main/java/dev/entrelumen/Entrelumen.java"]
     },
     {
-      "key": "entrelumen_start_residual",
-      "deps": [
-        "entrelumen_start_tools_quirk"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_start_residual", "deps": ["entrelumen_start_tools_quirk"], "type": "checkmark", "optional": true, "layout": {"x": 15.8, "y": -0.6, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:decorated_pot",
-      "layout": {
-        "x": 15,
-        "y": 1,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Blind Spots",
-        "A few things slip past: blocks changed by mods that skip the usual game events, projectiles breaking fragile blocks such as pots, and plot machines placing fluids or blocks right against a protected one (placed that way, they cannot spread further).\n\nFound a hole? Report it. Heliodor has enough holes already."
-      ],
-      "es_es": [
-        "Particularidad: puntos ciegos",
-        "Algunas cosas se escapan: bloques que cambian mods que saltean los eventos habituales del juego, proyectiles que rompen bloques frágiles como las vasijas, y máquinas de un lote que ponen fluidos o bloques pegados a uno protegido (puestos así, no se siguen propagando).\n\n¿Encontraste un agujero? Reportalo. Heliodor ya tiene bastantes."
-      ],
-      "sources": [
-        "repo:docs/design/solsticio.md"
-      ]
+      "en_us": {"title": "Quirk: Blind Spots",
+        "text": ["[lead] A few things slip past the protection:",
+                 "[li] Blocks changed by mods that skip the usual game events",
+                 "[li] Projectiles breaking fragile blocks, such as pots",
+                 "[li] Plot machines placing fluids or blocks right against a protected one; placed that way, they cannot spread further",
+                 "{page}",
+                 "Found a hole? Report it. Heliodor has enough holes already."]},
+      "es_es": {"title": "Particularidad: puntos ciegos",
+        "text": ["[lead] Algunas cosas se le escapan a la protección:",
+                 "[li] Bloques que cambian mods que saltean los eventos habituales del juego",
+                 "[li] Proyectiles que rompen bloques frágiles, como las vasijas",
+                 "[li] Máquinas de un lote que ponen fluidos o bloques pegados a uno protegido; puestos así, no se siguen propagando",
+                 "{page}",
+                 "¿Encontraste un agujero? Reportalo. Heliodor ya tiene bastantes."]},
+      "sources": ["repo:docs/design/solsticio.md"]
     },
     {
-      "key": "entrelumen_start_close",
-      "deps": [
-        "entrelumen_start_solsticio_link",
-        "entrelumen_start_residual",
-        "entrelumen_start_first_steps"
-      ],
-      "type": "item",
-      "item": "entrelumen:atlas",
-      "layout": {
-        "x": 18,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Ready to Leave the Patio",
-        "Empty pockets, a compass that knows the way and ruins that will not let you dig them up. Craft the Atlas and let it start talking.\n\nGood luck, traveller. Mind the columns: four are already broken."
-      ],
-      "es_es": [
-        "Listo para dejar el patio",
-        "Bolsillos vacíos, una brújula que sabe el camino y ruinas que no se dejan excavar. Fabricá el Atlas y dejalo hablar.\n\nSuerte, viajero. Cuidado con las columnas: cuatro ya están rotas."
-      ],
-      "sources": [
-        "repo:docs/design/story-bible.md"
-      ]
+      "key": "entrelumen_start_close", "deps": ["entrelumen_start_solsticio_link", "entrelumen_start_residual", "entrelumen_start_first_steps"], "type": "item", "item": "entrelumen:atlas", "layout": {"x": 18.2, "y": 1.0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Ready to Leave the Patio",
+        "text": ["[lead] Empty pockets, a compass that knows the way and ruins that will not let you dig them up.",
+                 "Craft the [item:entrelumen:atlas|Atlas] and let it start talking.",
+                 "Good luck, traveller. Mind the columns: four are already broken."]},
+      "es_es": {"title": "Listo para dejar el patio",
+        "text": ["[lead] Bolsillos vacíos, una brújula que sabe el camino y ruinas que no se dejan excavar.",
+                 "Fabricá el [item:entrelumen:atlas|Atlas] y dejalo hablar.",
+                 "Suerte, viajero. Cuidado con las columnas: cuatro ya están rotas."]},
+      "sources": ["repo:docs/design/story-bible.md"]
+    },
+    {
+      "key": "entrelumen_start_toy_polish", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 9.65, "y": 1.75, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:iron_axe",
+      "en_us": {"title": "Polish the Copper Sun",
+        "text": ["[lead] Oxidized copper turns green with time, and an axe scrapes it back.",
+                 "In the book one click will do. The patio keeps its patina: the light guards that too."]},
+      "es_es": {"title": "Pulir el sol de cobre",
+        "text": ["[lead] El cobre se pone verde con el tiempo, y un hacha lo raspa hasta que vuelve a brillar.",
+                 "En el libro alcanza con un clic. El patio conserva su pátina: la luz también cuida eso."]},
+      "sources": ["https://minecraft.wiki/w/Block_of_Copper#Oxidation", "repo:companion/src/main/java/dev/entrelumen/StructureProtection.java"]
+    },
+    {
+      "key": "entrelumen_start_toy_lanterns", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 5.5, "y": -1.75, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:lantern",
+      "en_us": {"title": "Light the Columns",
+        "text": ["[lead] Four whole columns, four lanterns, one click.",
+                 "In the real patio you could not place a torch anyway: the light keeps these places, and it does not like competition."]},
+      "es_es": {"title": "Prender las columnas",
+        "text": ["[lead] Cuatro columnas enteras, cuatro faroles, un clic.",
+                 "En el patio de verdad igual no podrías poner una antorcha: la luz cuida estos lugares y no le gusta la competencia."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/StructureProtection.java"]
     }
   ]
 }

@@ -14,6 +14,8 @@ Minecraft fonts come from resources. This module adds, on top of the markup of t
 - [careful] and [note] open callouts like [tip]: an icon, a coloured label and the text;
 - {rule} is a divider line;
 - a chapter with "presentation": 2 draws its [tip] prefix with the tip icon instead of "» ".
+- [glitch|abc] and [strike|word] are the Atlas's interference in a v2 story chapter, the markup form of the
+  &k and &m codes of v1 (a JSON line cannot hold & codes): obfuscated letters (up to 8) and a struck word.
 
 Fonts are resources, so they are client-side: the server syncs text, the companion ships the glyphs. A missing
 texture makes that one glyph a box, never breaks the text. Everything here is pure (reads the repository only);
@@ -26,7 +28,7 @@ import re
 FONT_ICONS = "entrelumen:quest_icons"
 FONT_BIG = "entrelumen:quest_big"
 FONT_DIR = "companion/src/main/resources/assets/entrelumen/font"
-TAGS = {"lead", "li", "icon", "big", "careful", "note"}
+TAGS = {"lead", "li", "icon", "big", "careful", "note", "glitch", "strike"}
 PARAGRAPH_TAGS = {"lead", "li", "careful", "note"}   # these open a paragraph, like [tip]
 WHITE = "#FFFFFF"
 RULE_COLOR = "#6B6456"
@@ -51,6 +53,7 @@ ITEM_ID = re.compile(r"[a-z0-9_.-]+:[a-z0-9_./-]+")
 TEXTURE = re.compile(r"[a-z0-9_.-]+:textures/[a-z0-9_./-]+\.png")
 BIG_CHARS = re.compile(r"[0-9A-Za-z ×·•→★%+./:,-]+")
 MAX_BIG = 10
+MAX_GLITCH = 8   # the Atlas's interference stays readable (tools/generate_quests.py MAX_GLITCH_CHARS)
 GLYPH_FIRST, GLYPH_LAST = 0xE100, 0xF0FF   # book glyphs, assigned in order (Private Use Area)
 TEST_FIRST = 0xF100                          # glyphs of refs no chapter uses (unit tests), by hash
 _REGISTRY = None
@@ -87,7 +90,7 @@ def registry():
     if _REGISTRY is None:
         import quest_engine
         textures = {NAMED["tip"]}
-        for data in quest_engine.load_sectors():
+        for data in quest_engine.load_sectors() + v2_chapters(quest_engine.ROOT):
             for q in data["quests"]:
                 for lang in ("en_us", "es_es"):
                     for para in q.get(lang, {}).get("text", []):
@@ -96,6 +99,20 @@ def registry():
         assert GLYPH_FIRST + len(ordered) <= GLYPH_LAST, "too many quest icons for the glyph range"
         _REGISTRY = {t: chr(GLYPH_FIRST + i) for i, t in enumerate(ordered)}
     return _REGISTRY
+
+
+def v2_chapters(root):
+    """The guide and story chapters in presentation v2 (content/guides/guide_*.json, content/*.json): their text
+    draws icons too. A v1 chapter's copy is [title, description] and draws none."""
+    out = []
+    for path in sorted((root / "content/guides").glob("guide_*.json")) + sorted((root / "content").glob("*.json")):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except ValueError:
+            continue
+        if isinstance(data, dict) and data.get("presentation", 1) >= 2 and isinstance(data.get("quests"), list):
+            out.append(data)
+    return out
 
 
 def glyph(texture):
@@ -125,6 +142,12 @@ def compile_tag(name, arg, parts, at_start, lang, ctx, where):
     if name == "icon":
         assert arg and not parts, f"{where}: [icon:ref]"
         return [icon_segment(arg, ctx)], None
+    if name in ("glitch", "strike"):
+        assert not arg and len(parts) == 1 and parts[0].strip(), f"{where}: [{name}|text]"
+        if name == "glitch":
+            assert len(parts[0].strip()) <= MAX_GLITCH, f"{where}: [glitch|…] hides at most {MAX_GLITCH} characters"
+            return [{"text": parts[0], "obfuscated": True}], None
+        return [{"text": parts[0], "strikethrough": True}], None
     if name == "big":
         assert not arg and len(parts) == 1 and parts[0], f"{where}: [big|text]"
         text = parts[0]

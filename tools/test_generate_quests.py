@@ -2,6 +2,8 @@
 import copy,hashlib,json,re,unittest
 from pathlib import Path
 from generate_quests import ROOT,OUT,generate_all,stable_id,load_chapters
+from quest_engine import TAG
+from quest_v2 import description_of as desc
 # Act VI (24 September 2026): SolsticioStoryRules.REQUIRES, the same graph the server enforces
 # (SolsticioStoryRulesTest compares the Java map with content/act_six.json).
 SOLSTICIO_STORY={'solsticio_mayor':['solsticio_arrival'],'solsticio_seeds':['solsticio_mayor'],
@@ -25,9 +27,24 @@ SEMANTIC={'a_light_among_ruins':'ae91bef690524c436f7c482f41d2726a3ed818f6587bc65
  'last_horizon':'c560d4e1a73b07cd12234cf170e4c2e577ca5c1b440b37b0c05dfc7635bedc41',
  'solsticio':'1ae1e4f01677868d322a848282598f20623a37c3bba1f0666069e9955b703f2d',
  'inventory_that_remembers':'6ba0b96efce3b81af9db8994bb6a83c9ff787b15679fd334f32507168529558c'}
+def content(quests):
+ """Compiled quests that are content: a decor toy (presentation v2, tools/quest_v2.py) never counts."""
+ return [q for q in quests if 'entrelumen_decor' not in q.get('tags',[])]
+def counted(data):
+ return [q for q in data['quests'] if q.get('role')!='decor']
+def copy_texts(q,locale):
+ """Every string of a quest's copy, v1 [title, description] or v2 {title, text}."""
+ c=q[locale]
+ return [c['title'],*c['text']] if isinstance(c,dict) else list(c)
+def visible(text):
+ """What a v2 paragraph shows: the text of its tags, without the markup."""
+ return TAG.sub(lambda m:''.join(m.group(3).split('|')[1:2]) if m.group(3) else '',text)
+def add_to_description(q,locale,extra):
+ if isinstance(q[locale],dict):q[locale]['text'][-1]+=extra
+ else:q[locale][1]+=extra
 def semantic_digest(text):
  c=json.loads(text)
- rows=[c['id']]+[json.dumps({k:q.get(k) for k in ('id','tasks','dependencies','icon','optional')},sort_keys=True) for q in c['quests']]
+ rows=[c['id']]+[json.dumps({k:q.get(k) for k in ('id','tasks','dependencies','icon','optional')},sort_keys=True) for q in content(c['quests'])]
  return hashlib.sha256(chr(10).join(rows).encode()).hexdigest()
 def expected_rewards(q,act):
  """content/quest_book.json: XP by act for tasks, XP and one act item for milestones; checkmarks nothing."""
@@ -116,7 +133,7 @@ class ChapterContracts(unittest.TestCase):
   self.chapters[1]['quests'][0]['key']='arrival'
   with self.assertRaisesRegex(AssertionError,'global quest key'):generate_all(self.chapters)
  def test_placeholder_parity_rejected(self):
-  self.chapters[1]['quests'][0]['es_es'][1]+=' %s'
+  add_to_description(self.chapters[1]['quests'][0],'es_es',' %s')
   with self.assertRaisesRegex(AssertionError,'placeholder mismatch'):generate_all(self.chapters)
  def test_act_two_spanish_mechanical_coverage_and_encoding(self):
   quests={q['key']:q for q in self.chapters[1]['quests']}
@@ -124,13 +141,14 @@ class ChapterContracts(unittest.TestCase):
                 'crafts_magebloom':['diamante','oro','sourcestone','cero'],
                 'crafts_rations':['Dos sopas','dos filetes','zanahoria','papa','remolacha','hojas verdes']}
   for key,words in requirements.items():
-   for word in words:self.assertIn(word,quests[key]['es_es'][1])
+   for word in words:self.assertIn(word,desc(quests[key],'es_es'))
   for q in quests.values():
-   for text in q['es_es']:
+   for text in copy_texts(q,'es_es'):
     self.assertNotIn('\u00c3',text)
     self.assertNotIn('\ufffd',text)
  def test_authority_graph_and_no_rewards(self):
   out=generate_all(self.chapters);second=json.loads(out[OUT/'chapters/the_lost_crafts.snbt'])
+  second['quests']=content(second['quests'])
   self.assertEqual(len(second['quests']),23)
   self.assertEqual(sum(q['tasks'][0]['type']=='entrelumen:campaign' for q in second['quests']),6)
   self.assert_act_rewards(second,2)
@@ -140,7 +158,7 @@ class ChapterContracts(unittest.TestCase):
   self.assertEqual(set(source['lost_workshop']['deps']),{'crafts_precision','crafts_crystal','crafts_living','crafts_pantry','crafts_exploration'})
  def test_act_two_ids_unchanged(self):
   c=json.loads(generate_all(self.chapters)[OUT/'chapters/the_lost_crafts.snbt'])
-  ids=[c['id']]+[i for q in c['quests'] for i in (q['id'],q['tasks'][0]['id'])]
+  ids=[c['id']]+[i for q in content(c['quests']) for i in (q['id'],q['tasks'][0]['id'])]
   # Ark v2: the Exploration Module quest joined act II.
   self.assertEqual(hashlib.sha256('\n'.join(ids).encode()).hexdigest(),'6f8d2c1c888a8d16ad23b70a8a12285cda7adec76eaf1994b25c5bf2f52a9415')
  def test_act_three_authority_and_gift_route(self):
@@ -287,7 +305,7 @@ class ChapterContracts(unittest.TestCase):
    'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c',
    'voices_of_the_atlas':'7e5407195c10e48c213b4588b6fc8c06a1b2862d9c531fb14c0a3277b7d8733c'}
   # Ark v2 added one module quest to each of acts I-IV.
-  self.assertEqual(sum(len(c['quests']) for c in self.chapters[:4]),110)
+  self.assertEqual(sum(len(counted(c)) for c in self.chapters[:4]),110)
   for chapter in expected:
    self.assertEqual(semantic_digest(out[OUT/'chapters'/(chapter+'.snbt')]),SEMANTIC[chapter])
   prior=generate_all(self.chapters[:4])
@@ -385,7 +403,7 @@ class ChapterContracts(unittest.TestCase):
   from generate_quests import snbt
   out=generate_all(self.chapters)
   prior=generate_all(self.chapters[:5])
-  self.assertEqual(sum(len(c['quests']) for c in self.chapters[:5]),134)
+  self.assertEqual(sum(len(counted(c)) for c in self.chapters[:5]),134)
   hashes={'a_light_among_ruins':'28fdd2969fdd6829c2cad480e2a54b74c9d1ba7ab980e7203831f2fea5304bae',
    'the_lost_crafts':'26dcb9e26fa44e764b56f1667141abae1ea0d37f66ec671b4d2e7a3263aa57e5',
    'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c',
@@ -466,7 +484,7 @@ class ChapterContracts(unittest.TestCase):
  def act_text(self,data,locale):
   parts=[data['title'][locale],*data.get('subtitle',{}).get(locale,[])]
   parts+=[labels[locale] for labels in data['layout_groups'].values()]
-  for q in data['quests']:parts+=q[locale]
+  for q in data['quests']:parts+=copy_texts(q,locale)
   return '\n'.join(parts)
  def test_act_titles_and_presentation(self):
   # Renumbered 24 September 2026: act V is two chapters (the plan and the activation), VI Solsticio.
@@ -550,14 +568,24 @@ class ChapterContracts(unittest.TestCase):
    for q in data['quests']:
     for locale in ('en_us','es_es'):
      with self.subTest(quest=q['key'],locale=locale):
+      if isinstance(q[locale],dict):
+       # Presentation v2 (tools/quest_v2.py): the what in the first paragraphs, the why (the lore) last.
+       text=[p for p in q[locale]['text'] if p not in ('{page}','{rule}')]
+       what,why=text[:-1],text[-1]
+       self.assertTrue(what and why.strip() and not re.match(r'\[(li|lead|tip|careful|note)\b',why))
+       self.assertLessEqual(len(visible(' '.join(text))),500)
+       continue
       what,why=q[locale][1].split('\n\n')
       self.assertTrue(what.strip() and why.strip())
       self.assertLessEqual(len(q[locale][1]),500)
  def test_atlas_interference_clears_after_the_heart(self):
+  # v1 speaks through &k and &m; a v2 chapter through [glitch|…] and [strike|…] (tools/quest_text.py).
   for data in self.chapters[:4]:
-   for locale in ('en_us','es_es'):self.assertRegex(self.act_text(data,locale),'&[km]')
+   for locale in ('en_us','es_es'):self.assertRegex(self.act_text(data,locale),r'&[km]|\[(glitch|strike)\|')
   for locale in ('en_us','es_es'):
-   for data in self.chapters[4:7]:self.assertNotIn('&',self.act_text(data,locale))
+   for data in self.chapters[4:7]:
+    self.assertNotIn('&',self.act_text(data,locale))
+    self.assertNotRegex(self.act_text(data,locale),r'\[(glitch|strike)\|')
  def test_formatting_codes_rejected_when_unsafe(self):
   from generate_quests import check_formatting
   check_formatting('A voice: …&kthose&r who… &mhave&r arrived.\n\nPlain.','ok',True)
@@ -579,7 +607,7 @@ class ChapterContracts(unittest.TestCase):
     path=reward.split(':')[1]
     for locale in ('en_us','es_es'):
      name=names[locale].get('item.entrelumen.'+path) or names[locale]['block.entrelumen.'+path]
-     with self.subTest(milestone=q['milestone'],locale=locale):self.assertIn(name.lower(),q[locale][1].lower())
+     with self.subTest(milestone=q['milestone'],locale=locale):self.assertIn(name.lower(),desc(q,locale).lower())
     checked.add(path)
   self.assertTrue({'peace_altar','growth_altar','terraform_altar','repose_altar','renewal_altar','time_altar','terra_arm',
                    'engineering_module','arcane_module','nature_module','logistics_module','habitation_module',

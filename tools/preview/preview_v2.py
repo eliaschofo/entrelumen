@@ -15,6 +15,9 @@ Rendering is Pillow only (no browser) and runs one at a time on this PC: tools/p
 E:/Elias/Codex/Entrelumen-ssd/render.lock for the whole batch and waits before each chapter while free memory is
 under 1.5 GB. Render what you need in one call, then let it exit.
 
+Any compiled chapter draws: sectors, guides and story chapters (by chapter name, or by content file:
+guide_entrelumen_start, the_lost_crafts, content/act_two.json).
+
 usage: python tools/preview/preview_v2.py sector_x [sector_y ...] [--state fresh,0.33,0.66,done | steps]
            [--locale es_es|en_us|both] [--panels all|KEY,KEY] [--gui 2] [--screen] [--sheet]
            [--tree <worktree>] [--out <folder>] [--scale N]
@@ -311,11 +314,12 @@ class Book:
         self.zl = zipfile.ZipFile(pinned_jar(tree, "ftb-library-neoforge-"))
         self.shape_cache = {}
         self.keys = {}   # quest id -> key, for file names and sheet labels
-        for p in sorted((self.tree / "content/sectors").glob("sector_*.json")) + sorted((self.tree / "content/guides").glob("*.json")):
+        for p in (sorted((self.tree / "content/sectors").glob("sector_*.json")) + sorted((self.tree / "content/guides").glob("*.json"))
+                  + sorted((self.tree / "content").glob("*.json"))):   # story chapters too
             try:
                 for qq in json.loads(p.read_text(encoding="utf-8")).get("quests", []):
                     self.keys[stable_id("quest:" + qq["key"])] = qq["key"]
-            except (ValueError, KeyError, TypeError):
+            except (ValueError, KeyError, TypeError, AttributeError):
                 pass
 
     def key_of(self, qid):
@@ -801,9 +805,18 @@ def state_name(state):
     return state if state in ("fresh", "done") else f"{round(float(state) * 100):02d}pct"
 
 
+def chapter_name(tree, arg):
+    """A chapter name, or the "chapter" of a content file (story files are named after their act, not their chapter)."""
+    if arg.endswith(".json"):
+        path = Path(arg) if Path(arg).is_absolute() else tree / arg
+        return json.loads(path.read_text(encoding="utf-8"))["chapter"]
+    return arg
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("chapters", nargs="+", help="chapter file names (sector_x); the generated .snbt must exist")
+    ap.add_argument("chapters", nargs="+", help="chapter names (sector_x, guide_x, the_lost_crafts) or content files "
+                                                "(content/act_two.json); the generated .snbt must exist")
     ap.add_argument("--tree", default=str(ROOT), help="worktree to draw (default: this one)")
     ap.add_argument("--out", help="output folder (default: E:/Elias/Codex/Entrelumen-ssd/previews/<worktree name>)")
     ap.add_argument("--state", default="fresh,done", help="fresh, done, shares like 0.5, or steps (5 states)")
@@ -815,6 +828,7 @@ def main(argv=None):
     ap.add_argument("--scale", type=int, default=1)
     args = ap.parse_args(argv)
     tree = Path(args.tree).resolve()
+    args.chapters = [chapter_name(tree, c) for c in args.chapters]
     out = Path(args.out) if args.out else OUT_BASE / tree.name
     try:
         out.resolve().relative_to(ROOT.resolve())

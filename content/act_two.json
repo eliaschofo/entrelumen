@@ -1,597 +1,403 @@
 {
   "chapter": "the_lost_crafts",
   "act": 2,
-  "title": {
-    "en_us": "II · The Lost Crafts",
-    "es_es": "II · Los oficios perdidos"
-  },
+  "title": {"en_us": "II · The Lost Crafts", "es_es": "II · Los oficios perdidos"},
   "subtitle": {
-    "en_us": [
-      "A workshop the earth swallowed keeps Heliodor's crafts: measuring, powering, growing and feeding. Someone once brought them to one bench."
-    ],
-    "es_es": [
-      "Un taller que se tragó la tierra guarda los oficios de Heliodor: medir, dar energía, hacer crecer y alimentar. Alguien los reunió una vez en una sola mesa."
-    ]
+    "en_us": ["A workshop the earth swallowed keeps Heliodor's crafts: measuring, powering, growing and feeding. Someone once brought them to one bench."],
+    "es_es": ["Un taller que se tragó la tierra guarda los oficios de Heliodor: medir, dar energía, hacer crecer y alimentar. Alguien los reunió una vez en una sola mesa."]
   },
   "autofocus": "crafts_welcome",
-  "milestones": [
-    "precision_bench",
-    "crystal_grid",
-    "living_workshop",
-    "travelling_pantry",
-    "exploration_module",
-    "lost_workshop"
+  "milestones": ["precision_bench", "crystal_grid", "living_workshop", "travelling_pantry", "exploration_module", "lost_workshop"],
+  "layout_groups": {"archive": {"en_us": "The Sunken Workshop", "es_es": "El Taller hundido"}, "precision": {"en_us": "Terra · Measure and shape", "es_es": "Terra · Medir y dar forma"}, "crystal": {"en_us": "Power with a purpose", "es_es": "Energía con un propósito"}, "living": {"en_us": "A workshop that grows", "es_es": "Un taller que crece"}, "pantry": {"en_us": "J. · Provision the journey", "es_es": "J. · Preparar el viaje"}},
+  "book": {"panels": false},
+  "presentation": 2,
+  "art": [
+    {"id": "surface", "path": [[-10.4, -2.6], [14.2, -2.6]], "texture": "minecraft:textures/block/moss_block.png", "width": 0.45, "step": 1.0, "sketch": true, "reveal": "crafts_welcome", "order": -8},
+    {"id": "earth", "scatter": ["minecraft:textures/block/dirt.png", "minecraft:textures/block/coarse_dirt.png", "minecraft:textures/block/rooted_dirt.png", "minecraft:textures/block/tuff.png"], "region": [-10.2, -2.3, 14.0, -1.15], "count": 28, "size": [0.5, 0.8], "alphas": [45, 85], "seed": 11, "avoid": [[0, -1.6, 0.6]], "order": -9},
+    {"id": "ladder", "path": [[0, -2.6], [0, -0.55]], "texture": "minecraft:textures/block/ladder.png", "width": 0.6, "step": 0.6, "turn": true, "sketch": true, "reveal": "crafts_welcome", "order": -6},
+    {"id": "roots", "sprite": "minecraft:block/hanging_roots", "cells": [[-5.2, -0.45], [4.1, -0.45], [9.6, -0.45]], "w": 0.6, "h": 0.8, "reveal": "crafts_welcome", "order": -6},
+    {"id": "hall", "frame": [-9.9, -0.9, 13.7, 11.9], "color": "#8A7F6E", "thickness_px": 2.0, "alpha": 200, "fill": "#1C1814", "fill_alpha": 120, "sketch": true, "reveal": "crafts_welcome", "order": -9},
+    {"id": "catwalk_west", "through": ["crafts_welcome", [-2.25, 0], [-6.0, 0], [-7.5, 0]], "texture": "minecraft:textures/block/stripped_dark_oak_log.png", "width": 0.3, "step": 0.6, "grow": ["crafts_spellbook", "crafts_wire", "crafts_waterwheel"], "sketch": true, "order": -6},
+    {"id": "catwalk_east", "through": ["crafts_welcome", [2.25, 0], [6.75, 0], [11.25, 0]], "texture": "minecraft:textures/block/stripped_dark_oak_log.png", "width": 0.3, "step": 0.6, "grow": ["crafts_coal", "crafts_pot", "crafts_exploration"], "sketch": true, "order": -6},
+    {"id": "chain_0", "sprite": "minecraft:block/chain", "x": -7.5, "y": 0.85, "w": 0.5, "h": 1.1, "reveal": "crafts_waterwheel", "order": -5},
+    {"id": "chain_1", "sprite": "minecraft:block/chain", "x": -6.0, "y": 0.85, "w": 0.5, "h": 1.1, "reveal": "crafts_wire", "order": -5},
+    {"id": "chain_2", "sprite": "minecraft:block/chain", "x": -2.25, "y": 0.85, "w": 0.5, "h": 1.1, "reveal": "crafts_spellbook", "order": -5},
+    {"id": "chain_3", "sprite": "minecraft:block/chain", "x": 2.25, "y": 0.85, "w": 0.5, "h": 1.1, "reveal": "crafts_coal", "order": -5},
+    {"id": "chain_4", "sprite": "minecraft:block/chain", "x": 6.75, "y": 0.85, "w": 0.5, "h": 1.1, "reveal": "crafts_pot", "order": -5},
+    {"id": "stream", "path": [[-9.35, -2.6], [-9.35, 0.7], [-8.9, 1.4]], "sprite": "minecraft:block/water_flow", "tint": "#3F76E4", "width": 0.6, "step": 0.6, "sketch": true, "reveal": "crafts_waterwheel", "order": -5},
+    {"id": "wheel", "item": "create:water_wheel", "x": -8.85, "y": 2.1, "size": 1.15, "reveal": "crafts_waterwheel"},
+    {"id": "shaft", "through": ["crafts_waterwheel", "crafts_press", "crafts_goggles"], "texture": "create:textures/block/axis.png", "width": 0.45, "step": 0.45, "turn": true, "grow": true, "sketch": true, "order": -4},
+    {"id": "press_row_1", "item": "create:mechanical_press", "x": -8.85, "y": 3.5, "size": 0.85, "reveal": "crafts_press"},
+    {"id": "press_row_2", "item": "create:mechanical_press", "x": -8.85, "y": 5.0, "size": 0.85, "reveal": "crafts_press"},
+    {"id": "press_row_3", "item": "create:mechanical_press", "x": -8.85, "y": 6.5, "size": 0.85, "reveal": "crafts_press"},
+    {"id": "coil", "item": "immersiveengineering:wire_copper", "x": -4.95, "y": 2.9, "size": 0.7, "reveal": "crafts_wire"},
+    {"id": "shelf", "picture": "minecraft:textures/block/bookshelf.png", "x": -3.65, "y": 2.0, "w": 0.95, "h": 0.95, "sketch": true, "reveal": "crafts_spellbook"},
+    {"id": "gems", "sprite": "minecraft:block/amethyst_cluster", "cells": [[-3.6, 3.35], [-3.25, 4.0], [-1.0, 3.7]], "w": 0.6, "h": 0.6, "reveal": "crafts_sourcegem", "order": -3},
+    {"id": "bed", "picture": "minecraft:textures/block/rooted_dirt.png", "x": -2.25, "y": 7.75, "w": 3.0, "h": 0.4, "sketch": true, "reveal": "crafts_magebloom"},
+    {"id": "blooms", "sprite": "ars_nouveau:block/manabloom/stage4", "cells": [[-3.3, 7.25], [-2.6, 7.25], [-1.9, 7.25], [-1.2, 7.25]], "w": 0.6, "h": 0.6, "reveal": "crafts_magebloom", "order": -3},
+    {"id": "bed_ready", "glow": [-2.25, 7.4], "r": 1.3, "alpha": 110, "reveal": "crafts_replant"},
+    {"id": "generator", "item": "actuallyadditions:coal_generator", "x": 3.5, "y": 2.0, "size": 0.9, "reveal": "crafts_coal"},
+    {"id": "smoke", "scatter": "minecraft:textures/particle/big_smoke_0.png", "region": [3.2, 0.55, 4.3, 1.35], "count": 3, "size": [0.35, 0.55], "alphas": [110, 160], "seed": 2, "reveal": "crafts_coal", "order": -2},
+    {"id": "reconstructor", "item": "actuallyadditions:atomic_reconstructor", "x": 3.5, "y": 3.5, "size": 0.9, "reveal": "crafts_reconstructor"},
+    {"id": "beam", "through": ["crafts_reconstructor", "crafts_restonia"], "color": "#FF4A3A", "width": 0.12, "grow": true, "sketch": true, "order": -3},
+    {"id": "crystal_1", "item": "actuallyadditions:restonia_crystal", "x": 3.35, "y": 5.25, "size": 0.6, "reveal": "crafts_restonia"},
+    {"id": "crystal_2", "item": "actuallyadditions:restonia_crystal", "x": 3.9, "y": 4.8, "size": 0.6, "reveal": "crafts_restonia"},
+    {"id": "hum", "glow": [3.6, 5.0], "r": 0.95, "reveal": "crafts_restonia"},
+    {"id": "campfire", "item": "minecraft:campfire", "x": 7.95, "y": 2.6, "size": 0.7, "reveal": "crafts_pot", "order": -2},
+    {"id": "pot", "item": "farmersdelight:cooking_pot", "x": 7.95, "y": 1.95, "size": 0.8, "reveal": "crafts_pot"},
+    {"id": "canal", "path": [[4.8, 7.9], [13.5, 7.9]], "sprite": "minecraft:block/water_still", "tint": "#3F76E4", "width": 0.75, "step": 0.75, "sketch": true, "reveal": "crafts_fillets", "order": -5},
+    {"id": "fish", "scatter": ["minecraft:textures/item/cod.png", "minecraft:textures/item/salmon.png"], "region": [5.0, 7.65, 13.3, 8.15], "count": 5, "size": [0.4, 0.55], "seed": 4, "reveal": "crafts_fillets", "order": -4},
+    {"id": "rations", "picture": "entrelumen:textures/item/ration_bundle.png", "x": 7.95, "y": 5.0, "w": 0.7, "h": 0.7, "reveal": "crafts_rations", "sketch": true},
+    {"id": "map", "picture": "minecraft:textures/map/map_background.png", "x": 11.25, "y": 5.3, "w": 2.6, "h": 2.6, "rotation": -6, "sketch": true, "reveal": "crafts_exploration", "order": -5},
+    {"id": "road_on_map", "path": [[10.3, 6.2], [10.8, 5.0], [11.6, 5.6], [12.1, 4.4]], "smooth": 6, "dots": "#7A4A26", "size": 0.12, "step": 0.25, "reveal": "crafts_exploration", "order": -4},
+    {"id": "compass", "item": "minecraft:compass", "x": 12.55, "y": 6.3, "size": 0.6, "reveal": "crafts_exploration"},
+    {"id": "spyglass", "item": "minecraft:spyglass", "x": 10.0, "y": 4.3, "size": 0.6, "rotation": 30, "reveal": "crafts_exploration"},
+    {"id": "bench_precision", "picture": "create:textures/block/andesite_casing.png", "x": -6.75, "y": 10.6, "w": 3.8, "h": 0.36, "sketch": true, "reveal": "crafts_precision", "order": -3},
+    {"id": "leg_precision_l", "picture": "create:textures/block/andesite_casing.png", "x": -8.5, "y": 11.3, "w": 0.3, "h": 0.95, "sketch": true, "reveal": "crafts_precision", "order": -3},
+    {"id": "leg_precision_r", "picture": "create:textures/block/andesite_casing.png", "x": -5.0, "y": 11.3, "w": 0.3, "h": 0.95, "sketch": true, "reveal": "crafts_precision", "order": -3},
+    {"id": "sign_precision", "text": {"en_us": "Measure", "es_es": "Medir"}, "x": -6.75, "y": 11.25, "scale": 2, "tint": "#E8DCB5"},
+    {"id": "scratch_precision", "text": {"en_us": "Terra", "es_es": "Terra"}, "x": -6.75, "y": 10.6, "scale": 1, "font": "minecraft:alt", "tint": "#2A2118", "shadow": false, "reveal": "crafts_precision", "order": 6},
+    {"id": "bench_living", "picture": "ars_nouveau:textures/block/archwood_planks.png", "x": -2.25, "y": 10.6, "w": 3.8, "h": 0.36, "sketch": true, "reveal": "crafts_living", "order": -3},
+    {"id": "leg_living_l", "picture": "ars_nouveau:textures/block/archwood_planks.png", "x": -4.0, "y": 11.3, "w": 0.3, "h": 0.95, "sketch": true, "reveal": "crafts_living", "order": -3},
+    {"id": "leg_living_r", "picture": "ars_nouveau:textures/block/archwood_planks.png", "x": -0.5, "y": 11.3, "w": 0.3, "h": 0.95, "sketch": true, "reveal": "crafts_living", "order": -3},
+    {"id": "sign_living", "text": {"en_us": "Grow", "es_es": "Crecer"}, "x": -2.25, "y": 11.25, "scale": 2, "tint": "#E8DCB5"},
+    {"id": "scratch_living", "text": {"en_us": "Terra", "es_es": "Terra"}, "x": -2.25, "y": 10.6, "scale": 1, "font": "minecraft:alt", "tint": "#2A2118", "shadow": false, "reveal": "crafts_living", "order": 6},
+    {"id": "bench_crystal", "picture": "actuallyadditions:textures/block/black_quartz_block.png", "x": 2.25, "y": 10.6, "w": 3.8, "h": 0.36, "sketch": true, "reveal": "crafts_crystal", "order": -3},
+    {"id": "leg_crystal_l", "picture": "actuallyadditions:textures/block/black_quartz_block.png", "x": 0.5, "y": 11.3, "w": 0.3, "h": 0.95, "sketch": true, "reveal": "crafts_crystal", "order": -3},
+    {"id": "leg_crystal_r", "picture": "actuallyadditions:textures/block/black_quartz_block.png", "x": 4.0, "y": 11.3, "w": 0.3, "h": 0.95, "sketch": true, "reveal": "crafts_crystal", "order": -3},
+    {"id": "sign_crystal", "text": {"en_us": "Power", "es_es": "Energía"}, "x": 2.25, "y": 11.25, "scale": 2, "tint": "#E8DCB5"},
+    {"id": "scratch_crystal", "text": {"en_us": "Terra", "es_es": "Terra"}, "x": 2.25, "y": 10.6, "scale": 1, "font": "minecraft:alt", "tint": "#2A2118", "shadow": false, "reveal": "crafts_crystal", "order": 6},
+    {"id": "bench_pantry", "picture": "minecraft:textures/block/spruce_planks.png", "x": 6.75, "y": 10.6, "w": 3.8, "h": 0.36, "sketch": true, "reveal": "crafts_pantry", "order": -3},
+    {"id": "leg_pantry_l", "picture": "minecraft:textures/block/spruce_planks.png", "x": 5.0, "y": 11.3, "w": 0.3, "h": 0.95, "sketch": true, "reveal": "crafts_pantry", "order": -3},
+    {"id": "leg_pantry_r", "picture": "minecraft:textures/block/spruce_planks.png", "x": 8.5, "y": 11.3, "w": 0.3, "h": 0.95, "sketch": true, "reveal": "crafts_pantry", "order": -3},
+    {"id": "sign_pantry", "text": {"en_us": "Feed", "es_es": "Alimentar"}, "x": 6.75, "y": 11.25, "scale": 2, "tint": "#E8DCB5"},
+    {"id": "scratch_pantry", "text": {"en_us": "Terra", "es_es": "Terra"}, "x": 6.75, "y": 10.6, "scale": 1, "font": "minecraft:alt", "tint": "#2A2118", "shadow": false, "reveal": "crafts_pantry", "order": 6},
+    {"id": "bench_exploration", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 11.25, "y": 10.6, "w": 3.8, "h": 0.36, "sketch": true, "reveal": "crafts_exploration", "order": -3},
+    {"id": "leg_exploration_l", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 9.5, "y": 11.3, "w": 0.3, "h": 0.95, "sketch": true, "reveal": "crafts_exploration", "order": -3},
+    {"id": "leg_exploration_r", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 13.0, "y": 11.3, "w": 0.3, "h": 0.95, "sketch": true, "reveal": "crafts_exploration", "order": -3},
+    {"id": "sign_exploration", "text": {"en_us": "Travel", "es_es": "Viajar"}, "x": 11.25, "y": 11.25, "scale": 2, "tint": "#E8DCB5"},
+    {"id": "scratch_exploration", "text": {"en_us": "Terra", "es_es": "Terra"}, "x": 11.25, "y": 10.6, "scale": 1, "font": "minecraft:alt", "tint": "#2A2118", "shadow": false, "reveal": "crafts_exploration", "order": 6},
+    {"id": "vault", "picture": "minecraft:textures/block/vault_front_on.png", "x": -2.7, "y": 13.3, "w": 1.3, "h": 1.3, "sketch": true, "reveal": "crafts_archive"},
+    {"id": "blueprint", "picture": "entrelumen:textures/item/terra_blueprint.png", "x": -2.7, "y": 14.6, "w": 0.8, "h": 0.8, "reveal": "crafts_archive"},
+    {"id": "arm", "item": "entrelumen:terra_arm", "x": 2.7, "y": 13.3, "size": 1.2, "reveal": "crafts_archive"},
+    {"id": "name", "text": {"en_us": "TERRA", "es_es": "TERRA"}, "x": 3.7, "y": 14.7, "scale": 3, "align": "start", "tint": "#F2C14E", "reveal": "crafts_archive"},
+    {"id": "road_out", "through": ["crafts_archive", "crafts_route_forward", [5.5, 17.6], [13.5, 17.6]], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.7, "step": 0.7, "grow": true, "sketch": true, "order": -6},
+    {"id": "lamp_0", "item": "minecraft:lantern", "x": -8.4, "y": 0.45, "size": 0.5, "reveal": "crafts_shift_bell"},
+    {"id": "lamp_glow_0", "glow": [-8.4, 0.5], "r": 1.2, "reveal": "crafts_shift_bell"},
+    {"id": "lamp_1", "item": "minecraft:lantern", "x": -4.5, "y": 0.45, "size": 0.5, "reveal": "crafts_shift_bell"},
+    {"id": "lamp_glow_1", "glow": [-4.5, 0.5], "r": 1.2, "reveal": "crafts_shift_bell"},
+    {"id": "lamp_2", "item": "minecraft:lantern", "x": 4.5, "y": 0.45, "size": 0.5, "reveal": "crafts_shift_bell"},
+    {"id": "lamp_glow_2", "glow": [4.5, 0.5], "r": 1.2, "reveal": "crafts_shift_bell"},
+    {"id": "lamp_3", "item": "minecraft:lantern", "x": 9.0, "y": 0.45, "size": 0.5, "reveal": "crafts_shift_bell"},
+    {"id": "lamp_glow_3", "glow": [9.0, 0.5], "r": 1.2, "reveal": "crafts_shift_bell"},
+    {"id": "lamp_4", "item": "minecraft:lantern", "x": 12.6, "y": 0.45, "size": 0.5, "reveal": "crafts_shift_bell"},
+    {"id": "lamp_glow_4", "glow": [12.6, 0.5], "r": 1.2, "reveal": "crafts_shift_bell"}
   ],
-  "layout_groups": {
-    "archive": {
-      "en_us": "The Sunken Workshop",
-      "es_es": "El Taller hundido"
-    },
-    "precision": {
-      "en_us": "Terra · Measure and shape",
-      "es_es": "Terra · Medir y dar forma"
-    },
-    "crystal": {
-      "en_us": "Power with a purpose",
-      "es_es": "Energía con un propósito"
-    },
-    "living": {
-      "en_us": "A workshop that grows",
-      "es_es": "Un taller que crece"
-    },
-    "pantry": {
-      "en_us": "J. · Provision the journey",
-      "es_es": "J. · Preparar el viaje"
-    }
-  },
   "quests": [
     {
-      "key": "crafts_welcome",
-      "deps": [
-        "signal"
-      ],
-      "layout": {
-        "group": "archive",
-        "x": 0,
-        "y": 0,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Four benches, one workshop",
-        "Four benches, four crafts: work them in any order. Only a delivery in the Atlas moves your team's story; everything else is practice.\n\nThe signal led to a workshop the earth swallowed. Four benches, four crafts, and one name scratched into every one: Terra."
-      ],
-      "es_es": [
-        "Cuatro mesas, un taller",
-        "Cuatro bancos, cuatro oficios: trabajalos en el orden que quieras. Sólo una entrega en el Atlas mueve la historia de tu equipo; lo demás es práctica.\n\nLa señal llevaba a un taller que se tragó la tierra. Cuatro mesas, cuatro oficios y un nombre rayado en cada una: Terra."
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "entrelumen:atlas"
+      "key": "crafts_welcome", "deps": ["signal"], "layout": {"group": "archive", "x": 0, "y": 0, "size": 0.75, "shape": "circle", "hide_dependent_lines": true}, "type": "checkmark", "optional": true,
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "Four benches, one workshop",
+        "text": ["[lead] Four benches, four crafts: work them in any order.",
+                 "Only a delivery in the Atlas moves your team's story; everything else is practice.",
+                 "The signal led to a workshop the earth swallowed. Four benches, four crafts, and one name scratched into every one: Terra."]},
+      "es_es": {"title": "Cuatro mesas, un taller",
+        "text": ["[lead] Cuatro mesas, cuatro oficios: trabajalos en el orden que quieras.",
+                 "Sólo una entrega en el Atlas mueve la historia de tu equipo; lo demás es práctica.",
+                 "La señal llevaba a un taller que se tragó la tierra. Cuatro mesas, cuatro oficios y un nombre rayado en cada una: Terra."]}
     },
     {
-      "key": "crafts_waterwheel",
-      "deps": [
-        "crafts_welcome"
-      ],
-      "layout": {
-        "group": "precision",
-        "x": -7.5,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Let water do the turning",
-        "Craft a Create water wheel from planks around a shaft, and use its Ponder scene to set it in flowing water.\n\nTerra's first note starts with a stream, not a furnace: 'Borrow a force before you make one.'"
-      ],
-      "es_es": [
-        "Que el agua haga girar",
-        "Fabricá una rueda hidráulica de Create con tablones alrededor de un eje y usá su escena de Ponder para ponerla en agua que corra.\n\nLa primera nota de Terra empieza con un arroyo, no con un horno: «Tomá prestada una fuerza antes de fabricar una»."
-      ],
-      "item": "create:water_wheel"
+      "key": "crafts_waterwheel", "deps": ["crafts_welcome"], "layout": {"group": "precision", "x": -7.5, "y": 2, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "create:water_wheel",
+      "en_us": {"title": "Let water do the turning",
+        "text": ["[lead] Craft a Create [item:create:water_wheel|water wheel] from planks around a [item:create:shaft|shaft].",
+                 "Its Ponder scene shows how to set it in flowing water.",
+                 "Terra's first note starts with a stream, not a furnace: 'Borrow a force before you make one.'"]},
+      "es_es": {"title": "Que el agua haga girar",
+        "text": ["[lead] Fabricá una [item:create:water_wheel|rueda hidráulica] de Create con tablones alrededor de un [item:create:shaft|eje].",
+                 "Su escena de Ponder muestra cómo ponerla en agua que corra.",
+                 "La primera nota de Terra empieza con un arroyo, no con un horno: «Tomá prestada una fuerza antes de fabricar una»."]}
     },
     {
-      "key": "crafts_press",
-      "deps": [
-        "crafts_waterwheel"
-      ],
-      "layout": {
-        "group": "precision",
-        "x": -7.5,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "An iron ingot, made flat",
-        "Connect a mechanical press to rotation with a depot under its head, as Ponder shows, and press iron ingots into iron sheets.\n\nIn the Sunken Workshop the presses still stand in a row, rusted mid-stroke."
-      ],
-      "es_es": [
-        "Un lingote de hierro, aplanado",
-        "Conectá una prensa mecánica a la rotación con un depósito bajo el cabezal, como muestra Ponder, y prensá lingotes de hierro hasta tener láminas.\n\nEn el Taller hundido las prensas siguen en fila, oxidadas a mitad de golpe."
-      ],
-      "item": "create:mechanical_press"
+      "key": "crafts_press", "deps": ["crafts_waterwheel"], "layout": {"group": "precision", "x": -7.5, "y": 3.5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "create:mechanical_press", "hide_lines": true,
+      "en_us": {"title": "An iron ingot, made flat",
+        "text": ["[lead] Press [item:minecraft:iron_ingot|iron ingots] into [item:create:iron_sheet|iron sheets].",
+                 "Connect a [item:create:mechanical_press|mechanical press] to rotation with a [item:create:depot|depot] under its head, as Ponder shows.",
+                 "In the Sunken Workshop the presses still stand in a row, rusted mid-stroke."]},
+      "es_es": {"title": "Un lingote de hierro, aplanado",
+        "text": ["[lead] Prensá [item:minecraft:iron_ingot|lingotes de hierro] hasta tener [item:create:iron_sheet|láminas de hierro].",
+                 "Conectá una [item:create:mechanical_press|prensa mecánica] a la rotación con un [item:create:depot|depósito] bajo el cabezal, como muestra Ponder.",
+                 "En el Taller hundido las prensas siguen en fila, oxidadas a mitad de golpe."]}
     },
     {
-      "key": "crafts_goggles",
-      "deps": [
-        "crafts_press"
-      ],
-      "layout": {
-        "group": "precision",
-        "x": -7.5,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Read the strain",
-        "Make Engineer's Goggles (glass, string and a gold plate from your press), wear them and compare a machine's speed and stress before adding another.\n\nTerra crossed out 'make it turn faster' and wrote 'measure first'. Somebody above her kept asking for more."
-      ],
-      "es_es": [
-        "Leer el esfuerzo",
-        "Fabricá las gafas de ingeniero (vidrio, hilo y una placa de oro de tu prensa), ponételas y compará velocidad y esfuerzo de una máquina antes de sumar otra.\n\nTerra tachó «hacelo girar más rápido» y escribió «medí primero». Alguien por encima de ella siempre pedía más."
-      ],
-      "item": "create:goggles"
+      "key": "crafts_goggles", "deps": ["crafts_press"], "layout": {"group": "precision", "x": -7.5, "y": 5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "create:goggles", "hide_lines": true,
+      "en_us": {"title": "Read the strain",
+        "text": ["[lead] Measure a machine's speed and stress before you add another.",
+                 "Make [item:create:goggles|Engineer's Goggles] from glass, string and a [item:create:golden_sheet|gold plate] from your press, and wear them.",
+                 "Terra crossed out 'make it turn faster' and wrote 'measure first'. Somebody above her kept asking for more."]},
+      "es_es": {"title": "Leer el esfuerzo",
+        "text": ["[lead] Medí la velocidad y el esfuerzo de una máquina antes de sumar otra.",
+                 "Fabricá las [item:create:goggles|gafas de ingeniero] con vidrio, hilo y una [item:create:golden_sheet|placa de oro] de tu prensa, y ponételas.",
+                 "Terra tachó «hacelo girar más rápido» y escribió «medí primero». Alguien por encima de ella siempre pedía más."]}
     },
     {
-      "key": "crafts_wire",
-      "deps": [
-        "crafts_welcome"
-      ],
-      "layout": {
-        "group": "precision",
-        "x": -6,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Wire without a factory",
-        "With Immersive Engineering's hammer turn a copper ingot into a plate, then use its wirecutters to make copper wire for your first connections.\n\nA hand route for when the machines are gone. Terra always left one."
-      ],
-      "es_es": [
-        "Alambre sin una fábrica",
-        "Con el martillo de Immersive Engineering convertí un lingote de cobre en placa y con los alicates, en alambre para tus primeras conexiones.\n\nUna ruta a mano para cuando no queden máquinas. Terra siempre dejaba una."
-      ],
-      "item": "immersiveengineering:wire_copper"
+      "key": "crafts_wire", "deps": ["crafts_welcome"], "layout": {"group": "precision", "x": -6, "y": 2, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "immersiveengineering:wire_copper",
+      "en_us": {"title": "Wire without a factory",
+        "text": ["[lead] Copper wire, made by hand:",
+                 "[li] Immersive Engineering's hammer turns a [item:minecraft:copper_ingot|copper ingot] into a plate",
+                 "[li] Its wirecutters turn the plate into [item:immersiveengineering:wire_copper|copper wire] for your first connections",
+                 "A hand route for when the machines are gone. Terra always left one."]},
+      "es_es": {"title": "Alambre sin una fábrica",
+        "text": ["[lead] Alambre de cobre, hecho a mano:",
+                 "[li] El martillo de Immersive Engineering convierte un [item:minecraft:copper_ingot|lingote de cobre] en placa",
+                 "[li] Los alicates convierten la placa en [item:immersiveengineering:wire_copper|alambre de cobre] para tus primeras conexiones",
+                 "Una ruta a mano para cuando no queden máquinas. Terra siempre dejaba una."]}
     },
     {
-      "key": "crafts_precision",
-      "deps": [
-        "signal"
-      ],
-      "layout": {
-        "group": "precision",
-        "x": -6.75,
-        "y": 9.5,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A Measure of Iron",
-        "Build a Mekanism metallurgic infuser with one frame from First Signal, then infuse a raw lens with redstone to copy the frame. Deliver the copy to Precision Bench in the Atlas and keep the infuser running: every later frame comes from it.\n\nTerra's standard joins hand tools and machines in one measure. The same frame holds Heliodor's lens in its solar heating plates."
-      ],
-      "es_es": [
-        "Una medida de hierro",
-        "Construí un infusor metalúrgico de Mekanism con un marco de Primera señal e infundí redstone en una lente en bruto para copiar el marco. Entregá la copia en Banco de precisión desde el Atlas y dejá el infusor andando: todos los marcos que siguen salen de ahí.\n\nLa medida de Terra une herramientas y máquinas. El mismo marco sostiene la lente de Heliodor en sus placas solares."
-      ],
-      "milestone": "precision_bench",
-      "icon": "entrelumen:calibration_frame"
+      "key": "crafts_precision", "deps": ["signal"], "layout": {"group": "precision", "x": -6.75, "y": 9.5, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false}, "milestone": "precision_bench",
+      "icon": "entrelumen:calibration_frame",
+      "en_us": {"title": "A Measure of Iron",
+        "text": ["[lead] Copy the frame from First Signal, and keep the infuser running.",
+                 "Build a Mekanism [item:mekanism:metallurgic_infuser|metallurgic infuser] with that frame, then infuse a [item:entrelumen:raw_lens|raw lens] with redstone to copy it.",
+                 "Deliver the copy to Precision Bench in the Atlas: every later frame comes from the infuser.",
+                 "{page}",
+                 "Terra's standard joins hand tools and machines in one measure. The same frame holds Heliodor's lens in its solar heating plates."]},
+      "es_es": {"title": "Una medida de hierro",
+        "text": ["[lead] Copiá el marco de Primera señal y dejá el infusor andando.",
+                 "Construí un [item:mekanism:metallurgic_infuser|infusor metalúrgico] de Mekanism con ese marco e infundí redstone en una [item:entrelumen:raw_lens|lente en bruto] para copiarlo.",
+                 "Entregá la copia en Banco de precisión desde el Atlas: todos los marcos que siguen salen del infusor.",
+                 "{page}",
+                 "La medida de Terra une herramientas y máquinas. El mismo marco sostiene la lente de Heliodor en sus placas solares."]}
     },
     {
-      "key": "crafts_coal",
-      "deps": [
-        "crafts_welcome"
-      ],
-      "layout": {
-        "group": "crystal",
-        "x": 2.25,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A small electrical beginning",
-        "Build an Actually Additions coal generator (iron casings with black quartz, iron and wooden rods) and keep fuel nearby.\n\nA soot-stained page: 'Coal, for now. Until the sun. —T.'"
-      ],
-      "es_es": [
-        "Un comienzo eléctrico pequeño",
-        "Construí un generador de carbón de Actually Additions (carcasas de hierro con cuarzo negro, hierro y varillas de madera) y dejá combustible cerca.\n\nUna página manchada de hollín: «Carbón, por ahora. Hasta que llegue el sol. —T.»"
-      ],
-      "item": "actuallyadditions:coal_generator"
+      "key": "crafts_coal", "deps": ["crafts_welcome"], "layout": {"group": "crystal", "x": 2.25, "y": 2, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "actuallyadditions:coal_generator",
+      "en_us": {"title": "A small electrical beginning",
+        "text": ["[lead] Start small: an Actually Additions [item:actuallyadditions:coal_generator|coal generator], with fuel nearby.",
+                 "It takes [item:actuallyadditions:iron_casing|iron casings] with [item:actuallyadditions:black_quartz|black quartz], iron and wooden rods.",
+                 "A soot-stained page: 'Coal, for now. Until the sun. —T.'"]},
+      "es_es": {"title": "Un comienzo eléctrico pequeño",
+        "text": ["[lead] Empezá chico: un [item:actuallyadditions:coal_generator|generador de carbón] de Actually Additions, con combustible cerca.",
+                 "Lleva [item:actuallyadditions:iron_casing|carcasas de hierro] con [item:actuallyadditions:black_quartz|cuarzo negro], hierro y varillas de madera.",
+                 "Una página manchada de hollín: «Carbón, por ahora. Hasta que llegue el sol. —T.»"]}
     },
     {
-      "key": "crafts_reconstructor",
-      "deps": [
-        "crafts_coal"
-      ],
-      "layout": {
-        "group": "crystal",
-        "x": 2.25,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A beam with a job",
-        "Build an Atomic Reconstructor (iron casing, iron and redstone), power it and test it with one redstone dust where drops are easy to recover.\n\nHeliodor shaped matter with light long before it tried to shape anything bigger."
-      ],
-      "es_es": [
-        "Un haz con un trabajo",
-        "Construí un reconstructor atómico (carcasa de hierro, hierro y redstone), dale energía y probalo con un polvo de redstone donde puedas recuperar lo que caiga.\n\nHeliodor moldeaba la materia con luz mucho antes de intentar moldear algo más grande."
-      ],
-      "item": "actuallyadditions:atomic_reconstructor"
+      "key": "crafts_reconstructor", "deps": ["crafts_coal"], "layout": {"group": "crystal", "x": 2.25, "y": 3.5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "actuallyadditions:atomic_reconstructor",
+      "en_us": {"title": "A beam with a job",
+        "text": ["[lead] Build an [item:actuallyadditions:atomic_reconstructor|Atomic Reconstructor] from an iron casing, iron and redstone, and power it.",
+                 "Test it with one redstone dust where the drops are easy to recover.",
+                 "Heliodor shaped matter with light long before it tried to shape anything bigger."]},
+      "es_es": {"title": "Un haz con un trabajo",
+        "text": ["[lead] Construí un [item:actuallyadditions:atomic_reconstructor|reconstructor atómico] con una carcasa de hierro, hierro y redstone, y dale energía.",
+                 "Probalo con un polvo de redstone donde puedas recuperar lo que caiga.",
+                 "Heliodor moldeaba la materia con luz mucho antes de intentar moldear algo más grande."]}
     },
     {
-      "key": "crafts_restonia",
-      "deps": [
-        "crafts_reconstructor"
-      ],
-      "layout": {
-        "group": "crystal",
-        "x": 2.25,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Redstone remembers another shape",
-        "Beam redstone dust into ordinary Restonia crystals (40 energy each). Keep two, with an iron casing and two Create andesite alloys, for an energy coupler.\n\nThe crystals hum at the same pitch as the Atlas. Terra noticed too; her margin only says: 'Why?'"
-      ],
-      "es_es": [
-        "La redstone recuerda otra forma",
-        "Con el haz convertí polvo de redstone en cristales de Restonia común (40 de energía cada uno). Guardá dos, una carcasa de hierro y dos aleaciones de andesita de Create para un acoplador.\n\nLos cristales zumban en el mismo tono que el Atlas. Terra también lo notó; en el margen sólo escribió: «¿Por qué?»"
-      ],
-      "item": "actuallyadditions:restonia_crystal"
+      "key": "crafts_restonia", "deps": ["crafts_reconstructor"], "layout": {"group": "crystal", "x": 2.25, "y": 5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "actuallyadditions:restonia_crystal", "hide_lines": true,
+      "en_us": {"title": "Redstone remembers another shape",
+        "text": ["[lead] Beam redstone dust into ordinary [item:actuallyadditions:restonia_crystal|Restonia crystals], [hl|40] energy each.",
+                 "Keep two, with an iron casing and two [item:create:andesite_alloy|andesite alloys] from Create, for an energy coupler.",
+                 "The crystals hum at the same pitch as the Atlas. Terra noticed too; her margin only says: 'Why?'"]},
+      "es_es": {"title": "La redstone recuerda otra forma",
+        "text": ["[lead] Con el haz convertí polvo de redstone en [item:actuallyadditions:restonia_crystal|cristales de Restonia] comunes, a [hl|40] de energía cada uno.",
+                 "Guardá dos, con una carcasa de hierro y dos [item:create:andesite_alloy|aleaciones de andesita] de Create, para un acoplador.",
+                 "Los cristales zumban en el mismo tono que el Atlas. Terra también lo notó; en el margen sólo escribió: «¿Por qué?»"]}
     },
     {
-      "key": "crafts_crystal",
-      "deps": [
-        "signal"
-      ],
-      "layout": {
-        "group": "crystal",
-        "x": 2.25,
-        "y": 9.5,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A Crystal Connection",
-        "Craft an energy coupler from two Restonia crystals, an iron casing and two andesite alloys, and deliver it to Crystal Grid in the Atlas. Your generator and reconstructor stay installed.\n\nWith the coupler, Heliodor turned rotation into current. Every generator coil it built asks for one."
-      ],
-      "es_es": [
-        "Una conexión de cristal",
-        "Fabricá un acoplador de energía con dos cristales de Restonia, una carcasa de hierro y dos aleaciones de andesita, y entregalo en Red de cristales desde el Atlas. El generador y el reconstructor quedan instalados.\n\nCon el acoplador, Heliodor convertía giro en corriente. Cada bobina del generador que construyó pide uno."
-      ],
-      "milestone": "crystal_grid",
-      "icon": "entrelumen:energy_coupler"
+      "key": "crafts_crystal", "deps": ["signal"], "layout": {"group": "crystal", "x": 2.25, "y": 9.5, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false}, "milestone": "crystal_grid",
+      "icon": "entrelumen:energy_coupler",
+      "en_us": {"title": "A Crystal Connection",
+        "text": ["[lead] Turn two crystals into an [item:entrelumen:energy_coupler|energy coupler] and deliver it to Crystal Grid in the Atlas.",
+                 "The coupler takes two Restonia crystals, an iron casing and two andesite alloys. Your generator and reconstructor stay installed.",
+                 "{page}",
+                 "With the coupler, Heliodor turned rotation into current. Every generator coil it built asks for one."]},
+      "es_es": {"title": "Una conexión de cristal",
+        "text": ["[lead] Convertí dos cristales en un [item:entrelumen:energy_coupler|acoplador de energía] y entregalo en Red de cristales desde el Atlas.",
+                 "El acoplador lleva dos cristales de Restonia, una carcasa de hierro y dos aleaciones de andesita. El generador y el reconstructor quedan instalados.",
+                 "{page}",
+                 "Con el acoplador, Heliodor convertía giro en corriente. Cada bobina del generador que construyó pide uno."]}
     },
     {
-      "key": "crafts_spellbook",
-      "deps": [
-        "crafts_welcome"
-      ],
-      "layout": {
-        "group": "living",
-        "x": -2.25,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Write a first working spell",
-        "Make a novice spell book from a book and a spare iron shovel, pickaxe, axe and sword, then try a utility spell somewhere safe.\n\nBeside Terra's machines, someone kept a quieter shelf of prayers and spells, signed with a single letter: B."
-      ],
-      "es_es": [
-        "Escribir un primer hechizo útil",
-        "Fabricá un libro de hechizos de principiante con un libro y pala, pico, hacha y espada de hierro de repuesto; después probá un hechizo útil en un lugar seguro.\n\nJunto a las máquinas de Terra, alguien guardaba un estante más tranquilo de rezos y hechizos, firmado con una sola letra: B."
-      ],
-      "item": "ars_nouveau:novice_spell_book"
+      "key": "crafts_spellbook", "deps": ["crafts_welcome"], "layout": {"group": "living", "x": -2.25, "y": 2, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "ars_nouveau:novice_spell_book",
+      "en_us": {"title": "Write a first working spell",
+        "text": ["[lead] Make a [item:ars_nouveau:novice_spell_book|novice spell book] from a book and a spare iron shovel, pickaxe, axe and sword.",
+                 "Then try a utility spell somewhere safe.",
+                 "Beside Terra's machines, someone kept a quieter shelf of prayers and spells, signed with a single letter: B."]},
+      "es_es": {"title": "Escribir un primer hechizo útil",
+        "text": ["[lead] Fabricá un [item:ars_nouveau:novice_spell_book|libro de hechizos de principiante] con un libro y pala, pico, hacha y espada de hierro de repuesto.",
+                 "Después probá un hechizo útil en un lugar seguro.",
+                 "Junto a las máquinas de Terra, alguien guardaba un estante más tranquilo de rezos y hechizos, firmado con una sola letra: B."]}
     },
     {
-      "key": "crafts_sourcegem",
-      "deps": [
-        "crafts_spellbook"
-      ],
-      "layout": {
-        "group": "living",
-        "x": -2.25,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Keep a source-gem reserve",
-        "Make Ars source gems by imbuing amethyst or lapis in an imbuement chamber (archwood planks and gold). The living matrix needs two.\n\nB. wrote that magic is tended, not squeezed. The workshop's gem beds were never emptied."
-      ],
-      "es_es": [
-        "Reservar gemas de fuente",
-        "Hacé gemas de fuente de Ars imbuyendo amatista o lapislázuli en una cámara de imbuición (tablones de archwood y oro). La matriz viva necesita dos.\n\nB. escribió que la magia se cuida, no se exprime. Los canteros de gemas del taller nunca se vaciaron."
-      ],
-      "item": "ars_nouveau:source_gem"
+      "key": "crafts_sourcegem", "deps": ["crafts_spellbook"], "layout": {"group": "living", "x": -2.25, "y": 3.5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "ars_nouveau:source_gem",
+      "en_us": {"title": "Keep a source-gem reserve",
+        "text": ["[lead] Imbue amethyst or lapis into [item:ars_nouveau:source_gem|source gems]; the living matrix needs two.",
+                 "The [item:ars_nouveau:imbuement_chamber|imbuement chamber] takes archwood planks and gold.",
+                 "B. wrote that magic is tended, not squeezed. The workshop's gem beds were never emptied."]},
+      "es_es": {"title": "Reservar gemas de fuente",
+        "text": ["[lead] Imbuí amatista o lapislázuli para hacer [item:ars_nouveau:source_gem|gemas de fuente]; la matriz viva necesita dos.",
+                 "La [item:ars_nouveau:imbuement_chamber|cámara de imbuición] lleva tablones de archwood y oro.",
+                 "B. escribió que la magia se cuida, no se exprime. Los canteros de gemas del taller nunca se vaciaron."]}
     },
     {
-      "key": "crafts_magebloom",
-      "deps": [
-        "crafts_sourcegem"
-      ],
-      "layout": {
-        "group": "living",
-        "x": -2.25,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A crop with workshop uses",
-        "At an Enchanting Apparatus (diamond, gold and sourcestone), a seed with four source gems makes magebloom seeds; the listed Source cost is zero. Grow a bed and craft the blooms into fibers: keep two.\n\nA flower grown to be woven into machines. Heliodor never quite saw a line between the two."
-      ],
-      "es_es": [
-        "Un cultivo que sirve al taller",
-        "En un aparato encantador (diamante, oro y sourcestone), una semilla con cuatro gemas de fuente da semillas de flor mágica; el costo de Source es cero. Cultivá un cantero y convertí las flores en fibras: guardá dos.\n\nUna flor cultivada para tejerla en máquinas. Heliodor nunca vio del todo el límite entre las dos cosas."
-      ],
-      "item": "ars_nouveau:magebloom_fiber"
+      "key": "crafts_magebloom", "deps": ["crafts_sourcegem"], "layout": {"group": "living", "x": -2.25, "y": 5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "ars_nouveau:magebloom_fiber",
+      "en_us": {"title": "A crop with workshop uses",
+        "text": ["[lead] Grow magebloom and keep two fibers.",
+                 "At an [item:ars_nouveau:enchanting_apparatus|Enchanting Apparatus] (diamond, gold and sourcestone), a seed with four source gems makes [item:ars_nouveau:magebloom_crop|magebloom seeds]; the listed Source cost is zero.",
+                 "Grow a bed and craft the blooms into [item:ars_nouveau:magebloom_fiber|fibers].",
+                 "{page}",
+                 "A flower grown to be woven into machines. Heliodor never quite saw a line between the two."]},
+      "es_es": {"title": "Un cultivo que sirve al taller",
+        "text": ["[lead] Cultivá flor mágica y guardá dos fibras.",
+                 "En un [item:ars_nouveau:enchanting_apparatus|aparato encantador] (diamante, oro y sourcestone), una semilla con cuatro gemas de fuente da [item:ars_nouveau:magebloom_crop|semillas de flor mágica]; el costo de Source es cero.",
+                 "Cultivá un cantero y convertí las flores en [item:ars_nouveau:magebloom_fiber|fibras].",
+                 "{page}",
+                 "Una flor cultivada para tejerla en máquinas. Heliodor nunca vio del todo el límite entre las dos cosas."]}
     },
     {
-      "key": "crafts_living",
-      "deps": [
-        "signal",
-        "crafts_precision"
-      ],
-      "layout": {
-        "group": "living",
-        "x": -2.25,
-        "y": 9.5,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "The living workshop",
-        "Craft a living matrix (two magebloom fibers, two source gems and a new calibration frame) and deliver it to Living Workshop in the Atlas after Precision Bench.\n\nTerra's measurements drawn over B.'s garden bed: the only page in the workshop signed by both."
-      ],
-      "es_es": [
-        "El taller vivo",
-        "Fabricá una matriz viva (dos fibras de flor mágica, dos gemas de fuente y un marco de calibración nuevo) y entregala en Taller vivo desde el Atlas, después de Banco de precisión.\n\nLas medidas de Terra dibujadas sobre el cantero de B.: la única página del taller firmada por los dos."
-      ],
-      "milestone": "living_workshop",
-      "icon": "entrelumen:living_matrix"
+      "key": "crafts_living", "deps": ["signal", "crafts_precision"], "layout": {"group": "living", "x": -2.25, "y": 9.5, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false}, "milestone": "living_workshop",
+      "icon": "entrelumen:living_matrix",
+      "en_us": {"title": "The living workshop",
+        "text": ["[lead] Craft the [item:entrelumen:living_matrix|living matrix] and deliver it to Living Workshop, after Precision Bench.",
+                 "It takes two magebloom fibers, two source gems and a new [item:entrelumen:calibration_frame|calibration frame].",
+                 "Terra's measurements drawn over B.'s garden bed: the only page in the workshop signed by both."]},
+      "es_es": {"title": "El taller vivo",
+        "text": ["[lead] Fabricá la [item:entrelumen:living_matrix|matriz viva] y entregala en Taller vivo, después de Banco de precisión.",
+                 "Lleva dos fibras de flor mágica, dos gemas de fuente y un [item:entrelumen:calibration_frame|marco de calibración] nuevo.",
+                 "Las medidas de Terra dibujadas sobre el cantero de B.: la única página del taller firmada por los dos."]}
     },
     {
-      "key": "crafts_pot",
-      "deps": [
-        "crafts_welcome"
-      ],
-      "layout": {
-        "group": "pantry",
-        "x": 6.75,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "The kitchen keeps working",
-        "Build a Farmer's Delight cooking pot (iron, bricks, a water bucket and a wooden shovel), set it over heat and cook a batch from nearby crops.\n\nJ.'s list puts a cooking pot before any second machine. A workshop runs on whoever feeds it."
-      ],
-      "es_es": [
-        "La cocina sigue en marcha",
-        "Construí una olla de Farmer's Delight (hierro, ladrillos, balde de agua y pala de madera), ponela sobre una fuente de calor y cociná una tanda con cultivos cercanos.\n\nLa lista de J. pone la olla antes que cualquier segunda máquina. Un taller anda gracias a quien lo alimenta."
-      ],
-      "item": "farmersdelight:cooking_pot"
+      "key": "crafts_pot", "deps": ["crafts_welcome"], "layout": {"group": "pantry", "x": 6.75, "y": 2, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "farmersdelight:cooking_pot",
+      "en_us": {"title": "The kitchen keeps working",
+        "text": ["[lead] Build a Farmer's Delight [item:farmersdelight:cooking_pot|cooking pot], set it over heat and cook a batch from nearby crops.",
+                 "It takes iron, bricks, a water bucket and a wooden shovel.",
+                 "J.'s list puts a cooking pot before any second machine. A workshop runs on whoever feeds it."]},
+      "es_es": {"title": "La cocina sigue en marcha",
+        "text": ["[lead] Construí una [item:farmersdelight:cooking_pot|olla] de Farmer's Delight, ponela sobre una fuente de calor y cociná una tanda con cultivos cercanos.",
+                 "Lleva hierro, ladrillos, un balde de agua y una pala de madera.",
+                 "La lista de J. pone la olla antes que cualquier segunda máquina. Un taller anda gracias a quien lo alimenta."]}
     },
     {
-      "key": "crafts_fillets",
-      "deps": [
-        "crafts_pot"
-      ],
-      "layout": {
-        "group": "pantry",
-        "x": 6.75,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Use the catch",
-        "Fillet a catch with an Aquaculture knife and cook the fillets on a campfire, in a furnace or in a smoker. Save some for rations.\n\nThe workshop's canal still has fish. J. stocked it himself, the note says, 'for the long shifts'."
-      ],
-      "es_es": [
-        "Aprovechar la pesca",
-        "Fileteá una captura con un cuchillo de Aquaculture y cociná los filetes en fogata, horno o ahumador. Guardá algunos para las raciones.\n\nEl canal del taller todavía tiene peces. Lo pobló J., dice la nota, «para los turnos largos»."
-      ],
-      "item": "aquaculture:fish_fillet_cooked"
+      "key": "crafts_fillets", "deps": ["crafts_pot"], "layout": {"group": "pantry", "x": 6.75, "y": 3.5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "aquaculture:fish_fillet_cooked",
+      "en_us": {"title": "Use the catch",
+        "text": ["[lead] Fillet a catch with an Aquaculture fillet knife.",
+                 "Cook the [item:aquaculture:fish_fillet_raw|fillets] on a campfire, in a furnace or in a smoker, and save some for rations.",
+                 "The workshop's canal still has fish. J. stocked it himself, the note says, 'for the long shifts'."]},
+      "es_es": {"title": "Aprovechar la pesca",
+        "text": ["[lead] Fileteá una captura con un cuchillo de Aquaculture.",
+                 "Cociná los [item:aquaculture:fish_fillet_raw|filetes] en fogata, horno o ahumador, y guardá algunos para las raciones.",
+                 "El canal del taller todavía tiene peces. Lo pobló J., dice la nota, «para los turnos largos»."]}
     },
     {
-      "key": "crafts_rations",
-      "deps": [
-        "crafts_fillets"
-      ],
-      "layout": {
-        "group": "pantry",
-        "x": 6.75,
-        "y": 5,
-        "size": 1.0,
-        "shape": "square",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Pack a real travelling meal",
-        "Two vegetable soups and two cooked Aquaculture fish fillets make one pack of Travel Rations; the soup takes carrot, potato, beetroot and leafy-green tags.\n\nJ. packed these for workers who were not allowed to go home. The note does not say who gave that order."
-      ],
-      "es_es": [
-        "Empacar una comida de viaje",
-        "Dos sopas de verduras y dos filetes cocidos de Aquaculture forman unas provisiones de viaje; la sopa usa tags de zanahoria, papa, remolacha y hojas verdes.\n\nJ. las preparaba para trabajadores que no podían volver a casa. La nota no dice quién dio esa orden."
-      ],
-      "item": "entrelumen:ration_bundle"
+      "key": "crafts_rations", "deps": ["crafts_fillets"], "layout": {"group": "pantry", "x": 6.75, "y": 5, "size": 1.0, "shape": "square", "hide_dependent_lines": false}, "item": "entrelumen:ration_bundle",
+      "en_us": {"title": "Pack a real travelling meal",
+        "text": ["[lead] Two vegetable soups and two cooked Aquaculture fish fillets make one pack of [item:entrelumen:ration_bundle|Travel Rations].",
+                 "The [item:farmersdelight:vegetable_soup|soup] takes the carrot, potato, beetroot and leafy-green tags.",
+                 "J. packed these for workers who were not allowed to go home. The note does not say who gave that order."]},
+      "es_es": {"title": "Empacar una comida de viaje",
+        "text": ["[lead] Dos sopas de verduras y dos filetes cocidos de Aquaculture forman unas [item:entrelumen:ration_bundle|provisiones de viaje].",
+                 "La [item:farmersdelight:vegetable_soup|sopa] usa los tags de zanahoria, papa, remolacha y hojas verdes.",
+                 "J. las preparaba para trabajadores que no podían volver a casa. La nota no dice quién dio esa orden."]}
     },
     {
-      "key": "crafts_pantry",
-      "deps": [
-        "signal"
-      ],
-      "layout": {
-        "group": "pantry",
-        "x": 6.75,
-        "y": 9.5,
-        "size": 2.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "The travelling pantry",
-        "Open the Atlas and deliver one pack of Travel Rations to Travelling Pantry. No pot, rod or other equipment is taken.\n\nJ.'s note ends with a correction: 'Count the people who come back, not the crates that leave.'"
-      ],
-      "es_es": [
-        "La despensa viajera",
-        "Abrí el Atlas y entregá unas provisiones de viaje en Despensa viajera. No se lleva ninguna olla, caña ni otro equipo.\n\nLa nota de J. termina con una corrección: «Contá a quienes vuelven, no las cajas que salen»."
-      ],
-      "milestone": "travelling_pantry",
-      "icon": "entrelumen:ration_bundle"
+      "key": "crafts_pantry", "deps": ["signal"], "layout": {"group": "pantry", "x": 6.75, "y": 9.5, "size": 2.0, "shape": "hexagon", "hide_dependent_lines": false}, "milestone": "travelling_pantry",
+      "icon": "entrelumen:ration_bundle",
+      "en_us": {"title": "The travelling pantry",
+        "text": ["[lead] Open the Atlas and deliver one pack of Travel Rations to Travelling Pantry.",
+                 "It takes no pot, rod or other equipment.",
+                 "J.'s note ends with a correction: 'Count the people who come back, not the crates that leave.'"]},
+      "es_es": {"title": "La despensa viajera",
+        "text": ["[lead] Abrí el Atlas y entregá unas provisiones de viaje en Despensa viajera.",
+                 "No se lleva ninguna olla, caña ni otro equipo.",
+                 "La nota de J. termina con una corrección: «Contá a quienes vuelven, no las cajas que salen»."]}
     },
     {
-      "key": "crafts_exploration",
-      "deps": [
-        "signal"
-      ],
-      "milestone": "exploration_module",
+      "key": "crafts_exploration", "deps": ["signal"], "milestone": "exploration_module", "layout": {"group": "pantry", "x": 11.25, "y": 9.5, "size": 2.0, "shape": "hexagon"},
       "icon": "entrelumen:exploration_module",
-      "en_us": [
-        "The traveller's module",
-        "Deliver two packs of Travel Rations, a compass, four empty maps and a spyglass to Exploration Module in the Atlas. In its place in the Ark, waystones stop charging your team experience and /rtp opens, once an hour.\n\nA faded map in the Sunken Workshop, signed —T.: 'Roads were measured in days, not in lives. Travel light and come back.'"
-      ],
-      "es_es": [
-        "El módulo del viajero",
-        "Entregá dos provisiones de viaje, una brújula, cuatro mapas vacíos y un catalejo en Módulo de exploración desde el Atlas. En su lugar del Arca, las waystones dejan de cobrarle experiencia a tu equipo y se abre /rtp, una vez por hora.\n\nUn mapa gastado en el Taller hundido, firmado —T.: «Los caminos se medían en días, no en vidas. Viajá liviano y volvé»."
-      ],
-      "layout": {
-        "group": "pantry",
-        "x": 11.25,
-        "y": 9.5,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
+      "en_us": {"title": "The traveller's module",
+        "text": ["[lead] Deliver to Exploration Module in the Atlas:",
+                 "[li:entrelumen:ration_bundle] Two packs of Travel Rations",
+                 "[li] A [item:minecraft:compass|compass] and a [item:minecraft:spyglass|spyglass]",
+                 "[li:minecraft:map] Four empty [item:minecraft:map|maps]",
+                 "In its place in the Ark, waystones stop charging your team experience and /rtp opens, once an hour.",
+                 "{page}",
+                 "A faded map in the Sunken Workshop, signed —T.: 'Roads were measured in days, not in lives. Travel light and come back.'"]},
+      "es_es": {"title": "El módulo del viajero",
+        "text": ["[lead] Entregá en Módulo de exploración desde el Atlas:",
+                 "[li:entrelumen:ration_bundle] Dos provisiones de viaje",
+                 "[li] Una [item:minecraft:compass|brújula] y un [item:minecraft:spyglass|catalejo]",
+                 "[li:minecraft:map] Cuatro [item:minecraft:map|mapas] vacíos",
+                 "En su lugar del Arca, las waystones dejan de cobrarle experiencia a tu equipo y se abre /rtp, una vez por hora.",
+                 "{page}",
+                 "Un mapa gastado en el Taller hundido, firmado —T.: «Los caminos se medían en días, no en vidas. Viajá liviano y volvé»."]}
     },
     {
-      "key": "crafts_repeatable_press",
-      "deps": [
-        "crafts_goggles",
-        "crafts_wire"
-      ],
-      "layout": {
-        "group": "precision",
-        "x": -6.75,
-        "y": 6.5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Can the next person repeat it?",
-        "Optional: press a second iron ingot, label the press's input and output, and leave a note on what to check if rotation stops.\n\nTerra wrote every procedure 'for the next one'. She never expected to be the one missing."
-      ],
-      "es_es": [
-        "¿Puede repetirlo quien venga después?",
-        "Opcional: prensá un segundo lingote, rotulá entrada y salida de la prensa y dejá una nota con qué revisar si deja de girar.\n\nTerra escribía cada procedimiento «para la próxima persona». Nunca pensó que la que iba a faltar era ella."
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "create:iron_sheet"
+      "key": "crafts_repeatable_press", "deps": ["crafts_goggles", "crafts_wire"], "layout": {"group": "precision", "x": -6.75, "y": 6.5, "size": 0.75, "shape": "circle", "hide_dependent_lines": false}, "type": "checkmark", "optional": true,
+      "icon": "create:iron_sheet",
+      "en_us": {"title": "Can the next person repeat it?",
+        "text": ["[lead] Optional: leave the press ready for the next person.",
+                 "[li] Press a second iron ingot",
+                 "[li] Label the press's input and output",
+                 "[li] Leave a note on what to check if rotation stops",
+                 "Terra wrote every procedure 'for the next one'. She never expected to be the one missing."]},
+      "es_es": {"title": "¿Puede repetirlo quien venga después?",
+        "text": ["[lead] Opcional: dejá la prensa lista para quien venga después.",
+                 "[li] Prensá un segundo lingote",
+                 "[li] Rotulá la entrada y la salida de la prensa",
+                 "[li] Dejá una nota con qué revisar si deja de girar",
+                 "Terra escribía cada procedimiento «para la próxima persona». Nunca pensó que la que iba a faltar era ella."]}
     },
     {
-      "key": "crafts_replant",
-      "deps": [
-        "crafts_magebloom"
-      ],
-      "layout": {
-        "group": "living",
-        "x": -2.25,
-        "y": 6.5,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "Leave the bed ready",
-        "Optional: harvest a small magebloom batch, process some fibers and leave the bed planted, with seeds and spare fibers stored apart.\n\nB.'s rule for any garden: leave it ready for someone else's hands."
-      ],
-      "es_es": [
-        "Dejar listo el cantero",
-        "Opcional: cosechá una tanda chica de flor mágica, procesá algunas fibras y dejá el cantero plantado, con semillas y fibras de repuesto aparte.\n\nLa regla de B. para cualquier jardín: dejarlo listo para otras manos."
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "ars_nouveau:magebloom_fiber"
+      "key": "crafts_replant", "deps": ["crafts_magebloom"], "layout": {"group": "living", "x": -2.25, "y": 6.5, "size": 0.75, "shape": "circle", "hide_dependent_lines": false}, "type": "checkmark", "optional": true,
+      "icon": "ars_nouveau:magebloom_fiber",
+      "en_us": {"title": "Leave the bed ready",
+        "text": ["[lead] Optional: harvest a small magebloom batch and process some fibers.",
+                 "Leave the bed planted, with seeds and spare fibers stored apart.",
+                 "B.'s rule for any garden: leave it ready for someone else's hands."]},
+      "es_es": {"title": "Dejar listo el cantero",
+        "text": ["[lead] Opcional: cosechá una tanda chica de flor mágica y procesá algunas fibras.",
+                 "Dejá el cantero plantado, con semillas y fibras de repuesto aparte.",
+                 "La regla de B. para cualquier jardín: dejarlo listo para otras manos."]}
     },
     {
-      "key": "crafts_archive",
-      "deps": [
-        "crafts_precision",
-        "crafts_crystal",
-        "crafts_living",
-        "crafts_pantry",
-        "crafts_exploration"
-      ],
-      "layout": {
-        "group": "archive",
-        "x": 0,
-        "y": 13.5,
-        "size": 3.0,
-        "shape": "hexagon",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "The room in the records",
-        "With the four projects delivered, bring three paper and one copper ingot to the Atlas and deliver Workshop Archive. Bring Terra's Blueprint, from the Sunken Workshop's vault, as well. The Atlas hands you Terra's Arm, which lengthens your reach while worn.\n\nThe Sunken Workshop agrees at last: no craft ever replaced the others. And through the static, for the first time, the voice says its own name: '…&kTe&rrra.'"
-      ],
-      "es_es": [
-        "La habitación de los registros",
-        "Con los cuatro proyectos entregados, llevá tres papeles y un lingote de cobre al Atlas y entregá Archivo del taller. Llevá también el Plano de Terra, de la bóveda del Taller hundido. El Atlas te da el Brazo de Terra, que alarga tu alcance mientras lo llevás puesto.\n\nEl Taller hundido por fin coincide: ningún oficio reemplazó nunca a los otros. Y entre la estática, por primera vez, la voz dice su propio nombre: «…&kTe&rrra»."
-      ],
-      "milestone": "lost_workshop",
-      "icon": "entrelumen:atlas"
+      "key": "crafts_archive", "deps": ["crafts_precision", "crafts_crystal", "crafts_living", "crafts_pantry", "crafts_exploration"], "layout": {"group": "archive", "x": 0, "y": 13.5, "size": 3.0, "shape": "hexagon", "hide_dependent_lines": false}, "milestone": "lost_workshop",
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "The room in the records",
+        "text": ["[lead] With the four projects delivered, deliver Workshop Archive in the Atlas:",
+                 "[li:minecraft:paper] Three [item:minecraft:paper|paper]",
+                 "[li:minecraft:copper_ingot] One [item:minecraft:copper_ingot|copper ingot]",
+                 "[li:entrelumen:terra_blueprint] [item:entrelumen:terra_blueprint|Terra's Blueprint], from the Sunken Workshop's vault",
+                 "The Atlas hands you [item:entrelumen:terra_arm|Terra's Arm], which lengthens your reach while worn.",
+                 "{page}",
+                 "The Sunken Workshop agrees at last: no craft ever replaced the others. And through the static, for the first time, the voice says its own name: '…[glitch|Te]rra.'"]},
+      "es_es": {"title": "La habitación de los registros",
+        "text": ["[lead] Con los cuatro proyectos entregados, entregá Archivo del taller desde el Atlas:",
+                 "[li:minecraft:paper] Tres [item:minecraft:paper|papeles]",
+                 "[li:minecraft:copper_ingot] Un [item:minecraft:copper_ingot|lingote de cobre]",
+                 "[li:entrelumen:terra_blueprint] El [item:entrelumen:terra_blueprint|Plano de Terra], de la bóveda del Taller hundido",
+                 "El Atlas te da el [item:entrelumen:terra_arm|Brazo de Terra], que alarga tu alcance mientras lo llevás puesto.",
+                 "{page}",
+                 "El Taller hundido por fin coincide: ningún oficio reemplazó nunca a los otros. Y entre la estática, por primera vez, la voz dice su propio nombre: «…[glitch|Te]rra»."]}
     },
     {
-      "key": "crafts_route_forward",
-      "deps": [
-        "crafts_archive"
-      ],
-      "layout": {
-        "group": "archive",
-        "x": 0,
-        "y": 16.75,
-        "size": 0.75,
-        "shape": "circle",
-        "hide_dependent_lines": false
-      },
-      "en_us": [
-        "A workshop worth connecting",
-        "Optional: choose one supply worth improving (sheets, crystals, fibers or provisions) and keep the other benches working. When the act is complete, choose Advance in the Atlas.\n\nTerra's workshop fed routes she never drew. The next pages follow where everything went."
-      ],
-      "es_es": [
-        "Un taller que vale la pena conectar",
-        "Opcional: elegí un suministro que valga la pena mejorar (láminas, cristales, fibras o provisiones) y mantené las otras mesas trabajando. Cuando el acto esté completo, pulsá Avanzar en el Atlas.\n\nEl taller de Terra alimentaba rutas que ella nunca dibujó. Las próximas páginas siguen adónde iba todo."
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "entrelumen:atlas"
+      "key": "crafts_route_forward", "deps": ["crafts_archive"], "layout": {"group": "archive", "x": 0, "y": 16.75, "size": 0.75, "shape": "circle", "hide_dependent_lines": false}, "type": "checkmark", "optional": true, "hide_lines": true,
+      "icon": "entrelumen:atlas",
+      "en_us": {"title": "A workshop worth connecting",
+        "text": ["[lead] Optional: choose one supply worth improving (sheets, crystals, fibers or provisions) and keep the other benches working.",
+                 "When the act is complete, choose Advance in the Atlas.",
+                 "Terra's workshop fed routes she never drew. The next pages follow where everything went."]},
+      "es_es": {"title": "Un taller que vale la pena conectar",
+        "text": ["[lead] Opcional: elegí un suministro que valga la pena mejorar (láminas, cristales, fibras o provisiones) y mantené las otras mesas trabajando.",
+                 "Cuando el acto esté completo, pulsá Avanzar en el Atlas.",
+                 "El taller de Terra alimentaba rutas que ella nunca dibujó. Las próximas páginas siguen adónde iba todo."]}
+    },
+    {
+      "key": "crafts_shift_bell", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"group": "archive", "x": 1.4, "y": -0.35, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:bell",
+      "en_us": {"title": "The shift bell",
+        "text": ["[lead] The shift bell still rings.",
+                 "Nobody answers. The lamps come on anyway, out of habit."]},
+      "es_es": {"title": "La campana del turno",
+        "text": ["[lead] La campana del turno todavía suena.",
+                 "Nadie contesta. Las lámparas se prenden igual, por costumbre."]}
     }
   ]
 }

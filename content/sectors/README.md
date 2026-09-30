@@ -166,7 +166,7 @@ Los íconos son glifos de una fuente que `generate_quests.py` escribe en el comp
 
 ## Pasar un capítulo a la v2
 
-La lista de cada redactor. Las reglas están en [quest-book-v3](../../docs/design/quest-book-v3.md#presentación-v2-28-de-septiembre-de-2026) (texto, lienzo, kit) y en [quest-copy](../../docs/design/quest-copy.md#forma-presentación-v2); esto es el orden de trabajo.
+La lista de cada redactor (para una guía o un capítulo de historia, [la suya](../guides/README.md#pasar-una-guía-o-un-capítulo-de-historia-a-la-v2)). Las reglas están en [quest-book-v3](../../docs/design/quest-book-v3.md#presentación-v2-28-de-septiembre-de-2026) (texto, lienzo, kit) y en [quest-copy](../../docs/design/quest-copy.md#forma-presentación-v2); esto es el orden de trabajo.
 
 **0. Rama y dueño.** Una rama desde `origin/main` y un dueño por capítulo. Tocás tu `sector_*.json` y, si hace falta, arte nuevo propio en el companion; nada más.
 
