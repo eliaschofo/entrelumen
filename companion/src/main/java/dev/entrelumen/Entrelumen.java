@@ -92,6 +92,7 @@ public final class Entrelumen {
     HeliodorContent.register(bus);
     RuinContent.register(bus);
     TerraArm.register(bus);
+    SourShackle.register(bus);
     VeinResonator.register(bus);
     HeliodorHeart.register(bus);
     Solsticio.register(bus, container);
