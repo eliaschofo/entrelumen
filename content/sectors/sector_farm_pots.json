@@ -111,7 +111,16 @@
     {"id": "to_ma", "text": {"en_us": "» Mystical Agriculture", "es_es": "» Mystical Agriculture"}, "x": -9.0, "y": -27.2, "scale": 1, "tint": "#E6C766", "align": "start", "click": "chapter:sector_ma_essence", "order": 6},
     {"id": "lbl_top", "text": {"en_us": "TREES", "es_es": "ÁRBOLES"}, "x": -28.6, "y": -12.0, "scale": 2, "bold": true, "tint": "#A8D86E", "align": "end", "order": 6},
     {"id": "lbl_mid", "text": {"en_us": "POTS", "es_es": "MACETAS"}, "x": -28.6, "y": 0.5, "scale": 2, "bold": true, "tint": "#E6C766", "align": "end", "order": 6},
-    {"id": "lbl_low", "text": {"en_us": "BEDS", "es_es": "CANTEROS"}, "x": -28.6, "y": 14.6, "scale": 2, "bold": true, "tint": "#8FD0FF", "align": "end", "order": 6}
+    {"id": "lbl_low", "text": {"en_us": "BEDS", "es_es": "CANTEROS"}, "x": -28.6, "y": 14.6, "scale": 2, "bold": true, "tint": "#8FD0FF", "align": "end", "order": 6},
+    {"id": "niche_r5", "sprite": "minecraft:block/dirt", "x": 15.4, "y": 14.75, "w": 3.8, "h": 4.5, "tint": "#FFFFFF", "alpha": 200, "reveal": "pots_croptopia", "sketch": {"alpha": 46}, "order": -5},
+    {"id": "pot_r5", "item": "botanypots:terracotta_botany_pot", "x": 15.4, "y": 15.9, "size": 2.2, "reveal": "pots_croptopia", "order": -1},
+    {"id": "plant_r5", "item": "croptopia:pineapple", "x": 15.4, "y": 13.9, "size": 1.9, "reveal": "pots_croptopia", "order": 0},
+    {"id": "niche_t3", "picture": "minecraft:textures/block/dirt.png", "x": 4.5, "y": -11.82, "w": 4.6, "h": 6.35, "tint": "#241A12", "alpha": 210, "reveal": "pots_croptopia_trees", "sketch": {"alpha": 46}, "order": -5},
+    {"id": "pot_t3", "item": "botanypots:orange_terracotta_botany_pot", "x": 4.5, "y": -9.55, "size": 2.2, "reveal": "pots_croptopia_trees", "order": -1},
+    {"id": "trunk_t3a", "item": "croptopia:cinnamon_log", "x": 4.5, "y": -11.3, "size": 1.2, "reveal": "pots_croptopia_trees", "order": 0},
+    {"id": "trunk_t3b", "item": "croptopia:cinnamon_log", "x": 4.5, "y": -12.4, "size": 1.2, "reveal": "pots_croptopia_trees", "order": 0},
+    {"id": "crown_t3", "item": "minecraft:oak_leaves", "x": 4.5, "y": -13.8, "size": 2.2, "reveal": "pots_croptopia_trees", "order": 0},
+    {"id": "fruit_t3", "item": "croptopia:orange", "x": 5.4, "y": -13.3, "size": 0.9, "reveal": "pots_croptopia_trees", "order": 1}
   ],
   "presentation": 2,
   "quests": [
@@ -494,7 +503,7 @@
                  "[li] Farmer's Delight: rice, tomato, cabbage, onion and their wild forms.",
                  "[li] Sushi Go: cucumber, rice, sesame, soy and wasabi.",
                  "{page}",
-                 "[note] Croptopia's crops are off in this pack: its pot recipes use a pre-1.21 format that no longer loads.",
+                 "[note] Croptopia is in too, through a compat pack: [quest:pots_croptopia|Croptopia, in pots]. Its own tree recipes stay off (old Botany Pots format).",
                  "The rest of the garden: [chapter:sector_farm_fields|Farm · Crops and Trees]."]},
       "es_es": {"title": "Un jardín de cientos", "subtitle": "La mayoría de las granjas del pack entran en una maceta.",
         "text": ["[lead] La mayoría de los mods de cultivos del pack traen su receta de maceta.",
@@ -502,9 +511,9 @@
                  "[li] Farmer's Delight: arroz, tomate, repollo, cebolla y sus versiones silvestres.",
                  "[li] Sushi Go: pepino, arroz, sésamo, soja y wasabi.",
                  "{page}",
-                 "[note] Los cultivos de Croptopia están apagados en este pack: sus recetas de maceta usan un formato anterior a la 1.21 que ya no carga.",
+                 "[note] Croptopia también entra, con un pack de compatibilidad: [quest:pots_croptopia|Croptopia, en macetas]. Sus recetas de árboles siguen apagadas (formato viejo de Botany Pots).",
                  "El resto del jardín: [chapter:sector_farm_fields|Granja · Cultivos y árboles]."]},
-      "sources": ["jar:botanypots-neoforge-1.21.1-21.1.44.jar:data/botanypots/recipe/pamhc2crops/ (200 block_derived_crop files)", "jar:botanypots-neoforge-1.21.1-21.1.44.jar:data/botanypots/recipe/herbsandharvest/ (121 block_derived_crop files)", "jar:botanypots-neoforge-1.21.1-21.1.44.jar:data/botanypots/recipe/farmersdelight/crop/tomato_seeds.json", "jar:botanypots-neoforge-1.21.1-21.1.44.jar:data/botanypots/recipe/sushigocrafting/crop/wasabi_seeds.json", "repo:pack/kubejs/data/croptopia/recipe/botanypots/almond.json#neoforge:false", "repo:tools/generate_family_balance.py#croptopia:botanypots/* disabled (pre-1.21 Botany Pots format)"]
+      "sources": ["jar:botanypots-neoforge-1.21.1-21.1.44.jar:data/botanypots/recipe/pamhc2crops/ (200 block_derived_crop files)", "jar:botanypots-neoforge-1.21.1-21.1.44.jar:data/botanypots/recipe/herbsandharvest/ (121 block_derived_crop files)", "jar:botanypots-neoforge-1.21.1-21.1.44.jar:data/botanypots/recipe/farmersdelight/crop/tomato_seeds.json", "jar:botanypots-neoforge-1.21.1-21.1.44.jar:data/botanypots/recipe/sushigocrafting/crop/wasabi_seeds.json", "jar:croptopiabotany-1.0.0.jar:data/croptopia_botany/recipe/botanypots/ (85 block_derived_crop files: 58 seeds, 27 saplings)", "repo:pack/kubejs/data/croptopia/recipe/botanypots/almond.json#neoforge:false (Croptopia's own tree recipes, old Botany Pots format)", "repo:tools/generate_family_balance.py#croptopia:botanypots/* disabled (pre-1.21 Botany Pots format)"]
     },
     {
       "key": "pots_ma", "role": "tip", "deps": ["pots_crops"], "hide_lines": true,
@@ -633,6 +642,42 @@
         "text": ["[lead] Cinco lámparas bajo el techo.",
                  "Acá no hay nada que fabricar. Sólo un interruptor."]},
       "sources": ["repo:docs/design/quest-book-v3.md#presentación-v2"]
+    },
+    {
+      "key": "pots_croptopia", "role": "side", "deps": ["pots_crops"], "hide_lines": true,
+      "task": {"any": ["croptopia:corn", "croptopia:coffee_beans", "croptopia:pineapple", "croptopia:blueberry"], "icon": "croptopia:corn", "title": {"en_us": "A Croptopia crop", "es_es": "Un cultivo de Croptopia"}},
+      "at": {"x": 15.4, "y": 11.2},
+      "en_us": {"title": "Croptopia, in pots", "subtitle": "The greengrocer moved in.",
+        "text": ["[lead] Croptopia's crops grow in pots: [hl|58] seeds, a minute a harvest.",
+                 "[li] The seed goes in like any other, on any dirt-type soil.",
+                 "[li] Each harvest gives [hl|1 to 3] of the crop.",
+                 "{page}",
+                 "[note] The pack switched off Croptopia's own tree recipes, written for an older Botany Pots. The compat pack replaces them, crops and trees."]},
+      "es_es": {"title": "Croptopia, en macetas", "subtitle": "Se mudó la verdulería.",
+        "text": ["[lead] Los cultivos de Croptopia crecen en macetas: [hl|58] semillas, un minuto por cosecha.",
+                 "[li] La semilla entra como cualquier otra, en cualquier tierra de la familia del dirt.",
+                 "[li] Cada cosecha da de [hl|1 a 3] del cultivo.",
+                 "{page}",
+                 "[note] El pack apagó las recetas de árboles de Croptopia, escritas para un Botany Pots viejo. El pack de compatibilidad las reemplaza, cultivos y árboles."]},
+      "sources": ["jar:croptopiabotany-1.0.0.jar:data/croptopia_botany/recipe/botanypots/tomato_seed.json (grow_time 1200, soil #botanypots:soil/dirt)", "jar:croptopiabotany-1.0.0.jar:data/croptopia_botany/loot_table/botanypots/tomato.json (1-3)", "jar:croptopiabotany-1.0.0.jar:data/croptopia_botany/recipe/botanypots/ (58 seed recipes, 27 sapling recipes)", "repo:pack/kubejs/data/croptopia/recipe/botanypots/almond.json#neoforge:false", "repo:tools/generate_family_balance.py#croptopia:botanypots/* disabled", "repo:docs/design/mod-pingpong.md"]
+    },
+    {
+      "key": "pots_croptopia_trees", "role": "side", "deps": ["pots_tree"], "hide_lines": true,
+      "task": {"any": ["croptopia:orange", "croptopia:cherry", "croptopia:banana", "croptopia:cinnamon"], "icon": "croptopia:orange", "title": {"en_us": "A Croptopia fruit", "es_es": "Una fruta de Croptopia"}},
+      "at": {"x": 4.5, "y": -16.8},
+      "en_us": {"title": "An orchard on a shelf", "subtitle": "Faster than any other tree.",
+        "text": ["[lead] Croptopia's [hl|27] trees grow as pot crops, one harvest every [hl|35] seconds.",
+                 "[li] Each harvest: [hl|1 to 2] fruit and a [hl|5%] chance of the sapling back.",
+                 "[li] Cherry and cinnamon take [hl|40] seconds.",
+                 "{page}",
+                 "[note] Fruit, not logs: for wood, see [quest:pots_tree|A forest in a pot]."]},
+      "es_es": {"title": "Un huerto en un estante", "subtitle": "Más rápido que cualquier otro árbol.",
+        "text": ["[lead] Los [hl|27] árboles de Croptopia crecen como cultivos de maceta, una cosecha cada [hl|35] segundos.",
+                 "[li] Cada cosecha: de [hl|1 a 2] frutas y un [hl|5 %] de recuperar el brote.",
+                 "[li] El cerezo y la canela tardan [hl|40] segundos.",
+                 "{page}",
+                 "[note] Fruta, no troncos: para madera, mirá [quest:pots_tree|Un bosque en una maceta]."]},
+      "sources": ["jar:croptopiabotany-1.0.0.jar:data/croptopia_botany/recipe/botanypots/apple_sapling.json (grow_time 700)", "jar:croptopiabotany-1.0.0.jar:data/croptopia_botany/recipe/botanypots/cherry_sapling.json (grow_time 800)", "jar:croptopiabotany-1.0.0.jar:data/croptopia_botany/recipe/botanypots/cinnamon_sapling.json (grow_time 800)", "jar:croptopiabotany-1.0.0.jar:data/croptopia_botany/loot_table/botanypots/apple.json (1-2, sapling 0.05)", "jar:botanytrees-neoforge-1.21.1-21.1.7.jar:data/botanytrees/recipe/minecraft/oak.json#grow_time 2400"]
     }
   ]
 }
