@@ -4,610 +4,519 @@
   "act": "any",
   "icon": "entrelumen:atlas",
   "emblem": "entrelumen:textures/item/atlas.png",
-  "title": {
-    "en_us": "The Living Atlas",
-    "es_es": "El Atlas Vivo"
-  },
+  "title": {"en_us": "The Living Atlas", "es_es": "El Atlas Vivo"},
   "subtitle": {
     "en_us": "Projects, deliveries, act components and the Ark: how the story moves.",
     "es_es": "Proyectos, entregas, componentes de acto y el Arca: cómo se mueve la historia."
   },
+  "presentation": 2,
+  "medallion": {"x": -6.4, "y": 1.6},
+  "art": [
+    {"id": "title", "text": {"en_us": "The Living Atlas", "es_es": "El Atlas Vivo"}, "x": -8.6, "y": -7.4, "scale": 3, "align": "start", "tint": "#E8B04A"},
+    {"id": "desk", "frame": [-9.8, -8.6, 40.4, 13.8], "color": "#8A5A32", "thickness_px": 2.0, "alpha": 200, "fill": "#2A1D14", "fill_alpha": 150, "corners": true, "reveal": "entrelumen_atlas_welcome", "sketch": true, "order": -12},
+    {"id": "seam_0", "path": [[-9.6, -5.2], [40.2, -5.2]], "color": "#150E09", "width": 0.07, "alpha": 110, "reveal": "entrelumen_atlas_welcome", "order": -11},
+    {"id": "seam_1", "path": [[-9.6, -1.4], [40.2, -1.4]], "color": "#150E09", "width": 0.07, "alpha": 110, "reveal": "entrelumen_atlas_welcome", "order": -11},
+    {"id": "seam_2", "path": [[-9.6, 2.6], [40.2, 2.6]], "color": "#150E09", "width": 0.07, "alpha": 110, "reveal": "entrelumen_atlas_welcome", "order": -11},
+    {"id": "seam_3", "path": [[-9.6, 6.4], [40.2, 6.4]], "color": "#150E09", "width": 0.07, "alpha": 110, "reveal": "entrelumen_atlas_welcome", "order": -11},
+    {"id": "seam_4", "path": [[-9.6, 10.2], [40.2, 10.2]], "color": "#150E09", "width": 0.07, "alpha": 110, "reveal": "entrelumen_atlas_welcome", "order": -11},
+    {"id": "petals_top", "scatter": ["minecraft:textures/block/pink_petals.png", "minecraft:textures/block/torchflower.png", "minecraft:textures/block/azalea_leaves.png"], "region": [-9.4, -8.3, 40.0, -5.6], "count": 16, "size": [0.45, 0.8], "seed": 11, "reveal": "entrelumen_atlas_get_atlas", "avoid": [[-6.0, -7.3, 4.5]]},
+    {"id": "petals_bottom", "scatter": ["minecraft:textures/block/pink_petals.png", "minecraft:textures/block/torchflower.png", "minecraft:textures/block/azalea_leaves.png"], "region": [-9.4, 11.7, 40.0, 13.5], "count": 16, "size": [0.45, 0.8], "seed": 4, "reveal": "entrelumen_atlas_get_atlas"},
+    {"id": "ghost_book", "picture": "minecraft:textures/item/book.png", "x": -1.6, "y": 12.6, "w": 0.9, "h": 0.9, "alpha": 55, "rotation": -10},
+    {"id": "ghost_ingot", "picture": "minecraft:textures/item/copper_ingot.png", "x": 0.0, "y": 12.7, "w": 0.8, "h": 0.8, "alpha": 55, "rotation": 8},
+    {"id": "station", "item": "entrelumen:survey_station", "x": 3.2, "y": 12.6, "size": 1.2, "reveal": "entrelumen_atlas_survey"},
+    {"id": "compass", "picture": "entrelumen:textures/item/heliodor_compass/overworld_16.png", "x": 16.6, "y": 12.6, "w": 1.5, "h": 1.5, "reveal": "entrelumen_atlas_close"},
+    {"id": "book", "picture": "entrelumen:textures/gui/atlas_book.png", "x": 7.8, "y": 3.7, "w": 22.0, "h": 15.4, "reveal": "entrelumen_atlas_get_atlas", "sketch": true, "order": -8},
+    {"id": "tab_deliveries", "picture": "#C8814A", "x": 2.9, "y": -4.5, "w": 4.6, "h": 1.0, "reveal": "entrelumen_atlas_deliver_rules", "sketch": true, "order": -9},
+    {"id": "tab_deliveries_label", "text": {"en_us": "Deliveries", "es_es": "Entregas"}, "x": 2.9, "y": -4.5, "scale": 2, "tint": "#2A1A10", "reveal": "entrelumen_atlas_deliver_rules", "order": -6},
+    {"id": "tab_projects", "picture": "#4FA58A", "x": 11.8, "y": -4.5, "w": 4.6, "h": 1.0, "reveal": "entrelumen_atlas_act1", "sketch": true, "order": -9},
+    {"id": "tab_projects_label", "text": {"en_us": "Projects", "es_es": "Proyectos"}, "x": 11.8, "y": -4.5, "scale": 2, "tint": "#2A1A10", "reveal": "entrelumen_atlas_act1", "order": -6},
+    {"id": "tab_voices", "picture": "#E8B04A", "x": 16.2, "y": -4.5, "w": 3.8, "h": 1.0, "reveal": "entrelumen_atlas_heart", "sketch": true, "order": -9},
+    {"id": "tab_voices_label", "text": {"en_us": "Voices", "es_es": "Voces"}, "x": 16.2, "y": -4.5, "scale": 2, "tint": "#2A1A10", "reveal": "entrelumen_atlas_heart", "order": -6},
+    {"id": "ink_l1_0", "path": [[-0.4, 7.9], [6.0, 7.9]], "color": "#5B3A1E", "width": 0.07, "alpha": 130, "reveal": "entrelumen_atlas_deliver_rules", "order": -6},
+    {"id": "ink_l1_1", "path": [[-0.4, 8.4], [4.4, 8.4]], "color": "#5B3A1E", "width": 0.07, "alpha": 130, "reveal": "entrelumen_atlas_deliver_rules", "order": -6},
+    {"id": "ink_l2_0", "path": [[-0.4, 9.2], [5.2, 9.2]], "color": "#5B3A1E", "width": 0.07, "alpha": 130, "reveal": "entrelumen_atlas_rewards", "order": -6},
+    {"id": "ink_l2_1", "path": [[-0.4, 9.7], [3.6, 9.7]], "color": "#5B3A1E", "width": 0.07, "alpha": 130, "reveal": "entrelumen_atlas_rewards", "order": -6},
+    {"id": "ink_r1_0", "path": [[9.4, 9.8], [15.899999999999999, 9.8]], "color": "#5B3A1E", "width": 0.07, "alpha": 130, "reveal": "entrelumen_atlas_act2", "order": -6},
+    {"id": "ink_r1_1", "path": [[9.4, 10.3], [14.2, 10.3]], "color": "#5B3A1E", "width": 0.07, "alpha": 130, "reveal": "entrelumen_atlas_act2", "order": -6},
+    {"id": "ink_r2_0", "path": [[9.4, 11.0], [15.2, 11.0]], "color": "#5B3A1E", "width": 0.07, "alpha": 130, "reveal": "entrelumen_atlas_heart", "order": -6},
+    {"id": "astrolabe", "path": [[27.0, 0.7], [27.854, 0.812], [28.65, 1.142], [29.333, 1.667], [29.858, 2.35], [30.188, 3.146], [30.3, 4.0], [30.188, 4.854], [29.858, 5.65], [29.333, 6.333], [28.65, 6.858], [27.854, 7.188], [27.0, 7.3], [26.146, 7.188], [25.35, 6.858], [24.667, 6.333], [24.142, 5.65], [23.812, 4.854], [23.7, 4.0], [23.812, 3.146], [24.142, 2.35], [24.667, 1.667], [25.35, 1.142], [26.146, 0.812]], "closed": true, "color": "#C8814A", "width": 0.16, "grow": ["entrelumen_atlas_act1", "entrelumen_atlas_act1", "entrelumen_atlas_act1", "entrelumen_atlas_act1", "entrelumen_atlas_act2", "entrelumen_atlas_act2", "entrelumen_atlas_act2", "entrelumen_atlas_act2", "entrelumen_atlas_act3", "entrelumen_atlas_act3", "entrelumen_atlas_act3", "entrelumen_atlas_act3", "entrelumen_atlas_act4", "entrelumen_atlas_act4", "entrelumen_atlas_act4", "entrelumen_atlas_act4", "entrelumen_atlas_act5", "entrelumen_atlas_act5", "entrelumen_atlas_act5", "entrelumen_atlas_act5", "entrelumen_atlas_act5", "entrelumen_atlas_act5", "entrelumen_atlas_act5", "entrelumen_atlas_act5"], "sketch": true, "order": -4},
+    {"id": "module_habitation", "picture": "entrelumen:textures/block/habitation_module.png", "x": 27.0, "y": 0.7, "w": 1.5, "h": 1.5, "reveal": "entrelumen_atlas_act1", "sketch": true, "order": -3},
+    {"id": "module_exploration", "picture": "entrelumen:textures/block/exploration_module.png", "x": 29.858, "y": 2.35, "w": 1.5, "h": 1.5, "reveal": "entrelumen_atlas_act2", "sketch": true, "order": -3},
+    {"id": "module_nature", "picture": "entrelumen:textures/block/nature_module.png", "x": 29.858, "y": 5.65, "w": 1.5, "h": 1.5, "reveal": "entrelumen_atlas_act3", "sketch": true, "order": -3},
+    {"id": "module_arcane", "picture": "entrelumen:textures/block/arcane_module.png", "x": 27.0, "y": 7.3, "w": 1.5, "h": 1.5, "reveal": "entrelumen_atlas_act4", "sketch": true, "order": -3},
+    {"id": "module_logistics", "picture": "entrelumen:textures/block/logistics_module.png", "x": 24.142, "y": 5.65, "w": 1.5, "h": 1.5, "reveal": "entrelumen_atlas_act5", "sketch": true, "order": -3},
+    {"id": "module_engineering", "picture": "entrelumen:textures/block/engineering_module.png", "x": 24.142, "y": 2.35, "w": 1.5, "h": 1.5, "reveal": "entrelumen_atlas_act5", "sketch": true, "order": -3},
+    {"id": "outer_ring", "path": [[27.0, -0.7], [27.735, -0.642], [28.452, -0.47], [29.134, -0.188], [29.763, 0.198], [30.323, 0.677], [30.802, 1.237], [31.188, 1.866], [31.47, 2.548], [31.642, 3.265], [31.7, 4.0], [31.642, 4.735], [31.47, 5.452], [31.188, 6.134], [30.802, 6.763], [30.323, 7.323], [29.763, 7.802], [29.134, 8.188], [28.452, 8.47], [27.735, 8.642], [27.0, 8.7], [26.265, 8.642], [25.548, 8.47], [24.866, 8.188], [24.237, 7.802], [23.677, 7.323], [23.198, 6.763], [22.812, 6.134], [22.53, 5.452], [22.358, 4.735], [22.3, 4.0], [22.358, 3.265], [22.53, 2.548], [22.812, 1.866], [23.198, 1.237], [23.677, 0.677], [24.237, 0.198], [24.866, -0.188], [25.548, -0.47], [26.265, -0.642]], "closed": true, "dots": "#E8DCB5", "size": 0.13, "step": 0.7, "alpha": 200, "reveal": "entrelumen_atlas_activation"},
+    {"id": "ark_glow", "glow": [27.0, 4.0], "r": 3.2, "reveal": "entrelumen_atlas_ark_build"},
+    {"id": "ark_label", "text": {"en_us": "The Ark", "es_es": "El Arca"}, "x": 27.0, "y": 9.4, "scale": 2, "tint": "#E8B04A", "reveal": "entrelumen_atlas_act5"},
+    {"id": "door_glow", "glow": [33.4, 4.0], "r": 4.5, "reveal": "entrelumen_atlas_activation"},
+    {"id": "close_glow", "glow": [37.2, 4.0], "r": 3.4, "alpha": 110, "reveal": "entrelumen_atlas_close"},
+    {"id": "eyepiece", "picture": "entrelumen:textures/item/voices_eyepiece.png", "x": 17.2, "y": -6.2, "w": 1.4, "h": 1.4, "reveal": "entrelumen_atlas_act4"},
+    {"id": "star_chart", "picture": "entrelumen:textures/item/star_chart.png", "x": 19.6, "y": -6.0, "w": 1.3, "h": 1.3, "reveal": "entrelumen_atlas_act3", "rotation": 8},
+    {"id": "lamp", "item": "minecraft:lantern", "x": -8.4, "y": -3.4, "size": 0.9, "reveal": "entrelumen_atlas_toy_lamp"},
+    {"id": "lamp_glow", "glow": [-8.4, -3.4], "r": 8.0, "alpha": 70, "reveal": "entrelumen_atlas_toy_lamp"},
+    {"id": "quill", "picture": "minecraft:textures/item/feather.png", "x": -8.2, "y": 8.0, "w": 1.2, "h": 1.2, "rotation": -30, "reveal": "entrelumen_atlas_toy_quill"},
+    {"id": "ink_reply", "text": {"en_us": "Still there?", "es_es": "¿Seguís ahí?"}, "x": -6.6, "y": 9.4, "scale": 2, "tint": "#E8DCB5", "rotation": -6, "reveal": "entrelumen_atlas_toy_quill", "hover": {"en_us": "The Atlas writes back.", "es_es": "El Atlas te contesta."}}
+  ],
   "quests": [
     {
-      "key": "entrelumen_atlas_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "A Book That Answers Back",
-        "The &6Living Atlas&r moves the story. Each act is a set of projects, each project a delivery; finish them all and the next act opens. Along the way it hands out rewards and tells, in broken fragments, what happened to Heliodor.\n\nSomeone is talking through it. The interference is not your fault."
-      ],
-      "es_es": [
-        "Un libro que responde",
-        "El &6Atlas Vivo&r mueve la historia. Cada acto es un conjunto de proyectos, cada proyecto una entrega; completalos y se abre el acto siguiente. En el camino da recompensas y cuenta, en fragmentos rotos, qué le pasó a Heliodor.\n\nAlguien habla a través de él. La interferencia no es culpa tuya."
-      ],
-      "sources": [
-        "repo:docs/design/story-bible.md",
-        "repo:docs/design/quest-lore.md"
-      ]
+      "key": "entrelumen_atlas_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "A Book That Answers Back",
+        "text": ["[lead] Each act is a set of projects and each project is a delivery: finish them all and the next act opens.",
+                 "The [item:entrelumen:atlas|Living Atlas] hands out rewards on the way and tells, in broken fragments, what happened to Heliodor.",
+                 "Someone is talking through it. The interference is not your fault."]},
+      "es_es": {"title": "Un libro que responde",
+        "text": ["[lead] Cada acto es un conjunto de proyectos y cada proyecto es una entrega: completalos todos y se abre el acto siguiente.",
+                 "El [item:entrelumen:atlas|Atlas Vivo] da recompensas en el camino y cuenta, en fragmentos rotos, qué le pasó a Heliodor.",
+                 "Alguien habla a través de él. La interferencia no es culpa tuya."]},
+      "sources": ["repo:docs/design/story-bible.md", "repo:docs/design/quest-lore.md"]
     },
     {
-      "key": "entrelumen_atlas_get_atlas",
-      "deps": [
-        "entrelumen_atlas_welcome"
-      ],
-      "type": "item",
-      "item": "entrelumen:atlas",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "Get the Atlas",
-        "Craft it from a &ebook&r and a &ecopper ingot&r; its first project, The Atlas Awakens, asks for exactly that. Open it with right-click, with &e/entrelumen&r, or by using a Survey Station with an empty hand.\n\nWaking it is also the compass's first target."
-      ],
-      "es_es": [
-        "Conseguí el Atlas",
-        "Se fabrica con un &elibro&r y un &elingote de cobre&r; su primer proyecto, El Atlas despierta, pide justamente eso. Abrilo con clic derecho, con &e/entrelumen&r o usando una Estación cartográfica con la mano vacía.\n\nDespertarlo también es el primer destino de la brújula."
-      ],
-      "sources": [
-        "repo:companion/src/main/resources/data/entrelumen/recipe/atlas.json",
-        "repo:companion/src/main/java/dev/entrelumen/Entrelumen.java",
-        "repo:companion/src/main/java/dev/entrelumen/SignalStationBlock.java",
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"
-      ]
+      "key": "entrelumen_atlas_get_atlas", "deps": ["entrelumen_atlas_welcome"], "type": "item", "item": "entrelumen:atlas", "layout": {"x": 3.6, "y": -0.2, "size": 1.5, "shape": "square"},
+      "en_us": {"title": "Get the Atlas", "subtitle": "Two ingredients, one talkative book.",
+        "text": ["[lead] A [item:minecraft:book|book] and a [item:minecraft:copper_ingot|copper ingot] craft it.",
+                 "Its first project, [hl|The Atlas Awakens], asks for exactly that. Then open it three ways:",
+                 "[li] [icon:right_click] Right-click with the Atlas in hand",
+                 "[li] The [hl|/entrelumen] command",
+                 "[li] A [item:entrelumen:survey_station|Survey Station], with an empty hand",
+                 "Waking it is also the compass's first target."]},
+      "es_es": {"title": "Conseguí el Atlas", "subtitle": "Dos ingredientes, un libro conversador.",
+        "text": ["[lead] Un [item:minecraft:book|libro] y un [item:minecraft:copper_ingot|lingote de cobre] lo fabrican.",
+                 "Su primer proyecto, [hl|El Atlas despierta], pide justamente eso. Después se abre de tres maneras:",
+                 "[li] [icon:right_click] Clic derecho con el Atlas en la mano",
+                 "[li] El comando [hl|/entrelumen]",
+                 "[li] Una [item:entrelumen:survey_station|Estación cartográfica], con la mano vacía",
+                 "Despertarlo también es el primer destino de la brújula."]},
+      "sources": ["repo:companion/src/main/resources/data/entrelumen/recipe/atlas.json", "repo:companion/src/main/java/dev/entrelumen/Entrelumen.java", "repo:companion/src/main/java/dev/entrelumen/SignalStationBlock.java", "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"]
     },
     {
-      "key": "entrelumen_atlas_screen",
-      "deps": [
-        "entrelumen_atlas_get_atlas"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_atlas_screen", "deps": ["entrelumen_atlas_get_atlas"], "type": "checkmark", "layout": {"x": 1.2, "y": 3.4, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:writable_book",
-      "layout": {
-        "x": 6,
-        "y": -2,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Reading the Atlas",
-        "Left page: the act's projects and their state. Right page: the selected project, its materials (carried and missing) and the projects it needs first. &eDeliver&r sends the materials, &eRefresh&r asks the server again and &eAdvance&r appears when the act is done.\n\nThe list opens with the compass entry and its fragments."
-      ],
-      "es_es": [
-        "Leer el Atlas",
-        "Página izquierda: los proyectos del acto y su estado. Página derecha: el proyecto elegido, sus materiales (cuántos llevás y cuántos faltan) y los proyectos que necesita antes. &eEntregar&r manda los materiales, &eActualizar&r vuelve a consultar al servidor y &eAvanzar&r aparece cuando el acto está hecho.\n\nLa lista arranca con la entrada de la brújula y sus fragmentos."
-      ],
-      "sources": [
-        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json",
-        "repo:docs/design/atlas-interface-review.md",
-        "repo:docs/design/heliodor-compass.md"
-      ]
+      "en_us": {"title": "Reading the Atlas",
+        "text": ["[lead] Left page: your act's projects. Right page: the one you picked.",
+                 "There you see its materials (carried and missing) and the projects it needs first. Three buttons work it:",
+                 "[li] [hl|Deliver] sends the materials",
+                 "[li] [hl|Refresh] asks the server again",
+                 "[li] [hl|Advance] appears when the act is done",
+                 "{page}",
+                 "The list opens with the compass entry and its fragments."]},
+      "es_es": {"title": "Leer el Atlas",
+        "text": ["[lead] Página izquierda: los proyectos de tu acto. Página derecha: el que elegiste.",
+                 "Ahí ves sus materiales (cuántos llevás y cuántos faltan) y los proyectos que necesita antes. Tres botones lo manejan:",
+                 "[li] [hl|Entregar] manda los materiales",
+                 "[li] [hl|Actualizar] vuelve a consultar al servidor",
+                 "[li] [hl|Avanzar] aparece cuando el acto está hecho",
+                 "{page}",
+                 "La lista arranca con la entrada de la brújula y sus fragmentos."]},
+      "sources": ["repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json", "repo:docs/design/atlas-interface-review.md", "repo:docs/design/heliodor-compass.md"]
     },
     {
-      "key": "entrelumen_atlas_deliver_rules",
-      "deps": [
-        "entrelumen_atlas_get_atlas"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_atlas_deliver_rules", "deps": ["entrelumen_atlas_get_atlas"], "type": "checkmark", "layout": {"x": 3.9, "y": 3.6, "size": 1.25, "shape": "pentagon"},
       "icon": "minecraft:hopper",
-      "layout": {
-        "x": 6,
-        "y": 2,
-        "size": 1.25,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Delivery Rules",
-        "Deliveries take from your &emain inventory and offhand&r only: backpacks, shulker boxes and the ender chest do not count. Only projects of your &ecurrent act&r, after their prerequisites.\n\nA delivered project cannot be delivered again, so reconnecting never duplicates a reward. Nice try."
-      ],
-      "es_es": [
-        "Reglas de entrega",
-        "Las entregas toman sólo de tu &einventario principal y la mano secundaria&r: mochilas, cajas de shulker y el cofre de ender no cuentan. Sólo proyectos de tu &eacto actual&r, después de sus previos.\n\nUn proyecto entregado no se vuelve a entregar, así que reconectarte nunca duplica una recompensa. Buen intento."
-      ],
-      "sources": [
-        "repo:companion/src/main/java/dev/entrelumen/Entrelumen.java",
-        "repo:companion/src/main/java/dev/entrelumen/Campaigns.java"
-      ]
+      "en_us": {"title": "Delivery Rules", "subtitle": "Pockets only.",
+        "text": ["[lead] Deliveries draw from your pockets and nothing else.",
+                 "Only your [hl|main inventory and offhand]: backpacks, shulker boxes and the ender chest do not count.",
+                 "Only projects of your [hl|current act], after their prerequisites.",
+                 "{page}",
+                 "A delivered project cannot be delivered again, so reconnecting never duplicates a reward. Nice try."]},
+      "es_es": {"title": "Reglas de entrega", "subtitle": "Sólo bolsillos.",
+        "text": ["[lead] Las entregas sacan de tus bolsillos y de nada más.",
+                 "Sólo del [hl|inventario principal y la mano secundaria]: mochilas, cajas de shulker y el cofre de ender no cuentan.",
+                 "Sólo proyectos de tu [hl|acto actual], después de sus previos.",
+                 "{page}",
+                 "Un proyecto entregado no se vuelve a entregar, así que reconectarte nunca duplica una recompensa. Buen intento."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/Entrelumen.java", "repo:companion/src/main/java/dev/entrelumen/Campaigns.java"]
     },
     {
-      "key": "entrelumen_atlas_commands",
-      "deps": [
-        "entrelumen_atlas_deliver_rules"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_atlas_commands", "deps": ["entrelumen_atlas_deliver_rules"], "type": "checkmark", "optional": true, "layout": {"x": 5.9, "y": 5.4, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:command_block",
-      "layout": {
-        "x": 9,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: the Atlas From Chat",
-        "&e/entrelumen status&r lists your act's pending projects, their prerequisites and, for each material, how many you carry and lack. &e/entrelumen deliver <project>&r delivers by name with the button's rules, and the chat suggests names as you type."
-      ],
-      "es_es": [
-        "Truco: el Atlas desde el chat",
-        "&e/entrelumen status&r lista los proyectos pendientes de tu acto, sus requisitos y, para cada material, cuántos llevás y cuántos faltan. &e/entrelumen deliver <proyecto>&r entrega por nombre con las reglas del botón, y el chat sugiere los nombres mientras escribís."
-      ],
-      "sources": [
-        "repo:companion/src/main/java/dev/entrelumen/Entrelumen.java",
-        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
-      ]
+      "en_us": {"title": "Tip: the Atlas From Chat",
+        "text": ["[lead] Two commands do what the buttons do, without opening the book.",
+                 "[li] [hl|/entrelumen status] lists pending projects, their prerequisites and what you carry and lack per material",
+                 "[li] [hl|/entrelumen deliver <project>] delivers by name, with the button's rules",
+                 "The chat suggests the names as you type."]},
+      "es_es": {"title": "Truco: el Atlas desde el chat",
+        "text": ["[lead] Dos comandos hacen lo que los botones, sin abrir el libro.",
+                 "[li] [hl|/entrelumen status] lista los proyectos pendientes, sus requisitos y cuántos llevás y cuántos faltan de cada material",
+                 "[li] [hl|/entrelumen deliver <proyecto>] entrega por nombre, con las reglas del botón",
+                 "El chat sugiere los nombres mientras escribís."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/Entrelumen.java", "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"]
     },
     {
-      "key": "entrelumen_atlas_act1",
-      "deps": [
-        "entrelumen_atlas_screen"
-      ],
-      "type": "item",
-      "item": "entrelumen:signal_core",
-      "layout": {
-        "x": 9,
-        "y": -2,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Act I: A Light Among Ruins",
-        "Five projects, ordinary materials:\n- The Atlas Awakens: a book, a copper ingot;\n- A Table for Travellers: 3 bread, 4 bowls;\n- Assemble the Lens: 4 copper ingots, 4 glass (&eRaw Lens&r);\n- Field Survey: 3 paper, a compass (&eSurvey Notes&r);\n- First Signal: lens, notes, 4 copper ingots (&eSignal Core&r).\n\nThen press Advance."
-      ],
-      "es_es": [
-        "Acto I: Una luz entre ruinas",
-        "Cinco proyectos, materiales comunes:\n- El Atlas despierta: un libro, un lingote de cobre;\n- Una mesa para viajeros: 3 panes, 4 cuencos;\n- Ensamblar la lente: 4 lingotes de cobre, 4 vidrios (&eLente en bruto&r);\n- Relevamiento de campo: 3 papeles, una brújula (&eNotas de relevamiento&r);\n- Primera señal: lente, notas, 4 lingotes de cobre (&eNúcleo de señal&r).\n\nDespués apretá Avanzar."
-      ],
-      "sources": [
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
-        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
-      ]
+      "key": "entrelumen_atlas_act1", "deps": ["entrelumen_atlas_screen"], "type": "item", "item": "entrelumen:signal_core", "layout": {"x": 10.2, "y": 0.2, "size": 1.25, "shape": "circle"},
+      "en_us": {"title": "Act I: A Light Among Ruins",
+        "text": ["[lead] Five projects, all with ordinary materials:",
+                 "[li] [hl|The Atlas Awakens]: a book, a copper ingot",
+                 "[li] [hl|A Table for Travellers]: 3 bread, 4 bowls",
+                 "[li] [hl|Assemble the Lens]: 4 copper ingots, 4 glass",
+                 "[li] [hl|Field Survey]: 3 paper, a compass",
+                 "[li] [hl|First Signal]: lens, notes, 4 copper ingots",
+                 "{page}",
+                 "The lens project pays the [item:entrelumen:raw_lens|Raw Lens], Field Survey pays the [item:entrelumen:survey_notes|Survey Notes] and First Signal pays the [item:entrelumen:signal_core|Signal Core].",
+                 "Then press Advance."]},
+      "es_es": {"title": "Acto I: Una luz entre ruinas",
+        "text": ["[lead] Cinco proyectos, todos con materiales comunes:",
+                 "[li] [hl|El Atlas despierta]: un libro, un lingote de cobre",
+                 "[li] [hl|Una mesa para viajeros]: 3 panes, 4 cuencos",
+                 "[li] [hl|Ensamblar la lente]: 4 lingotes de cobre, 4 vidrios",
+                 "[li] [hl|Relevamiento de campo]: 3 papeles, una brújula",
+                 "[li] [hl|Primera señal]: lente, notas, 4 lingotes de cobre",
+                 "{page}",
+                 "Ensamblar la lente paga la [item:entrelumen:raw_lens|Lente en bruto], el Relevamiento de campo paga las [item:entrelumen:survey_notes|Notas de relevamiento] y la Primera señal paga el [item:entrelumen:signal_core|Núcleo de señal].",
+                 "Después apretá Avanzar."]},
+      "sources": ["repo:companion/src/main/resources/data/entrelumen/campaign/projects.json", "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"]
     },
     {
-      "key": "entrelumen_atlas_components",
-      "deps": [
-        "entrelumen_atlas_act1",
-        "entrelumen_atlas_deliver_rules"
-      ],
-      "type": "item",
-      "item": "entrelumen:calibration_frame",
-      "layout": {
-        "x": 12,
-        "y": 0,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Act Components",
-        "From act II, projects ask for &6act components&r: prototypes crafted in an ordinary grid from two or three mods plus an earlier component. The recipes are public and never check your act.\n\nIn EMI, &eR&r on a component shows its recipe and &eU&r everything it unlocks."
-      ],
-      "es_es": [
-        "Componentes de acto",
-        "Desde el acto II, los proyectos piden &6componentes de acto&r: prototipos que se hacen en una grilla común con piezas de dos o tres mods más un componente anterior. Las recetas son públicas y nunca miran tu acto.\n\nEn EMI, &eR&r sobre un componente muestra su receta y &eU&r todo lo que desbloquea."
-      ],
-      "sources": [
-        "repo:content/integration-design.json",
-        "repo:docs/design/resource-balance.md"
-      ]
+      "key": "entrelumen_atlas_components", "deps": ["entrelumen_atlas_act1", "entrelumen_atlas_deliver_rules"], "type": "item", "item": "entrelumen:calibration_frame", "layout": {"x": 13.4, "y": 1.0, "size": 1.5, "shape": "hexagon"},
+      "en_us": {"title": "Act Components",
+        "text": ["[lead] From act II, projects ask for [hl|act components]: prototypes crafted in an ordinary grid.",
+                 "Each mixes pieces of two or three mods plus an earlier component. The recipes are public and never check your act.",
+                 "[tip] In EMI, [key:key.emi.view_recipes] on a component shows its recipe and [key:key.emi.view_uses] everything it unlocks."]},
+      "es_es": {"title": "Componentes de acto",
+        "text": ["[lead] Desde el acto II, los proyectos piden [hl|componentes de acto]: prototipos que se hacen en una grilla común.",
+                 "Cada uno mezcla piezas de dos o tres mods más un componente anterior. Las recetas son públicas y nunca miran tu acto.",
+                 "[tip] En EMI, [key:key.emi.view_recipes] sobre un componente muestra su receta y [key:key.emi.view_uses] todo lo que desbloquea."]},
+      "sources": ["repo:content/integration-design.json", "repo:docs/design/resource-balance.md"]
     },
     {
-      "key": "entrelumen_atlas_act2",
-      "deps": [
-        "entrelumen_atlas_components"
-      ],
-      "type": "item",
-      "item": "entrelumen:living_matrix",
-      "layout": {
-        "x": 15,
-        "y": -3.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Act II: The Lost Crafts",
-        "Four components, then the closing project:\n- &eCalibration Frame&r: Create and Immersive Engineering, plus the raw lens;\n- &eEnergy Coupler&r: Actually Additions and Create;\n- &eLiving Matrix&r: Ars Nouveau, plus a frame;\n- &eTravel Rations&r: see the Kitchen chapter.\n\nWorkshop Archive closes the act and gives &eTerra's Arm&r."
-      ],
-      "es_es": [
-        "Acto II: Los oficios perdidos",
-        "Cuatro componentes y el proyecto de cierre:\n- &eMarco de calibración&r: Create e Immersive Engineering, más la lente en bruto;\n- &eAcoplador de energía&r: Actually Additions y Create;\n- &eMatriz viva&r: Ars Nouveau, más un marco;\n- &eProvisiones de viaje&r: mirá el capítulo de Cocina.\n\nArchivo del taller cierra el acto y da el &eBrazo de Terra&r."
-      ],
-      "sources": [
-        "repo:content/integration-design.json",
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"
-      ]
+      "key": "entrelumen_atlas_act2", "deps": ["entrelumen_atlas_components"], "type": "item", "item": "entrelumen:living_matrix", "layout": {"x": 10.6, "y": 3.6, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "Act II: The Lost Crafts",
+        "text": ["[lead] Four components, then a closing project:",
+                 "[li] [item:entrelumen:calibration_frame|Calibration Frame]: Create and Immersive Engineering, plus the raw lens",
+                 "[li] [item:entrelumen:energy_coupler|Energy Coupler]: Actually Additions and Create",
+                 "[li] [item:entrelumen:living_matrix|Living Matrix]: Ars Nouveau, plus a frame",
+                 "[li] [item:entrelumen:ration_bundle|Travel Rations]: see the Kitchen chapter",
+                 "{page}",
+                 "[hl|Workshop Archive] closes the act and pays [item:entrelumen:terra_arm|Terra's Arm]. Its story: [chapter:guide_entrelumen_terra_arm|Terra's Arm]."]},
+      "es_es": {"title": "Acto II: Los oficios perdidos",
+        "text": ["[lead] Cuatro componentes y un proyecto de cierre:",
+                 "[li] [item:entrelumen:calibration_frame|Marco de calibración]: Create e Immersive Engineering, más la lente en bruto",
+                 "[li] [item:entrelumen:energy_coupler|Acoplador de energía]: Actually Additions y Create",
+                 "[li] [item:entrelumen:living_matrix|Matriz viva]: Ars Nouveau, más un marco",
+                 "[li] [item:entrelumen:ration_bundle|Provisiones de viaje]: mirá el capítulo de Cocina",
+                 "{page}",
+                 "[hl|Archivo del taller] cierra el acto y paga el [item:entrelumen:terra_arm|Brazo de Terra]. Su historia: [chapter:guide_entrelumen_terra_arm|El Brazo de Terra]."]},
+      "sources": ["repo:content/integration-design.json", "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"]
     },
     {
-      "key": "entrelumen_atlas_act3",
-      "deps": [
-        "entrelumen_atlas_components"
-      ],
-      "type": "item",
-      "item": "entrelumen:routing_matrix",
-      "layout": {
-        "x": 15,
-        "y": -0.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Act III: Routes of Exchange",
-        "Five components; three pay an altar:\n- &eRouting Matrix&r (AE2, PneumaticCraft, Actually Additions): &eAltar of Peace&r;\n- &ePropagation Core&r (Mystical Agriculture, bee wax): &eAltar of Growth&r;\n- &ePower Regulator&r (Mekanism, Immersive Engineering);\n- &eInventory Sensor&r (Integrated Dynamics, LaserIO);\n- &eHandling Core&r (Modular Routers, Create): &eAltar of Levelling&r.\n\nExchange Route closes the act."
-      ],
-      "es_es": [
-        "Acto III: Rutas de intercambio",
-        "Cinco componentes; tres pagan un altar:\n- &eMatriz de distribución&r (AE2, PneumaticCraft, Actually Additions): &eAltar de Paz&r;\n- &eNúcleo de propagación&r (Mystical Agriculture, cera de abeja): &eAltar de Crecimiento&r;\n- &eRegulador de energía&r (Mekanism, Immersive Engineering);\n- &eSensor de inventario&r (Integrated Dynamics, LaserIO);\n- &eNúcleo de manipulación&r (Modular Routers, Create): &eAltar de Nivelación&r.\n\nRuta de intercambio cierra el acto."
-      ],
-      "sources": [
-        "repo:content/integration-design.json",
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"
-      ]
+      "key": "entrelumen_atlas_act3", "deps": ["entrelumen_atlas_components"], "type": "item", "item": "entrelumen:routing_matrix", "layout": {"x": 13.4, "y": 4.4, "size": 1.25, "shape": "circle"},
+      "en_us": {"title": "Act III: Routes of Exchange",
+        "text": ["[lead] Five components; three of them pay an altar:",
+                 "[li] [item:entrelumen:routing_matrix|Routing Matrix]: [hl|Altar of Peace]",
+                 "[li] [item:entrelumen:propagation_core|Propagation Core]: [hl|Altar of Growth]",
+                 "[li] [item:entrelumen:power_regulator|Power Regulator]",
+                 "[li] [item:entrelumen:inventory_sensor|Inventory Sensor]",
+                 "[li] [item:entrelumen:handling_core|Handling Core]: [hl|Altar of Levelling]",
+                 "{page}",
+                 "Where they come from:",
+                 "[li] Routing Matrix: AE2, PneumaticCraft, Actually Additions",
+                 "[li] Propagation Core: Mystical Agriculture, bee wax",
+                 "[li] Power Regulator: Mekanism, Immersive Engineering",
+                 "[li] Inventory Sensor: Integrated Dynamics, LaserIO",
+                 "[li] Handling Core: Modular Routers, Create",
+                 "[hl|Exchange Route] closes the act."]},
+      "es_es": {"title": "Acto III: Rutas de intercambio",
+        "text": ["[lead] Cinco componentes; tres de ellos pagan un altar:",
+                 "[li] [item:entrelumen:routing_matrix|Matriz de distribución]: [hl|Altar de Paz]",
+                 "[li] [item:entrelumen:propagation_core|Núcleo de propagación]: [hl|Altar de Crecimiento]",
+                 "[li] [item:entrelumen:power_regulator|Regulador de energía]",
+                 "[li] [item:entrelumen:inventory_sensor|Sensor de inventario]",
+                 "[li] [item:entrelumen:handling_core|Núcleo de manipulación]: [hl|Altar de Nivelación]",
+                 "{page}",
+                 "De dónde salen:",
+                 "[li] Matriz de distribución: AE2, PneumaticCraft, Actually Additions",
+                 "[li] Núcleo de propagación: Mystical Agriculture, cera de abeja",
+                 "[li] Regulador de energía: Mekanism, Immersive Engineering",
+                 "[li] Sensor de inventario: Integrated Dynamics, LaserIO",
+                 "[li] Núcleo de manipulación: Modular Routers, Create",
+                 "[hl|Ruta de intercambio] cierra el acto."]},
+      "sources": ["repo:content/integration-design.json", "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"]
     },
     {
-      "key": "entrelumen_atlas_act4",
-      "deps": [
-        "entrelumen_atlas_components"
-      ],
-      "type": "item",
-      "item": "entrelumen:spectral_lens",
-      "layout": {
-        "x": 15,
-        "y": 2.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Act IV: Voices of the Atlas",
-        "The expedition act: the Atlas records journeys by itself when your team arrives, and asks for four components:\n- &eSpectral Lens&r (Occultism, Malum);\n- &eHorizon Chart&r (Aether, Twilight; its project needs both reached): &eAltar of Repose&r;\n- &eEcosystem Capsule&r (Bumblezone; its project needs it reached): &eAltar of Renewal&r;\n- &eContainment Seal&r (EvilCraft, Malum): &eAltar of Time&r."
-      ],
-      "es_es": [
-        "Acto IV: Las voces del Atlas",
-        "El acto de las expediciones: el Atlas registra solo los viajes cuando tu equipo llega, y pide cuatro componentes:\n- &eLente espectral&r (Occultism, Malum);\n- &eCarta de horizontes&r (Aether, Twilight; su proyecto pide haber llegado a los dos): &eAltar de Reposo&r;\n- &eCápsula de ecosistema&r (Bumblezone; su proyecto pide haber llegado): &eAltar de Renovación&r;\n- &eSello de contención&r (EvilCraft, Malum): &eAltar del Tiempo&r."
-      ],
-      "sources": [
-        "repo:content/integration-design.json",
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
-        "repo:companion/src/main/java/dev/entrelumen/Expeditions.java"
-      ]
+      "key": "entrelumen_atlas_act4", "deps": ["entrelumen_atlas_components"], "type": "item", "item": "entrelumen:spectral_lens", "layout": {"x": 16.0, "y": 3.4, "size": 1.25, "shape": "circle"},
+      "en_us": {"title": "Act IV: Voices of the Atlas",
+        "text": ["[lead] The expedition act: the Atlas records journeys by itself when your team arrives.",
+                 "Four components:",
+                 "[li] [item:entrelumen:spectral_lens|Spectral Lens]",
+                 "[li] [item:entrelumen:horizon_chart|Horizon Chart]: [hl|Altar of Repose]",
+                 "[li] [item:entrelumen:ecosystem_capsule|Ecosystem Capsule]: [hl|Altar of Renewal]",
+                 "[li] [item:entrelumen:containment_seal|Containment Seal]: [hl|Altar of Time]",
+                 "{page}",
+                 "Where they come from:",
+                 "[li] Spectral Lens: Occultism, Malum",
+                 "[li] Horizon Chart: Aether, Twilight; its project needs both reached",
+                 "[li] Ecosystem Capsule: Bumblezone; its project needs it reached",
+                 "[li] Containment Seal: EvilCraft, Malum"]},
+      "es_es": {"title": "Acto IV: Las voces del Atlas",
+        "text": ["[lead] El acto de las expediciones: el Atlas registra solo los viajes cuando tu equipo llega.",
+                 "Cuatro componentes:",
+                 "[li] [item:entrelumen:spectral_lens|Lente espectral]",
+                 "[li] [item:entrelumen:horizon_chart|Carta de horizontes]: [hl|Altar de Reposo]",
+                 "[li] [item:entrelumen:ecosystem_capsule|Cápsula de ecosistema]: [hl|Altar de Renovación]",
+                 "[li] [item:entrelumen:containment_seal|Sello de contención]: [hl|Altar del Tiempo]",
+                 "{page}",
+                 "De dónde salen:",
+                 "[li] Lente espectral: Occultism, Malum",
+                 "[li] Carta de horizontes: Aether, Twilight; su proyecto pide haber llegado a los dos",
+                 "[li] Cápsula de ecosistema: Bumblezone; su proyecto pide haber llegado",
+                 "[li] Sello de contención: EvilCraft, Malum"]},
+      "sources": ["repo:content/integration-design.json", "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json", "repo:companion/src/main/java/dev/entrelumen/Expeditions.java"]
     },
     {
-      "key": "entrelumen_atlas_heart",
-      "deps": [
-        "entrelumen_atlas_act4"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_atlas_heart", "deps": ["entrelumen_atlas_act4"], "type": "checkmark", "layout": {"x": 16.0, "y": 6.6, "size": 1.25, "shape": "hexagon"},
       "icon": "entrelumen:heart_of_heliodor",
-      "layout": {
-        "x": 18,
-        "y": 2.5,
-        "size": 1.25,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "The Heart of Heliodor",
-        "Act IV ends at the &6Sun Spirit&r, boss of the Aether's gold dungeon. It drops the &eHeart of Heliodor&r, once per campaign. Deliver it in A Clear Voice; only then can Voices of the Atlas close the act.\n\nOn the ground it cannot burn, despawn or fall into the void. It has been lost once already."
-      ],
-      "es_es": [
-        "El Corazón de Heliodor",
-        "El acto IV termina frente al &6Espíritu del Sol&r, jefe de la mazmorra de oro del Aether. Suelta el &eCorazón de Heliodor&r, uno por campaña. Entregalo en Una voz clara; recién entonces Las voces del Atlas puede cerrar el acto.\n\nEn el piso no se quema, no desaparece ni cae al vacío. Ya se perdió una vez."
-      ],
-      "sources": [
-        "repo:docs/design/act-renumbering.md",
-        "note:reflects feature/acts-renumber, merged into main on 24/9 (Ark in act V, Solsticio act VI, Heart of Heliodor)"
-      ]
+      "en_us": {"title": "The Heart of Heliodor",
+        "text": ["[lead] Act IV ends at the [hl|Sun Spirit], boss of the Aether's gold dungeon.",
+                 "It drops the [item:entrelumen:heart_of_heliodor|Heart of Heliodor], once per campaign. Deliver it in [hl|A Clear Voice]; only then can [hl|Voices of the Atlas] close the act.",
+                 "[note] On the ground it cannot burn, despawn or fall into the void. It has been lost once already."]},
+      "es_es": {"title": "El Corazón de Heliodor",
+        "text": ["[lead] El acto IV termina frente al [hl|Espíritu del Sol], jefe de la mazmorra de oro del Aether.",
+                 "Suelta el [item:entrelumen:heart_of_heliodor|Corazón de Heliodor], uno por campaña. Entregalo en [hl|Una voz clara]; recién entonces [hl|Las voces del Atlas] puede cerrar el acto.",
+                 "[note] En el piso no se quema, no desaparece ni cae al vacío. Ya se perdió una vez."]},
+      "sources": ["repo:docs/design/act-renumbering.md", "note:reflects feature/acts-renumber, merged into main on 24/9 (Ark in act V, Solsticio act VI, Heart of Heliodor)"]
     },
     {
-      "key": "entrelumen_atlas_act5",
-      "deps": [
-        "entrelumen_atlas_act3",
-        "entrelumen_atlas_heart"
-      ],
-      "type": "item",
-      "item": "entrelumen:ark_bus",
-      "layout": {
-        "x": 18,
-        "y": -1.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Act V: The Ark",
-        "Knowing the truth, you build the Ark. Three components: &eArk Connection Bus&r (Mekanism, PneumaticCraft, handling cores, a sensor), &eRenewal Engine&r (Nature's Aura, Mystical Agriculture, capsules, cores) and &eHabitation Charter&r (fish stew, mixed salad, AE2, rations).\n\nWorld Network closes the act. On the way, the last two modules: &eLogistics&r and &eEngineering&r."
-      ],
-      "es_es": [
-        "Acto V: El Arca",
-        "Sabiendo la verdad, construís el Arca. Tres componentes: &eBus de conexión del Arca&r (Mekanism, PneumaticCraft, núcleos de manipulación, un sensor), &eMotor de renovación&r (Nature's Aura, Mystical Agriculture, cápsulas, núcleos) y &eCarta de habitabilidad&r (guiso de pescado, ensalada mixta, AE2, provisiones).\n\nRed del mundo cierra el acto. En el camino, los dos últimos módulos: &eLogística&r e &eIngeniería&r."
-      ],
-      "sources": [
-        "repo:content/integration-design.json",
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
-        "repo:docs/design/act-renumbering.md",
-        "repo:docs/design/ark-modules-v2.md"
-      ]
+      "key": "entrelumen_atlas_act5", "deps": ["entrelumen_atlas_act3", "entrelumen_atlas_heart"], "type": "item", "item": "entrelumen:ark_bus", "layout": {"x": 21.6, "y": 6.5, "size": 1.25, "shape": "circle"},
+      "en_us": {"title": "Act V: The Ark",
+        "text": ["[lead] Knowing the truth, you build the Ark: three components.",
+                 "[li] [item:entrelumen:ark_bus|Ark Connection Bus]",
+                 "[li] [item:entrelumen:renewal_engine|Renewal Engine]",
+                 "[li] [item:entrelumen:habitation_contract|Habitation Charter]",
+                 "[hl|World Network] closes the act. On the way, the last two modules: [hl|Logistics] and [hl|Engineering].",
+                 "{page}",
+                 "Where they come from:",
+                 "[li] Ark Connection Bus: Mekanism, PneumaticCraft, handling cores, a sensor",
+                 "[li] Renewal Engine: Nature's Aura, Mystical Agriculture, capsules, cores",
+                 "[li] Habitation Charter: fish stew, mixed salad, AE2, rations"]},
+      "es_es": {"title": "Acto V: El Arca",
+        "text": ["[lead] Sabiendo la verdad, construís el Arca: tres componentes.",
+                 "[li] [item:entrelumen:ark_bus|Bus de conexión del Arca]",
+                 "[li] [item:entrelumen:renewal_engine|Motor de renovación]",
+                 "[li] [item:entrelumen:habitation_contract|Carta de habitabilidad]",
+                 "[hl|Red del mundo] cierra el acto. En el camino, los dos últimos módulos: [hl|Logística] e [hl|Ingeniería].",
+                 "{page}",
+                 "De dónde salen:",
+                 "[li] Bus de conexión del Arca: Mekanism, PneumaticCraft, núcleos de manipulación, un sensor",
+                 "[li] Motor de renovación: Nature's Aura, Mystical Agriculture, cápsulas, núcleos",
+                 "[li] Carta de habitabilidad: guiso de pescado, ensalada mixta, AE2, provisiones"]},
+      "sources": ["repo:content/integration-design.json", "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json", "repo:docs/design/act-renumbering.md", "repo:docs/design/ark-modules-v2.md"]
     },
     {
-      "key": "entrelumen_atlas_ark_build",
-      "deps": [
-        "entrelumen_atlas_act5"
-      ],
-      "type": "item",
-      "item": "entrelumen:ark_controller",
-      "layout": {
-        "x": 21,
-        "y": -1.5,
-        "size": 1.25,
-        "shape": "square"
-      },
-      "en_us": [
-        "Build the Ark",
-        "An astrolabe of stone, tuff, calcite, copper and amethyst round the &eArk Controller&r. The rim's polished amethyst comes from amethyst blocks through Rechiseled's &eChisel&r (iron ingot and stick). In the Atlas, The Ark's &eShow guide&r projects a ghost of every block, on your controller or where you look.\n\nEach act gives one module: I Habitation, II Exploration, III Nature, IV Arcane, V Logistics and Engineering. A module works in its place, with the Ark whole and the controller on. One Ark per team."
-      ],
-      "es_es": [
-        "Construí el Arca",
-        "Un astrolabio de piedra, toba, calcita, cobre y amatista en torno al &eControlador del Arca&r. La amatista pulida del borde: bloques de amatista en el &eCincel&r de Rechiseled (hierro y palo). En el Atlas, &eMostrar guía&r de El Arca proyecta un fantasma de cada bloque, sobre tu controlador o donde mirás.\n\nCada acto da un módulo: I Habitabilidad, II Exploración, III Naturaleza, IV Arcano, V Logística e Ingeniería. Un módulo funciona en su lugar, con el Arca entera y su controlador. Un Arca por equipo."
-      ],
-      "sources": [
-        "repo:docs/design/ark-modules-v2.md",
-        "repo:docs/design/ark-multiblock.md",
-        "repo:companion/src/main/resources/data/entrelumen/ark_multiblock.json",
-        "repo:companion/src/main/resources/data/entrelumen/recipe/ark_controller.json",
-        "jar:rechiseled-1.2.5-neoforge-mc1.21.jar:data/rechiseled/chiseling_recipes/amethyst_block.json"
-      ]
+      "key": "entrelumen_atlas_ark_build", "deps": ["entrelumen_atlas_act5"], "type": "item", "item": "entrelumen:ark_controller", "layout": {"x": 27.0, "y": 4.0, "size": 1.25, "shape": "square"},
+      "en_us": {"title": "Build the Ark",
+        "text": ["[lead] An astrolabe of stone, tuff, calcite, copper and amethyst around the [item:entrelumen:ark_controller|Ark Controller].",
+                 "In the Atlas, The Ark's [hl|Show guide] projects a ghost of every block, on your controller or where you look.",
+                 "One Ark per team.",
+                 "{page}",
+                 "The rim's polished amethyst comes from amethyst blocks through Rechiseled's [item:rechiseled:chisel|Chisel] (iron ingot and stick).",
+                 "Each act gives one module:",
+                 "[li] [hl|I] Habitation",
+                 "[li] [hl|II] Exploration",
+                 "[li] [hl|III] Nature",
+                 "[li] [hl|IV] Arcane",
+                 "[li] [hl|V] Logistics and Engineering",
+                 "A module works in its place, with the Ark whole and the controller on."]},
+      "es_es": {"title": "Construí el Arca",
+        "text": ["[lead] Un astrolabio de piedra, toba, calcita, cobre y amatista en torno al [item:entrelumen:ark_controller|Controlador del Arca].",
+                 "En el Atlas, [hl|Mostrar guía] de El Arca proyecta un fantasma de cada bloque, sobre tu controlador o donde mirás.",
+                 "Un Arca por equipo.",
+                 "{page}",
+                 "La amatista pulida del borde sale de bloques de amatista en el [item:rechiseled:chisel|Cincel] de Rechiseled (hierro y palo).",
+                 "Cada acto da un módulo:",
+                 "[li] [hl|I] Habitabilidad",
+                 "[li] [hl|II] Exploración",
+                 "[li] [hl|III] Naturaleza",
+                 "[li] [hl|IV] Arcano",
+                 "[li] [hl|V] Logística e Ingeniería",
+                 "Un módulo funciona en su lugar, con el Arca entera y su controlador."]},
+      "sources": ["repo:docs/design/ark-modules-v2.md", "repo:docs/design/ark-multiblock.md", "repo:companion/src/main/resources/data/entrelumen/ark_multiblock.json", "repo:companion/src/main/resources/data/entrelumen/recipe/ark_controller.json", "jar:rechiseled-1.2.5-neoforge-mc1.21.jar:data/rechiseled/chiseling_recipes/amethyst_block.json"]
     },
     {
-      "key": "entrelumen_atlas_activation",
-      "deps": [
-        "entrelumen_atlas_ark_build"
-      ],
-      "type": "item",
-      "item": "entrelumen:light_key",
-      "layout": {
-        "x": 24,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "The Activation",
-        "The Ark whole with its six modules and controller, World Network done and the End reached: the Atlas and the Ark's screen tick the list. Then crouch on the controller with an empty hand. The Ark forges the &6Light Key&r and the campaign enters &eact VI, Solsticio&r.\n\nThe door has been waiting a long time. Knock politely."
-      ],
-      "es_es": [
-        "La activación",
-        "El Arca entera con sus seis módulos y el controlador, Red del mundo completa y el End alcanzado: el Atlas y la pantalla del Arca tildan la lista. Después agachate sobre el controlador con la mano vacía. El Arca forja la &6Llave de Luz&r y la campaña entra al &eacto VI, Solsticio&r.\n\nLa puerta esperó mucho tiempo. Golpeá con educación."
-      ],
-      "sources": [
-        "repo:companion/src/main/java/dev/entrelumen/CampaignMilestones.java",
-        "repo:companion/src/main/java/dev/entrelumen/ArkRules.java",
-        "repo:docs/design/solsticio.md",
-        "repo:docs/design/ark-modules-v2.md"
-      ]
+      "key": "entrelumen_atlas_activation", "deps": ["entrelumen_atlas_ark_build"], "type": "item", "item": "entrelumen:light_key", "layout": {"x": 33.4, "y": 4.0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "The Activation", "subtitle": "One key, one time.",
+        "text": ["[lead] Crouch on the controller with an empty hand and the Ark forges the [item:entrelumen:light_key|Light Key].",
+                 "Before that, the Atlas and the Ark's screen tick the list:",
+                 "[li] The Ark whole, with its six modules and controller",
+                 "[li] World Network done",
+                 "[li] The End reached",
+                 "The campaign enters [hl|act VI, Solsticio].",
+                 "The door has been waiting a long time. Knock politely."]},
+      "es_es": {"title": "La activación", "subtitle": "Una llave, una vez.",
+        "text": ["[lead] Agachate sobre el controlador con la mano vacía y el Arca forja la [item:entrelumen:light_key|Llave de Luz].",
+                 "Antes, el Atlas y la pantalla del Arca tildan la lista:",
+                 "[li] El Arca entera, con sus seis módulos y el controlador",
+                 "[li] Red del mundo completa",
+                 "[li] El End alcanzado",
+                 "La campaña entra al [hl|acto VI, Solsticio].",
+                 "La puerta esperó mucho tiempo. Golpeá con educación."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/CampaignMilestones.java", "repo:companion/src/main/java/dev/entrelumen/ArkRules.java", "repo:docs/design/solsticio.md", "repo:docs/design/ark-modules-v2.md"]
     },
     {
-      "key": "entrelumen_atlas_services",
-      "deps": [
-        "entrelumen_atlas_ark_build"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_atlas_services", "deps": ["entrelumen_atlas_ark_build"], "type": "checkmark", "optional": true, "layout": {"x": 31.4, "y": 8.8, "size": 1.0, "shape": "circle"},
       "icon": "entrelumen:engineering_module",
-      "layout": {
-        "x": 21,
-        "y": 2,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "What the Ark Gives",
-        "A beacon for the whole team, anywhere. &eHabitation&r: /sethome and /home. &eExploration&r: free waystones and /rtp. &eNature&r: Regeneration and half hunger, and a compass marks your garden. &eArcane&r: +50% mana and regeneration. &eLogistics&r: Solsticio's shops from the Atlas, Hero of the Village. &eEngineering&r: energy items charge themselves.\n\nA beacon on each column adds a level to the potions and the mana."
-      ],
-      "es_es": [
-        "Lo que da el Arca",
-        "Un beacon para todo el equipo, en cualquier lado. &eHabitabilidad&r: /sethome y /home. &eExploración&r: waystones gratis y /rtp. &eNaturaleza&r: Regeneración y la mitad de hambre, y una brújula marca tu jardín. &eArcano&r: +50 % de maná y regeneración. &eLogística&r: las tiendas de Solsticio desde el Atlas, Héroe de la Aldea. &eIngeniería&r: los ítems con energía se cargan solos.\n\nUn beacon en cada columna suma un nivel a las pociones y al maná."
-      ],
-      "sources": [
-        "repo:docs/design/ark-modules-v2.md",
-        "repo:companion/src/main/java/dev/entrelumen/ArkEffects.java",
-        "repo:companion/src/main/java/dev/entrelumen/ArkCommands.java",
-        "repo:docs/design/ark-nature-restoration.md"
-      ]
+      "en_us": {"title": "What the Ark Gives",
+        "text": ["[lead] A beacon for the whole team, anywhere.",
+                 "[li] [hl|Habitation]: /sethome and /home",
+                 "[li] [hl|Exploration]: free waystones and /rtp",
+                 "[li] [hl|Nature]: Regeneration and half hunger; a compass marks your garden",
+                 "[li] [hl|Arcane]: [hl|+50%] mana and regeneration",
+                 "{page}",
+                 "[li] [hl|Logistics]: Solsticio's shops from the Atlas, Hero of the Village",
+                 "[li] [hl|Engineering]: energy items charge themselves",
+                 "[note] A beacon on each column adds a level to the potions and the mana."]},
+      "es_es": {"title": "Lo que da el Arca",
+        "text": ["[lead] Un beacon para todo el equipo, donde sea.",
+                 "[li] [hl|Habitabilidad]: /sethome y /home",
+                 "[li] [hl|Exploración]: waystones gratis y /rtp",
+                 "[li] [hl|Naturaleza]: Regeneración, mitad de hambre, brújula a tu jardín",
+                 "[li] [hl|Arcano]: [hl|+50 %] de maná y regeneración",
+                 "{page}",
+                 "[li] [hl|Logística]: tiendas de Solsticio desde el Atlas y Héroe de la Aldea",
+                 "[li] [hl|Ingeniería]: ítems con energía que se cargan solos",
+                 "[note] Un beacon en cada columna suma un nivel a las pociones y al maná."]},
+      "sources": ["repo:docs/design/ark-modules-v2.md", "repo:companion/src/main/java/dev/entrelumen/ArkEffects.java", "repo:companion/src/main/java/dev/entrelumen/ArkCommands.java", "repo:docs/design/ark-nature-restoration.md"]
     },
     {
-      "key": "entrelumen_atlas_survey",
-      "deps": [
-        "entrelumen_atlas_get_atlas"
-      ],
-      "type": "item",
-      "item": "entrelumen:survey_station",
-      "optional": true,
-      "layout": {
-        "x": 3,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The Survey Station",
-        "Copper, glass, smooth stone and a signal core make a movable bookmark. With an empty hand it opens the Atlas; with a vanilla compass it points that compass at itself, like a lodestone, and the link survives moving the station.\n\nThe Ark's Nature module uses such a compass to mark your team's garden."
-      ],
-      "es_es": [
-        "La Estación cartográfica",
-        "Cobre, vidrio, piedra lisa y un núcleo de señal hacen un marcador móvil. Con la mano vacía abre el Atlas; con una brújula de vanilla hace que apunte a la estación, como una magnetita, y el vínculo sobrevive aunque la muevas.\n\nEl módulo de Naturaleza del Arca usa una brújula así para marcar el jardín de tu equipo."
-      ],
-      "sources": [
-        "repo:companion/src/main/java/dev/entrelumen/SignalStationBlock.java",
-        "repo:companion/src/main/resources/data/entrelumen/recipe/survey_station.json",
-        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
-      ]
+      "key": "entrelumen_atlas_survey", "deps": ["entrelumen_atlas_get_atlas"], "type": "item", "item": "entrelumen:survey_station", "optional": true, "layout": {"x": 6.0, "y": 2.0, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "The Survey Station",
+        "text": ["[lead] Copper, glass, smooth stone and a [item:entrelumen:signal_core|Signal Core] make a movable bookmark.",
+                 "[li] Empty hand: opens the Atlas",
+                 "[li] A vanilla [item:minecraft:compass|compass]: points at the station, like a lodestone, even if you move it",
+                 "The Ark's Nature module uses such a compass to mark your team's garden."]},
+      "es_es": {"title": "La Estación cartográfica",
+        "text": ["[lead] Cobre, vidrio, piedra lisa y un [item:entrelumen:signal_core|Núcleo de señal] hacen un marcador móvil.",
+                 "[li] Mano vacía: abre el Atlas",
+                 "[li] Una [item:minecraft:compass|brújula] de vanilla: apunta a la estación, como una magnetita, aunque la muevas",
+                 "El módulo de Naturaleza del Arca usa una brújula así para marcar el jardín de tu equipo."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/SignalStationBlock.java", "repo:companion/src/main/resources/data/entrelumen/recipe/survey_station.json", "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"]
     },
     {
-      "key": "entrelumen_atlas_gates",
-      "deps": [
-        "entrelumen_atlas_components"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_atlas_gates", "deps": ["entrelumen_atlas_components"], "type": "checkmark", "layout": {"x": 10.5, "y": 6.6, "size": 1.0, "shape": "pentagon"},
       "icon": "entrelumen:power_regulator",
-      "layout": {
-        "x": 12,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Components Unlock the World",
-        "A component closes a few milestones, never a pile of basics: the metallurgic infuser and the mining portal (Calibration Frame), the AE2 and Refined Storage controllers (Routing Matrix), Mekanism's jetpack and Psi's CAD Assembler (Power Regulator), the Digital Miner and the Lumen Shelf (Spectral Lens). The other steps of an act take its material: an alloy of Mekanism, ironwood or zanite.\n\n&eU&r on a component in EMI shows everything it opens."
-      ],
-      "es_es": [
-        "Los componentes abren el mundo",
-        "Un componente cierra pocos hitos, nunca una pila de cosas básicas: el infusor metalúrgico y el portal minero (Marco de calibración), los controladores de AE2 y Refined Storage (Matriz de distribución), el jetpack de Mekanism y el ensamblador de CAD de Psi (Regulador de energía), el Minero digital y el Estante de lumen (Lente espectral). Los otros escalones del acto llevan su material: una aleación de Mekanism, ironwood o zanita.\n\n&eU&r sobre un componente en EMI muestra todo lo que abre."
-      ],
-      "sources": [
-        "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js",
-        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
-        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
-        "repo:docs/design/apotheosis-family.md",
-        "repo:docs/design/act-renumbering.md"
-      ]
+      "en_us": {"title": "Components Unlock the World",
+        "text": ["[lead] A component closes a few milestones, never a pile of basics.",
+                 "[li] [item:entrelumen:calibration_frame|Calibration Frame]: the metallurgic infuser and the mining portal",
+                 "[li] [item:entrelumen:routing_matrix|Routing Matrix]: the AE2 and Refined Storage controllers",
+                 "[li] [item:entrelumen:power_regulator|Power Regulator]: Mekanism's jetpack and Psi's CAD Assembler",
+                 "[li] [item:entrelumen:spectral_lens|Spectral Lens]: the Digital Miner and the Lumen Shelf",
+                 "{page}",
+                 "The other steps of an act take its material: an alloy of Mekanism, ironwood or zanite.",
+                 "[tip] [key:key.emi.view_uses] on a component in EMI shows everything it opens."]},
+      "es_es": {"title": "Los componentes abren el mundo",
+        "text": ["[lead] Un componente cierra pocos hitos, nunca una pila de básicos.",
+                 "[li] [item:entrelumen:calibration_frame|Marco de calibración]: el infusor metalúrgico y el portal minero",
+                 "[li] [item:entrelumen:routing_matrix|Matriz de distribución]: los controladores de AE2 y Refined Storage",
+                 "[li] [item:entrelumen:power_regulator|Regulador de energía]: jetpack de Mekanism y ensamblador de CAD de Psi",
+                 "[li] [item:entrelumen:spectral_lens|Lente espectral]: el Minero digital y el Estante de lumen",
+                 "{page}",
+                 "Los otros escalones del acto llevan su material: una aleación de Mekanism, ironwood o zanita.",
+                 "[tip] [key:key.emi.view_uses] sobre un componente en EMI muestra todo lo que abre."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js", "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js", "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js", "repo:docs/design/apotheosis-family.md", "repo:docs/design/act-renumbering.md"]
     },
     {
-      "key": "entrelumen_atlas_psi_quirk",
-      "deps": [
-        "entrelumen_atlas_gates"
-      ],
-      "type": "item",
-      "item": "psi:cad_assembler",
-      "optional": true,
-      "layout": {
-        "x": 12,
-        "y": 6,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Psi Waits for Act III",
-        "Psi's CAD Assembler carries a Power Regulator; its psigem cores keep their native recipes. No assembler, no CAD, no spells: plan Psi alongside your act III logistics.\n\nWhen in doubt, EMI shows your version's recipe."
-      ],
-      "es_es": [
-        "Particularidad: Psi, acto III",
-        "El Ensamblador de CAD de Psi lleva un Regulador de energía; sus núcleos de psigema quedan nativos. Sin ensamblador no hay CAD ni hechizos: planeá Psi junto con tu logística del acto III.\n\nAnte la duda, EMI muestra la receta de tu versión."
-      ],
-      "sources": [
-        "repo:docs/design/act-renumbering.md",
-        "note:reflects feature/acts-renumber, merged into main on 24/9 (Ark in act V, Solsticio act VI, Heart of Heliodor)",
-        "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js"
-      ]
+      "key": "entrelumen_atlas_psi_quirk", "deps": ["entrelumen_atlas_gates"], "type": "item", "item": "psi:cad_assembler", "optional": true, "layout": {"x": 10.5, "y": 8.6, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Quirk: Psi Waits for Act III",
+        "text": ["[lead] Psi's [item:psi:cad_assembler|CAD Assembler] carries a [item:entrelumen:power_regulator|Power Regulator].",
+                 "Its psigem cores keep their native recipes. No assembler, no CAD, no spells: plan Psi alongside your act III logistics.",
+                 "[tip] When in doubt, EMI shows your version's recipe."]},
+      "es_es": {"title": "Particularidad: Psi, acto III",
+        "text": ["[lead] El [item:psi:cad_assembler|Ensamblador de CAD] de Psi lleva un [item:entrelumen:power_regulator|Regulador de energía].",
+                 "Sus núcleos de psigema quedan nativos. Sin ensamblador no hay CAD ni hechizos: planeá Psi junto con tu logística del acto III.",
+                 "[tip] Ante la duda, EMI muestra la receta de tu versión."]},
+      "sources": ["repo:docs/design/act-renumbering.md", "note:reflects feature/acts-renumber, merged into main on 24/9 (Ark in act V, Solsticio act VI, Heart of Heliodor)", "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js"]
     },
     {
-      "key": "entrelumen_atlas_autocraft_tip",
-      "deps": [
-        "entrelumen_atlas_gates"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_atlas_autocraft_tip", "deps": ["entrelumen_atlas_gates"], "type": "checkmark", "optional": true, "layout": {"x": 13.4, "y": 7.8, "size": 1.0, "shape": "diamond"},
       "icon": "ae2:pattern_provider",
-      "layout": {
-        "x": 15,
-        "y": 5.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Automate the Components",
-        "Components are ordinary shaped recipes, each a small drawing, so any storage network can autocraft them, and later ones eat earlier ones. Set up a pattern for each early in act III.\n\nEach module takes one of them: a propagation core, a spectral lens, a routing matrix, an Ark bus."
-      ],
-      "es_es": [
-        "Truco: automatizá componentes",
-        "Los componentes son recetas con forma comunes, cada una un dibujo chico, así que cualquier red de almacenamiento puede autofabricarlos, y los últimos se comen a los primeros. Armá un patrón para cada uno a comienzos del acto III.\n\nCada módulo pide uno: un núcleo de propagación, una lente espectral, una matriz de distribución, un bus del Arca."
-      ],
-      "sources": [
-        "repo:content/integration-design.json",
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"
-      ]
+      "en_us": {"title": "Tip: Automate the Components",
+        "text": ["[lead] Components are ordinary shaped recipes, so any storage network can autocraft them.",
+                 "Later ones eat earlier ones: set up a pattern for each early in act III.",
+                 "Each module takes one of them:",
+                 "[li:entrelumen:propagation_core] A propagation core",
+                 "[li:entrelumen:spectral_lens] A spectral lens",
+                 "[li:entrelumen:routing_matrix] A routing matrix",
+                 "[li:entrelumen:ark_bus] An Ark bus"]},
+      "es_es": {"title": "Truco: automatizá componentes",
+        "text": ["[lead] Los componentes son recetas con forma comunes, así que cualquier red de almacenamiento puede autofabricarlos.",
+                 "Los últimos se comen a los primeros: armá un patrón para cada uno a comienzos del acto III.",
+                 "Cada módulo pide uno:",
+                 "[li:entrelumen:propagation_core] Un núcleo de propagación",
+                 "[li:entrelumen:spectral_lens] Una lente espectral",
+                 "[li:entrelumen:routing_matrix] Una matriz de distribución",
+                 "[li:entrelumen:ark_bus] Un bus del Arca"]},
+      "sources": ["repo:content/integration-design.json", "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"]
     },
     {
-      "key": "entrelumen_atlas_rewards",
-      "deps": [
-        "entrelumen_atlas_deliver_rules"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_atlas_rewards", "deps": ["entrelumen_atlas_deliver_rules"], "type": "checkmark", "layout": {"x": 3.2, "y": 6.5, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:chest",
-      "layout": {
-        "x": 9,
-        "y": 6,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Rewards Come From the Atlas",
-        "Story rewards come from the Atlas when you deliver, never from the quest book: the Atlas, lens, notes, signal core, Terra's Arm and the six altars. Each comes once per campaign to whoever delivered, or drops at their feet if the inventory is full, and a chat line names it.\n\nThe quest book only keeps score."
-      ],
-      "es_es": [
-        "Las recompensas son del Atlas",
-        "Las recompensas de la historia las da el Atlas al entregar, nunca el libro de quests: el Atlas, la lente, las notas, el núcleo de señal, el Brazo de Terra y los seis altares. Cada una llega una vez por campaña a quien entregó, o cae a sus pies si tiene el inventario lleno, y una línea del chat la nombra.\n\nEl libro de quests sólo lleva la cuenta."
-      ],
-      "sources": [
-        "repo:companion/src/main/java/dev/entrelumen/Entrelumen.java",
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
-        "repo:docs/design/ark-altars.md",
-        "repo:docs/design/heliodor-compass.md"
-      ]
+      "en_us": {"title": "Rewards Come From the Atlas",
+        "text": ["[lead] Story rewards come from the Atlas when you deliver, never from the quest book.",
+                 "[li:entrelumen:atlas] The Atlas",
+                 "[li:entrelumen:raw_lens] The lens",
+                 "[li:entrelumen:survey_notes] The notes",
+                 "[li:entrelumen:signal_core] The signal core",
+                 "[li:entrelumen:terra_arm] Terra's Arm",
+                 "[li] The six altars",
+                 "{page}",
+                 "Each comes once per campaign to whoever delivered, or drops at their feet if the inventory is full, and a chat line names it.",
+                 "The quest book only keeps score."]},
+      "es_es": {"title": "Las recompensas son del Atlas",
+        "text": ["[lead] Las recompensas de la historia las da el Atlas al entregar, nunca el libro de quests.",
+                 "[li:entrelumen:atlas] El Atlas",
+                 "[li:entrelumen:raw_lens] La lente",
+                 "[li:entrelumen:survey_notes] Las notas",
+                 "[li:entrelumen:signal_core] El núcleo de señal",
+                 "[li:entrelumen:terra_arm] El Brazo de Terra",
+                 "[li] Los seis altares",
+                 "{page}",
+                 "Cada una llega una vez por campaña a quien entregó, o cae a sus pies si tiene el inventario lleno, y una línea del chat la nombra.",
+                 "El libro de quests sólo lleva la cuenta."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/Entrelumen.java", "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json", "repo:docs/design/ark-altars.md", "repo:docs/design/heliodor-compass.md"]
     },
     {
-      "key": "entrelumen_atlas_interference",
-      "deps": [
-        "entrelumen_atlas_screen"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_atlas_interference", "deps": ["entrelumen_atlas_screen"], "type": "checkmark", "optional": true, "layout": {"x": 0.3, "y": 6.6, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:book",
-      "layout": {
-        "x": 6,
-        "y": 5.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Why the Atlas Stutters",
-        "Until the Heart of Heliodor reaches it, the Atlas speaks in fragments: crossed-out words, gaps and short glitches, always with readable parts. From act V the text comes through clear.\n\nDo not skip them. The lore is a puzzle, and you are holding the pieces."
-      ],
-      "es_es": [
-        "Por qué el Atlas tartamudea",
-        "Hasta que le llega el Corazón de Heliodor, el Atlas habla en fragmentos: palabras tachadas, huecos y glitches cortos, siempre con partes legibles. Desde el acto V el texto llega claro.\n\nNo los saltees. El lore es un rompecabezas y las piezas las tenés vos."
-      ],
-      "sources": [
-        "repo:docs/design/quest-lore.md",
-        "repo:docs/design/story-bible.md"
-      ]
+      "en_us": {"title": "Why the Atlas Stutters", "subtitle": "Static with a story in it.",
+        "text": ["[lead] Until the Heart of Heliodor reaches it, the Atlas speaks in fragments.",
+                 "[strike|Crossed-out words], gaps and short [glitch|glitches], always with readable parts. From act V the text comes through clear.",
+                 "Do not skip them. The lore is a puzzle, and you are holding the pieces."]},
+      "es_es": {"title": "Por qué el Atlas tartamudea", "subtitle": "Estática con historia adentro.",
+        "text": ["[lead] Hasta que le llega el Corazón de Heliodor, el Atlas habla en fragmentos.",
+                 "[strike|Palabras tachadas], huecos y [glitch|glitches] cortos, siempre con partes legibles. Desde el acto V el texto llega claro.",
+                 "No los saltees. El lore es un rompecabezas y las piezas las tenés vos."]},
+      "sources": ["repo:docs/design/quest-lore.md", "repo:docs/design/story-bible.md"]
     },
     {
-      "key": "entrelumen_atlas_close",
-      "deps": [
-        "entrelumen_atlas_activation"
-      ],
-      "type": "item",
-      "item": "entrelumen:heliodor_compass",
-      "layout": {
-        "x": 27,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "The Story in Your Hands",
-        "Projects, deliveries, components and the Ark: the rest is walking the road.\n\nKeep the Heliodor Compass close. It already knows where the Atlas wants you next."
-      ],
-      "es_es": [
-        "La historia en tus manos",
-        "Proyectos, entregas, componentes y el Arca: lo demás es caminar.\n\nTené cerca la Brújula de Heliodor. Ya sabe adónde te quiere mandar el Atlas."
-      ],
-      "sources": [
-        "repo:docs/design/story-bible.md"
-      ]
+      "key": "entrelumen_atlas_close", "deps": ["entrelumen_atlas_activation"], "type": "item", "item": "entrelumen:heliodor_compass", "layout": {"x": 37.2, "y": 4.0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "The Story in Your Hands",
+        "text": ["[lead] Projects, deliveries, components and the Ark: the rest is walking the road.",
+                 "Keep the [item:entrelumen:heliodor_compass|Heliodor Compass] close. It already knows where the Atlas wants you next. How it works: [chapter:guide_entrelumen_compass|The Heliodor Compass]."]},
+      "es_es": {"title": "La historia en tus manos",
+        "text": ["[lead] Proyectos, entregas, componentes y el Arca: lo demás es caminar.",
+                 "Tené cerca la [item:entrelumen:heliodor_compass|Brújula de Heliodor]. Ya sabe adónde te quiere mandar el Atlas. Cómo funciona: [chapter:guide_entrelumen_compass|La Brújula de Heliodor]."]},
+      "sources": ["repo:docs/design/story-bible.md"]
+    },
+    {
+      "key": "entrelumen_atlas_toy_lamp", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": -8.4, "y": -1.4, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:lantern",
+      "en_us": {"title": "Light the Desk Lamp",
+        "text": ["[lead] One lantern, and the desk stops being a dark corner.",
+                 "The Atlas reads better in warm light. Everything reads better in warm light."]},
+      "es_es": {"title": "Prender la lámpara",
+        "text": ["[lead] Un farol, y el escritorio deja de ser un rincón oscuro.",
+                 "El Atlas se lee mejor con luz cálida. Todo se lee mejor con luz cálida."]},
+      "sources": ["repo:companion/src/main/resources/assets/entrelumen/textures/gui/atlas_book.png"]
+    },
+    {
+      "key": "entrelumen_atlas_toy_quill", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": -8.4, "y": 6.2, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:feather",
+      "en_us": {"title": "Dip the Quill",
+        "text": ["[lead] Dip the quill and the page writes something back.",
+                 "Only two words, and both are a question. Give it time."]},
+      "es_es": {"title": "Mojar la pluma",
+        "text": ["[lead] Mojá la pluma y la página escribe algo de vuelta.",
+                 "Sólo dos palabras, y las dos son una pregunta. Dale tiempo."]},
+      "sources": ["repo:docs/design/story-bible.md"]
     }
   ]
 }
