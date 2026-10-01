@@ -97,6 +97,7 @@ public final class RuinContent {
     events.addListener(RuinPlacement::onChangedDimension);
     events.addListener(RuinPlacement::onLogin);
     events.addListener(EventPriority.HIGH, RuinChallenges::onRightClickBlock);
+    events.addListener(RuinGates::onChorus);
     events.addListener(RuinBosses::onDeath);
     events.addListener(RuinBosses::onJoin);
     events.addListener(RuinCommands::register);

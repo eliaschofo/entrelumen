@@ -170,6 +170,19 @@ public final class StructureProtection {
       for (var region : wide) if (region.box().contains(x, y, z)) found.add(region);
       return found;
     }
+
+    /** Whether some region's box comes within {@code r} blocks of {@code p} (a cube, all axes). */
+    boolean near(BlockPos p, int r) {
+      var reach = new ProtectionRules.Box(p.getX() - r, p.getY() - r, p.getZ() - r,
+          p.getX() + r, p.getY() + r, p.getZ() + r);
+      for (int cx = reach.minX() >> 4; cx <= reach.maxX() >> 4; cx++)
+        for (int cz = reach.minZ() >> 4; cz <= reach.maxZ() >> 4; cz++) {
+          List<ProtectionRules.Region> chunk = byChunk.get(ChunkPos.asLong(cx, cz));
+          if (chunk != null) for (var region : chunk) if (region.box().intersects(reach)) return true;
+        }
+      for (var region : wide) if (region.box().intersects(reach)) return true;
+      return false;
+    }
   }
 
   // ---- Registration -----------------------------------------------------------------------
@@ -216,6 +229,11 @@ public final class StructureProtection {
 
   public static ProtectionRules.Box box(net.minecraft.world.level.levelgen.structure.BoundingBox box) {
     return new ProtectionRules.Box(box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ());
+  }
+
+  /** Whether an operator has the protection bypass switched on. */
+  public static boolean bypassing(ServerPlayer player) {
+    return player.hasPermissions(2) && state(player.server).bypass.contains(player.getUUID());
   }
 
   /** Toggles the operator bypass for one player; returns the new state. */
@@ -274,6 +292,12 @@ public final class StructureProtection {
     Set<ProtectionRules.Region> all = new java.util.LinkedHashSet<>(index.wide);
     index.byChunk.values().forEach(all::addAll);
     return List.copyOf(all);
+  }
+
+  /** Whether some region of the level comes within {@code r} blocks of {@code pos} on every axis. */
+  static boolean nearRegion(ServerLevel level, BlockPos pos, int r) {
+    DimensionIndex index = index(level);
+    return index != null && index.near(pos, r);
   }
 
   public static List<ProtectionRules.Region> covering(ServerLevel level, int x, int y, int z) {
@@ -527,9 +551,15 @@ public final class StructureProtection {
     event.getAffectedEntities().removeIf(entity -> isDecoration(entity) && isGuarded(level, entity.blockPosition()));
   }
 
+  /**
+   * A piston moves at most 12 blocks plus the cell beyond them: pushes further than 13 blocks from
+   * every region never need the extra structure resolve.
+   */
+  static final int PISTON_REACH = 13;
+
   static void onPiston(PistonEvent.Pre event) {
     ServerLevel level = serverLevel(event.getLevel());
-    if (level == null || index(level) == null) return;
+    if (level == null || !nearRegion(level, event.getPos(), PISTON_REACH)) return;
     PistonStructureResolver resolver = event.getStructureHelper();
     if (resolver == null) return;
     if (!resolver.resolve()) return;

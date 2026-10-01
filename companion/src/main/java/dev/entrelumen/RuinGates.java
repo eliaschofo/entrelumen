@@ -7,12 +7,16 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
@@ -89,6 +93,46 @@ public final class RuinGates {
     if (previous != null && previous.equals(open)) return;
     cells.put(player.getUUID(), open);
     if (player.connection != null) PacketDistributor.sendToPlayer(player, new Cells(open.toLongArray()));
+  }
+
+  /**
+   * Gates only stop movement, so chorus fruit could hop past them into a sealed vault. A chorus
+   * teleport whose target or real landing cell lies in a gated ruin is cancelled unless every gate
+   * of that ruin is open for the player. Ender pearls cannot cross a gate: they need a line of sight.
+   */
+  static void onChorus(EntityTeleportEvent.ChorusFruit event) {
+    if (!(event.getEntityLiving() instanceof ServerPlayer player) || player.isCreative()
+        || StructureProtection.bypassing(player)) return;
+    if (blocksTeleport(player, event.getTarget())) {
+      event.setCanceled(true);
+      player.displayClientMessage(Component.translatable("entrelumen.ruin.no_teleport"), true);
+    }
+  }
+
+  /** Whether a teleport of {@code player} to {@code target} would land inside a ruin past a closed gate. */
+  static boolean blocksTeleport(ServerPlayer player, Vec3 target) {
+    ServerLevel level = player.serverLevel();
+    BlockPos aimed = BlockPos.containing(target), landing = landing(level, aimed);
+    boolean refreshed = false;
+    for (var ruin : RuinData.get(player.server).ruins()) {
+      if (!ruin.contains(level.dimension(), aimed) && !ruin.contains(level.dimension(), landing)) continue;
+      var gates = ruin.markers(RuinMarkers.Kind.GATE);
+      if (gates.isEmpty()) continue;
+      if (!refreshed) {
+        refresh(player);
+        refreshed = true;
+      }
+      for (var gate : gates) if (!open(player, gate.pos())) return true;
+    }
+    return false;
+  }
+
+  /** Where a random teleport aimed at {@code aimed} lands: down to the first block that stops motion. */
+  static BlockPos landing(ServerLevel level, BlockPos aimed) {
+    BlockPos pos = aimed;
+    while (pos.getY() > level.getMinBuildHeight() && !level.getBlockState(pos.below()).blocksMotion())
+      pos = pos.below();
+    return pos;
   }
 
   private static boolean near(RuinData.Ruin ruin, BlockPos here) {

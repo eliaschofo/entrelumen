@@ -21,6 +21,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.Portal;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
@@ -80,12 +81,44 @@ public final class SolsticioTravel {
       rememberHome(player);
   }
 
+  /**
+   * Saves where the player leaves the Overworld. Leaving through a portal would save a spot inside
+   * it, which pulls the player away again on the way back: the nearest standable spot beside the
+   * portal is saved instead (rings of 1 and 2 at the same height, then one block lower or higher).
+   */
   static void rememberHome(ServerPlayer player) {
     if (!player.level().dimension().equals(Level.OVERWORLD)) return;
     SolsticioData data = SolsticioData.get(player.server);
-    data.returns.put(player.getUUID(), new SolsticioData.ReturnPoint(Level.OVERWORLD, player.blockPosition(),
-        player.getYRot()));
+    data.returns.put(player.getUUID(), new SolsticioData.ReturnPoint(Level.OVERWORLD,
+        besidePortal(player.serverLevel(), player.blockPosition()), player.getYRot()));
     data.setDirty();
+  }
+
+  /** {@code pos} itself, or when it or the block above is a portal, the nearest standable spot beside it. */
+  static BlockPos besidePortal(ServerLevel level, BlockPos pos) {
+    if (!inPortal(level, pos)) return pos.immutable();
+    for (int dy : new int[] {0, -1, 1})
+      for (int r = 1; r <= 2; r++) {
+        BlockPos best = null;
+        long bestDistance = Long.MAX_VALUE;
+        for (int dx = -r; dx <= r; dx++)
+          for (int dz = -r; dz <= r; dz++) {
+            if (Math.max(Math.abs(dx), Math.abs(dz)) != r) continue;
+            BlockPos candidate = pos.offset(dx, dy, dz);
+            long distance = (long) dx * dx + (long) dz * dz;
+            if (distance < bestDistance && standable(level, candidate)) {
+              best = candidate;
+              bestDistance = distance;
+            }
+          }
+        if (best != null) return best;
+      }
+    return pos.immutable();
+  }
+
+  static boolean inPortal(ServerLevel level, BlockPos pos) {
+    return level.getBlockState(pos).getBlock() instanceof Portal
+        || level.getBlockState(pos.above()).getBlock() instanceof Portal;
   }
 
   static void onChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
@@ -181,8 +214,9 @@ public final class SolsticioTravel {
     return Vec3.atBottomCenterOf(wanted);
   }
 
+  /** Room to stand: sturdy dry floor, two free cells, and no portal that would pull the player away. */
   static boolean standable(ServerLevel level, BlockPos pos) {
-    if (!level.isInWorldBounds(pos)) return false;
+    if (!level.isInWorldBounds(pos) || inPortal(level, pos)) return false;
     BlockState below = level.getBlockState(pos.below());
     return below.getFluidState().isEmpty() && below.isFaceSturdy(level, pos.below(), Direction.UP)
         && level.getBlockState(pos).getCollisionShape(level, pos).isEmpty()

@@ -207,6 +207,8 @@ public final class RuinBosses {
       }
       mob.setHealth(mob.getMaxHealth());
       mob.getPersistentData().putString(TAG, group.key());
+      // The entity tag lets every other entity skip the persistent data on death and join.
+      mob.addTag(TAG);
       group.mobs.add(mob.getUUID());
       if (!level.addFreshEntity(mob)) group.mobs.remove(mob.getUUID());
     }
@@ -236,6 +238,7 @@ public final class RuinBosses {
   }
 
   static void onDeath(LivingDeathEvent event) {
+    if (!event.getEntity().getTags().contains(TAG)) return;
     if (!(event.getEntity().level() instanceof ServerLevel level)) return;
     String key = event.getEntity().getPersistentData().getString(TAG);
     if (key.isEmpty()) return;
@@ -259,6 +262,7 @@ public final class RuinBosses {
 
   /** Guardians saved with a chunk belong to a finished run: they never come back. */
   static void onJoin(EntityJoinLevelEvent event) {
+    if (!event.getEntity().getTags().contains(TAG)) return;
     if (event.getLevel().isClientSide() || !(event.getLevel() instanceof ServerLevel level)) return;
     String key = event.getEntity().getPersistentData().getString(TAG);
     if (key.isEmpty()) return;
