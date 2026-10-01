@@ -165,9 +165,7 @@
     {"id": "shot_trail", "path": [[-25.2, -7.0], [-19.0, -12.9], [-11.0, -13.6], [-6.4, -12.6]], "smooth": 8, "dots": "psi:textures/item/spell_bullet_active.png", "size": 0.9, "step": 1.35, "reveal": "psi_decor_shot", "order": -1},
     {"id": "shot_flash", "glow": [-25.2, -7.0], "r": 2.2, "tint": "#FFFFFF", "alpha": 150, "reveal": "psi_decor_shot", "order": -6},
     {"id": "shot_land", "glow": [-6.4, -12.6], "r": 2.4, "tint": "#8FE3FF", "alpha": 150, "reveal": "psi_decor_shot", "order": -6},
-    {"id": "stars", "scatter": ["minecraft:textures/particle/glitter_1.png", "minecraft:textures/particle/glitter_2.png", "minecraft:textures/particle/glitter_5.png"], "region": [-33, -17.5, 20, 17.5], "count": 46, "size": [0.2, 0.42], "alphas": [36, 84], "seed": 4, "order": -11, "avoid": [[-20, 1, 14], [6.0, 0, 14]]},
-    {"id": "psu_hl_a", "picture": "psionicutilities:textures/spell/highlight.png", "x": 8.6, "y": 10.4, "w": 2.0, "h": 2.0, "tint": "#FF9A3C", "alpha": 150, "reveal": "psu_wires", "order": -3},
-    {"id": "psu_wire_a", "line": [[7.4, 10.4], [9.8, 10.4]], "tint": "#FF9A3C", "alpha": 220, "thickness_px": 3, "reveal": "psu_wires", "order": -2}
+    {"id": "stars", "scatter": ["minecraft:textures/particle/glitter_1.png", "minecraft:textures/particle/glitter_2.png", "minecraft:textures/particle/glitter_5.png"], "region": [-33, -17.5, 20, 17.5], "count": 46, "size": [0.2, 0.42], "alphas": [36, 84], "seed": 4, "order": -11, "avoid": [[-20, 1, 14], [6.0, 0, 14]]}
   ],
   "quests": [
     {
@@ -876,18 +874,14 @@
       "icon": {"texture": "psi:textures/item/encyclopaedia_psionica.png"},
       "at": {"x": -21.5, "y": 12.6},
       "en_us": {"title": "Encyclopaedia Psionica", "subtitle": "The manual, every piece included.",
-        "text": ["[lead] Psionic Utilities turns off [key:psimisc.keybind] as a shortcut to the manual: open the book itself.",
+        "text": ["[lead] With empty hands, [key:psimisc.keybind] opens Psi's book wherever you are.",
                  "For a copy on the shelf, drop a book and use a CAD with no spell selected next to it.",
-                 "{page}",
-                 "[note] The setting is the addon's own, client-side and on by default; the pack does not change it.",
                  "[note] In this pack the recipe has its own ID, because PneumaticCraft's manual used the same one."]},
       "es_es": {"title": "Encyclopaedia Psionica", "subtitle": "El manual, con todas las piezas adentro.",
-        "text": ["[lead] Psionic Utilities apaga [key:psimisc.keybind] como atajo al manual: abrí el libro mismo.",
+        "text": ["[lead] Con las manos vacías, [key:psimisc.keybind] abre el libro de Psi donde estés.",
                  "Para tenerlo en la biblioteca, tirá un libro y usá al lado un CAD sin hechizo elegido.",
-                 "{page}",
-                 "[note] El ajuste es del propio complemento, del lado del cliente y prendido por defecto; el pack no lo cambia.",
                  "[note] En este pack la receta tiene su propio ID, porque el manual de PneumaticCraft usaba el mismo."]},
-      "sources": ["repo:pack/kubejs/data/psi/recipe/encyclopaedia_psionica.json", "repo:docs/design/mod-pingpong.md#Otras integraciones", "jar:Psi-neoforge-1.21.1-110.jar:vazkii/psi/client/core/handler/KeybindHandler.class", "repo:pack/config/defaultoptions/keybindings.txt#key_psimisc.keybind", "jar:psionicutilities-1.21-1.4.jar:gdavid/psionicutilities/Config.class#disableGuideBookHotkey (client config, default true)", "jar:psionicutilities-1.21-1.4.jar:gdavid/psionicutilities/mixin/KeybindHandlerMixin.class#disableGuideBookHotkey (cancels openBookGUI)", "repo:pack/config (no psionicutilities config: the default applies)"]
+      "sources": ["repo:pack/kubejs/data/psi/recipe/encyclopaedia_psionica.json", "repo:docs/design/mod-pingpong.md#Otras integraciones", "jar:Psi-neoforge-1.21.1-110.jar:vazkii/psi/client/core/handler/KeybindHandler.class", "repo:pack/config/defaultoptions/keybindings.txt#key_psimisc.keybind"]
     },
     {
       "key": "psi_battery", "role": "side", "deps": ["psi_components"],
@@ -993,31 +987,6 @@
         "text": ["[lead] Una bala, del cañón a la grilla.",
                  "Sin premio: un rastro de balas por el cielo."]},
       "sources": ["docs/design/quest-book-v3.md#presentación-v2"]
-    },
-    {
-      "key": "psu_wires", "role": "side", "deps": ["psi_tut_types"], "hide_lines": true,
-      "task": {"type": "observation", "observe": "block", "target": "psi:programmer", "ticks": 20, "title": {"en_us": "Look at the Spell Programmer", "es_es": "Mirá el Programador de hechizos"}, "icon": "psi:programmer"},
-      "icon": "psi:programmer",
-      "at": {"x": 8.6, "y": 10.4},
-      "en_us": {"title": "Wires with a colour", "subtitle": "The grid stops being grey.",
-        "text": ["[lead] Each wire in the programmer gets its own hue, so you can follow a value across the grid; a broken one turns red.",
-                 "[li] Write [hl|color=gold] or [hl|out-color=#FF8800] in a piece's comment: the first tints the piece, the second its outgoing wire.",
-                 "[li] Separate notes with [hl|;]. Names and #RRGGBB both work; a typo shows red.",
-                 "{page}",
-                 "[li] The cost readout goes green up to [hl|25], aqua up to [hl|125], then yellow, gold or red as it outgrows what you can pay.",
-                 "[li] In the catalog, holding Shift while pressing [hl|Tab] goes back to the previous piece: the addon swaps out Psi's Alt-and-Tab.",
-                 "[careful] The addon also turns off the Psi key that opened the manual. It is its own setting, on by default.",
-                 "[note] Client-side only: it changes what you see in the programmer, not how spells work."]},
-      "es_es": {"title": "Cables con color", "subtitle": "La grilla deja de ser gris.",
-        "text": ["[lead] Cada cable del programador toma su propio tono, así seguís un valor por toda la grilla; uno roto se pone rojo.",
-                 "[li] Escribí [hl|color=gold] o [hl|out-color=#FF8800] en el comentario de una pieza: el primero tiñe la pieza, el segundo su cable de salida.",
-                 "[li] Separá las notas con [hl|;]. Sirven nombres y #RRGGBB; un error de tipeo sale en rojo.",
-                 "{page}",
-                 "[li] El costo se ve verde hasta [hl|25], celeste hasta [hl|125], y después amarillo, dorado o rojo a medida que supera lo que podés pagar.",
-                 "[li] En el catálogo, Tab con Shift apretado vuelve a la pieza anterior: el complemento reemplaza el Alt más Tab de Psi.",
-                 "[careful] El complemento también apaga la tecla de Psi que abría el manual. Es un ajuste propio, prendido por defecto.",
-                 "[note] Sólo del lado del cliente: cambia lo que ves en el programador, no cómo funcionan los hechizos."]},
-      "sources": ["jar:psionicutilities-1.21-1.4.jar:gdavid/psionicutilities/ConnectorColor.class", "jar:psionicutilities-1.21-1.4.jar:gdavid/psionicutilities/PieceAnnotation.class#annotations (color, out-color; TextColor.parseColor; \";\" and \"=\")", "jar:psionicutilities-1.21-1.4.jar:gdavid/psionicutilities/mixin/SpellPieceMixin.class#drawBackground", "jar:psionicutilities-1.21-1.4.jar:gdavid/psionicutilities/mixin/StatWidgetMixin.class#setColor (COST: 25, 125)", "jar:psionicutilities-1.21-1.4.jar:psionicutilities.mixins.json#client", "jar:psionicutilities-1.21-1.4.jar:gdavid/psionicutilities/Config.class#foucsPreviousWithShift,disableGuideBookHotkey", "jar:psionicutilities-1.21-1.4.jar:gdavid/psionicutilities/mixin/CatalogMixin.class#keyPressed", "jar:psionicutilities-1.21-1.4.jar:gdavid/psionicutilities/mixin/KeybindHandlerMixin.class#disableGuideBookHotkey", "repo:pack/config/defaultoptions/keybindings.txt#key_psimisc.keybind", "repo:docs/design/mod-pingpong.md"]
     }
   ],
   "presentation": 2

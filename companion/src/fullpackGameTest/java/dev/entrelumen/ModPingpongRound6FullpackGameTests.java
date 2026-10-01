@@ -28,8 +28,8 @@ public final class ModPingpongRound6FullpackGameTests {
   /** Round 6 mods with a server side. */
   static final List<String> ROUND6 = List.of("createrailgrinding", "create_integrated_farming", "croptopiabotany",
       "alshanex_familiars", "familiarslib", "ars_affinity", "ironsspellsnftbteams");
-  /** Client-only: the server install leaves it out (catalog clientOnly). */
-  static final List<String> ROUND6_CLIENT = List.of("psionicutilities");
+  /** Client-only: the server install leaves it out (catalog clientOnly). Empty since Psionic Utilities was dropped (1 Oct). */
+  static final List<String> ROUND6_CLIENT = List.of();
   /** Petrol's Parts stays out: every Petrolpark's Library it accepts requires a JEI newer than the locked one. */
   static final List<String> ROUND6_OUT = List.of("petrolsparts", "petrolpark");
   static final String SUMMON = "io.redspace.ironsspellbooks.entity.mobs.SummonedPolarBear";

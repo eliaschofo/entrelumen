@@ -809,9 +809,10 @@ Los mods de contenido aprobados de la [búsqueda hacia afuera](../research/mod-o
 | Croptopia & Botany Pots compat | 1.0.0 | CF 1553397/8143070 (los mismos bytes en Modrinth; MIT) | I-II | Los cultivos y árboles de Croptopia crecen en las macetas: 85 recetas de datos, sin ítems. |
 | Alshanex's Familiars | 4.0.4 | CF 1171602/8966342 (sólo CurseForge) | II-V | Familiares magos de Iron's que se doman y pelean con hechizos, con sus estructuras, fragmentos y rituales. Necesita FamiliarsLib 1.8 (CF 1316458/8966334). |
 | Ars Affinity | 1.1.1 | CF 1319260/7416588 (sólo CurseForge; MIT) | II-IV | Afinidad por escuela de Ars: pasivas que se ganan lanzando hechizos y una habilidad activa. |
-| Psionic Utilities | 1.4 | CF 611991/8358809 (los mismos bytes en Modrinth) | III | Colores y atajos para el programador de Psi. Sólo cliente: sus 13 mixins son de cliente. |
+| ~~Psionic Utilities~~ | 1.4 | CF 611991/8358809 | III | **Retirado el 1/10** (ver abajo). Colores y atajos para el programador de Psi; sólo cliente. |
 | Irons Spell N FTB Teams | 1.0.0 (beta) | CF 1610802/8435267 (los mismos bytes en Modrinth; GPL) | II-VI | Las invocaciones de Iron's no atacan a los compañeros de equipo de FTB Teams de su dueño. |
 
+- **Psionic Utilities, retirado el 1/10.** Sus mixins obligatorios (`"required": true`) inyectan en `drawBackground`, `drawComment`, `drawCommentText` de `SpellPiece` y en `drawSide` de los conectores, pero Psi 110 movió todo el dibujo a `vazkii/psi/client/render/spell/SpellPieceRenderer` y `SpellPiece` ya no tiene métodos `draw*`: falla crítica de inyección al arrancar el cliente. Ninguna versión funciona con Psi 110 y Psi se queda. Se sacó del lock, de la familia `pingpong6`, del GameTest y de la quest `psu_wires`; `psi_keys` vuelve a decir que la tecla de Psi abre el manual. El lock pasa de 378 a 377 entradas.
 - **Petrol's Parts queda afuera.** Pide Petrolpark's Library `[1.5.5,1.6.0)`, y cada 1.5.x fija JEI en un rango angosto: 1.5.5 y 1.5.6 piden `[19.44,19.45)`, de 1.5.7 a 1.5.9 `[19.52,19.53)` y 1.5.10 `[19.53,19.54)`. El lock tiene JEI 19.50.0.414, el de ATM10 con el que se revisaron los mixins obligatorios de FTB XMod Compat sobre JEI. NeoForge rechaza una dependencia opcional presente fuera de su rango, así que el cliente no arrancaría. Puede entrar junto con una actualización de JEI, que obliga a revisar esos mixins, y además ata Create a `[6.0.10,6.0.11)`.
 - **Versiones:**
   - Integrated Farming se fija en 1.4.1c: desde 1.4.2 pide Supplementaries 3.9.9 y el lock tiene 3.9.5. Pide Create Dragons Plus `[1.11.1,)` (hay 1.11.9); sus mixins para Sable y otros mods son condicionales.
@@ -843,7 +844,7 @@ Los mods de contenido aprobados de la [búsqueda hacia afuera](../research/mod-o
 - **Carry On:** `create_integrated_farming:*` y `alshanex_familiars:*`.
 - **Primer ingreso:** ningún regalo (`tools/audit_first_join.py`).
 - **GameTests** (`ModPingpongRound6FullpackGameTests`):
-  - `pingponground6loaded`: los siete mods cargados, Psionic Utilities fuera del servidor dedicado y Petrol's Parts ausente;
+  - `pingponground6loaded`: los siete mods cargados y Petrol's Parts ausente (Psionic Utilities salió el 1/10);
   - `ironssummonsspareftbteammates`: la prueba que pedía la búsqueda. Dos jugadores de prueba forman un grupo real de FTB y un tercero queda solo; un oso polar invocado para el dueño tiene que tratar al compañero como aliado y al tercero no.
 - **Ganchos para las quests:**
   - Rail Grinding: botas de buceo con el encantamiento (`createrailgrinding:railgrind_enchantment`), en el capítulo de trenes de Create.
