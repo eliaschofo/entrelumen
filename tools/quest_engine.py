@@ -499,6 +499,8 @@ def label(key, x, y, texts, languages, scale=2, color="#E8DCB5", anchor="center"
           font=None, bold=False, order=5, hover=None):
     """A caption drawn at an exact scale: the box is exactly 9*scale px per line tall, and wide enough that
     FTB's fit (min of width/text and height/lines) is decided by the height."""
+    align = {"center": "middle"}.get(align, align)   # FTB's ChapterImage.TextAlign: start, middle, end
+    assert align in ("start", "middle", "end"), f"{key}: align {align}"
     for lang in LOCALES:
         t = texts[lang]
         assert t and not re.search(r"[§{}\[\]\\]", t), f"{key}: label text"  # JSON text: '&' is literal

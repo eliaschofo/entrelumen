@@ -427,6 +427,22 @@ class ClientDraw(unittest.TestCase):
             self.assertGreater(len(targets), 100)
             self.assertFalse(set(targets) & set(hidden), lang)
 
+    def test_labels_align_with_ftbs_names(self):
+        languages = {lang: {} for lang in LOCALES}
+        texts = {"en_us": "Gold", "es_es": "Oro"}
+        self.assertNotIn("text_h_align", qe.label("k", 0, 0, texts, languages, align="center"))   # FTB says "middle"
+        self.assertEqual(qe.label("k", 0, 0, texts, languages, align="start")["text_h_align"], "start")
+        with self.assertRaises(AssertionError):
+            qe.label("k", 0, 0, texts, languages, align="left")
+
+    def test_no_invisible_image_pads_the_scroll(self):
+        # An alpha-0 image is a widget all the same: it stretches the panel's scroll (QuestPanel.updateMinMax), and the
+        # chapter list opens a chapter at its autofocus quest anyway (ChapterPanel), so it centres nothing.
+        for path in sorted((OUT / "chapters").glob("*.snbt")):
+            images = json.loads(path.read_text(encoding="utf-8")).get("images", [])
+            idle = [i["id"] for i in images if i.get("alpha", 255) == 0 and not i.get("click_action")]   # a hotspot clicks
+            self.assertFalse(idle, path.stem)
+
     def test_every_spanish_locale_reads_the_spanish_strings(self):
         import tempfile
         from pathlib import Path
