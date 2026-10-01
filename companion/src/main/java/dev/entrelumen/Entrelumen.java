@@ -53,7 +53,12 @@ public final class Entrelumen {
               @Override
               public InteractionResultHolder<ItemStack> use(
                   Level level, Player player, InteractionHand hand) {
-                if (player instanceof ServerPlayer serverPlayer) AtlasNetwork.open(serverPlayer);
+                if (player instanceof ServerPlayer serverPlayer) {
+                  // A fake player FTB Teams does not know (a printed deployer) has no campaign.
+                  if (CampaignActions.campaignIdOrNull(serverPlayer) == null)
+                    return InteractionResultHolder.pass(player.getItemInHand(hand));
+                  AtlasNetwork.open(serverPlayer);
+                }
                 return InteractionResultHolder.sidedSuccess(
                     player.getItemInHand(hand), level.isClientSide);
               }

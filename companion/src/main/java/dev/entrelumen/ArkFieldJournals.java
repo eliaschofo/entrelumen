@@ -69,7 +69,9 @@ public final class ArkFieldJournals {
 
   /** Opens the screen for a module or the controller the player can reach. */
   public static boolean inspect(ServerPlayer player, BlockPos pos) {
-    if (player.isSpectator() || !player.canInteractWithBlock(pos, 1.0) || !player.serverLevel().hasChunkAt(pos))
+    // A fake player (a deployer) has no screen to open, and may have no team.
+    if (player instanceof net.neoforged.neoforge.common.util.FakePlayer || player.isSpectator()
+        || !player.canInteractWithBlock(pos, 1.0) || !player.serverLevel().hasChunkAt(pos))
       return false;
     String block = ArkState.slotOf(player.serverLevel().getBlockState(pos).getBlock());
     if (block.isEmpty()) return false;

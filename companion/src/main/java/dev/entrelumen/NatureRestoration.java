@@ -57,6 +57,8 @@ public final class NatureRestoration {
 
   /** A bookmarked compass marks the garden site; bone meal points at the Altar of Renewal. */
   public static Outcome use(ServerPlayer player, BlockPos module, InteractionHand hand) {
+    // A fake player FTB Teams does not know (a printed deployer) has no campaign to mark a site for.
+    if (CampaignActions.campaignIdOrNull(player) == null) return Outcome.of(Status.UNAVAILABLE);
     ItemStack held = player.getItemInHand(hand);
     if (held.is(Items.COMPASS)) return mark(player, module, hand);
     if (held.is(Items.BONE_MEAL)) return moved(player, module, hand);
