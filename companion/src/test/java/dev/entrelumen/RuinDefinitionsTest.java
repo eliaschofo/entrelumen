@@ -158,7 +158,7 @@ class RuinDefinitionsTest {
     assertEquals(RuinDefinitions.ChallengeType.PUMPS, engine.challenges().get("engine").type());
     assertEquals(0, engine.challenges().get("engine").engine().rpm(), "R comes from the pack's Create values");
     var seal = engine.challenges().get("seal").engine();
-    assertEquals(List.of(45, 3, 60), List.of(seal.angle(), seal.tolerance(), seal.rest()));
+    assertEquals(List.of(45, 5, 60), List.of(seal.angle(), seal.tolerance(), seal.rest()));
     var levers = shipped(mod -> !mod.equals("create")).get("entrelumen:sunken_workshop");
     assertEquals(List.of("drowned", "sluices"), List.copyOf(levers.challenges().keySet()));
     assertEquals(Set.of("engine", "seal"), levers.dormant());
