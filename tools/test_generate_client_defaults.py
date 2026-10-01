@@ -25,6 +25,7 @@ class ClientDefaultsTest(unittest.TestCase):
         self.assertTrue(all(not key.startswith('key_') for key in general))
         self.assertTrue(all(key.startswith('key_') for key in bindings))
         self.assertNotIn('lang', general)
+        self.assertEqual(general['narratorHotkey'], 'false')  # Ctrl+B would hide the backpack key while sprinting
         self.assertNotIn('servers.dat', fragments)
         self.assertEqual(json.loads(general['resourcePacks']),
                          ['vanilla', 'mod_resources', 'file/entrelumen'])
@@ -34,9 +35,9 @@ class ClientDefaultsTest(unittest.TestCase):
         bindings = defaults.render(self.preset)['keybindings.txt'].splitlines()
         self.assertTrue(all(defaults.KEY_LINE.fullmatch(line) for line in bindings))
         self.assertIn('key_key.mekanism.head_mode:key.keyboard.up:ALT', bindings)
-        self.assertIn('key_key.toolbelt.slot:key.keyboard.r:SHIFT', bindings)
+        self.assertIn('key_key.toolbelt.slot:key.keyboard.right.bracket:SHIFT', bindings)
         self.assertIn('key_supplementaries.keybind.quiver:key.keyboard.apostrophe', bindings)
-        self.assertIn('key_key.apotheosis.open_world_tier_select:key.keyboard.t:CONTROL', bindings)
+        self.assertIn('key_key.apotheosis.open_world_tier_select:key.keyboard.f5:ALT', bindings)
         self.assertEqual({line.rsplit(':', 1)[1] for line in bindings if line.count(':') == 2},
                          {'ALT', 'SHIFT', 'CONTROL'})
 

@@ -200,6 +200,37 @@
       "reason": "Vanilla loads a saved hotbar with X only in creative; in survival X summons the familiar."
     }
   ],
+  "shadowAbout": "Shift+/Ctrl+ world bindings hide the bare key while sneaking (Shift) or running with Ctrl, so the pack keeps its own combinations on Alt+ or on keys with no bare world binding. Each entry here is a reasoned exception for one (combination, bare key) pair; check_keybinds.py fails when an entry stops matching a real shadow.",
+  "shadowAllowed": [
+    {
+      "keys": [
+        "key.immersive_aircraft.boost",
+        "key.immersive_aircraft.dismount"
+      ],
+      "reason": "Both act only while riding an aircraft, where nobody sprints or sneaks on foot; boost is Ctrl+F12 beside dismount on F12."
+    },
+    {
+      "keys": [
+        "key.mekanism.key_hud",
+        "key.journeymap.minimap_preset"
+      ],
+      "reason": "The minimap preset is a layout chosen once in the JourneyMap options, not something pressed while running."
+    },
+    {
+      "keys": [
+        "key.unmountVehicle",
+        "key.journeymap.minimap_preset"
+      ],
+      "reason": "Same: the minimap preset is a set-once layout key; RFTools Builder's unmount is only used while riding its vehicle."
+    },
+    {
+      "keys": [
+        "key.changeMysticCode",
+        "pneumaticcraft.helmet.debugging.drone"
+      ],
+      "reason": "Drone debugging is a PneumaticCraft developer view of one drone's targets, not an action used while sneaking."
+    }
+  ],
   "keys": {
     "accessories.key.open_accessories_screen": {
       "default": "key.keyboard.h",

@@ -41,7 +41,7 @@ The same script removes Torchmaster's `torchmaster:megatorch` recipe: the compan
 
 ## Keybindings
 
-Bytecode defaults: Easy Villagers pick-up on V and trade cycling on C, Simple Magnets toggle on H. The preset moves pick-up to Shift+V and the magnet toggle to Shift+M; trade cycling acts in the villager trading screen and keeps its native C. The other additions register no key.
+Bytecode defaults: Easy Villagers pick-up on V and trade cycling on C, Simple Magnets toggle on H. The preset moves pick-up to Alt+O (it began on Shift+V, which hid Ultimine while sneaking) and the magnet toggle to Alt+F7 (it began on Shift+M, which hid the JourneyMap waypoint while sneaking); trade cycling acts in the villager trading screen and keeps its native C. The other additions register no key.
 
 ## Rejected
 
