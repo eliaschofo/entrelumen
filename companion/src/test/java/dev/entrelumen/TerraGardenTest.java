@@ -184,6 +184,24 @@ class TerraGardenTest {
   }
 
   @Test
+  void gardensThatLoadTogetherSpreadTheirBatchesAndChecksOverTheSecond() {
+    var batches = new java.util.HashSet<Long>();
+    var checks = new java.util.HashSet<Long>();
+    for (int x = 0; x < 64; x++) {
+      long pos = new BlockPos(x * 4, 64, 0).asLong();   // a row of gardens side by side
+      long batch = TerraGardenRules.phase(pos, TerraGardenRules.BATCH_TICKS, 0);
+      long check = TerraGardenRules.phase(pos, TerraGardenRules.CHECK_TICKS, 20);
+      assertTrue(batch >= 0 && batch < TerraGardenRules.BATCH_TICKS, "batch phase " + batch);
+      assertTrue(check >= 0 && check < TerraGardenRules.CHECK_TICKS, "check phase " + check);
+      assertEquals(batch, TerraGardenRules.phase(pos, TerraGardenRules.BATCH_TICKS, 0), "the phase is stable");
+      batches.add(batch);
+      checks.add(check);
+    }
+    assertTrue(batches.size() >= 15, "64 gardens use only " + batches.size() + " of 20 batch ticks");
+    assertTrue(checks.size() >= 35, "64 gardens use only " + checks.size() + " of 100 check ticks");
+  }
+
+  @Test
   void aBatchThatDoesNotFitIsCutEvenlyAndNeverOverflows() {
     Map<String, Long> batch = new LinkedHashMap<>();
     batch.put("wheat", 32_768L);
@@ -227,13 +245,26 @@ class TerraGardenTest {
 
   @Test
   void everySeedGoesInButNetherStarsAndDragonEggsAreNeverMade() throws Exception {
-    // Elias, 29 September 2026: «sí, entra todo»
+    // Elias, 29 September 2026: «sí, entra todo»; 1 October 2026: the crux crops' essences and seeds
+    // join the forbidden drops instead of leaving the seeds out
     var tag = resource("/data/entrelumen/tags/item/terra_garden_excluded.json");
     assertFalse(tag.get("replace").getAsBoolean());
     assertEquals(0, tag.getAsJsonArray("values").size());
     var drops = resource("/data/entrelumen/tags/item/terra_garden_forbidden_drops.json");
-    assertEquals(Set.of("minecraft:nether_star", "minecraft:dragon_egg"), new java.util.HashSet<>(
-        drops.getAsJsonArray("values").asList().stream().map(v -> v.getAsString()).toList()));
+    assertFalse(drops.get("replace").getAsBoolean());
+    Set<String> required = new java.util.HashSet<>(), optional = new java.util.HashSet<>();
+    for (var value : drops.getAsJsonArray("values")) {
+      if (value.isJsonPrimitive()) required.add(value.getAsString());
+      else {
+        assertFalse(value.getAsJsonObject().get("required").getAsBoolean(), value.toString());
+        optional.add(value.getAsJsonObject().get("id").getAsString());
+      }
+    }
+    assertEquals(Set.of("minecraft:nether_star", "minecraft:dragon_egg"), required);
+    assertEquals(Set.of("mysticalagriculture:nether_star_essence", "mysticalagriculture:dragon_egg_essence",
+        "mysticalagriculture:nether_star_seeds", "mysticalagriculture:dragon_egg_seeds",
+        "mysticalagradditions:nether_star_shard", "mysticalagradditions:dragon_egg_chunk"), optional,
+        "the Agradditions crops' essences and seeds skip the crux under the engine");
   }
 
   @Test

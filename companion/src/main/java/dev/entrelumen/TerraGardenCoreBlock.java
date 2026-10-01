@@ -118,12 +118,19 @@ public final class TerraGardenCoreBlock extends HorizontalDirectionalBlock imple
     return InteractionResult.sidedSuccess(level.isClientSide);
   }
 
-  /** Broken while awake, the pot gives its lamp back (its seed and store stay on the dropped item). */
+  /**
+   * Broken while awake, the pot gives its lamp back (its seed and store stay on the dropped item). Removed
+   * without its block entity while it looks woken (a contraption took the entity first), it still unforms
+   * the members it leaves behind, at the rotation its facing shows.
+   */
   @Override
   protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-    if (!state.is(newState.getBlock()) && level instanceof ServerLevel server
-        && level.getBlockEntity(pos) instanceof TerraGardenCoreEntity core)
-      core.releaseLamp(server, pos);
+    if (!state.is(newState.getBlock()) && level instanceof ServerLevel server) {
+      if (level.getBlockEntity(pos) instanceof TerraGardenCoreEntity core) core.releaseLamp(server, pos);
+      else if (state.getValue(GARDEN) == Garden.GROWING)
+        TerraGardenCoreEntity.unform(server, pos,
+            TerraGardenLayout.rotation(TerraGardenLayout.rotationFacing(state.getValue(FACING))));
+    }
     super.onRemove(state, level, pos, newState, movedByPiston);
   }
 

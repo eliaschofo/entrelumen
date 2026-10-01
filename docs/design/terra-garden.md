@@ -61,6 +61,7 @@ La forma sale de `art/structures/terra_garden.py`, que genera `data/entrelumen/t
 - **Formado:** cuando la lámpara lo despierta, el núcleo marca a sus miembros `formed=true` y ellos dejan de dibujarse.
   - Los miembros usan `RenderShape.INVISIBLE`, un blockstate a `minecraft:block/air` y no tapan las caras de sus vecinos.
   - El núcleo pasa a `garden=growing`, y su modelo es un solo motor libre sobre todo el volumen de 3 × 2 × 2.
+- **No se empuja:** las carcasas y la salida tienen `PushReaction.BLOCK`, así que ni un pistón ni una máquina de Create mueven el motor; moverlo es romperlo y volver a armarlo, y la lámpara vuelve. Si algo se lleva el núcleo sin su entidad (una máquina de Create que lo transporta), el núcleo desforma a los miembros que deja según su `facing`, así que no quedan bloques invisibles y sólidos. Elias lo eligió el 1/10.
 - **El modelo formado** (60 elementos, 1 texel por unidad; las cajas grandes se cortan en la grilla de 16 para que la textura no se estire):
   - un cárter, el bloque del motor y dos bancadas de cilindros con aletas de verdín;
   - tapas de válvulas y cuatro pistones de latón con capuchón;
@@ -92,6 +93,8 @@ La forma sale de `art/structures/terra_garden.py`, que genera `data/entrelumen/t
   - 16 tiradas de la tabla de botín del cultivo maduro, escaladas a **900 cosechas por segundo**.
   - El redondeo es estocástico, así que la esperanza es exacta.
   - El reloj es el `gameTime`: un acelerador no suma, y el núcleo está en `justdirethings:tick_speed_deny`.
+  - Al cargar, la primera tanda y el primer chequeo de cada núcleo caen en un tick propio del segundo (y de los cinco segundos), sacado de un hash mezclado de su posición: muchos motores que cargan juntos no trabajan todos en el mismo tick.
+  - El motor no toma multiplicadores de afuera: un Altar del Crecimiento activo al lado no duplica la tanda (sí duplica una cosecha a mano dentro de su campo).
 - **Depósito y salida:**
   - El depósito guarda 16.384 ítems, unas seis tandas de trigo.
   - La **salida** empuja a los inventarios que la tocan desde afuera, por la capacidad de ítems de NeoForge: hasta 1.024 inserciones por tanda.
@@ -132,6 +135,8 @@ Medidos de los JAR fijados y de la configuración del pack. ENTRELUMEN no trae c
 - **Crecimiento** (`TerralightRules`, `GroundingRodEntity`):
   - cuenta el tiempo de juego que la varilla ve pasar mientras el montaje está entero, mirado una vez por segundo;
   - si el montaje se rompe, espera sin perder lo crecido;
+  - lo crecido está atado al cristal que la varilla escribió: guarda dónde y qué etapa puso, y lo mira en cada vistazo, aunque el montaje esté roto. Si ese cristal falta, cambió de etapa por otra mano o la columna pasó a otro lado, vuelve a empezar de cero;
+  - **una varilla por cristal:** después de una cosecha, toda varilla que lo había escrito arranca de cero, así que una segunda varilla en la misma columna nunca da un segundo fragmento en un mismo crecimiento; desfasadas, se pisan y el cristal no madura;
   - cuatro etapas: brote chico al empezar, mediano al cuarto, grande a la mitad y el racimo sólo al completarse;
   - la duración base es **4 h** de juego (288.000 ticks).
 - **Nada lo apura:**
@@ -154,7 +159,7 @@ Medidos de los JAR fijados y de la configuración del pack. ENTRELUMEN no trae c
 
 La etiqueta se conserva para que un pack o un datapack pueda excluir algo sin tocar código.
 
-Segunda red: `entrelumen:terra_garden_forbidden_drops` (`minecraft:nether_star`, `minecraft:dragon_egg`). El motor nunca fabrica esos ítems, aunque la tabla de un cultivo los tenga. Así, la regla del pack de que el Wither es la única fuente de estrellas del Nether sigue en pie aunque entre todo.
+Segunda red: `entrelumen:terra_garden_forbidden_drops`. El motor nunca fabrica estrellas del Nether, huevos de dragón ni las esencias y semillas de sus cultivos de Mystical Agradditions (`minecraft:nether_star`, `minecraft:dragon_egg`; opcionales: `mysticalagriculture:nether_star_essence`, `dragon_egg_essence`, `nether_star_seeds`, `dragon_egg_seeds`, y `mysticalagradditions:nether_star_shard`, `dragon_egg_chunk`), aunque la tabla de un cultivo los tenga. El cultivo de Agradditions no mira su crux cuando el motor tira su tabla, así que sin esta red daría estrellas sin jefe. El campo con su crux y el Wither siguen siendo las únicas fuentes, aunque entre todo. Elias eligió esta red, y no excluir las semillas, el 1/10.
 
 ## Guía
 

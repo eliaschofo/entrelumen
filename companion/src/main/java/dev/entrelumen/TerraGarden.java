@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -131,11 +132,11 @@ public final class TerraGarden {
   /** Where the harvest leaves the engine: it pushes into what touches it and lets pipes pull the core's store. */
   public static final DeferredBlock<TerraEngineMemberBlock> OUTLET = BLOCKS.register("terra_garden_outlet",
       () -> new TerraEngineMemberBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(3f, 6f)
-          .sound(SoundType.COPPER).requiresCorrectToolForDrops()));
+          .sound(SoundType.COPPER).requiresCorrectToolForDrops().pushReaction(PushReaction.BLOCK)));
   /** The engine's plain member: riveted copper; formed, it draws nothing and the core draws the engine. */
   public static final DeferredBlock<TerraEngineMemberBlock> CASING = BLOCKS.register("terra_engine_casing",
       () -> new TerraEngineMemberBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(3f, 6f)
-          .sound(SoundType.COPPER).requiresCorrectToolForDrops()));
+          .sound(SoundType.COPPER).requiresCorrectToolForDrops().pushReaction(PushReaction.BLOCK)));
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TerraGardenCoreEntity>> CORE_ENTITY =
       BLOCK_ENTITIES.register("terra_garden_core",
           () -> BlockEntityType.Builder.of(TerraGardenCoreEntity::new, CORE.get()).build(null));
