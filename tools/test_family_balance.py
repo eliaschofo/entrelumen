@@ -905,13 +905,84 @@ def quest_boss_kills():
     return kills
 
 
+class LoopsTest(unittest.TestCase):
+    """The multiplication loops of the adversarial review of 1 October 2026 (docs/design/mod-pingpong.md#bucles-de-materia)."""
+
+    def test_rewrite_can_add_a_field_the_mod_leaves_out_and_refuses_one_it_wrote(self):
+        original = {'type': 'x:crush', 'result': {'count': 2}}
+        spec = balance.rewritten('data/x/recipe/y.json', {'flag': balance.ABSENT, 'result': {'count': 2}},
+                                 {'flag': True, 'result': {'count': 1}}, '')
+        found = {spec['path']: [('x.jar', '', json.dumps(original).encode())]}
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            out = json.loads(balance.build_data('probe', found)['x/recipe/y.json'])
+            self.assertEqual(out, {'type': 'x:crush', 'result': {'count': 1}, 'flag': True})
+            found[spec['path']] = [('x.jar', '', json.dumps(dict(original, flag=False)).encode())]
+            with self.assertRaises(AssertionError):
+                balance.build_data('probe', found)
+
+    def test_removals_close_the_blaze_quartz_and_ice_loops(self):
+        self.assertEqual(set(balance.FAMILIES['loops']['removals']),
+                         {'oritech:assembler/blazerod', 'immersiveengineering:metalpress/blaze_rod',
+                          'create:crushing/prismarine_crystals', 'utilitarian:utility/ice', 'utilitarian:utility/packed_ice'})
+        self.assertEqual(balance.FAMILIES['loops']['changes'], [])
+
+    def test_the_ender_pearl_only_crystallizes_from_ae2_dust(self):
+        (spec,) = [s for s in balance.FAMILIES['loops']['data'] if s['path'].endswith('/crystallize/ender_pearl.json')]
+        self.assertEqual(spec['value'], {'ingredient': {'item': 'ae2:ender_dust'}})
+        written = json.loads((balance.PACK_DATA / 'occultism/recipe/crystallize/ender_pearl.json').read_text(encoding='utf-8'))
+        self.assertEqual(written['ingredient'], {'item': 'ae2:ender_dust'})
+        self.assertEqual(written['type'], 'occultism:crystallize')
+        self.assertEqual(written['result'], {'type': 'occultism:tag', 'count': 1, 'tag': 'c:ender_pearls'})
+        self.assertTrue(written['ignore_crystallize_multiplier'])
+        self.assertEqual(written['min_tier'], 2)
+        self.assertTrue(written['neoforge:conditions'], "the mod's load conditions are kept")
+
+    def test_all_27_clump_crushing_recipes_give_one_dust_and_ignore_the_tier(self):
+        self.assertEqual(len(set(balance.OCCULTISM_CLUMP_METALS)), 27)
+        folder = balance.PACK_DATA / 'occultism/recipe/crushing'
+        files = sorted(folder.glob('*_dirty_dust_from_clump.json'))
+        self.assertEqual([f.name for f in files],
+                         sorted(f'{m}_dirty_dust_from_clump.json' for m in balance.OCCULTISM_CLUMP_METALS))
+        for file in files:
+            metal = file.name[:-len('_dirty_dust_from_clump.json')]
+            with self.subTest(metal=metal):
+                recipe = json.loads(file.read_text(encoding='utf-8'))
+                self.assertEqual(recipe['type'], 'occultism:crushing')
+                self.assertIs(recipe['ignore_crushing_multiplier'], True)
+                self.assertEqual(recipe['result'], {'type': 'occultism:tag', 'count': 1, 'tag': f'c:dirty_dusts/{metal}'})
+                self.assertEqual(recipe['ingredient'], {'tag': f'c:clumps/{metal}'})
+                tags = {c['value']['tag'] for c in recipe['neoforge:conditions']}
+                self.assertEqual(tags, {f'c:clumps/{metal}', f'c:dirty_dusts/{metal}'})
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_every_occultism_clump_recipe_of_the_jar_is_covered(self):
+        found = pinned_data()
+        shipped = sorted(path for path in found if re.fullmatch(r'data/occultism/recipe/crushing/.+_dirty_dust_from_clump\.json', path))
+        covered = sorted(s['path'] for s in balance.FAMILIES['loops']['data'] if '_dirty_dust_from_clump' in s['path'])
+        self.assertEqual(shipped, covered)
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_no_other_native_recipe_turns_a_clump_into_two_dusts_or_a_pearl_dust_into_a_pearl(self):
+        found = pinned_data()
+        for path, owners in found.items():
+            m = re.fullmatch(r'data/occultism/recipe/(crushing|crystallize)/.+\.json', path)
+            if not m:
+                continue
+            recipe = json.loads(owners[0][2])
+            if m.group(1) == 'crushing' and recipe.get('ingredient', {}).get('tag', '').startswith('c:clumps/'):
+                self.assertIn(path, {s['path'] for s in balance.FAMILIES['loops']['data']}, path)
+            if m.group(1) == 'crystallize' and recipe.get('ingredient') == {'tag': 'c:dusts/ender_pearl'}:
+                self.assertIn(path, {s['path'] for s in balance.FAMILIES['loops']['data']}, path)
+
+
 class BossDropsTest(unittest.TestCase):
     """The balance batch of 27 September 2026 (docs/design/mod-pingpong.md#botines-de-jefe)."""
 
     def test_boss_drops_close_the_star_loops_the_audit_found(self):
         family = balance.FAMILIES['boss_drops']
         self.assertEqual(set(family['removals']), {'theurgy:incubation/nether_star', 'theurgy:incubation/dragon_egg',
-                                                   'rftoolsutility:minecraft_wither', 'rftoolsutility:minecraft_ender_dragon'})
+                                                   'rftoolsutility:minecraft_wither', 'rftoolsutility:minecraft_ender_dragon',
+                                                   'theurgy:incubation/elytra'})
         tags = [s for s in family['data'] if s['op'] == 'tag_values']
         self.assertEqual([(s['path'], s['values']) for s in tags],
                          [('data/c/tags/entity_type/bosses.json',
