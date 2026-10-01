@@ -74,6 +74,11 @@ FILTER_MODS = ("ftbfiltersystem", "ftbxmodcompat")
 ANY_ENTRY = re.compile(r"#?[a-z0-9_.-]+:[a-z0-9_./-]+")
 _FILTER_MODS_LOCKED = None
 EXPLICIT_TASK_ID = re.compile(r"[0-9A-F]{16}")
+# Equippables a player wears or holds off the main inventory (armour, off hand, Curios): FTB's item task counts only
+# the 36 main slots, so a non-consuming task on one of these is the companion's entrelumen:carried_item (F25).
+CARRIED_ITEMS_FILE = ROOT / "tools/carried_items.json"
+CARRIED_TASK = "entrelumen:carried_item"
+_CARRIED = None
 
 # Copy palette (docs/design/quest-copy.md). Items teal, keys yellow, links blue, tips gold.
 COLORS = {"item": "#8FD6C8", "key": "#F2D060", "link": "#9DC3FF", "tip": "#E8B04A", "warn": "#FF8C7A",
@@ -599,6 +604,29 @@ def any_icon(t, ctx, key=""):
     return {"id": items[0]}
 
 
+def carried_items():
+    """The equippables of tools/carried_items.json (read once)."""
+    global _CARRIED
+    if _CARRIED is None:
+        items = json.loads(CARRIED_ITEMS_FILE.read_text(encoding="utf-8"))["items"]
+        assert all(ID.fullmatch(i) for i in items), "tools/carried_items.json: item ids"
+        _CARRIED = frozenset(items)
+    return _CARRIED
+
+
+def carried_task(out):
+    """An item task that waits for an equippable without taking it -> entrelumen:carried_item, which also counts
+    armour, the off hand and Curios: {"type", "item", "count"}; ID, icon and title stay. A component variant (the
+    nine-pocket Tool Belt) stays an FTB item task: the companion's task matches the item id only, so it would pass on
+    any belt, while the variant is crafted into the inventory, where FTB's task sees it."""
+    if (out["type"] != "item" or out.get("consume_items") or out["item"]["id"] not in carried_items()
+            or out["item"].get("components")):
+        return out
+    out["type"] = CARRIED_TASK
+    out.pop("consume_items", None)
+    return out
+
+
 def task_target(t):
     """What a task asks for, without its count or consume flag: the item and its components, the any-of filter, or
     the advancement, dimension, biome, structure, entity, observed target or stat. A checkmark asks for nothing."""
@@ -678,6 +706,7 @@ def compile_task(t, key, tid, languages, ctx):
             out["item"]["components"] = components
             out["match_components"] = "fuzzy"
         ctx["items"].add(t["item"])
+        carried_task(out)
     elif kind == "advancement":
         assert ID.fullmatch(t["advancement"]), f"{key}: advancement"
         out.update(advancement=t["advancement"], criterion=t.get("criterion", ""))

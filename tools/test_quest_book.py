@@ -89,9 +89,10 @@ class QuestBook(unittest.TestCase):
                     self.assertEqual(q['dependencies'], [stable_id('quest:' + d) for d in source['deps']])
                     task = q['tasks'][0]
                     kind = source.get('type', 'item')
-                    self.assertEqual(task['type'], kind)
-                    if kind == 'item':
-                        self.assertEqual((task['item'], task['count'], task['consume_items']),
+                    carried = kind == 'item' and source.get('item') in quest_engine.carried_items()
+                    self.assertEqual(task['type'], quest_engine.CARRIED_TASK if carried else kind)
+                    if kind == 'item':   # an equippable is a carried item: never taken, so no consume flag (F25)
+                        self.assertEqual((task['item'], task['count'], task.get('consume_items', False)),
                                          ({'id': source['item'], 'count': 1}, source.get('count', 1), False))
                     if kind == 'advancement':
                         self.assertEqual(task['advancement'], source['advancement'])

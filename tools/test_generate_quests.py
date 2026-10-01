@@ -22,6 +22,8 @@ SOLSTICIO_STORY={'solsticio_mayor':['solsticio_arrival'],'solsticio_seeds':['sol
 # The Signal Tower quest (1 October 2026) replaced act I's digest on purpose: one new quest, a root that
 # asks for the Signal Ember and gates nothing; every earlier quest keeps its ID, task, dependencies and icon.
 # The same day the bed tip's icon turned white, like the bed Habitation asks for.
+# The review of 1 October 2026 (F25) replaced the inventory branch's digest on purpose: its backpack task became an
+# entrelumen:carried_item (worn backpacks count); same ID, item and count.
 SEMANTIC={'a_light_among_ruins':'4c48c86d43f000dd58e40df8528d6db7049fa45d75f548926bd01822d555b294',
  'the_lost_crafts':'fdd54d54fd867c6547a2d7521cbde893aaf7177c97cb52ffe56a00de1248fde2',
  'routes_of_exchange':'ed083ae115c10fab16961320a073d1c28930a218c4782bc3db46308fc9947c6d',
@@ -29,7 +31,7 @@ SEMANTIC={'a_light_among_ruins':'4c48c86d43f000dd58e40df8528d6db7049fa45d75f5489
  'world_we_build':'9e0b57563392a48374cb3c6ae0431474bfbef478379d29098366d5738b36084e',
  'last_horizon':'c560d4e1a73b07cd12234cf170e4c2e577ca5c1b440b37b0c05dfc7635bedc41',
  'solsticio':'1ae1e4f01677868d322a848282598f20623a37c3bba1f0666069e9955b703f2d',
- 'inventory_that_remembers':'6ba0b96efce3b81af9db8994bb6a83c9ff787b15679fd334f32507168529558c'}
+ 'inventory_that_remembers':'797f36a52d67a36b9d1a5422d60a31ac479cf70e15a196465f87bf64dca50fd6'}
 def content(quests):
  """Compiled quests that are content: a decor toy (presentation v2, tools/quest_v2.py) never counts."""
  return [q for q in quests if 'entrelumen_decor' not in q.get('tags',[])]
@@ -54,7 +56,7 @@ def expected_rewards(q,act):
  from generate_quests import load_book
  table=load_book()['rewards']['story'];task=q['tasks'][0]
  if task['type']=='checkmark':return []
- if task['type']=='item':return [('xp',table['task_xp'][act-1])]
+ if task['type'] in ('item','entrelumen:carried_item'):return [('xp',table['task_xp'][act-1])]
  finale=q['size']==3.0
  item=(table['finale_item'] if finale else table['milestone_item'])[act-1]
  return [('xp',(table['finale_xp'] if finale else table['milestone_xp'])[act-1]),('item',item[0],item[1])]

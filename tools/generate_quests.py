@@ -463,6 +463,7 @@ def generate(data, all_quests=None, order_index=0, book=None):
             assert re.fullmatch(r"[a-z0-9_]+:[a-z0-9_/]+", q["item"])
             assert 1 <= q.get("count", 1) <= 64
             task.update(type="item", item={"id": q["item"], "count": 1}, count=q.get("count", 1), consume_items=False)
+            quest_engine.carried_task(task)   # a worn or off-hand equippable: entrelumen:carried_item
         else:
             assert q["type"] == "checkmark" and q.get("optional"), "checkmarks must be optional learning tasks"
             task.update(type="checkmark")
@@ -623,6 +624,7 @@ def generate_guide(data, group_id, order_index, book, languages, seen_ids, all_k
             # No item-filter mod is installed, so a tag task names one concrete member in "item".
             assert "item" in q, f"{key}: item tasks need a concrete item (tag {q.get('tag')})"
             task.update(item={"id": q["item"], "count": 1}, count=q.get("count", 1), consume_items=False)
+            quest_engine.carried_task(task)   # a worn or off-hand equippable: entrelumen:carried_item
         elif kind == "advancement":
             task.update(advancement=q["advancement"], criterion="")
         elif kind == "dimension":

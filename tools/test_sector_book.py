@@ -594,6 +594,22 @@ class Sectors(unittest.TestCase):
                 with self.assertRaisesRegex(AssertionError, message):
                     generate_book(self.story, self.guides, self.book, sectors)
 
+    def test_equippables_are_carried_item_tasks(self):
+        # F25: a worn or off-hand item never sits in the 36 slots FTB's item task counts.
+        carried = qe.carried_items()
+        seen = 0
+        for q in self.quests.values():
+            for t in q["tasks"]:
+                if t["type"] == qe.CARRIED_TASK:
+                    seen += 1
+                    self.assertIn(t["item"]["id"], carried)
+                    self.assertEqual(set(t) - {"icon", "title"}, {"id", "type", "item", "count"})
+                    self.assertNotIn("components", t["item"])
+                elif t["type"] == "item":   # a component variant stays FTB's: the carried task ignores components
+                    self.assertFalse(t["item"]["id"] in carried and not t["consume_items"]
+                                     and not t["item"].get("components"), t)
+        self.assertGreaterEqual(seen, 23)
+
 class TaskIds(unittest.TestCase):
     """F48: a task's ID follows what it asks for, not its position, so saved progress never lands on another task."""
 
@@ -651,6 +667,21 @@ class TaskIds(unittest.TestCase):
         self.assertEqual(generate_quests.task_id_changes({"A": "task:x:item:a"}, {"A": "task:x:item:b", "B": "y"}),
                          ["A: task:x:item:a -> task:x:item:b"])
 
+
+class ReviewEngine(unittest.TestCase):
+    """Engine rules of the 1 October 2026 review that need no whole book."""
+
+    def test_carried_task_only_for_listed_non_consuming_items(self):
+        item = sorted(qe.carried_items())[0]
+        out = qe.carried_task({"id": "0123456789ABCDEF", "type": "item", "item": {"id": item, "count": 1}, "count": 2,
+                               "consume_items": False, "title": "kept"})
+        self.assertEqual(out, {"id": "0123456789ABCDEF", "type": "entrelumen:carried_item",
+                               "item": {"id": item, "count": 1}, "count": 2, "title": "kept"})
+        for task in ({"type": "item", "item": {"id": item, "count": 1}, "count": 1, "consume_items": True},
+                     {"type": "item", "item": {"id": "minecraft:stone", "count": 1}, "count": 1, "consume_items": False},
+                     {"type": "item", "item": {"id": item, "count": 1, "components": {"a:b": 9}}, "count": 1,
+                      "consume_items": False, "match_components": "fuzzy"}):
+            self.assertEqual(qe.carried_task(dict(task))["type"], "item")
 
 
 def egg(bee, **extra):
