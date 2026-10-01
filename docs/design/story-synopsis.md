@@ -15,7 +15,7 @@
 ## Acto II · Los oficios perdidos (Haven)
 
 - **El Taller hundido de Terra.** El Atlas te manda ahí. Es el foso inundado de las cuatro casas de rueda.
-- **El Motor de Terra.** Es el puzzle de Create. Si lo resolvés, se vacía el foso y se abre la bóveda con el **Plano de Terra** y el **Brazo de Terra**.
+- **El Motor de Terra.** Es el puzzle de Create. Si lo resolvés, se vacía el foso y se abre la bóveda con el **Plano de Terra**. El **Brazo de Terra** te lo devuelve el Atlas cuando entregás el Archivo del taller.
 - **Los cuatro oficios:** mecánica (Create), primera energía, magia inicial y cocina. Cada uno le arregla algo al acto anterior.
 - **Lore.** Terra quería mejorarle la vida a la gente y el gobierno le ordenó otra cosa. Sus notas lo dejan ver sin decirlo: la primera grieta en la imagen de Heliodor.
 - **El Arca:** módulo **Exploración** (waystones sin costo, `/rtp`).

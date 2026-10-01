@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-/** Data of Terra's Arm: how it is obtained, where Curios accepts it and its EN/ES text. */
+/** Data of Terra's Arm: how it is obtained (only from the Workshop Archive), where Curios accepts it and its EN/ES text. */
 class TerraArmDataTest {
   private static final String ARM = "entrelumen:terra_arm";
 
@@ -34,21 +34,38 @@ class TerraArmDataTest {
         projects.entrySet().stream().filter(e -> e.getValue().reward().equals(ARM)).map(e -> e.getKey()).toList());
   }
 
+  /**
+   * The Atlas gives the arm back (1 October 2026): the workshop's vault barrel keeps its loot table,
+   * so the structure and its markers stay, but that table now rolls the workshop's stores.
+   */
   @Test
-  void workshopChestHoldsExactlyOneArm() throws Exception {
+  void theVaultBarrelHoldsTheStoresAndNoLootTableHoldsTheArm() throws Exception {
     var table = resource("/data/entrelumen/loot_table/chests/ruin_act2_workshop.json");
     assertEquals("minecraft:chest", table.get("type").getAsString());
     var pools = table.getAsJsonArray("pools");
     assertEquals(1, pools.size());
     var pool = pools.get(0).getAsJsonObject();
     assertEquals(1, pool.get("rolls").getAsInt());
-    assertFalse(pool.has("conditions") || pool.has("functions") || pool.has("bonus_rolls"));
     var entries = pool.getAsJsonArray("entries");
     assertEquals(1, entries.size());
     var entry = entries.get(0).getAsJsonObject();
-    assertEquals("minecraft:item", entry.get("type").getAsString());
-    assertEquals(ARM, entry.get("name").getAsString());
-    assertFalse(entry.has("conditions") || entry.has("functions"));
+    assertEquals("minecraft:loot_table", entry.get("type").getAsString());
+    assertEquals("entrelumen:chests/ruin_act2_workshop_stores", entry.get("value").getAsString());
+    // The companion's only loot tables are its own.
+    var root = java.nio.file.Path.of(getClass().getResource("/data/entrelumen/loot_table").toURI());
+    try (var files = java.nio.file.Files.walk(root)) {
+      var holders = files.filter(path -> path.toString().endsWith(".json"))
+          .filter(path -> {
+            try {
+              return java.nio.file.Files.readString(path).contains(ARM);
+            } catch (IOException e) {
+              throw new java.io.UncheckedIOException(e);
+            }
+          })
+          .map(path -> root.relativize(path).toString())
+          .toList();
+      assertEquals(List.of(), holders, "loot tables that still hold the arm");
+    }
   }
 
   @Test

@@ -30,8 +30,8 @@ import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /**
- * Isolated GameTests for Terra's Arm on a server without Curios: the item, its workshop chest and the
- * reach modifier logic. Excluded from the distributable jar by the {@code RuntimeGameTests*} pattern.
+ * Isolated GameTests for Terra's Arm on a server without Curios: the item, the workshop vault barrel that
+ * no longer holds it (the Atlas gives it back with the Workshop Archive) and the reach modifier logic. Excluded from the distributable jar by the {@code RuntimeGameTests*} pattern.
  * Wearing it in a real Curios slot is covered by the full-pack {@code TerraArmFullpackGameTests}.
  */
 @GameTestHolder("entrelumen")
@@ -121,7 +121,7 @@ public final class RuntimeGameTestsTerraArm {
   }
 
   @GameTest(template = "empty", timeoutTicks = 100)
-  public static void terraArmWorkshopChestAlwaysHoldsTheArm(GameTestHelper helper) {
+  public static void terraArmWorkshopVaultBarrelHoldsStoresNotTheArm(GameTestHelper helper) {
     var level = helper.getLevel();
     helper.assertTrue(level.getServer().reloadableRegistries().getLootTable(TerraArm.WORKSHOP_LOOT) != LootTable.EMPTY,
         "entrelumen:chests/ruin_act2_workshop did not load");
@@ -142,7 +142,7 @@ public final class RuntimeGameTestsTerraArm {
         if (stack.is(TerraArm.ITEM.get())) arms += stack.getCount();
         else if (!stack.isEmpty()) other += stack.getCount();
       }
-      helper.assertTrue(arms == 1 && other == 0,
+      helper.assertTrue(arms == 0 && other > 0,
           "Workshop chest with seed " + seed + " held " + arms + " arms and " + other + " other items");
     }
     helper.succeed();
