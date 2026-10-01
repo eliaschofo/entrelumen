@@ -188,6 +188,7 @@ def label_px(text):
 def image(key, x, y, w, h, picture="", **extra):
     out = {"id": stable_id("image:" + key), "x": num(x), "y": num(y), "width": num(w), "height": num(h),
            "rotation": num(extra.pop("rotation", 0.0)), "image": picture}
+    quest_engine.IMAGE_KEYS[out["id"]] = key
     out.update(extra)
     return out
 

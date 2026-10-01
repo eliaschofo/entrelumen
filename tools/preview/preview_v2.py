@@ -364,9 +364,13 @@ class Book:
         if not ref:
             return None
         if ref.startswith("item:"):
-            s = max(1, min(w, h))
+            s = max(1, min(w, h))   # ItemIcon.draw: the shorter side, centred
             im = self.models.render(ref[5:], s)
-            return im.resize((w, h), Image.NEAREST) if im is not None and (w, h) != (s, s) else im
+            if im is None or (w, h) == (s, s):
+                return im
+            box = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+            box.alpha_composite(im, ((w - s) // 2, (h - s) // 2))
+            return box
         if ref.startswith("#"):
             return Image.new("RGBA", (w, h), argb(ref))
         ns, _, path = ref.partition(":")
@@ -523,9 +527,9 @@ class Book:
         def P(x, y):
             return ((x - minx) * GRID, (y - miny) * GRID)
         self._P = P
-        for im in sorted(c.get("images", []), key=lambda i: i.get("order", 0)):
-            if im.get("dependency") and im["dependency"] not in done:
-                continue
+        renders = []   # item renders: GuiGraphics.renderItem draws them about 150 above the canvas, so over the nodes
+
+        def draw_image(im):
             cx, cy = P(im["x"], im["y"])
             w, h = max(1, round(NODE * im["width"])), max(1, round(NODE * im["height"]))
             pic = self.picture(im["image"], w, h) if im["image"] else None
@@ -544,6 +548,13 @@ class Book:
                 if raw:
                     self.draw_label(img, cx, cy, w, h, raw, im.get("text_h_align", "middle"),
                                     im.get("text_v_align", "middle"), im.get("rotation", 0), im.get("text_shadow", False))
+        for im in sorted(c.get("images", []), key=lambda i: i.get("order", 0)):
+            if im.get("dependency") and im["dependency"] not in done:
+                continue
+            if im["image"].startswith("item:"):
+                renders.append(im)
+            else:
+                draw_image(im)
         d = ImageDraw.Draw(img, "RGBA")
         thick = max(1, round(16 * float(self.prop("dependency_line_thickness", c)) / 4 * 3))
         for q in c["quests"]:
@@ -604,6 +615,8 @@ class Book:
             tq = target[1] if target else {"tags": [], "dependencies": [], "tasks": [{"type": "checkmark"}]}
             node(l["x"], l["y"], l.get("size", 1), l.get("shape") or "circle", tq,
                  not outside and bool(tq["dependencies"]), state == "done")
+        for im in renders:
+            draw_image(im)
         self.last_origin = (minx, miny)
         big = img.resize((img.width * scale, img.height * scale), Image.NEAREST) if scale != 1 else img
         if out:

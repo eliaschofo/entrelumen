@@ -359,9 +359,13 @@ def min_distance(a, b):
     return (a + b) / 2 * VISUAL + 0.4
 
 
+IMAGE_KEYS = {}   # image id -> its key, for messages (tools/check_guides.py names images by key)
+
+
 def image(key, x, y, w, h, picture, **extra):
     out = {"id": stable_id("image:" + key), "x": num(x), "y": num(y), "width": num(w), "height": num(h),
            "rotation": num(extra.pop("rotation", 0.0)), "image": picture}
+    IMAGE_KEYS[out["id"]] = key
     out.update({k: v for k, v in extra.items() if v is not None})
     return out
 

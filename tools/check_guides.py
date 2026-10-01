@@ -1176,8 +1176,9 @@ def frame_size(meta, w, h):
     return [min(w, h)] * 2
 
 
-def client_facts(textures, assets):
-    """tools/quest_client_facts.json as the pinned JARs have it for these canvas textures: the sheets among them."""
+def client_facts(textures, items, assets):
+    """tools/quest_client_facts.json as the pinned JARs have it for these canvas textures and item images: the sheets
+    among the textures, and each item's flat-icon sprite (or None for a 3D or layered icon)."""
     sheets = {}
     for tex in sorted(textures):
         ns, path = tex.split(':', 1)
@@ -1198,27 +1199,37 @@ def client_facts(textures, assets):
         if tile != [w, h]:   # one frame or one tile (Mekanism's CTM bases) draws as it is
             sheets[tex] = {'kind': kind, 'size': [w, h], 'tile': tile}
     return {'_doc': 'Written by tools/check_guides.py --write-client-facts; read by tools/quest_client.py.',
-            'sheets': sheets}
+            'sheets': sheets, 'items': {item: assets.flat_sprite(item) for item in sorted(items)}}
 
 
-def client_checks(errors, warnings, write=False, assets=None):
-    """What the client draws, after a compile (image_budget): the facts file against the JARs, and the sheets the
-    compile left as strips."""
+def client_checks(errors, warnings, write=False, assets=None, quest_keys=None):
+    """What the client draws, after a compile (image_budget): the facts file against the JARs, the sheets the compile
+    left as strips (errors) and the 3D item renders that sit on a node (warnings)."""
     import quest_client
-    expected = client_facts(quest_client.SEEN['textures'], assets or preview_assets())
+    expected = client_facts(quest_client.SEEN['textures'], quest_client.SEEN['items'], assets or preview_assets())
     if write:
         quest_client.FACTS.write_text(quest_client.facts_text(expected), encoding='utf-8', newline='\n')
-        print(f'WROTE {quest_client.FACTS.relative_to(ROOT)}: {len(expected["sheets"])} sheets; '
+        print(f'WROTE {quest_client.FACTS.relative_to(ROOT)}: {len(expected["sheets"])} sheets, '
+              f'{sum(1 for v in expected["items"].values() if v)} of {len(expected["items"])} items flat; '
               'run tools/generate_quests.py again')
         return
-    have = quest_client.load_facts().get('sheets', {})
-    if have != expected['sheets']:
-        drift = sorted(k for k in set(have) | set(expected['sheets']) if have.get(k) != expected['sheets'].get(k))
-        errors.append(f'{quest_client.FACTS.relative_to(ROOT)} is stale ({", ".join(drift[:6])}'
-                      f'{" …" if len(drift) > 6 else ""}): the client would draw these sheets whole; '
-                      'run tools/check_guides.py --write-client-facts, then tools/generate_quests.py')
+    have = quest_client.load_facts()
+    for section, what in (('sheets', 'the client would draw these sheets whole'),
+                          ('items', 'these items would draw as renders above the nodes, or as the wrong sprite')):
+        old, new = have.get(section, {}), expected[section]
+        drift = sorted(k for k in set(old) | set(new) if k not in old or k not in new or old[k] != new[k])
+        if drift:
+            errors.append(f'{quest_client.FACTS.relative_to(ROOT)} is stale in {section} ({", ".join(drift[:6])}'
+                          f'{" …" if len(drift) > 6 else ""}): {what}; '
+                          'run tools/check_guides.py --write-client-facts, then tools/generate_quests.py')
     for chapter, image, texture, why in quest_client.KEPT:
-        errors.append(f'{chapter}: image {image} draws the sheet {texture} whole ({why})')
+        errors.append(f'{chapter}: image {quest_engine.IMAGE_KEYS.get(image, image)} draws the sheet {texture} whole '
+                      f'({why})')
+    keys = quest_keys or {}
+    for chapter, image, item, node in quest_client.OVER_NODES:
+        warnings.append(f'{chapter}: image {quest_engine.IMAGE_KEYS.get(image, image)} draws {item} as a 3D render '
+                        f'over node {keys.get(node, node)}: FTB draws item renders about 150 above the canvas '
+                        '(GuiGraphics.renderItem), over the node frame; move it off the node or draw a flat picture')
 
 
 def picked(name, flt, *others):
@@ -1269,7 +1280,8 @@ def main():
         check_reward_tables(errors)
     try:
         image_budget(warnings, flt)
-        client_checks(errors, warnings, write_facts)
+        quest_keys = {quest_engine.stable_id('quest:' + k): k for k in all_keys}
+        client_checks(errors, warnings, write_facts, quest_keys=quest_keys)
     except AssertionError as e:   # the book does not compile: generate_quests.py reports it in full
         warnings.append(f'image budget not counted: the book does not compile ({e})')
     for w in warnings:

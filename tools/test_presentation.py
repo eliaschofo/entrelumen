@@ -309,6 +309,33 @@ class ClientDraw(unittest.TestCase):
         imgs, _ = self.fix(picture("m:textures/block/stone.png"), picture(qe.PX, color=0xFFFFFF))
         self.assertEqual([i["image"] for i in imgs], ["m:textures/block/stone.png", qe.PX])
 
+    def test_flat_items_draw_as_sprites_in_canvas_order(self):
+        facts = dict(SHEETS, items={"m:gem": "m:item/gem", "m:machine": None})
+        imgs, _ = self.fix(picture("item:m:gem", width=1.0, height=1.5, alpha=90, order=-1), facts=facts)
+        gem = imgs[0]
+        self.assertEqual(gem["image"], "m:item/gem")      # an atlas sprite: drawn at the canvas' depth, in order
+        self.assertEqual((gem["width"], gem["height"]), (1.0, 1.0))   # ItemIcon drew the shorter side
+        self.assertNotIn("alpha", gem)                    # the render ignored alpha and tint; the sprite would not
+        self.assertEqual(gem["order"], -1)
+        self.assertIn("m:gem", quest_client.SEEN["items"])
+
+    def test_3d_items_on_a_node_are_reported(self):
+        facts = dict(SHEETS, items={"m:machine": None})
+        chapter = chapter_of(dict(picture("item:m:machine"), id="ON", x=0.3), dict(picture("item:m:machine"), id="OFF", x=3.0))
+        chapter["quests"] = [{"id": "Q", "x": 0.0, "y": 0.0, "size": 1.0}]
+        chapter["quest_links"] = [{"id": "L", "x": 6.0, "y": 0.0, "linked_quest": "Q2"}]
+        chapter["images"].append(dict(picture("item:m:machine"), id="LINK", x=6.4))
+        quest_client.fix_chapter(chapter, {lang: {} for lang in LOCALES}, facts)
+        self.assertEqual(quest_client.OVER_NODES, [("c", "ON", "m:machine", "Q"), ("c", "LINK", "m:machine", "Q2")])
+        self.assertEqual(chapter["images"][0]["image"], "item:m:machine")
+
+    def test_the_facts_name_sprites_for_flat_items_only(self):
+        for item, sprite in quest_client.load_facts()["items"].items():
+            if sprite:
+                with self.subTest(item=item):
+                    ns, path = item.split(":", 1)
+                    self.assertEqual(sprite, f"{ns}:item/{path}")
+
     def test_every_spanish_locale_reads_the_spanish_strings(self):
         import tempfile
         from pathlib import Path
