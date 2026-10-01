@@ -1047,8 +1047,10 @@ def sector_rewards(q, role, act, book, tables, chapter=None, gated=frozenset()):
             crate["random_bonus"] = 1
         out.append(crate)
     if role == "secret":
+        # Not a team reward: a secret found by a kill has no player to hand a team auto-reward to, so FTB would
+        # hold the toast until the next login (and leave an unclaimed marker meanwhile).
         out.append({"id": stable_id(f"reward:{key}:toast"), "type": "toast", "description": "entrelumen.quests.toast.secret",
-                    "auto": "invisible"})
+                    "auto": "invisible", "team_reward": False})
     if role == "capstone":
         out.append({"id": stable_id(f"reward:{key}:fanfare"), "type": "command", "auto": "invisible",
                     "command": rules["fanfare"], "permission_level": 2, "silent": True})

@@ -594,6 +594,22 @@ class Sectors(unittest.TestCase):
                 with self.assertRaisesRegex(AssertionError, message):
                     generate_book(self.story, self.guides, self.book, sectors)
 
+    # Review fixes of 1 October 2026 (ultra review, batch quest-engine) on the whole book.
+
+    def test_secret_toasts_and_kill_quest_auto_rewards_are_not_team_rewards(self):
+        # F74: a kill has no player context, so a team auto reward would wait for the next login.
+        toasts = 0
+        for q in self.quests.values():
+            kill = any(t["type"] == "kill" for t in q["tasks"])
+            for r in q["rewards"]:
+                if r["type"] == "toast":
+                    toasts += 1
+                    self.assertIs(r["team_reward"], False)
+                if kill and r.get("auto"):
+                    with self.subTest(quest=q["id"], reward=r["type"]):
+                        self.assertIs(r.get("team_reward"), False)
+        self.assertGreater(toasts, 0)
+
     def test_no_required_quest_waits_on_optional_work(self):
         # F27 (decision D7): optional work a required all-completed quest needs is promoted to required.
         import generate_quests
