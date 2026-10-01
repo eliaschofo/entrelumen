@@ -696,8 +696,8 @@ public final class RuntimeGameTests {
     helper.assertTrue(campaign.completed.size() == 6
         && AtlasNetwork.handleOpen(player).canAdvance(), "Complete first act cannot advance");
     var atlas = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:atlas"));
-    // 24 September 2026: First Signal also grants the first two calibration frames, which have no
-    // crafting recipe (one builds the metallurgic infuser, one is spare).
+    // 1 October 2026: First Signal also grants Mekanism's Metallurgic Infuser and one calibration frame
+    // (no crafting recipe; the infuser copies it). This server has no Mekanism, so only the frame comes.
     var frame = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:calibration_frame"));
     var habitation = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:habitation_module"));
     // Since 26 September the Atlas waits in the Signal Tower: the first act's deliveries give none.
@@ -705,14 +705,14 @@ public final class RuntimeGameTests {
         && player.getInventory().countItem(habitation) == 1
         && player.getInventory().items.stream().filter(s -> !s.isEmpty()).count() == 3
           && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1
-          && player.getInventory().countItem(frame) == 2,
-        "First-act deliveries consumed incorrect amounts, lost the portable Atlas or missed the two frames");
+          && player.getInventory().countItem(frame) == 1,
+        "First-act deliveries consumed incorrect amounts, lost the portable Atlas or missed the frame");
     var replay = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         initial.campaign(), CampaignActions.Action.DELIVER, "first_signal"));
     helper.assertTrue(replay.message().equals("entrelumen.delivery.failed")
         && campaign.completed.size() == 6 && player.getInventory().countItem(atlas) == 0
           && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1
-          && player.getInventory().countItem(frame) == 2,
+          && player.getInventory().countItem(frame) == 1,
         "Completed signal replay changed progress or inventory");
     var advanced = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         initial.campaign(), CampaignActions.Action.ADVANCE, ""));

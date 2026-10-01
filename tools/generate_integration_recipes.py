@@ -6,9 +6,9 @@ vertical axis, the corners or the middle row, and each ingredient's count equal 
 so the design inputs stay equal to the grid. The six Ark modules have no table recipe since Ark v2
 (docs/design/ark-modules-v2.md): each is the one-time reward of its act's Atlas project. The calibration
 frame (precision_bench) is a Mekanism metallurgic infusing recipe: it has no crafting recipe since
-24 September 2026, the first two frames are the Act I reward of first_signal, and the infuser itself
-needs a frame, the only gate allowed to use a component that its own acquisition needs
-(docs/design/progression-functions.md)."""
+24 September 2026, and the infuser itself needs a frame, the only gate allowed to use a component that
+its own acquisition needs (docs/design/progression-functions.md). Since 1 October 2026 the Act I reward
+of first_signal is the infuser itself and one frame (it was two frames)."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -26,7 +26,8 @@ SHAPED = "minecraft:crafting_shaped"
 INFUSER = "mekanism:metallurgic_infuser"
 # The only recipe that is not shapeless crafting: the frame, replicated by infusion.
 INFUSED = {"entrelumen:integration/precision_bench": "entrelumen:calibration_frame"}
-# Campaign frames a team receives before it can infuse: one builds the infuser, one is spare.
+# Campaign frames a team receives before it can infuse when the campaign does not hand out the infuser:
+# one builds the infuser, one is spare. With a story infuser one frame is enough.
 STORY_FRAMES = 2
 ARK_MODULES = {f"entrelumen:{name}_module" for name in
                ("habitation", "exploration", "nature", "arcane", "logistics", "engineering")}
@@ -142,17 +143,22 @@ def infusing(rid, recipe, output):
 def check_story_frames(outputs):
     """An infused component has no crafting recipe, so the campaign hands out the first ones.
 
-    The infuser needs a frame (tools/generate_family_balance.py, functions family). With fewer than
-    STORY_FRAMES campaign frames a team could deliver its only frame to precision_bench and never
-    build the infuser."""
+    The infuser needs a frame (tools/generate_family_balance.py, functions family). Unless the campaign
+    hands out the infuser itself, fewer than STORY_FRAMES campaign frames would let a team deliver its
+    only frame to precision_bench and never build the infuser."""
     projects = json.loads(PROJECTS.read_text(encoding="utf-8"))
+
+    def granted(item, act):
+        return sum(p.get("extraRewards", {}).get(item, 0) + (p.get("reward") == item)
+                   for p in projects.values() if p["act"] <= act)
+
     for item in INFUSED.values():
         if item not in outputs:
             raise ValueError(f"Infused component is not a project output: {item}")
-        granted = sum(p.get("extraRewards", {}).get(item, 0) + (p.get("reward") == item)
-                      for p in projects.values() if p["act"] <= outputs[item]["act"])
-        if granted < STORY_FRAMES:
-            raise ValueError(f"The campaign grants {granted} {item} by its act; {STORY_FRAMES} are needed")
+        act = outputs[item]["act"]
+        needed = 1 if granted(INFUSER, act) else STORY_FRAMES
+        if granted(item, act) < needed:
+            raise ValueError(f"The campaign grants {granted(item, act)} {item} by its act; {needed} are needed")
 
 
 def check_existing_ids(rows):
@@ -226,7 +232,7 @@ def main():
         TARGET.write_text(expected, encoding="utf-8", newline="\n")
     elif not TARGET.exists() or TARGET.read_text(encoding="utf-8") != expected:
         raise ValueError("Generated script differs from source; run --write")
-    print("PASS: 16 static recipes (15 shaped and symmetric, the frame by metallurgic infusing), drawings equal to the design inputs, no Ark module at the table, valid yields, bilingual project titles, component DAG, two story frames, reserved IDs and source parity. Crafting runtime not tested.")
+    print("PASS: 16 static recipes (15 shaped and symmetric, the frame by metallurgic infusing), drawings equal to the design inputs, no Ark module at the table, valid yields, bilingual project titles, component DAG, the story infuser and frame, reserved IDs and source parity. Crafting runtime not tested.")
 
 
 if __name__ == "__main__":

@@ -605,10 +605,18 @@ class FamilyBalanceTest(unittest.TestCase):
                 self.assertNotIn(change['id'].split(':', 1)[1], protected_paths, change['id'])
         infuser = next(c for c in balance.FAMILIES['functions']['changes'] if c['id'] == 'mekanism:metallurgic_infuser')
         balance.check_function_gate(infuser, 'mekanism:metallurgic_infuser', sources)
-        # The bootstrap is only allowed while the story hands out two frames.
-        with unittest.mock.patch.object(balance, 'story_grants', return_value=1):
+        # The bootstrap is only allowed while the story hands out the infuser and a frame (1 October 2026),
+        # or two frames.
+        self.assertGreaterEqual(balance.story_grants('mekanism:metallurgic_infuser'), 1)
+        with unittest.mock.patch.object(balance, 'story_grants', return_value=0):
             with self.assertRaises(AssertionError):
                 balance.check_function_gate(infuser, 'mekanism:metallurgic_infuser', sources)
+        frames_only = {balance.CF: 1}
+        with unittest.mock.patch.object(balance, 'story_grants', side_effect=lambda item: frames_only.get(item, 0)):
+            with self.assertRaises(AssertionError):
+                balance.check_function_gate(infuser, 'mekanism:metallurgic_infuser', sources)
+            frames_only[balance.CF] = 2
+            balance.check_function_gate(infuser, 'mekanism:metallurgic_infuser', sources)
         with self.assertRaises(AssertionError):
             balance.check_function_gate(dict(infuser, add=balance.PR, act='III', function='jetpack'),
                                         'mekanism:metallurgic_infuser', sources)
@@ -702,9 +710,20 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual(frame['output'], {'count': 1, 'id': balance.CF})
         self.assertEqual(sum(r['type'] == 'minecraft:crafting_shaped' for r in rows.values()), 15)
         self.assertFalse(any(balance.CF == r.get('result', {}).get('id') for r in rows.values()))
-        with unittest.mock.patch.object(integration, 'STORY_FRAMES', 3):
-            with self.assertRaises(ValueError):
-                integration.recipes_from(design)
+        # First Signal pays the infuser and one frame (1 October 2026); without the infuser it needs two frames.
+        projects = json.loads(integration.PROJECTS.read_text(encoding='utf-8'))
+        self.assertEqual(projects['first_signal']['extraRewards'], {integration.INFUSER: 1, balance.CF: 1})
+        with tempfile.TemporaryDirectory() as tmp:
+            for extra, fails in (({balance.CF: 1}, True), ({balance.CF: 2}, False), ({integration.INFUSER: 1}, True)):
+                projects['first_signal']['extraRewards'] = extra
+                changed = Path(tmp) / 'projects.json'
+                changed.write_text(json.dumps(projects), encoding='utf-8')
+                with self.subTest(extra=extra), unittest.mock.patch.object(integration, 'PROJECTS', changed):
+                    if fails:
+                        with self.assertRaises(ValueError):
+                            integration.recipes_from(design)
+                    else:
+                        integration.recipes_from(design)
         crafted = json.loads(json.dumps(design))
         next(p for p in crafted['projects'] if p['output']['id'] == balance.CF)['recipe']['type'] = 'minecraft:crafting_shapeless'
         with self.assertRaises(ValueError):
