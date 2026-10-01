@@ -30,6 +30,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -712,6 +713,81 @@ public final class RuntimeGameTestsEnvesContent {
       }, () -> helper.assertTrue(player.serverLevel().getBlockState(seal.get()).getValue(EnvesSealBlock.LIT), "the seal block is dark"));
     }
     script.run();
+  }
+
+  /**
+   * A guardian that leaves the world without falling (Peaceful, a soul vial, a command) is not waited
+   * for forever: after five seconds missing while someone stands in its room, another one stands.
+   */
+  @GameTest(template = "empty", timeoutTicks = 24000, batch = "enves_content")
+  public static void aGuardianThatLeftTheWorldWithoutFallingStandsAgain(GameTestHelper helper) {
+    var qa = new QaPlayer(helper, "LostGuardian");
+    ServerPlayer player = qa.player;
+    long seed = seedWith(s -> EnvesPuzzleRules.sealVariants(s, 1, EnvesLayout.descent(s).floor(1).seals())
+        .containsValue(SealVariant.GUARDIAN));
+    Attempt attempt = attempt(player, seed);
+    AtomicInteger cell = new AtomicInteger(-1);
+    AtomicReference<UUID> first = new AtomicReference<>();
+    java.util.function.Supplier<EnvesRuns.Seal> seal = () -> EnvesRuns.get(player.server).run(attempt.id).floor(1).seal(cell.get());
+    Script script = new Script(helper, () -> {
+      end(player, attempt);
+      qa.close();
+    });
+    script.then(() -> attempt.status == Status.OPEN, () -> {
+      helper.assertTrue(Enves.enter(player), "could not enter");
+      arrived(player);
+      player.setInvulnerable(true);
+      var floor = Enves.floor(player.serverLevel(), attempt, 1);
+      EnvesPuzzleRules.sealVariants(seed, 1, floor.layout().seals()).forEach((c, v) -> {
+        if (v == SealVariant.GUARDIAN && cell.get() < 0) cell.set(c);
+      });
+      BlockPos pos = EnvesSeals.sealPos(floor, cell.get());
+      moveTo(player, EnvesEchoes.safeSpot(player.serverLevel(), pos.below().relative(EnvesSeals.door(floor, cell.get()), 2), 3));
+    }).then(() -> seal.get().guardian != null && EnvesEchoes.find(seal.get().guardian).isPresent(), () -> {
+      first.set(seal.get().guardian);
+      // Taken with no death: the seal would wait for it forever.
+      EnvesEchoes.find(first.get()).ifPresent(Mob::discard);
+    }).then(() -> seal.get().guardian != null && !seal.get().guardian.equals(first.get())
+        && EnvesEchoes.find(seal.get().guardian).isPresent(), () -> {
+      helper.assertTrue(seal.get().guardianSpawned && !seal.get().guardianDead, "the seal lost its guardian for good");
+      helper.assertTrue(!Enves.lightSeal(player, EnvesSeals.sealPos(Enves.floor(player.serverLevel(), attempt, 1), cell.get())),
+          "the seal lit with its new guardian standing");
+    });
+    script.run();
+  }
+
+  /**
+   * Peaceful (Elias, D14): echoes are not discarded and cannot be hurt, and the gate takes no offering.
+   * Its own batch, since the difficulty is the whole server's.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200, batch = "enves_peaceful")
+  public static void onPeacefulEchoesStayUnhurtAndTheGateRefuses(GameTestHelper helper) {
+    var server = helper.getLevel().getServer();
+    Difficulty difficulty = server.getWorldData().getDifficulty();
+    var qa = new QaPlayer(helper, "PeacefulPayer");
+    ServerPlayer player = qa.player;
+    ServerLevel level = helper.getLevel();
+    BlockPos at = helper.absolutePos(new BlockPos(2, 1, 2));
+    platform(level, at, 3);
+    Mob mob = echo(level, loose(player), at, null);
+    try {
+      server.setDifficulty(Difficulty.PEACEFUL, true);
+      mob.checkDespawn();
+      helper.assertTrue(!mob.isRemoved(), "Peaceful discarded an echo");
+      float health = mob.getHealth();
+      mob.invulnerableTime = 0;
+      mob.hurt(player.damageSources().playerAttack(player), 10);
+      helper.assertTrue(mob.getHealth() == health, "an echo took damage on Peaceful");
+      frontier(player);
+      player.getInventory().add(new ItemStack(Items.NETHER_STAR));
+      helper.assertTrue(Enves.open(player, Tier.FRONTIER) == Enves.Refusal.PEACEFUL, "the gate opened on Peaceful");
+      helper.assertTrue(player.getInventory().countItem(Items.NETHER_STAR) == 1, "the refused offering was taken");
+    } finally {
+      server.setDifficulty(difficulty, true);
+      mob.discard();
+      qa.close();
+    }
+    helper.succeed();
   }
 
   // ---- Vaults -------------------------------------------------------------------------------

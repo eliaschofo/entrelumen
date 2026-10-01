@@ -56,7 +56,8 @@ public final class EnvesEntrance {
   private EnvesEntrance() {}
 
   static void register() {
-    NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, EnvesEntrance::onRightClickBlock);
+    // Ahead of claim and protection mods: a claim over the heart must not lock the stair away.
+    NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, EnvesEntrance::onRightClickBlock);
   }
 
   /**
@@ -75,10 +76,21 @@ public final class EnvesEntrance {
       if (ANTECHAMBER_MARKER.equals(metadata)) antechamber = info.pos().immutable();
     }
     if (gate == null || ground <= 0) return; // a start ruin without the Sealed Stair
+    if (!withinWorld(level, origin, gate, antechamber)) {
+      LOGGER.error("The Sealed Stair falls outside the world (origin {}, gate {}, antechamber {}); no gate is set",
+          origin, gate, antechamber);
+      return;
+    }
     Vec3i size = template.getSize();
     record(level, origin.offset(size.getX() / 2, ground, size.getZ() / 2), gate, antechamber,
         new int[] {origin.getX(), origin.getY(), origin.getZ(), origin.getX() + size.getX() - 1, origin.getY() + ground - 1,
             origin.getZ() + size.getZ() - 1});
+  }
+
+  /** Whether the ruin's origin, the whole 3x4 gate and the antechamber lie inside the world's build height. */
+  static boolean withinWorld(Level level, BlockPos origin, BlockPos gate, BlockPos antechamber) {
+    return level.isInWorldBounds(origin) && level.isInWorldBounds(gate) && level.isInWorldBounds(gate.above(3))
+        && (antechamber == null || level.isInWorldBounds(antechamber));
   }
 
   /** Whether this world's ruin registry holds the start ruin placed at {@code origin} in {@code level}. */
@@ -220,14 +232,19 @@ public final class EnvesEntrance {
       case OPEN -> {
         if (action.tier() < 0 || action.tier() >= Tier.values().length) return;
         var refusal = Enves.open(player, Tier.values()[action.tier()], action.offer());
-        player.displayClientMessage(Component.translatable(refusal == null ? "entrelumen.enves.forming"
-            : "entrelumen.enves.refused." + refusal.name().toLowerCase(java.util.Locale.ROOT)), true);
+        String key = refusal == null ? "entrelumen.enves.forming"
+            : refusal == Enves.Refusal.PEACEFUL ? "entrelumen.enves.peaceful"
+            : "entrelumen.enves.refused." + refusal.name().toLowerCase(java.util.Locale.ROOT);
+        player.displayClientMessage(Component.translatable(key), true);
       }
       case ENTER -> {
-        if (!Enves.enter(player)) player.displayClientMessage(Component.translatable("entrelumen.enves.cannot_enter"), true);
+        if (!Enves.enter(player)) player.displayClientMessage(Component.translatable(Enves.peaceful(player.server)
+            ? "entrelumen.enves.peaceful" : "entrelumen.enves.cannot_enter"), true);
       }
       case GIVE_UP -> {
-        if (Enves.giveUp(player)) EnvesNetwork.send(player, gateView(player));
+        // The screen asked twice already (its button turns into "Confirm give up"); the server still
+        // judges who may give up while teammates are inside.
+        if (Enves.giveUp(player, true)) EnvesNetwork.send(player, gateView(player));
       }
     }
   }

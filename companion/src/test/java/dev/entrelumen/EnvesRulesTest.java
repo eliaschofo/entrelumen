@@ -122,4 +122,40 @@ class EnvesRulesTest {
     explored.set(floor.exit());
     assertTrue(EnvesRules.known(floor, explored, lit).stream().anyMatch(k -> k.role() == Role.EXIT));
   }
+
+  @Test
+  void nobodyStandsDeeperThanTheOpenStairsAllow() {
+    assertEquals(1, EnvesRules.reachableDepth(d -> false, 5), "with every stair shut only floor I is walkable");
+    assertEquals(2, EnvesRules.reachableDepth(d -> d == 1, 5));
+    assertEquals(3, EnvesRules.reachableDepth(d -> d <= 2, 5));
+    assertEquals(1, EnvesRules.reachableDepth(d -> d == 2, 5), "an open stair below a shut one leads nowhere");
+    assertEquals(5, EnvesRules.reachableDepth(d -> true, 5), "never past the last floor");
+  }
+
+  @Test
+  void givingUpAsksTwiceWithinTenSeconds() {
+    assertFalse(EnvesRules.giveUpConfirmed(null, 1000), "the first ask only arms it");
+    assertTrue(EnvesRules.giveUpConfirmed(1000L, 1000));
+    assertTrue(EnvesRules.giveUpConfirmed(1000L, 1000 + EnvesRules.GIVE_UP_WINDOW));
+    assertFalse(EnvesRules.giveUpConfirmed(1000L, 1001 + EnvesRules.GIVE_UP_WINDOW), "ten seconds later it asks again");
+    assertFalse(EnvesRules.giveUpConfirmed(1000L, 999), "a clock that went back confirms nothing");
+    assertEquals(200, EnvesRules.GIVE_UP_WINDOW);
+  }
+
+  @Test
+  void whileTeammatesAreInsideOnlyThePayerTheOwnerOrSomeoneInsideGivesUp() {
+    assertTrue(EnvesRules.mayGiveUp(false, false, false, 0), "with nobody else inside any member may");
+    assertFalse(EnvesRules.mayGiveUp(false, false, false, 2), "a member outside cannot end a run others are playing");
+    assertTrue(EnvesRules.mayGiveUp(true, false, false, 2), "the payer may");
+    assertTrue(EnvesRules.mayGiveUp(false, true, false, 1), "the party owner may");
+    assertTrue(EnvesRules.mayGiveUp(false, false, true, 1), "a member inside may");
+  }
+
+  @Test
+  void onlyLongMovesAreCheckedForWallsAndALostEchoWaitsFiveSeconds() {
+    assertFalse(EnvesRules.longMove(4.0), "two blocks in a tick is still a sprint jump");
+    assertTrue(EnvesRules.longMove(4.01));
+    assertFalse(EnvesRules.lostLongEnough(100, 199));
+    assertTrue(EnvesRules.lostLongEnough(100, 100 + EnvesRules.LOST_ECHO_TICKS));
+  }
 }

@@ -96,8 +96,19 @@ Roles por piso:
 - El corazón del sol se abre para siempre cuando alguien de un equipo en Frontier (acto III) se para encima o lo toca. Antes sólo contesta «El corazón del sol está frío. Todavía no te reconoce.». Se van las ocho celdas de afuera; el centro y el pedestal quedan.
 - La puerta (3 × 4 bloques `entrelumen:enves_gate`) pide un equipo en Frontier:
   - sin intento: la ofrenda y la dificultad, cualquier tier desde Haven hasta el del equipo;
-  - con intento abierto: entrar, al inicio del piso más hondo que alcanzó el grupo, o abandonarlo.
+  - con intento abierto: entrar, al inicio del piso más hondo que alcanzó el grupo, o abandonarlo. «Abandonar» queda debajo de «Cancelar» y pide dos clics: el primero sólo lo cambia a «Confirmar rendición».
   El servidor revalida cada elección.
+- **En Pacífico el Envés no abre ni avanza (Elias, D14).** Los ecos no podrían pelear, así que en vez de dejarlos inofensivos se frena todo hasta que suba la dificultad:
+  - la puerta no toma la ofrenda ni deja entrar;
+  - los sellos no se prenden, los círculos se quedan quietos y las escaleras no abren;
+  - nadie baja de piso (quien lo intenta vuelve al inicio del suyo);
+  - los ecos no desaparecen (se niega su `MobDespawnEvent`, que Pacífico disparaba antes que la persistencia) y no reciben daño, así que tampoco se los puede voltear gratis.
+  El aviso es «El Envés no se abre ni avanza en Pacífico.».
+- **Rendirse (Elias, D13).** Termina el intento para todos y limpia la parcela, con el cofre del jefe incluido:
+  - por comando (`/entrelumen enves giveup`) hay que pedirlo dos veces en 10 s; el primer pedido dice cuántos hay adentro;
+  - con compañeros adentro, sólo pueden rendirse quien pagó, el dueño del grupo o alguien que esté adentro; los demás reciben «Hay compañeros adentro: sólo quien pagó, el dueño del grupo o alguien adentro puede rendirse.»;
+  - al rendirse, todo el grupo lee quién lo hizo.
+- **El intento sigue al equipo.** Si alguien solo funda un grupo con un intento abierto, el intento pasa al grupo; quien se une a un grupo sin intento trae el suyo; si el grupo se disuelve, el intento vuelve a quien pagó (o al dueño, si quien pagó ya tiene otro intento o está en otro grupo).
 - La bolsa empieza vacía y cada integrante le suma 3 caídas **la primera vez que entra a ese intento**: una vez por jugador y por intento, y salir y volver a entrar no suma. Cada caída adentro resta una:
   - se conserva todo: `keepInventory` rige sólo para esa muerte, así que Curios, mochilas y tumbas se comportan igual;
   - se reaparece al inicio del piso donde te caíste;
@@ -112,9 +123,13 @@ Roles por piso:
   - se apagan `mayfly` y la elytra, y se baja a quien monta algo;
   - quien sube más de 1 s o flota más de 1,5 s en el aire vuelve a su último suelo. Así caen los jetpacks y el vuelo de cualquier mod. La levitación y la caída lenta no cuentan.
 - **Sin atajos:**
-  - las perlas, el chorus y los objetos del tag `entrelumen:enves_forbidden` (los pergaminos y la piedra de Waystones) no se usan, y sus teletransportes se cancelan;
+  - las perlas, el chorus y los objetos del tag `entrelumen:enves_forbidden` (los pergaminos y la piedra de Waystones) no se usan;
+  - ningún jugador se teletransporta adentro: se cancela todo `EntityTeleportEvent` de un jugador (perlas, chorus, el Blink de Ars, el bastón de viaje de Ender IO), salvo los de comandos, que ya filtra `denied_commands` y así un operador puede mover gente. Los mobs (endermen, ecos que parpadean) sí se teletransportan. Los CAD de Psi no van al tag: se puede usar Psi para pelear;
+  - **sin atravesar paredes:** cada tick, quien recorrió más de 2 bloques se revisa con un rayo de colisión desde donde estaba; si cruzó un bloque, vuelve ahí. Así cae el Blink de Psi, que mueve al jugador sin ningún evento. La entrada, el rescate, la reaparición, el tirón del vuelo y el teletransporte de un operador arrancan la cuenta de cero; creativo, espectador y el bypass no se revisan;
+  - **tope de profundidad:** nadie está más hondo que lo que abren las escaleras (o que el piso donde lo puso el servidor). Quien aparece más abajo vuelve al inicio de su piso y ese piso no cuenta como alcanzado;
+  - los ecos no se capturan, atan, nombran ni montan adentro (se cancela la interacción con ellos): un frasco de almas dejaba un sello sin su guardián;
   - nadie cruza de dimensión hacia o desde el Envés salvo por la puerta y los portales; los warps de Waystones también se frenan en su evento;
-  - los comandos de `denied_commands` (`/home`, `/rtp`, `/back`, `/spawn`, `/tpa`...) no andan adentro. Ningún mod del pack registra `/home` ni `/rtp`: la lista cubre los que se agreguen.
+  - los comandos de `denied_commands` (`/home`, `/rtp`, `/back`, `/spawn`, `/tpa`...) no andan adentro. `/home` y `/rtp` los registra el compañero (`ArkCommands`); la lista también cubre los de otros mods que se agreguen.
 
 ### Mapas
 
@@ -159,7 +174,7 @@ Las plantillas son `structure/enves/<tileset>/<rol>_<puertas>_<variante>.nbt`, c
 
 ### Comandos
 
-- `/entrelumen enves`: el intento del equipo. `/entrelumen enves giveup`: abandonarlo.
+- `/entrelumen enves`: el intento del equipo. `/entrelumen enves giveup`: abandonarlo, con dos pedidos en 10 s y la regla de quién puede si hay compañeros adentro (ver [El intento](#el-intento)).
 - Operadores, `/entrelumen admin enves`: `list`, `open <tier>` (sin ofrenda ni Frontier), `tp <piso>`, `seals` (prende los del piso), `reveal` (explora el piso), `boss` (despierta el portal de victoria), `end` y `seal open|close` (la Escalera Sellada).
 
 ### Ganchos del segundo worker
@@ -179,13 +194,19 @@ Cada gancho recibe un `EnvesHooks.Floor`: el nivel, el intento (tier, semilla, p
 
 ### Pruebas
 
-- JUnit: `EnvesLayoutTest` (invariantes, 2000 semillas), `EnvesRulesTest` (bolsa por primera entrada, tiers, abandono, escalera, vuelo, comandos, niebla) y `EnvesContractTest` (marcadores, plantillas, escalera, datos, parcelas).
+- JUnit: `EnvesLayoutTest` (invariantes, 2000 semillas), `EnvesRulesTest` (bolsa por primera entrada, tiers, abandono, escalera, tope de profundidad, rendición en dos pasos y quién puede, movimientos largos, ecos perdidos, vuelo, comandos, niebla) y `EnvesContractTest` (marcadores, plantillas, escalera, datos, parcelas).
 - GameTests (`RuntimeGameTestsEnves`):
   - el sello abre sólo con Frontier y no spoilea;
   - la ofrenda abre un intento a la dificultad elegida;
   - la bolsa compartida (vacía al pagar; 3 caídas por integrante en su primera entrada y ninguna en las siguientes), con reaparición al inicio del piso, inventario intacto y expulsión;
   - indestructible y sin atajos: perlas, chorus, cruces de dimensión y vuelo;
+  - sin blinks ni capturas: el evento de teletransporte de un jugador se cancela (el de un mob y el de un comando no), atravesar el piso se deshace al tick siguiente, un eco no se puede interactuar y quien aparece pasada una escalera cerrada vuelve a su piso;
+  - el intento de alguien solo pasa al grupo que funda y vuelve al disolverlo;
+  - rendirse pide dos veces y, con el fundador adentro, otro integrante de afuera no puede;
+  - el mapa con niebla se manda de nuevo después de reconectarse;
+  - una Escalera Sellada fuera del mundo no pone puerta, y el control de spawns de la escalera no lee datos desde hilos de generación;
   - el piso siguiente llega con la guardia y la escalera atraviesa la losa.
+- GameTests del contenido (`RuntimeGameTestsEnvesContent`), además: un guardián que desaparece sin morir vuelve a pararse, y en Pacífico los ecos quedan, no reciben daño y la puerta no abre.
 
 ## Encuentros
 
@@ -212,7 +233,7 @@ Cada gancho recibe un `EnvesHooks.Floor`: el nivel, el intento (tier, semilla, p
 - **Todo indestructible.** No se rompe ni se pone nada. Las explosiones no rompen bloques.
 - **Nada que saltee el laberinto:**
   - sin vuelo (jetpacks, vuelo de mods);
-  - sin perlas ni chorus;
+  - sin perlas, chorus ni teletransportes de otros mods, y sin atravesar paredes;
   - sin waystones, `/home` ni `/rtp`.
   Los techos de 9 bloques tampoco dejan volar.
 - **Intento, caídas y muerte (Elias, 26/9):**
@@ -392,7 +413,7 @@ Los afijos no se repiten en un eco. Los números están en `EnvesAffix`.
 
 - **Sala de combate:** la primera vez que alguien del grupo entra, se llenan sus puntos marcados, empezando por los más lejanos a quien entró: un élite y una escolta (45%), un élite y dos escoltas (30%) o dos élites (25%).
 - **El piso V** no tiene salas de combate: su antesala (la guardia) trae tres ecos menores, y la arena, el jefe.
-- **Guardia y campeón de la escalera:** el campeón, con tres afijos, en el centro de la guardia, y dos escoltas en las esquinas (tres desde el piso III). **La escalera no abre hasta que cae**, aunque ardan todos los sellos. Si todos arden y él sigue en pie, el grupo recibe un aviso. Nunca aparece dos veces: si desaparece sin morir (un comando, otro mod), `/entrelumen admin enves seals` lo dispensa. En un intento anterior al contenido, con la guardia ya pisada, aparece al entrar. Si ni el campeón ni su respaldo existen en el pack, la escalera no lo espera.
+- **Guardia y campeón de la escalera:** el campeón, con tres afijos, en el centro de la guardia, y dos escoltas en las esquinas (tres desde el piso III). **La escalera no abre hasta que cae**, aunque ardan todos los sellos. Si todos arden y él sigue en pie, el grupo recibe un aviso. Si desaparece sin morir (Pacífico, una captura, un comando) y sigue faltando 5 s con alguien parado en la guardia, aparece otro; si el viejo vuelve de un chunk descargado, se va. `/entrelumen admin enves seals` igual lo dispensa. En un intento anterior al contenido, con la guardia ya pisada, aparece al entrar. Si ni el campeón ni su respaldo existen en el pack, la escalera no lo espera.
 - Todo sale de la semilla del intento: un reinicio arma lo mismo.
 
 ### Loot
@@ -447,7 +468,7 @@ Las partículas del altar tienen el color de su bendición, así se adivina ante
 ### Sellos
 
 Las tres variantes se reparten barajadas por piso: dos sellos nunca comparten variante y tres muestran las tres. Un operador con `/entrelumen admin enves seals` las saltea.
-- **Guardián:** al pisar la sala, un eco guardián (de los élites del piso, con un afijo más, hasta 3) se para entre la puerta y el sello. El sello no prende hasta que cae; después se prende con un toque.
+- **Guardián:** al pisar la sala, un eco guardián (de los élites del piso, con un afijo más, hasta 3) se para entre la puerta y el sello. El sello no prende hasta que cae; después se prende con un toque. Si desaparece sin morir y sigue faltando 5 s con alguien en la sala, aparece otro.
 - **Círculo:** tocar el sello lo despierta. Hay que tener a alguien del grupo a 4,5 bloques del sello durante 20 s.
   - La barra de jefe «Sosteniendo el sello» muestra el avance.
   - El anillo de partículas brilla mientras alguien lo sostiene.

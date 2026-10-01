@@ -8,6 +8,10 @@ import dev.entrelumen.EnvesData.Placement;
 import dev.entrelumen.EnvesData.Status;
 import dev.entrelumen.EnvesLayout.Role;
 import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
+import dev.ftb.mods.ftbteams.api.Team;
+import dev.ftb.mods.ftbteams.api.event.PlayerJoinedPartyTeamEvent;
+import dev.ftb.mods.ftbteams.api.event.TeamCreatedEvent;
+import dev.ftb.mods.ftbteams.api.event.TeamEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +31,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -94,6 +99,8 @@ public final class Enves {
   private static final Set<UUID> HUD_SHOWN = new HashSet<>();
   /** Payers waiting for floor I: moved in when it is ready, if still at the gate. */
   private static final Map<UUID, UUID> WAITING = new HashMap<>();
+  /** Members who asked to give up once (command): the game time of that first ask. */
+  private static final Map<UUID, Long> GIVE_UP_ARMED = new HashMap<>();
 
   private Enves() {}
 
@@ -108,6 +115,10 @@ public final class Enves {
     NeoForge.EVENT_BUS.addListener(EnvesPlacer::onEntityJoin);
     NeoForge.EVENT_BUS.addListener(Enves::onLogin);
     NeoForge.EVENT_BUS.addListener(Enves::onChangedDimension);
+    NeoForge.EVENT_BUS.addListener(Enves::onLogout);
+    TeamEvent.CREATED.register(Enves::onTeamCreated);
+    TeamEvent.PLAYER_JOINED_PARTY.register(Enves::onJoinedParty);
+    TeamEvent.DELETED.register(Enves::onTeamDeleted);
     NeoForge.EVENT_BUS.addListener(EnvesCommands::register);
     bus.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) ->
         event.enqueueWork(EnvesGuard::hookWaystones));
@@ -223,6 +234,58 @@ public final class Enves {
     return team.isPresent() && team.get().isPartyTeam() ? team.get().getId() : player.getUUID();
   }
 
+  /** Whether the player owns the FTB party the attempt belongs to. */
+  static boolean partyOwner(ServerPlayer player, Attempt attempt) {
+    var api = FTBTeamsAPI.api();
+    if (!api.isManagerLoaded()) return false;
+    return api.getManager().getTeamByID(attempt.team)
+        .map(team -> team.isPartyTeam() && player.getUUID().equals(team.getOwner())).orElse(false);
+  }
+
+  /**
+   * A solo player who founds a party brings their live attempt along: the attempt follows the
+   * campaign key, which is now the party's.
+   */
+  static void onTeamCreated(TeamCreatedEvent event) {
+    if (!event.getTeam().isPartyTeam() || !FTBTeamsAPI.api().isManagerLoaded()) return;
+    rekey(FTBTeamsAPI.api().getManager().getServer(), event.getCreatorId(), event.getTeam().getId());
+  }
+
+  /** A player who joins a party without a live attempt brings their own along. */
+  static void onJoinedParty(PlayerJoinedPartyTeamEvent event) {
+    Team previous = event.getPreviousTeam();
+    UUID from = previous != null && previous.isPartyTeam() ? previous.getId() : event.getPlayer().getUUID();
+    rekey(event.getPlayer().server, from, event.getTeam().getId());
+  }
+
+  /**
+   * A disbanded party's live attempt goes back to its payer (now solo again), or to the party's
+   * owner when the payer has another live attempt or belongs to another party.
+   */
+  static void onTeamDeleted(TeamEvent event) {
+    Team team = event.getTeam();
+    if (!team.isPartyTeam() || !FTBTeamsAPI.api().isManagerLoaded()) return;
+    MinecraftServer server = FTBTeamsAPI.api().getManager().getServer();
+    if (server == null) return;
+    var attempt = EnvesData.get(server).forTeam(team.getId());
+    if (attempt.isEmpty()) return;
+    UUID payer = attempt.get().payer;
+    var payerTeam = payer == null ? Optional.<Team>empty() : FTBTeamsAPI.api().getManager().getTeamForPlayerID(payer);
+    boolean payerFree = payer != null
+        && (payerTeam.isEmpty() || !payerTeam.get().isPartyTeam() || payerTeam.get().getId().equals(team.getId()));
+    if (payerFree && rekey(server, team.getId(), payer)) return;
+    if (team.getOwner() != null) rekey(server, team.getId(), team.getOwner());
+  }
+
+  private static boolean rekey(MinecraftServer server, UUID from, UUID to) {
+    if (server == null || from == null || to == null || from.equals(to)) return false;
+    EnvesData data = EnvesData.get(server);
+    var attempt = data.forTeam(from);
+    if (!data.rekey(from, to)) return false;
+    LOGGER.info("Envés: attempt {} moved from team {} to team {}", attempt.map(a -> a.id).orElse(null), from, to);
+    return true;
+  }
+
   static List<ServerPlayer> onlineMembers(MinecraftServer server, UUID team) {
     List<ServerPlayer> out = new ArrayList<>();
     for (ServerPlayer player : server.getPlayerList().getPlayers()) if (teamOf(player).equals(team)) out.add(player);
@@ -254,7 +317,17 @@ public final class Enves {
   // ---- Attempts -----------------------------------------------------------------------------
 
   /** Why the gate refused; {@code null} when an attempt opened. */
-  public enum Refusal {NOT_YET, ALREADY_OPEN, BAD_TIER, NO_OFFERING, FULL, NO_DIMENSION}
+  public enum Refusal {NOT_YET, ALREADY_OPEN, BAD_TIER, NO_OFFERING, FULL, NO_DIMENSION, PEACEFUL}
+
+  /**
+   * On Peaceful the Envés neither opens nor advances (Elias, D14): echoes could not fight back, so
+   * the gate, the seals and the stairs refuse until the difficulty rises.
+   */
+  public static boolean peaceful(MinecraftServer server) {
+    ServerLevel level = level(server);
+    Difficulty difficulty = level != null ? level.getDifficulty() : server.getWorldData().getDifficulty();
+    return difficulty == Difficulty.PEACEFUL;
+  }
 
   /** {@link #open(ServerPlayer, Tier, int)} with the first offering the payer carries. */
   public static Refusal open(ServerPlayer payer, Tier tier) {
@@ -270,6 +343,7 @@ public final class Enves {
     MinecraftServer server = payer.server;
     if (level(server) == null) return Refusal.NO_DIMENSION;
     if (!frontier(payer)) return Refusal.NOT_YET;
+    if (peaceful(server)) return Refusal.PEACEFUL;
     UUID team = teamOf(payer);
     EnvesData data = EnvesData.get(server);
     if (data.forTeam(team).isPresent()) return Refusal.ALREADY_OPEN;
@@ -321,7 +395,7 @@ public final class Enves {
   /** Moves a member into the team's open attempt, at the deepest floor the group reached. */
   public static boolean enter(ServerPlayer player) {
     var attempt = attemptOf(player);
-    if (attempt.isEmpty() || attempt.get().status != Status.OPEN) return false;
+    if (attempt.isEmpty() || attempt.get().status != Status.OPEN || peaceful(player.server)) return false;
     Attempt a = attempt.get();
     int depth = Math.clamp(a.frontline, 1, EnvesLayout.FLOORS);
     if (a.floor(depth).placement != Placement.READY) depth = 1;
@@ -370,11 +444,43 @@ public final class Enves {
     return moved;
   }
 
-  /** The team gives its attempt up (gate or command): it ends at once. */
+  /** The command's give-up: the first call only arms it; a second within 10 s ends the attempt. */
   public static boolean giveUp(ServerPlayer player) {
-    var attempt = attemptOf(player);
-    if (attempt.isEmpty()) return false;
-    end(player.server, attempt.get(), EnvesHooks.EndReason.GIVEN_UP);
+    return giveUp(player, false);
+  }
+
+  /**
+   * The team gives its attempt up, which ends it for everyone and wipes the slot. While teammates are
+   * inside, only the payer, the party owner or a member who is inside may ({@link EnvesRules#mayGiveUp}).
+   * Unless {@code confirmed} (the gate screen already asked twice), the first call arms the give-up
+   * and says how many are inside; a second one within {@link EnvesRules#GIVE_UP_WINDOW} ticks ends it.
+   * Returns whether the attempt ended.
+   */
+  public static boolean giveUp(ServerPlayer player, boolean confirmed) {
+    var found = attemptOf(player);
+    if (found.isEmpty()) return false;
+    Attempt attempt = found.get();
+    MinecraftServer server = player.server;
+    List<ServerPlayer> inside = new ArrayList<>();
+    for (ServerPlayer member : membersInside(server, attempt))
+      if (attempt.team.equals(teamOf(member))) inside.add(member);
+    boolean self = inside.contains(player);
+    int others = inside.size() - (self ? 1 : 0);
+    if (!EnvesRules.mayGiveUp(player.getUUID().equals(attempt.payer), partyOwner(player, attempt), self, others)) {
+      GIVE_UP_ARMED.remove(player.getUUID());
+      player.sendSystemMessage(Component.translatable("entrelumen.enves.giveup.members_inside"));
+      return false;
+    }
+    long now = server.overworld().getGameTime();
+    if (!confirmed && !EnvesRules.giveUpConfirmed(GIVE_UP_ARMED.get(player.getUUID()), now)) {
+      GIVE_UP_ARMED.put(player.getUUID(), now);
+      player.sendSystemMessage(Component.translatable("entrelumen.enves.giveup.confirm", inside.size()));
+      return false;
+    }
+    GIVE_UP_ARMED.remove(player.getUUID());
+    for (ServerPlayer member : onlineMembers(server, attempt.team))
+      member.sendSystemMessage(Component.translatable("entrelumen.enves.given_up_by", player.getDisplayName()));
+    end(server, attempt, EnvesHooks.EndReason.GIVEN_UP);
     return true;
   }
 
@@ -484,16 +590,35 @@ public final class Enves {
     player.fallDistance = 0;
     if (target == player.level()) {
       player.teleportTo(target, pos.x, pos.y, pos.z, yaw, player.getXRot());
+      placed(player, target, pos);
       return true;
     }
     ownTravel = true;
     try {
       var moved = player.changeDimension(new DimensionTransition(target, pos, Vec3.ZERO, yaw, player.getXRot(),
           DimensionTransition.DO_NOTHING));
-      return moved != null && player.level() == target;
+      boolean arrived = moved != null && player.level() == target;
+      if (arrived) placed(player, target, pos);
+      return arrived;
     } finally {
       ownTravel = false;
     }
+  }
+
+  /**
+   * The server put a player somewhere in the Envés: the no-clip guard starts over from there, and the
+   * floor counts as theirs, so the depth cap in {@link #track} does not send them back.
+   */
+  private static void placed(ServerPlayer player, ServerLevel target, Vec3 pos) {
+    if (!target.dimension().equals(LEVEL)) return;
+    EnvesGuard.moved(player);
+    BlockPos at = BlockPos.containing(pos);
+    int depth = EnvesGeometry.depthAt(at.getY());
+    if (depth < 1) return;
+    attemptAt(player.server, at).ifPresent(a -> {
+      a.depthOf.put(player.getUUID(), depth);
+      EnvesData.get(player.server).setDirty();
+    });
   }
 
   // ---- Ticking ------------------------------------------------------------------------------
@@ -560,8 +685,8 @@ public final class Enves {
       if (!entry.getValue().equals(attempt.id)) continue;
       WAITING.remove(entry.getKey());
       ServerPlayer payer = server.getPlayerList().getPlayer(entry.getKey());
-      if (payer != null && EnvesEntrance.nearGate(payer)) enter(payer);
-      else if (payer != null) payer.sendSystemMessage(Component.translatable("entrelumen.enves.ready"));
+      if (payer == null || (EnvesEntrance.nearGate(payer) && enter(payer))) continue;
+      payer.sendSystemMessage(Component.translatable("entrelumen.enves.ready"));
     }
   }
 
@@ -591,6 +716,18 @@ public final class Enves {
       return;
     }
     if (depth == EnvesGeometry.VESTIBULE) return;
+    // Nobody walks past a closed stairwell: deeper than the open stairs (or than the floor the server
+    // last put them on) means a blink or a teleport skipped the maze. On Peaceful nobody goes down.
+    Integer recorded = attempt.depthOf.get(player.getUUID());
+    int walkable = Math.max(EnvesRules.reachableDepth(d -> attempt.floor(d).stairOpen, EnvesLayout.FLOORS),
+        recorded == null ? 1 : recorded);
+    boolean peaceful = peaceful(server);
+    int allowed = peaceful && recorded != null ? Math.min(walkable, recorded) : walkable;
+    if (depth > allowed && !EnvesGuard.bypass(player)) {
+      rescue(server, attempt, player);
+      EnvesGuard.tell(player, depth > walkable ? "entrelumen.enves.no_teleport" : "entrelumen.enves.peaceful");
+      return;
+    }
     EnvesData data = EnvesData.get(server);
     Integer before = attempt.depthOf.put(player.getUUID(), depth);
     if (before == null || before != depth) data.setDirty();
@@ -631,6 +768,7 @@ public final class Enves {
     BlockPos arrival = arrival(server, attempt, depth);
     player.fallDistance = 0;
     player.teleportTo(player.serverLevel(), arrival.getX() + 0.5, arrival.getY(), arrival.getZ() + 0.5, ARRIVAL_YAW, 0f);
+    EnvesGuard.moved(player);
   }
 
   // ---- Client sync --------------------------------------------------------------------------
@@ -674,6 +812,8 @@ public final class Enves {
   /** Logging in inside an attempt that is gone, or not the team's: back to the antechamber. */
   static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
     if (!(event.getEntity() instanceof ServerPlayer player)) return;
+    // A fresh client has no map: the next sync sends it whole.
+    SENT_MAPS.remove(player.getUUID());
     EnvesGuard.mapStage(player);
     if (!inEnves(player) || EnvesGuard.bypass(player)) return;
     var attempt = attemptAt(player.server, player.blockPosition());
@@ -681,6 +821,19 @@ public final class Enves {
       toAntechamber(player);
       player.sendSystemMessage(Component.translatable("entrelumen.enves.closed_while_away"));
     }
+  }
+
+  /** A client that leaves forgets the map and the HUD: both are sent again when it comes back. */
+  static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+    UUID id = event.getEntity().getUUID();
+    SENT_MAPS.remove(id);
+    HUD_SHOWN.remove(id);
+    GIVE_UP_ARMED.remove(id);
+  }
+
+  /** For tests: whether a map signature is remembered for the player. */
+  static boolean mapSent(ServerPlayer player) {
+    return SENT_MAPS.containsKey(player.getUUID());
   }
 
   static void onChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
@@ -694,5 +847,6 @@ public final class Enves {
     SENT_MAPS.remove(player.getUUID());
     HUD_SHOWN.remove(player.getUUID());
     WAITING.remove(player.getUUID());
+    GIVE_UP_ARMED.remove(player.getUUID());
   }
 }

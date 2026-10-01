@@ -18,7 +18,8 @@ import net.neoforged.neoforge.network.PacketDistributor;
 /**
  * The gate's screen, kept minimal: without an attempt, the offering's alternatives (a Nether star or
  * sour light shards, Elias 27/9) to pick one from, and one button per difficulty the player may pick
- * (every World Tier up to theirs); with one, enter or give it up. The server judges every choice again.
+ * (every World Tier up to theirs); with one, enter or give it up. Giving up sits below Cancel and
+ * asks twice: the first click only turns it into "Confirm give up". The server judges every choice again.
  */
 public final class EnvesGateScreen extends Screen {
   private static final int TEXT = 0xFFF1E3C1, MUTED = 0xFFB9A98A, MISSING = 0xFFE08070;
@@ -27,6 +28,8 @@ public final class EnvesGateScreen extends Screen {
   /** The offer the payer picked; starts on the first one they carry. */
   private int offer;
   private final List<Button> tierButtons = new ArrayList<>();
+  /** The give-up button was clicked once: the next click sends it. */
+  private boolean giveUpArmed;
 
   EnvesGateScreen(EnvesNetwork.Gate gate) {
     super(Component.translatable("entrelumen.enves.gate.title"));
@@ -85,13 +88,25 @@ public final class EnvesGateScreen extends Screen {
         addRenderableWidget(Button.builder(Component.translatable("entrelumen.enves.gate.enter"),
             b -> send(EnvesNetwork.Action.ENTER, 0, -1)).bounds(x, y, 200, 20).build());
         y += 22;
-        addRenderableWidget(Button.builder(Component.translatable("entrelumen.enves.gate.give_up"),
-            b -> send(EnvesNetwork.Action.GIVE_UP, 0, -1)).bounds(x, y, 200, 20).build());
-        y += 22;
       }
       case FORMING -> {}
     }
     addRenderableWidget(Button.builder(Component.translatable("gui.cancel"), b -> onClose()).bounds(x, y + 6, 200, 20).build());
+    if (state() == EnvesEntrance.GateState.OPEN) {
+      // Far from Enter, under Cancel, and two clicks: ending the run for everyone is never a slip.
+      addRenderableWidget(Button.builder(giveUpLabel(), b -> {
+        if (!giveUpArmed) {
+          giveUpArmed = true;
+          b.setMessage(giveUpLabel());
+          return;
+        }
+        send(EnvesNetwork.Action.GIVE_UP, 0, -1);
+      }).bounds(x, y + 6 + 20 + 16, 200, 20).build());
+    }
+  }
+
+  private Component giveUpLabel() {
+    return Component.translatable(giveUpArmed ? "entrelumen.enves.giveup.confirm_button" : "entrelumen.enves.gate.give_up");
   }
 
   private void send(EnvesNetwork.Action action, int tier, int chosen) {
