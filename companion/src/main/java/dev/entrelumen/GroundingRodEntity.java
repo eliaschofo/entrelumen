@@ -17,8 +17,11 @@ import net.minecraft.world.level.block.state.BlockState;
  * the crystal's air block and a grow lamp placed as a block; above the rod two «cables» (any block with an
  * energy capability); under it, dirt or grass. Once a second of game time the rod looks: while the setup is
  * whole the crystal grows by the time elapsed since the last look, eight times as fast in the rain; while it
- * is not, growth waits. The rod places and swaps the crystal's stages itself; when the crystal it placed is
- * gone (mined, broken, moved), growth starts again from nothing.
+ * is not, growth waits. The rod places and swaps the crystal's stages itself and remembers where and which
+ * stage it wrote: when that crystal is gone, changed (mined, broken, moved, rewritten by another rod) or the
+ * column moves to another side, growth starts again from nothing, checked on every look even while the setup
+ * is broken. One rod per crystal: after a harvest every rod that wrote it starts from nothing, so a second rod
+ * on the same column never gives a second shard in one growing time; out of step, the two undo each other.
  *
  * <p>Nothing else can speed it up: the crystal takes no random ticks and no bone meal, and a second call of
  * the rod's ticker in the same game tick counts no time.
@@ -30,6 +33,11 @@ public final class GroundingRodEntity extends BlockEntity {
   private long lastTick = Long.MIN_VALUE;
   private long nextLook = Long.MIN_VALUE;
   private boolean placed;
+  /** Where the rod last wrote its crystal (null: nowhere), and the stage it wrote there (-1: none). */
+  private BlockPos spot;
+  private int wrote = -1;
+  /** A save from before {@code spot} was kept: adopt the crystal standing there on the first look. */
+  private boolean adopt;
   private boolean whole;
   /** Test hook: forces rain (true), dry weather (false) or the real weather (null). */
   private Boolean rainOverride;
@@ -71,6 +79,9 @@ public final class GroundingRodEntity extends BlockEntity {
   void look(ServerLevel level, long now) {
     long elapsed = lastTime == Long.MIN_VALUE ? 0 : now - lastTime;
     lastTime = now;
+    if (adopt) adopt(level);
+    // the crystal this rod wrote was mined, broken, moved or rewritten: it starts again, whole or not
+    if (placed && (spot == null || !holds(level.getBlockState(spot), wrote))) restart();
     Direction side = column(level);
     boolean was = whole;
     whole = side != null;
@@ -78,13 +89,10 @@ public final class GroundingRodEntity extends BlockEntity {
       if (was) setChanged();
       return;
     }
-    BlockPos spot = worldPosition.relative(side).above();
-    BlockState there = level.getBlockState(spot);
-    if (placed && !there.is(Terralight.CRYSTAL.get())) {
-      progress = 0;      // the crystal was mined or broken: it starts again
-      placed = false;
-    }
-    boolean rain = raining(level, spot);
+    BlockPos at = worldPosition.relative(side).above();
+    if (spot != null && !at.equals(spot)) restart();   // the column moved to another side
+    BlockState there = level.getBlockState(at);
+    boolean rain = raining(level, at);
     long sinceRain = lastRain == Long.MIN_VALUE ? -1 : now - lastRain;
     if (rain) lastRain = now;
     int factor = TerralightRules.factor(rain, sinceRain, Terralight.rainMultiplier(), Terralight.afterRainTicks());
@@ -93,10 +101,40 @@ public final class GroundingRodEntity extends BlockEntity {
     int stage = TerralightRules.stage(progress, full);
     if (stage >= 0) {
       BlockState wanted = Terralight.CRYSTAL.get().defaultBlockState().setValue(Terralight.CrystalBlock.STAGE, stage);
-      if (!there.equals(wanted)) level.setBlock(spot, wanted, Block.UPDATE_ALL);
+      if (!there.equals(wanted)) level.setBlock(at, wanted, Block.UPDATE_ALL);
+      spot = at.immutable();
+      wrote = stage;
       placed = true;
     }
     setChanged();
+  }
+
+  private static boolean holds(BlockState state, int stage) {
+    return state.is(Terralight.CRYSTAL.get()) && state.getValue(Terralight.CrystalBlock.STAGE) == stage;
+  }
+
+  private void restart() {
+    progress = 0;
+    placed = false;
+    spot = null;
+    wrote = -1;
+    setChanged();
+  }
+
+  /** An old save: take the crystal next to the rod (the whole column's first) as the one it wrote. */
+  private void adopt(ServerLevel level) {
+    adopt = false;
+    Direction column = column(level);
+    for (Direction side : Direction.Plane.HORIZONTAL) {
+      BlockPos at = worldPosition.relative(column != null ? column : side).above();
+      BlockState state = level.getBlockState(at);
+      if (state.is(Terralight.CRYSTAL.get())) {
+        spot = at.immutable();
+        wrote = state.getValue(Terralight.CrystalBlock.STAGE);
+        return;
+      }
+      if (column != null) return;
+    }
   }
 
   // ---- accessors and test hooks ------------------------------------------------------------------------
@@ -132,6 +170,8 @@ public final class GroundingRodEntity extends BlockEntity {
     super.saveAdditional(tag, registries);
     tag.putLong("progress", progress);
     tag.putBoolean("placed", placed);
+    if (spot != null) tag.putLong("spot", spot.asLong());
+    tag.putInt("wrote", wrote);
     if (lastTime != Long.MIN_VALUE) tag.putLong("lastTime", lastTime);
     if (lastRain != Long.MIN_VALUE) tag.putLong("lastRain", lastRain);
   }
@@ -141,6 +181,9 @@ public final class GroundingRodEntity extends BlockEntity {
     super.loadAdditional(tag, registries);
     progress = tag.getLong("progress");
     placed = tag.getBoolean("placed");
+    spot = tag.contains("spot") ? BlockPos.of(tag.getLong("spot")) : null;
+    wrote = tag.contains("wrote") ? tag.getInt("wrote") : -1;
+    adopt = placed && !tag.contains("spot");
     lastTime = tag.contains("lastTime") ? tag.getLong("lastTime") : Long.MIN_VALUE;
     lastRain = tag.contains("lastRain") ? tag.getLong("lastRain") : Long.MIN_VALUE;
   }
