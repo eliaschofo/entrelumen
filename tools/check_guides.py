@@ -1239,6 +1239,130 @@ def client_checks(errors, warnings, write=False, assets=None, quest_keys=None, i
                          f'link opens chapter {chapter} instead')
 
 
+ADVANCEMENT_CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/advancements-121.json')
+ADVANCEMENT_FILE = re.compile(r'data/([a-z0-9_.-]+)/advancement/([a-z0-9_./-]+)\.json$')
+# Datapacks every world loads, when the pack ships them (folders or zips, each with its own data/).
+GLOBAL_DATAPACKS = ('pack/datapacks', 'pack/global_packs/required_data', 'pack/config/paxi/datapacks')
+
+
+def advancement_problems(raw):
+    """Why Minecraft 1.21.1 would not load an advancement JSON: [] when it would. FTB Quests' advancement task never
+    passes for an advancement the server did not load (F2: Productive Bees ships its husbandry ones in the pre-1.21
+    shape). The display icon is an item stack with "id" ("item" is the pre-1.20.5 field) and item filters name
+    tags through "items": "#tag", never a "tag" key."""
+    try:
+        data = json.loads(raw)
+    except ValueError as e:
+        return [f'invalid JSON ({e})']
+    if not isinstance(data, dict):
+        return ['not a JSON object']
+    out = []
+    display = data.get('display')
+    if isinstance(display, dict):
+        icon = display.get('icon')
+        if not (isinstance(icon, dict) and isinstance(icon.get('id'), str)):
+            out.append('display.icon has no "id" (the pre-1.20.5 "item" form does not load)')
+
+    def walk(node, path):
+        if isinstance(node, dict):
+            if 'tag' in node:
+                out.append(f'{path} filters with "tag" (1.21 takes "items": "#tag")')
+            for k, v in node.items():
+                walk(v, f'{path}.{k}')
+        elif isinstance(node, list):
+            for i, v in enumerate(node):
+                walk(v, f'{path}[{i}]')
+    walk(data.get('criteria', {}), 'criteria')
+    return out
+
+
+def scan_advancements(z, out, prefix=''):
+    """data/<ns>/advancement/<path>.json of one open zip (or folder listing) into out: id -> problems."""
+    for name in z.namelist():
+        m = ADVANCEMENT_FILE.match(name[len(prefix):]) if name.startswith(prefix) else None
+        if m and '/recipes/' not in name:
+            out[f'{m.group(1)}:{m.group(2)}'] = advancement_problems(z.read(name))
+
+
+def jar_advancements(jars):
+    """id -> problems for every 1.21 advancement (data/<ns>/advancement/, singular) of the JARs and the JARs they
+    bundle, one JAR open at a time; cached outside the repository per set of JARs. Recipe unlocks are left out."""
+    cache = signed_cache(ADVANCEMENT_CACHE, jars, 1)
+    if cache.exists():
+        try:
+            cached = json.loads(cache.read_text(encoding='utf-8'))
+            if cached.get('jars') == jars:
+                return cached['advancements']
+        except Exception:
+            pass
+    out = {}
+    for jar in jars:
+        for z in bundled(jar):
+            scan_advancements(z, out)
+    try:
+        write_cache(cache, {'jars': jars, 'advancements': out})
+    except Exception:
+        pass
+    return out
+
+
+def pack_advancements(root=ROOT):
+    """id -> problems for the advancements the repository ships: the companion, KubeJS data and global datapacks.
+    They are loaded after the mods' and replace an advancement of the same id."""
+    out = {}
+    folders = [root / 'companion/src/main/resources', root / 'pack/kubejs']
+    for rel in GLOBAL_DATAPACKS:
+        base = root / rel
+        if base.is_dir():
+            for entry in sorted(base.iterdir()):
+                if entry.is_dir():
+                    folders.append(entry)
+                elif entry.suffix == '.zip':
+                    with zipfile.ZipFile(entry) as z:
+                        scan_advancements(z, out)
+    for folder in folders:
+        for path in sorted((folder / 'data').glob('*/advancement/**/*.json')):
+            rel = path.relative_to(folder).as_posix()
+            m = ADVANCEMENT_FILE.match(rel)
+            if m:
+                out[f'{m.group(1)}:{m.group(2)}'] = advancement_problems(path.read_bytes())
+    return out
+
+
+def advancement_tasks(flt=()):
+    """[(where, quest key, advancement id)] of every advancement task in the guides, sectors and story chapters."""
+    import generate_quests
+    out = []
+    sources = sorted(GUIDES.glob('guide_*.json')) + sorted((ROOT / 'content' / 'sectors').glob('sector_*.json')) + \
+        [ROOT / 'content' / name for name in generate_quests.CHAPTER_SOURCES]
+    for path in sources:
+        data = json.loads(path.read_text(encoding='utf-8'))
+        if not picked(path.stem, flt, data.get('chapter', '')):
+            continue
+        for q in data.get('quests', []):
+            tasks = q.get('tasks') or ([q['task']] if 'task' in q else [q])
+            for t in tasks:
+                if t.get('type') == 'advancement' and isinstance(t.get('advancement'), str):
+                    out.append((path.name, q['key'], t['advancement']))
+    return out
+
+
+def check_advancement_tasks(errors, flt=(), tasks=None, jar_index=None, pack_index=None):
+    """Every advancement task names an advancement 1.21 loads (F2): a data/<ns>/advancement/<path>.json in a pinned
+    JAR or vanilla, the companion, pack/kubejs/data or a global datapack, whose JSON is in the 1.21 shape."""
+    tasks = advancement_tasks(flt) if tasks is None else tasks
+    if not tasks:
+        return
+    known = dict(jar_advancements(scanned_jars()) if jar_index is None else jar_index)
+    known.update(pack_advancements() if pack_index is None else pack_index)
+    for where, key, adv in tasks:
+        if adv not in known:
+            errors.append(f'{where}:{key}: advancement {adv} is in no data/<ns>/advancement/ folder 1.21 loads '
+                          '(pinned JARs, vanilla, the companion, pack/kubejs/data, global datapacks)')
+        for problem in known.get(adv, []):
+            errors.append(f'{where}:{key}: advancement {adv} would not load: {problem}')
+
+
 def picked(name, flt, *others):
     """Whether a chapter matches the command line: no names means all of them; any name (a substring) picks it."""
     return not flt or any(f in n for f in flt for n in (name,) + others)
@@ -1283,6 +1407,7 @@ def main():
         warnings += quest_art.lint(data)
         story += 1
         total += sum(1 for q in data['quests'] if quest_art.is_counted(q))
+    check_advancement_tasks(errors, flt)
     if not flt:
         check_reward_tables(errors)
     try:

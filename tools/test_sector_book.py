@@ -754,6 +754,35 @@ class ReviewEngine(unittest.TestCase):
         self.assertEqual(flags, {"boss": False, "side": False, "tip": True, "cap": False, "alt": True, "pick": False})
         self.assertEqual((changed, set(files)), ({sector}, {sector}))
 
+    def test_advancement_guard_reads_the_1_21_folder_and_shape(self):
+        # F2: 1.21 loads data/<ns>/advancement/ only, with "id" icons and "items" filters.
+        import io
+        import zipfile
+        import check_guides as cg
+        good = {"display": {"icon": {"id": "minecraft:honeycomb"}, "title": "x", "description": "y"},
+                "criteria": {"c": {"trigger": "minecraft:inventory_changed",
+                                   "conditions": {"items": [{"items": "#c:honeycombs"}]}}}}
+        old = {"display": {"icon": {"item": "minecraft:honeycomb"}, "title": "x", "description": "y"},
+               "criteria": {"c": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"tag": "c:x"}]}}}}
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w") as z:
+            z.writestr("data/bees/advancement/good.json", json.dumps(good))
+            z.writestr("data/bees/advancement/old.json", json.dumps(old))
+            z.writestr("data/bees/advancements/plural.json", json.dumps(good))
+        index = {}
+        with zipfile.ZipFile(buf) as z:
+            cg.scan_advancements(z, index)
+        self.assertEqual(sorted(index), ["bees:good", "bees:old"])
+        errors = []
+        cg.check_advancement_tasks(errors, tasks=[("s", "a", "bees:good"), ("s", "b", "bees:old"),
+                                                  ("s", "c", "bees:plural")], jar_index=index, pack_index={})
+        self.assertEqual(len(errors), 3)
+        self.assertTrue(any("s:c: advancement bees:plural is in no" in e for e in errors))
+        self.assertTrue(any('"id"' in e for e in errors) and any('"tag"' in e for e in errors))
+        errors = []   # a fixed copy in the pack replaces the mod's
+        cg.check_advancement_tasks(errors, tasks=[("s", "b", "bees:old")], jar_index=index, pack_index={"bees:old": []})
+        self.assertEqual(errors, [])
+
 
 def egg(bee, **extra):
     """A Productive Bees spawn egg of one bee type, the way the mod builds it (BeeCreator.getSpawnEgg)."""
