@@ -148,7 +148,14 @@ class Canvas(unittest.TestCase):
                                    "turn": True})
         self.assertEqual(len(imgs), 4)
         self.assertTrue(all(i["rotation"] == 90.0 for i in imgs))
-        self.assertAlmostEqual(imgs[0]["x"], 0.5)
+        # each piece reaches SEAM under the next one (FTB rounds position and size apart); the last ends the path
+        self.assertAlmostEqual(imgs[0]["x"], 0.5 + quest_art.SEAM / 2)
+        self.assertAlmostEqual(imgs[0]["height"], qe.num((1.0 + quest_art.SEAM) / qe.VISUAL))
+        self.assertAlmostEqual(imgs[-1]["x"], 3.5)
+        self.assertAlmostEqual(imgs[-1]["height"], qe.num(1.0 / qe.VISUAL))
+        faint, _, _ = self.compile({"path": [[0, 0], [4, 0]], "texture": "create:textures/block/axis.png", "width": 1.0,
+                                    "step": 1.0, "alpha": 120})
+        self.assertAlmostEqual(faint[0]["x"], 0.5)        # a translucent overlap would draw a darker joint
         imgs, _, _ = self.compile({"path": [[0, 0], [0, 3], [3, 3]], "color": "#FFFFFF", "width": 0.1})
         self.assertEqual([i["rotation"] for i in imgs], [90.0, 0.0])
 
@@ -335,6 +342,39 @@ class ClientDraw(unittest.TestCase):
                 with self.subTest(item=item):
                     ns, path = item.split(":", 1)
                     self.assertEqual(sprite, f"{ns}:item/{path}")
+
+    def test_touching_tiles_overlap_under_the_later_opaque_one(self):
+        w = 1.0 / qe.VISUAL   # one grid unit
+        a = picture(qe.PX, id="A", x=0.0, width=w, height=w, color=0x112233)
+        b = picture(qe.PX, id="B", x=1.0, width=w, height=w, color=0x445566)
+        under = picture(qe.PX, id="C", x=0.0, y=1.0, width=w, height=w, color=0x778899, alpha=100)
+        imgs, _ = self.fix(a, b, under)
+        self.assertAlmostEqual(imgs[0]["x"], quest_client.SEAM / 2)            # A reaches under B, drawn after it
+        self.assertAlmostEqual(imgs[0]["width"], qe.num(w + quest_client.SEAM / qe.VISUAL))
+        self.assertEqual(imgs[0]["height"], w)                                 # C below is translucent: no overlap
+        self.assertEqual((imgs[1]["x"], imgs[1]["width"]), (1.0, w))           # B is on top: nothing to hide it
+
+    def test_seams_stay_where_the_overlap_would_show(self):
+        w = 1.0 / qe.VISUAL
+        a = picture(qe.PX, id="A", x=0.0, width=w, height=w)
+        cases = {
+            "later tile translucent": picture(qe.PX, id="B", x=1.0, width=w, height=w, alpha=200),
+            "later tile shown later": picture(qe.PX, id="B", x=1.0, width=w, height=w, dependency="Q"),
+            "later tile shorter": picture(qe.PX, id="B", x=1.0, y=0.25, width=w, height=w / 2),
+            "drawn before": picture(qe.PX, id="B", x=1.0, width=w, height=w, order=-5),
+        }
+        for why, b in cases.items():
+            with self.subTest(why):
+                imgs, _ = self.fix(a, b)
+                self.assertEqual((imgs[0]["x"], imgs[0]["width"]), (0.0, w))
+
+    def test_texture_tiles_overlap_by_a_texel_at_most(self):
+        w = 0.5 / qe.VISUAL
+        a = picture("m:textures/block/stone.png", id="A", x=0.0, width=w, height=w)
+        b = picture("m:textures/block/stone.png", id="B", x=0.0, y=0.5, width=w, height=w)
+        imgs, _ = self.fix(a, b)
+        self.assertAlmostEqual(imgs[0]["height"], qe.num(w + 0.5 / 16 / qe.VISUAL))   # a texel of a 16 px texture
+        self.assertAlmostEqual(imgs[0]["y"], 0.5 / 32, places=4)
 
     def test_every_spanish_locale_reads_the_spanish_strings(self):
         import tempfile

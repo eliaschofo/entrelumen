@@ -516,6 +516,15 @@ class Book:
         maxx = max(x + w / 2 * NODE / GRID for x, y, w, h in elems) + pad
         miny = min(y - h / 2 * NODE / GRID for x, y, w, h in elems) - pad
         maxy = max(y + h / 2 * NODE / GRID for x, y, w, h in elems) + pad
+        # QuestPanel.alignWidgets rounds every widget from the panel's own origin (the widgets' minimum, less 40 and
+        # 30); a whole-pixel offset from it keeps the client's rounding, seams between touching tiles included.
+        widgets = elems[:len(c["quests"]) + len(c.get("quest_links", []))] + [
+            (i["x"], i["y"], i["width"], i["height"]) for i in c.get("images", [])
+            if not i.get("dependency") or i["dependency"] in done]
+        ftb_x = min(x - w / 2 for x, y, w, h in widgets) - 40
+        ftb_y = min(y - h / 2 for x, y, w, h in widgets) - 30
+        minx = ftb_x + math.floor((minx - ftb_x) * GRID) / GRID
+        miny = ftb_y + math.floor((miny - ftb_y) * GRID) / GRID
         W, H = int((maxx - minx) * GRID), int((maxy - miny) * GRID)
         img = Image.new("RGBA", (W, H), (0, 0, 0, 255))
         bg = Image.open(io.BytesIO(self.zl.read("assets/ftblibrary/textures/gui/background_squares.png"))).convert("RGBA").resize((64, 64), Image.BILINEAR)
@@ -532,6 +541,8 @@ class Book:
         def draw_image(im):
             cx, cy = P(im["x"], im["y"])
             w, h = max(1, round(NODE * im["width"])), max(1, round(NODE * im["height"]))
+            # alignWidgets: x and width rounded apart; the image turns about the centre of that rounded box
+            cx, cy = round(cx - NODE / 2 * im["width"]) + w / 2, round(cy - NODE / 2 * im["height"]) + h / 2
             pic = self.picture(im["image"], w, h) if im["image"] else None
             if pic is not None:
                 color = im.get("color")

@@ -16,6 +16,12 @@ in tools/generate_quests.py, after the chapters are built and before they are wr
   texture is drawn as that atlas sprite instead (ns:item/x), in canvas order and at the canvas' depth, opaque and
   untinted as the render was and square like ItemIcon draws it. Any other item stays a render: the ones that sit on a
   node are listed (OVER_NODES) and tools/check_guides.py warns with the chapter, the image and the node.
+- Seams. QuestPanel.alignWidgets rounds each image's position and its width separately, so two tiles that touch
+  exactly leave a 1-pixel gap at some zooms. Where an opaque tile is drawn after a tile it touches and covers that
+  whole edge, appears whenever the first one does and is at least as wide as the overlap, the first tile grows under
+  it by SEAM (0.1 grid units; at most one texel of a texture tile, whose texture stretches with it): the later tile
+  hides the overlap, so nothing visible moves (close_seams). Translucent tiles keep their edges: an overlap would draw
+  a darker stripe. Textured path pieces overlap the same way along the path (tools/quest_art.py).
 - Spanish players. FTB sends a player the book's strings for their exact locale (TranslationManager
   .sendTableToPlayer) and English otherwise, and Minecraft loads a resource pack's or a mod's lang file for the exact
   locale too: a player on es_ar, es_mx, es_cl, es_uy, es_ve or es_ec would read the book, the companion and the
@@ -42,6 +48,8 @@ TILE_FIRST, TILE_LAST = 0xF800, 0xF8FF   # the end of the Private Use Area; ques
 # its left edge.
 TILE_HEIGHT, TILE_ASCENT, TILE_ADVANCE = 9, 7, 10
 VISUAL = 24 / 28
+PX = "entrelumen:textures/gui/quests/px.png"   # quest_engine.PX: a colour fill is this pixel, tinted
+SEAM = 0.1   # grid units a tile grows under the later tile it touches (close_seams)
 SPANISH = ("es_ar", "es_cl", "es_ec", "es_mx", "es_uy", "es_ve")   # vanilla's Spanish locales besides es_es
 SEEN = {"textures": set(), "items": set()}   # what the last pass met: check_guides.py checks the facts against it
 KEPT = []         # sheets the last pass had to leave as strips: (chapter, image id, texture, why)
@@ -193,6 +201,83 @@ def fix_item(img, chapter, facts, nodes):
     return img
 
 
+def _tile(img):
+    """(x0, y0, x1, y1) of an image that can close a seam: a colour fill, a texture or a sprite, unrotated (or turned
+    half a turn, the same box), no text; None otherwise."""
+    ref = img.get("image", "")
+    if not ref or ref.startswith("item:") or img.get("text_on_image"):
+        return None
+    if float(img.get("rotation", 0.0)) % 180:
+        return None
+    w, h = img["width"] * VISUAL, img["height"] * VISUAL
+    return img["x"] - w / 2, img["y"] - h / 2, img["x"] + w / 2, img["y"] + h / 2
+
+
+def _covered(span, pieces, eps=1e-3):
+    """Whether the intervals cover span."""
+    lo, hi = span
+    for a, b in sorted(pieces):
+        if a > lo + eps:
+            return False
+        lo = max(lo, b)
+        if lo >= hi - eps:
+            return True
+    return lo >= hi - eps
+
+
+def close_seams(images):
+    """Grow each tile under the later opaque tiles that touch it (see the module notes). Changes images in place;
+    returns how many tiles grew."""
+    eps = 1e-3
+    tiles = {}
+    for n, img in enumerate(images):
+        box = _tile(img)
+        if box:
+            tiles[n] = box
+    rank = {n: r for r, n in enumerate(sorted(tiles, key=lambda n: (images[n].get("order", 0), n)))}
+    # sides: 0 right, 1 left, 2 bottom, 3 top; an edge is keyed by its rounded coordinate
+    starts = [{}, {}, {}, {}]   # the edge a neighbour must start at, by side
+    for n, (x0, y0, x1, y1) in tiles.items():
+        for side, coord in ((1, x1), (0, x0), (3, y1), (2, y0)):   # n is a right/left/bottom/top neighbour there
+            starts[side].setdefault(round(coord / eps), []).append(n)
+    grown = 0
+    for n, (x0, y0, x1, y1) in tiles.items():
+        a = images[n]
+        grow = []
+        for side, coord, span in ((0, x1, (y0, y1)), (1, x0, (y0, y1)), (2, y1, (x0, x1)), (3, y0, (x0, x1))):
+            cover, ok = [], True
+            for m in starts[side].get(round(coord / eps), []):
+                bx0, by0, bx1, by1 = tiles[m]
+                other = (by0, by1) if side < 2 else (bx0, bx1)
+                if m == n or min(span[1], other[1]) - max(span[0], other[0]) <= eps:
+                    continue
+                b = images[m]
+                later = rank[m] > rank[n]
+                together = b.get("dependency") in (None, a.get("dependency"))
+                opaque = b.get("alpha", 255) == 255
+                if not (later and together and opaque):
+                    ok = False
+                    break
+                cover.append(other)
+                depth = (bx1 - bx0) if side < 2 else (by1 - by0)
+                size = (x1 - x0) if side < 2 else (y1 - y0)
+                step = SEAM if a["image"] == PX else min(SEAM, size / 16)
+                if depth < step + eps:
+                    ok = False
+                    break
+            if ok and cover and _covered(span, cover):
+                grow.append(side)
+        for side in grow:
+            size = (x1 - x0) if side < 2 else (y1 - y0)
+            step = SEAM if a["image"] == PX else min(SEAM, size / 16)
+            axis, extent = ("x", "width") if side < 2 else ("y", "height")
+            sign = 1 if side in (0, 2) else -1
+            a[axis] = _num(a[axis] + sign * step / 2)
+            a[extent] = _num(a[extent] + step / VISUAL)
+        grown += bool(grow)
+    return grown
+
+
 def spanish_copies(root, files):
     """{path: text}: a copy of every Spanish strings file for each other Spanish locale (SPANISH). The book's
     lang/es_es.snbt and the companion's ftbquests strings come from files (this compile); the companion's own and
@@ -222,6 +307,7 @@ def fix_chapter(chapter, languages, facts=None):
         elif ref.startswith("item:"):
             img = fix_item(img, name, facts, nodes)
         images.append(img)
+    close_seams(images)
     if "images" in chapter:
         chapter["images"] = images
     return chapter
