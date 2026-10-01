@@ -46,7 +46,7 @@ public abstract class AltarBlock extends Block implements EntityBlock {
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
       BlockEntityType<T> type) {
     if (level.isClientSide || type != entityType()) return null;
-    return (world, pos, blockState, entity) -> ((AltarBlockEntity) entity).serverTick((ServerLevel) world);
+    return (world, pos, blockState, entity) -> ((AltarBlockEntity) entity).worldTick((ServerLevel) world);
   }
 
   @Override

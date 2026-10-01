@@ -71,6 +71,16 @@ public final class AltarRegistry {
     return index == null ? List.of() : index.covering(type, pos);
   }
 
+  /**
+   * Whether an active altar of this type that ranks before {@code rank} (a lower {@link BlockPos} in
+   * {@link BlockPos#compareTo} order) covers the position: where fields of one type overlap, only the
+   * lowest-ranked altar acts on a block. Allocation-free.
+   */
+  public static boolean outranked(ServerLevel level, AltarType type, BlockPos target, BlockPos rank) {
+    Index index = LEVELS.get(level);
+    return index != null && index.anyCoveringBefore(type, target.getX(), target.getY(), target.getZ(), rank);
+  }
+
   static void put(ServerLevel level, Entry entry) {
     of(level).put(entry);
   }
@@ -121,6 +131,16 @@ public final class AltarRegistry {
       for (int i = 0; i < list.size(); i++) {
         Entry entry = list.get(i);
         if (entry.type().equals(type) && entry.covers(x, y, z)) return true;
+      }
+      return false;
+    }
+
+    boolean anyCoveringBefore(AltarType type, int x, int y, int z, BlockPos rank) {
+      List<Entry> list = byChunk.get(ChunkPos.asLong(x >> 4, z >> 4));
+      if (list == null) return false;
+      for (int i = 0; i < list.size(); i++) {
+        Entry entry = list.get(i);
+        if (entry.type().equals(type) && entry.pos().compareTo(rank) < 0 && entry.covers(x, y, z)) return true;
       }
       return false;
     }

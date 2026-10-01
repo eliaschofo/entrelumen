@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * The Altar of Growth. While it burns bone blocks, crops and saplings in the 33×33×9 field centred
  * on it grow about twenty times as fast: every tick it gives extra random ticks to positions drawn
  * uniformly from the field, a fixed number per tick with a wall-time cap, so it never scans the
- * area. Ripe harvests inside the field give twice their drops, except seeds and the items and crops
+ * area. Where Growth fields overlap, only the lowest-positioned altar ticks a shared block. Ripe harvests inside the field give twice their drops, except seeds and the items and crops
  * tagged {@code entrelumen:growth_altar_no_bonus}; see {@link AltarLootModifier}.
  */
 public final class GrowthAltarEntity extends AreaAltarEntity {
@@ -75,10 +75,18 @@ public final class GrowthAltarEntity extends AreaAltarEntity {
       sampled++;
       if (!world.isLoaded(cursor) || !world.shouldTickBlocksAt(cursor)) continue;
       BlockState state = world.getBlockState(cursor);
-      if (!state.isRandomlyTicking() || !accelerated(state)) continue;
+      if (!state.isRandomlyTicking() || !accelerated(state) || outranked(world, cursor)) continue;
       state.randomTick(world, cursor.immutable(), random);
       ticked++;
     }
+  }
+
+  /**
+   * Overlapping Growth fields do not add up: a block covered by several active Altars of Growth is
+   * ticked only by the one with the lowest position, so extra altars widen the field, never its speed.
+   */
+  private boolean outranked(ServerLevel world, BlockPos target) {
+    return AltarRegistry.outranked(world, AltarType.GROWTH, target, worldPosition);
   }
 
   /** Crops and saplings: the tag, plus every block of the vanilla growing classes and their mods. */
