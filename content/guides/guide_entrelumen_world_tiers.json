@@ -4,14 +4,14 @@
   "act": "any",
   "icon": "apotheosis:gem",
   "emblem": "apotheosis:textures/items/gems/default.png",
-  "title": {"en_us": "World Tiers: the Story Decides", "es_es": "World Tiers: decide la historia"},
+  "title": {"en_us": "World Tiers: the Story Decides", "es_es": "Niveles de Mundo: decide la historia"},
   "subtitle": {
     "en_us": "Apotheosis difficulty tiers, raised by the story and never by you.",
     "es_es": "Los niveles de dificultad de Apotheosis: los sube la historia, nunca vos."
   },
   "presentation": 2,
   "art": [
-    {"id": "title", "text": {"en_us": "World Tiers: the Story Decides", "es_es": "World Tiers: decide la historia"}, "x": -8.0, "y": -7.8, "scale": 3, "align": "start", "tint": "#E8B04A"},
+    {"id": "title", "text": {"en_us": "World Tiers: the Story Decides", "es_es": "Niveles de Mundo: decide la historia"}, "x": -8.0, "y": -7.8, "scale": 3, "align": "start", "tint": "#E8B04A"},
     {"id": "ground", "frame": [-8.4, -9.2, 32.2, 8.6], "color": "#5E8C4A", "thickness_px": 2.0, "alpha": 170, "fill": "#14241C", "fill_alpha": 190, "corners": true, "reveal": "entrelumen_world_tiers_welcome", "sketch": true, "order": -12},
     {"id": "meadow", "frame": [-2.6, -3.6, 5.6, 4.6], "color": "#5E8C4A", "thickness_px": 1.0, "alpha": 90, "fill": "#3E6B35", "fill_alpha": 50, "corners": false, "reveal": "entrelumen_world_tiers_welcome", "sketch": true, "order": -9},
     {"id": "flowers", "scatter": ["minecraft:textures/block/poppy.png", "minecraft:textures/block/dandelion.png", "minecraft:textures/block/cornflower.png", "minecraft:textures/block/oxeye_daisy.png", "minecraft:textures/block/azure_bluet.png"], "region": [-2.4, -3.4, 5.4, 4.4], "count": 18, "size": [0.35, 0.5], "seed": 17, "reveal": "entrelumen_world_tiers_welcome", "avoid": [[0, 0, 1.5], [3.6, 0, 1.2], [1.4, 2.8, 1.3], [7.2, -2.2, 0.8]]},
@@ -83,7 +83,7 @@
                  "No guessing whether you are ready. The story decides; you survive it."]},
       "es_es": {"title": "Un mundo que crece con vos", "subtitle": "Dificultad con horario.",
         "text": ["[lead] La historia sube los niveles: cuando la campaña de tu equipo llega a una etapa nueva, el mundo sube uno solo.",
-                 "Apotheosis tiene cinco [hl|World Tiers]: Refugio, Frontera, Ascenso, Cumbre y Pináculo. Cada uno endurece a los monstruos y mejora el botín.",
+                 "Apotheosis tiene cinco [hl|Niveles de Mundo]: Refugio, Frontera, Ascenso, Cumbre y Pináculo. Cada uno endurece a los monstruos y mejora el botín.",
                  "Nada de adivinar si estás listo. La historia decide; vos sobrevivís."]},
       "sources": ["repo:docs/design/apotheosis-family.md", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json", "repo:docs/design/story-bible.md"]
     },
@@ -132,7 +132,7 @@
                  "[note] If anything moves your tier outside the story, the pack puts it back within a second."]},
       "es_es": {"title": "Cambio del pack: no se elige", "subtitle": "Se mira y no se toca.",
         "text": ["[lead] Podés leer los detalles de cada nivel, pero el botón de activar queda deshabilitado.",
-                 "[key:key.apotheosis.open_world_tier_select] sigue abriendo la pantalla de World Tiers de Apotheosis.",
+                 "[key:key.apotheosis.open_world_tier_select] sigue abriendo la pantalla de Niveles de Mundo de Apotheosis.",
                  "[note] Si algo mueve tu nivel por fuera de la historia, el pack lo devuelve en un segundo."]},
       "sources": ["repo:pack/config/apotheosis/apotheosis.cfg", "repo:docs/design/apotheosis-family.md", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json", "repo:pack/config/defaultoptions/keybindings.txt"]
     },
@@ -144,7 +144,7 @@
                  "The details button shows buffs and debuffs for players and monsters, and the odds of each loot rarity and gem purity.",
                  "[tip] Apotheosis's guidebook, the Chronicle of Shadows, explains rarities, affixes and gems."]},
       "es_es": {"title": "Leé los detalles",
-        "text": ["[lead] La pantalla de World Tiers lista lo que cambia cada nivel.",
+        "text": ["[lead] La pantalla de Niveles de Mundo lista lo que cambia cada nivel.",
                  "El botón de detalles muestra mejoras y penalizaciones para jugadores y monstruos, y la probabilidad de cada rareza de botín y pureza de gema.",
                  "[tip] El libro guía de Apotheosis, la Chronicle of Shadows, explica rarezas, afijos y gemas."]},
       "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json"]
@@ -267,11 +267,11 @@
       "en_us": {"title": "Quirk: Items That Need a Tier",
         "text": ["[lead] Some Apotheosis items say \"Requires World Tier\" and stay inert until your tier gets there.",
                  "The story raises it, so just keep advancing the Atlas.",
-                 "No button to press. Well, there is one, but it is disabled."]},
+                 "The first time you open the tier screen, finish Apotheosis's short tutorial. Tiers still come from the story, not from a button."]},
       "es_es": {"title": "Particularidad: ítems con nivel",
-        "text": ["[lead] Algunos ítems de Apotheosis dicen \"Requiere World Tier\" y quedan inertes hasta que tu nivel llega.",
+        "text": ["[lead] Algunos ítems de Apotheosis dicen \"Requiere Nivel de Mundo: …\" y quedan inertes hasta que tu nivel llega.",
                  "Lo sube la historia, así que seguí avanzando el Atlas.",
-                 "No hay botón que apretar. Bueno, hay uno, pero está deshabilitado."]},
+                 "La primera vez que abrís la pantalla de niveles, terminá el tutorial corto de Apotheosis. Los niveles siguen saliendo de la historia, no de un botón."]},
       "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json", "repo:docs/design/apotheosis-family.md"]
     },
     {
