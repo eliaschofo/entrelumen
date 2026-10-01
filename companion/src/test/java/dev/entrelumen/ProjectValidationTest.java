@@ -123,10 +123,17 @@ class ProjectValidationTest {
     assertEquals(1, signal.act());
     assertEquals("entrelumen:signal_core", signal.reward());
     assertEquals(java.util.Map.of("entrelumen:calibration_frame", 2), signal.extraRewards());
+    // Terra's garden (29/9): Renewable Horizons gives the plan and one grow lamp, the only other extra reward.
+    var renewal = projects.get("renewal_engine");
+    assertEquals("entrelumen:terra_garden_plan", renewal.reward());
+    assertEquals(java.util.Map.of("entrelumen:terra_grow_lamp", 1), renewal.extraRewards());
     projects.forEach((id, project) -> {
       if (!id.equals("first_signal")) {
-        assertTrue(project.extraRewards().isEmpty(), id);
+        if (!id.equals("renewal_engine")) {
+          assertTrue(project.extraRewards().isEmpty(), id);
+        }
         assertNotEquals("entrelumen:calibration_frame", project.reward(), id);
+        assertFalse(project.extraRewards().containsKey("entrelumen:calibration_frame"), id);
       }
     });
     assertThrows(UnsupportedOperationException.class,
