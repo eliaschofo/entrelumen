@@ -197,9 +197,22 @@ public final class TeamLifecycleGameTests {
             && guestAgain.getInventory().countItem(atlas) == 0
             && guestAgain.getInventory().countItem(lens) == 1,
             "Team lifecycle duplicated or removed a campaign reward");
+
+        // The console (no player) lists the archives and recovers or sets acts for a named player.
+        CommandSourceStack console = founder.server.createCommandSourceStack();
+        String guestName = guestAgain.getGameProfile().getName();
+        helper.assertTrue(command(founder, "entrelumen admin archived", console) >= 1,
+            "The console could not list the archived parties");
+        helper.assertTrue(command(founder, recover + " " + guestName, console) == 1
+            && state(Entrelumen.current(guestAgain)).equals(partySnapshot)
+            && state(shared).equals(partySnapshot.withArchived(true)),
+            "The console could not recover the archive for a named player");
+        helper.assertTrue(command(founder, "entrelumen admin set " + guestName + " 2", console) == 1
+            && Entrelumen.current(guestAgain).act == 2 && Entrelumen.current(founder).act == partySnapshot.act(),
+            "The console could not set a named player's act");
         LOGGER.info("ENTRELUMEN_TEAM_LIFECYCLE creationCopy=true joinNoMerge=true "
                 + "partyDelivery=true guestRestore=true reconnect=true archive=true "
-                + "adminDenied=true adminRecovered=true rewards=atlas:2,lens:1 "
+                + "adminDenied=true adminRecovered=true consoleAdmin=true rewards=atlas:2,lens:1 "
                 + "arkAct=founder,guest,party");
       }
     }

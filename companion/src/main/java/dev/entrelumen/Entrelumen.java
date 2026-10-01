@@ -399,49 +399,89 @@ public final class Entrelumen {
                                       return 1;
                                     }))
                         .then(
+                            Commands.literal("archived")
+                                .executes(ctx -> archived(ctx.getSource())))
+                        .then(
                             Commands.literal("recover")
                                 .then(
                                     Commands.argument("uuid", StringArgumentType.word())
                                         .executes(
-                                            ctx -> {
-                                              UUID id;
-                                              try {
-                                                id =
-                                                    UUID.fromString(
-                                                        StringArgumentType.getString(ctx, "uuid"));
-                                              } catch (IllegalArgumentException e) {
-                                                return 0;
-                                              }
-                                              var player = ctx.getSource().getPlayerOrException();
-                                              var d = CampaignData.get(player.server);
-                                              var archived = d.campaigns.parties.get(id);
-                                              if (archived == null || !archived.archived) return 0;
-                                              var team =
-                                                  FTBTeamsAPI.api()
-                                                      .getManager()
-                                                      .getTeamForPlayer(player)
-                                                      .orElseThrow();
-                                              if (team.isPartyTeam())
-                                                d.campaigns.parties.put(
-                                                    team.getId(), archived.copy());
-                                              else
-                                                d.campaigns.personal.put(
-                                                    player.getUUID(), archived.copy());
-                                              d.setDirty();
-                                              status(player);
-                                              return 1;
-                                            })))
+                                            ctx ->
+                                                recover(
+                                                    StringArgumentType.getString(ctx, "uuid"),
+                                                    ctx.getSource().getPlayerOrException()))
+                                        .then(
+                                            Commands.argument("target", EntityArgument.player())
+                                                .executes(
+                                                    ctx ->
+                                                        recover(
+                                                            StringArgumentType.getString(ctx, "uuid"),
+                                                            EntityArgument.getPlayer(ctx, "target"))))))
                         .then(
                             Commands.literal("set")
+                                // "act" before "target": "set 3" is an act even if a player is named 3.
                                 .then(
                                     Commands.argument("act", IntegerArgumentType.integer(1, Campaigns.FINAL_ACT))
                                         .executes(
-                                            ctx -> {
-                                              var p = ctx.getSource().getPlayerOrException();
-                                              current(p).act =
-                                                  IntegerArgumentType.getInteger(ctx, "act");
-                                              CampaignData.get(p.server).setDirty();
-                                              return 1;
-                                            })))));
+                                            ctx ->
+                                                setAct(
+                                                    ctx.getSource().getPlayerOrException(),
+                                                    IntegerArgumentType.getInteger(ctx, "act"))))
+                                .then(
+                                    Commands.argument("target", EntityArgument.player())
+                                        .then(
+                                            Commands.argument(
+                                                    "act", IntegerArgumentType.integer(1, Campaigns.FINAL_ACT))
+                                                .executes(
+                                                    ctx ->
+                                                        setAct(
+                                                            EntityArgument.getPlayer(ctx, "target"),
+                                                            IntegerArgumentType.getInteger(ctx, "act"))))))));
+  }
+
+  /** {@code admin archived}: every archived party campaign, with its act and completed count. */
+  static int archived(CommandSourceStack source) {
+    var parties = CampaignData.get(source.getServer()).campaigns.parties;
+    List<Map.Entry<UUID, Campaigns.Campaign>> archived = new ArrayList<>();
+    parties.entrySet().forEach(entry -> {
+      if (entry.getValue().archived) archived.add(entry);
+    });
+    archived.sort(Map.Entry.comparingByKey());
+    source.sendSuccess(() -> Component.literal("archived=" + archived.size()), false);
+    for (var entry : archived)
+      source.sendSuccess(() -> Component.literal(entry.getKey() + " act=" + entry.getValue().act
+          + " completed=" + entry.getValue().completed.size()), false);
+    return archived.size();
+  }
+
+  /**
+   * {@code admin recover <uuid> [target]}: replaces the target's current campaign (their party's, or
+   * their personal one) with a copy of the archived party; the archive stays as it is.
+   */
+  static int recover(String uuid, ServerPlayer target) {
+    UUID id;
+    try {
+      id = UUID.fromString(uuid);
+    } catch (IllegalArgumentException e) {
+      return 0;
+    }
+    var d = CampaignData.get(target.server);
+    var archived = d.campaigns.parties.get(id);
+    if (archived == null || !archived.archived) return 0;
+    var team = FTBTeamsAPI.api().getManager().getTeamForPlayer(target).orElse(null);
+    if (team == null) return 0;
+    if (team.isPartyTeam()) d.campaigns.parties.put(team.getId(), archived.copy());
+    else d.campaigns.personal.put(target.getUUID(), archived.copy());
+    d.setDirty();
+    status(target);
+    return 1;
+  }
+
+  /** {@code admin set [target] <act>}: moves the target's current campaign to {@code act}. */
+  static int setAct(ServerPlayer target, int act) {
+    if (FTBTeamsAPI.api().getManager().getTeamForPlayer(target).isEmpty()) return 0;
+    current(target).act = act;
+    CampaignData.get(target.server).setDirty();
+    return 1;
   }
 }
