@@ -29,6 +29,7 @@ copy pass bans (see copy_warnings).
 
     python tools/check_guides.py            # all chapters
     python tools/check_guides.py create     # chapters whose id contains 'create'
+    python tools/check_guides.py --write-client-facts   # rewrite tools/quest_client_facts.json
 
 Sector chapters (content/sectors, quest book v3) are checked here too, against the same pinned JARs:
 every item named by a task, an icon, a reward table or the rich text ([item:…]), the advancements,
@@ -59,6 +60,13 @@ show before any quest is done; the rest arrive with their quests.
 Guides and story chapters in presentation v2 (tools/quest_v2.py) get the sectors' JAR checks for what v2 adds: the
 items, keys, translation keys, inline images and icons of their text, and the textures, sprites and item renders of
 their art (check_v2_refs); the image budget and the sketch-first warning count them too (v2_chapters).
+
+What the real client draws (client_checks, tools/quest_client.py): the compile of the image budget also tells which
+textures the canvas draws, and tools/quest_client_facts.json has to name exactly the sheets among them (an animated
+texture, or a Fusion or CTM connected-texture sheet, read from its .mcmeta through the pinned JARs, the companion
+and the pack's resource pack). A stale file is an error: the client would draw a strip of frames or tiles squeezed
+into the box. Rewrite it with --write-client-facts and regenerate. A sheet the compile had to leave as a strip is an
+error too.
 
 Registry caches live outside the repository, one file per set of JARs, so worktrees with different
 locks do not rebuild each other's.
@@ -1120,7 +1128,7 @@ def check_reward_tables(errors):
 
 def image_budget(warnings, flt=()):
     """Images of every compiled chapter: a warning above IMAGE_BUDGET or for a v2 chapter that does not start as a
-    sketch; prints the book total and the heaviest chapters."""
+    sketch; prints the book total and the heaviest chapters. Returns the compiled files."""
     import generate_quests
     files = generate_quests.generate_book()
     v2 = v2_chapters()
@@ -1145,6 +1153,72 @@ def image_budget(warnings, flt=()):
     ranked = sorted(counts.items(), key=lambda kv: -kv[1])
     print(f'IMAGES: {sum(counts.values())} in the book ({len(counts)} chapters); heaviest: '
           + ', '.join(f'{name} {n}' for name, n in ranked[:3]))
+    return files
+
+
+CONNECTED = ('fusion', 'ctm', 'connectedtextures')   # .mcmeta sections of connected-texture sheets
+
+
+def preview_assets():
+    """The asset reader of the previews: pinned JARs, vanilla, the companion and the pack's resource pack."""
+    sys.path.insert(0, str(ROOT / 'tools' / 'preview'))
+    from mcassets import Assets
+    return Assets(ROOT)
+
+
+def frame_size(meta, w, h):
+    """AnimationMetadataSection.calculateFrameSize: the frame of an animated texture."""
+    fw, fh = meta.get('width', -1), meta.get('height', -1)
+    if fw != -1:
+        return [fw, fh if fh != -1 else h]
+    if fh != -1:
+        return [w, fh]
+    return [min(w, h)] * 2
+
+
+def client_facts(textures, assets):
+    """tools/quest_client_facts.json as the pinned JARs have it for these canvas textures: the sheets among them."""
+    sheets = {}
+    for tex in sorted(textures):
+        ns, path = tex.split(':', 1)
+        rel = f'assets/{ns}/{path}'
+        raw = assets.raw(rel + '.mcmeta')
+        if not raw:
+            continue
+        try:
+            meta = json.loads(raw.decode('utf-8', 'replace') or '{}')
+        except ValueError:
+            continue
+        kind = 'animation' if 'animation' in meta else next((k for k in CONNECTED if k in meta), None)
+        im = assets.png(rel, first_frame=False) if kind else None
+        if im is None:
+            continue
+        w, h = im.size
+        tile = frame_size(meta['animation'], w, h) if kind == 'animation' else [min(w, h)] * 2
+        if tile != [w, h]:   # one frame or one tile (Mekanism's CTM bases) draws as it is
+            sheets[tex] = {'kind': kind, 'size': [w, h], 'tile': tile}
+    return {'_doc': 'Written by tools/check_guides.py --write-client-facts; read by tools/quest_client.py.',
+            'sheets': sheets}
+
+
+def client_checks(errors, warnings, write=False, assets=None):
+    """What the client draws, after a compile (image_budget): the facts file against the JARs, and the sheets the
+    compile left as strips."""
+    import quest_client
+    expected = client_facts(quest_client.SEEN['textures'], assets or preview_assets())
+    if write:
+        quest_client.FACTS.write_text(quest_client.facts_text(expected), encoding='utf-8', newline='\n')
+        print(f'WROTE {quest_client.FACTS.relative_to(ROOT)}: {len(expected["sheets"])} sheets; '
+              'run tools/generate_quests.py again')
+        return
+    have = quest_client.load_facts().get('sheets', {})
+    if have != expected['sheets']:
+        drift = sorted(k for k in set(have) | set(expected['sheets']) if have.get(k) != expected['sheets'].get(k))
+        errors.append(f'{quest_client.FACTS.relative_to(ROOT)} is stale ({", ".join(drift[:6])}'
+                      f'{" …" if len(drift) > 6 else ""}): the client would draw these sheets whole; '
+                      'run tools/check_guides.py --write-client-facts, then tools/generate_quests.py')
+    for chapter, image, texture, why in quest_client.KEPT:
+        errors.append(f'{chapter}: image {image} draws the sheet {texture} whole ({why})')
 
 
 def picked(name, flt, *others):
@@ -1153,7 +1227,9 @@ def picked(name, flt, *others):
 
 
 def main():
-    flt = tuple(sys.argv[1:])   # chapter names or substrings; several are allowed
+    args = sys.argv[1:]
+    write_facts = '--write-client-facts' in args
+    flt = tuple(a for a in args if not a.startswith('--'))   # chapter names or substrings; several are allowed
     errors, chapters, keys, warnings = [], set(), set(), []
     total = 0
     files = sorted(GUIDES.glob('*.json'))
@@ -1193,6 +1269,7 @@ def main():
         check_reward_tables(errors)
     try:
         image_budget(warnings, flt)
+        client_checks(errors, warnings, write_facts)
     except AssertionError as e:   # the book does not compile: generate_quests.py reports it in full
         warnings.append(f'image budget not counted: the book does not compile ({e})')
     for w in warnings:

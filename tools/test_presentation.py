@@ -8,6 +8,7 @@ import math
 import unittest
 
 import quest_art
+import quest_client
 import quest_engine as qe
 import quest_text
 from generate_quests import LOCALES, OUT
@@ -106,8 +107,10 @@ class Fonts(unittest.TestCase):
         self.assertTrue(all(0xE000 <= ord(g) <= 0xF8FF for g in glyphs))
 
     def test_generated_fonts_cover_every_glyph_in_the_book(self):
-        font = json.loads((qe.ROOT / quest_text.FONT_DIR / "quest_icons.json").read_text(encoding="utf-8"))
-        glyphs = {p["chars"][0] for p in font["providers"]}
+        glyphs = set()
+        for name in ("quest_icons", "quest_tiles"):   # inline icons, and canvas sheets cut into tiles (quest_client)
+            font = json.loads((qe.ROOT / quest_text.FONT_DIR / f"{name}.json").read_text(encoding="utf-8"))
+            glyphs |= {p["chars"][0][0] for p in font["providers"]}
         text = json.dumps([json.loads((OUT / "lang" / f"{lang}.snbt").read_text(encoding="utf-8")) for lang in LOCALES],
                           ensure_ascii=False)
         used = {ch for ch in text if 0xE100 <= ord(ch) <= 0xF8FF}
@@ -240,6 +243,83 @@ class Pilots(unittest.TestCase):
                     first = q[lang]["text"][0]
                     with self.subTest(quest=q["key"], lang=lang):
                         self.assertTrue(first.startswith(("[lead]", "[tip]", "[i|")), first)
+
+
+SHEETS = {"sheets": {
+    "m:textures/block/glow.png": {"kind": "animation", "size": [16, 64], "tile": [16, 16]},
+    "m:textures/gui/flow.png": {"kind": "animation", "size": [16, 32], "tile": [16, 16]},
+    "m:textures/block/tiles.png": {"kind": "fusion", "size": [80, 16], "tile": [16, 16]}}}
+
+
+def chapter_of(*images):
+    return {"id": "C", "filename": "c", "quests": [], "images": [dict(i) for i in images]}
+
+
+def picture(ref, **extra):
+    return {"id": "I" + str(abs(hash(ref)) % 1000), "x": 0.0, "y": 0.0, "width": 1.0, "height": 1.0, "rotation": 0.0,
+            "image": ref, **extra}
+
+
+class ClientDraw(unittest.TestCase):
+    """What FTB Quests' client really draws, fixed at compile time (tools/quest_client.py)."""
+
+    def setUp(self):
+        quest_client.reset()
+
+    def fix(self, *images, facts=SHEETS):
+        languages = {lang: {} for lang in LOCALES}
+        return quest_client.fix_chapter(chapter_of(*images), languages, facts)["images"], languages
+
+    def test_an_animated_atlas_texture_draws_as_its_sprite(self):
+        imgs, _ = self.fix(picture("m:textures/block/glow.png", color=0x336699, alpha=120))
+        self.assertEqual(imgs[0]["image"], "m:block/glow")   # the atlas animates it; ImageIcon drew the strip
+        self.assertEqual((imgs[0]["color"], imgs[0]["alpha"]), (0x336699, 120))
+        self.assertIn("m:textures/block/glow.png", quest_client.SEEN["textures"])
+
+    def test_other_sheets_draw_their_first_tile_as_a_glyph(self):
+        imgs, languages = self.fix(picture("m:textures/block/tiles.png", color=0x80C0FF), picture("m:textures/gui/flow.png"))
+        tile, flow = imgs
+        self.assertEqual(tile["image"], "")
+        self.assertTrue(tile["text_on_image"])
+        self.assertAlmostEqual(tile["width"], 10 / 9, places=3)   # the glyph advances 10 px for 9 drawn
+        self.assertAlmostEqual(tile["x"], (10 / 9 - 1) / 2 * qe.VISUAL, places=3)   # the glyph square keeps its centre
+        self.assertNotIn("color", tile)
+        glyphs = quest_client.tile_glyphs(SHEETS)
+        for lang in LOCALES:
+            title = json.loads(languages[lang][f"image.{tile['id']}.title"])
+            self.assertEqual(title[1], {"text": glyphs["m:textures/block/tiles.png"], "font": quest_client.FONT_TILES,
+                                        "color": "#80C0FF"})
+        self.assertEqual(flow["image"], "")                  # animated, but outside the atlas: its first frame
+        self.assertNotIn("m:textures/block/glow.png", glyphs)
+
+    def test_the_tile_font_cuts_each_sheet_into_its_grid(self):
+        font = quest_client.tile_font(SHEETS)["providers"]
+        by_file = {p["file"]: p for p in font}
+        self.assertEqual(set(by_file), {"m:block/tiles.png", "m:gui/flow.png"})
+        self.assertEqual(by_file["m:block/tiles.png"]["chars"], [chr(quest_client.TILE_FIRST + 0) + "\u0000" * 4])
+        self.assertEqual(len(by_file["m:gui/flow.png"]["chars"]), 2)
+        self.assertEqual((by_file["m:gui/flow.png"]["height"], by_file["m:gui/flow.png"]["ascent"]), (9, 7))
+
+    def test_a_translucent_or_noted_sheet_stays_and_is_reported(self):
+        imgs, _ = self.fix(picture("m:textures/block/tiles.png", alpha=60))
+        self.assertEqual(imgs[0]["image"], "m:textures/block/tiles.png")
+        self.assertEqual(quest_client.KEPT[0][2:], ("m:textures/block/tiles.png", "a glyph cannot be translucent"))
+
+    def test_textures_without_facts_are_left_alone(self):
+        imgs, _ = self.fix(picture("m:textures/block/stone.png"), picture(qe.PX, color=0xFFFFFF))
+        self.assertEqual([i["image"] for i in imgs], ["m:textures/block/stone.png", qe.PX])
+
+    def test_the_facts_file_names_frames_like_minecraft(self):
+        import check_guides as cg
+        self.assertEqual(cg.frame_size({}, 16, 256), [16, 16])
+        self.assertEqual(cg.frame_size({"height": 8}, 16, 64), [16, 8])
+        self.assertEqual(cg.frame_size({"width": 32}, 32, 128), [32, 128])
+        facts = quest_client.load_facts()
+        self.assertEqual(json.loads(quest_client.facts_text(facts)), facts)
+        for texture, sheet in facts["sheets"].items():
+            with self.subTest(texture=texture):
+                self.assertNotEqual(sheet["tile"], sheet["size"])
+                self.assertIn(sheet["kind"], ("animation",) + cg.CONNECTED)
 
 
 V2_PILOTS = {"guide": "guide_entrelumen_start", "story": "the_lost_crafts"}

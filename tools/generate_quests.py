@@ -21,6 +21,10 @@ extended theme, custom node shapes and the companion's ftbquests-namespace strin
 
 Presentation v2 (tools/quest_v2.py): a guide or a story chapter with "presentation": 2 takes the sectors' text
 markup and canvas art; one without it compiles exactly as before.
+
+What the real client draws (tools/quest_client.py, 1 October 2026): every compiled chapter goes through a last pass
+that corrects what FTB Quests' client would draw differently from what the canvas means (sheets drawn whole). Its
+facts about textures come from tools/quest_client_facts.json, which tools/check_guides.py keeps in sync with the JARs.
 """
 import argparse
 import hashlib
@@ -31,6 +35,7 @@ import math
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import quest_client  # noqa: E402
 import quest_engine  # noqa: E402
 import quest_v2  # noqa: E402
 
@@ -837,6 +842,11 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
         assert set(first) == {g["id"] for g in book["groups"]}, "every group needs guides"
         hub = build_hub(book, chapters, first, ordered, languages)
         files[OUT / "chapters" / (book["hub"]["chapter"] + ".snbt")] = snbt(hub)
+    # What the real client draws (tools/quest_client.py): sheets as sprites or tile glyphs.
+    quest_client.reset()
+    for path in sorted(p for p in files if p.parent == OUT / "chapters"):
+        files[path] = snbt(quest_client.fix_chapter(json.loads(files[path]), languages))
+    files.update(quest_client.font_files(ROOT))
     files[OUT / "chapter_groups.snbt"] = snbt({"chapter_groups": groups})
     for lang in LOCALES:
         languages[lang]["file.0000000000000001.title"] = book["file_title"]
