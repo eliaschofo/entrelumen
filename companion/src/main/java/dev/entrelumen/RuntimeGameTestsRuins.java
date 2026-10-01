@@ -877,6 +877,22 @@ public final class RuntimeGameTestsRuins {
       stale.addTag(RuinBosses.TAG);
       stale.getPersistentData().putString(RuinBosses.TAG, "entrelumen:qa_finished|guard|" + UUID.randomUUID());
       helper.assertTrue(!helper.getLevel().addFreshEntity(stale), "A guardian of a finished run came back");
+      // One saved before the entity tag existed (persistent, named, only the persistent key) stays
+      // out too; a name-tagged mob without the key still joins.
+      var legacy = net.minecraft.world.entity.EntityType.VINDICATOR.create(helper.getLevel());
+      legacy.moveTo(Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(4, 1, 2))));
+      legacy.setCustomName(net.minecraft.network.chat.Component.literal("Old guardian"));
+      legacy.setPersistenceRequired();
+      legacy.getPersistentData().putString(RuinBosses.TAG, "entrelumen:qa_finished|guard|" + UUID.randomUUID());
+      helper.assertTrue(!helper.getLevel().addFreshEntity(legacy) && legacy.getTags().contains(RuinBosses.TAG),
+          "A guardian saved before the entity tag came back");
+      var named = net.minecraft.world.entity.EntityType.PIG.create(helper.getLevel());
+      named.moveTo(Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(2, 1, 4))));
+      named.setCustomName(net.minecraft.network.chat.Component.literal("Named pig"));
+      named.setPersistenceRequired();
+      helper.assertTrue(helper.getLevel().addFreshEntity(named) && !named.getTags().contains(RuinBosses.TAG),
+          "A name-tagged mob was taken for a guardian");
+      named.discard();
       helper.assertTrue(mob.getCustomName() != null && mob.getCustomName().getContents()
           instanceof net.minecraft.network.chat.contents.TranslatableContents t && t.getKey().equals("entrelumen.ruin.boss.toll_guardian"),
           "The guardian has no name");
