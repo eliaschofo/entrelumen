@@ -634,6 +634,37 @@ public final class RuntimeGameTestsRuins {
         .thenSucceed();
   }
 
+  /** The Sunken Workshop's pit froze in a cold biome: draining takes the ice with the water, top layer first. */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void drainingTakesTheIceOverThePit(GameTestHelper helper) {
+    var level = helper.getLevel();
+    // A stone basin 3x3 inside, water at y 1 and its ice lid at y 2.
+    for (int x = 0; x <= 4; x++)
+      for (int z = 0; z <= 4; z++) {
+        helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+        boolean wall = x == 0 || z == 0 || x == 4 || z == 4;
+        helper.setBlock(new BlockPos(x, 1, z), wall ? Blocks.STONE : Blocks.WATER);
+        helper.setBlock(new BlockPos(x, 2, z), wall ? Blocks.STONE : (x + z) % 2 == 0 ? Blocks.ICE : Blocks.FROSTED_ICE);
+      }
+    var drain = new RuinData.PlacedMarker(RuinMarkers.parse("drain challenge=pit size=3,2,3").orElseThrow(),
+        helper.absolutePos(new BlockPos(1, 1, 1)));
+    helper.assertTrue(!RuinWorkshop.drainStep(level, drain), "The first step drains something");
+    for (int x = 1; x <= 3; x++)
+      for (int z = 1; z <= 3; z++) {
+        helper.assertBlockNotPresent(Blocks.ICE, new BlockPos(x, 2, z));
+        helper.assertBlockNotPresent(Blocks.FROSTED_ICE, new BlockPos(x, 2, z));
+      }
+    boolean dry = false;
+    for (int i = 0; i < 8 && !dry; i++) dry = RuinWorkshop.drainStep(level, drain);
+    helper.assertTrue(dry, "The pit never drained");
+    for (int x = 1; x <= 3; x++)
+      for (int y = 1; y <= 2; y++)
+        for (int z = 1; z <= 3; z++)
+          helper.assertTrue(level.getBlockState(helper.absolutePos(new BlockPos(x, y, z))).isAir(),
+              "Left at " + x + "," + y + "," + z);
+    helper.succeed();
+  }
+
   // ---- Challenges, per team -------------------------------------------------------------------
 
   @GameTest(template = "empty", timeoutTicks = 200)

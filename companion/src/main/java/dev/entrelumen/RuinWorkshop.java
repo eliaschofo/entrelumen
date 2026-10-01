@@ -335,8 +335,9 @@ public final class RuinWorkshop {
   }
 
   /**
-   * One step of draining: the water sources of the drain box's highest wet layer, a slice of them
-   * in turn around its centre. True when the box holds no source any more.
+   * One step of draining: the water sources (and the ice a cold biome froze them into) of the drain
+   * box's highest wet layer, a slice of them in turn around its centre. True when the box holds no
+   * source any more. A reset restores the water from the template.
    */
   static boolean drainStep(ServerLevel level, RuinData.PlacedMarker drain) {
     int[] size = drain.marker().size();
@@ -350,7 +351,9 @@ public final class RuinWorkshop {
           cursor.set(o.getX() + x, o.getY() + y, o.getZ() + z);
           if (!level.isLoaded(cursor)) continue;
           var fluid = level.getFluidState(cursor);
-          if (fluid.is(Fluids.WATER) && fluid.isSource()) sources.add(cursor.immutable());
+          // A cold biome freezes the open pit: its ice is water too, and goes with it.
+          if (fluid.is(Fluids.WATER) && fluid.isSource() || frozen(level.getBlockState(cursor)))
+            sources.add(cursor.immutable());
         }
       if (sources.isEmpty()) continue;
       sources.sort(Comparator.comparingDouble(p -> Math.atan2(p.getZ() - cz, p.getX() - cx)));
@@ -368,6 +371,11 @@ public final class RuinWorkshop {
       return false;
     }
     return true;
+  }
+
+  /** Ice the pit's water froze into, which draining removes like the water itself. */
+  static boolean frozen(BlockState state) {
+    return state.is(Blocks.ICE) || state.is(Blocks.FROSTED_ICE);
   }
 
   /** Particles at the ports and intakes, and a word to the builders about what each pump does. */
