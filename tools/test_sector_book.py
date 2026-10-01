@@ -594,6 +594,17 @@ class Sectors(unittest.TestCase):
                 with self.assertRaisesRegex(AssertionError, message):
                     generate_book(self.story, self.guides, self.book, sectors)
 
+    def test_no_required_quest_waits_on_optional_work(self):
+        # F27 (decision D7): optional work a required all-completed quest needs is promoted to required.
+        import generate_quests
+        self.assertEqual(generate_quests.hard_optional_edges(self.chapters), [])
+        promoted = [source for name, data in self.sectors.items() for source, q in
+                    zip(data["quests"], self.sector_quests(name)) if qe.ROLES[source["role"]][2] and not q.get("optional")
+                    and qe.task_kind(qe.tasks_of(source)[0]) != "checkmark"]
+        self.assertGreater(len(promoted), 0)
+        for source in promoted:   # promoted, not redrawn: the role's tag stays (shapes: test_nodes_follow_the_role_grammar)
+            self.assertIn(f"entrelumen_{source['role']}", self.quests[stable_id("quest:" + source["key"])]["tags"])
+
     def test_equippables_are_carried_item_tasks(self):
         # F25: a worn or off-hand item never sits in the 36 slots FTB's item task counts.
         carried = qe.carried_items()
@@ -699,6 +710,33 @@ class ReviewEngine(unittest.TestCase):
                      {"type": "item", "item": {"id": item, "count": 1, "components": {"a:b": 9}}, "count": 1,
                       "consume_items": False, "match_components": "fuzzy"}):
             self.assertEqual(qe.carried_task(dict(task))["type"], "item")
+
+    def test_promotion_is_transitive_in_sectors_and_refused_in_hand_written_chapters(self):
+        import generate_quests as gq
+        from pathlib import Path
+
+        def quest(key, deps=(), optional=False, kind="item", **extra):
+            q = {"id": stable_id("quest:" + key), "dependencies": [stable_id("quest:" + d) for d in deps],
+                 "tasks": [{"type": kind}], **extra}
+            if optional:
+                q["optional"] = True
+            return q
+        sector, guide = Path("chapters/sector_x.snbt"), Path("chapters/guide_x.snbt")
+        chapters = {sector: {"quests": [quest("boss", optional=True), quest("side", ["boss"], optional=True),
+                                        quest("tip", optional=True, kind="checkmark"), quest("cap", ["side", "tip"]),
+                                        quest("alt", optional=True), quest("pick", ["alt", "cap"],
+                                                                           dependency_requirement="one_completed")]},
+                    guide: {"quests": [quest("g_opt", optional=True), quest("g_close", ["g_opt"])]}}
+        keys = {"boss", "side", "tip", "cap", "alt", "pick", "g_opt", "g_close"}
+        files = {}
+        with self.assertRaisesRegex(AssertionError, "g_close needs g_opt"):
+            gq.promote_prerequisites(copy.deepcopy(chapters), {}, {"sector_x"}, keys)
+        del chapters[guide]
+        changed = gq.promote_prerequisites(chapters, files, {"sector_x"}, keys)
+        flags = {k: q.get("optional", False) for k, q in zip(("boss", "side", "tip", "cap", "alt", "pick"),
+                                                             chapters[sector]["quests"])}
+        self.assertEqual(flags, {"boss": False, "side": False, "tip": True, "cap": False, "alt": True, "pick": False})
+        self.assertEqual((changed, set(files)), ({sector}, {sector}))
 
 
 def egg(bee, **extra):
