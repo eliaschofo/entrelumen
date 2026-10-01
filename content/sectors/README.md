@@ -204,6 +204,8 @@ python tools/generate_quests.py --check
 ```
 Sin errores. Los avisos de imágenes (más de 700) y de boceto (más del 40% visible al empezar) se arreglan o se explican en el reporte.
 
+Si `check_guides.py` dice que `tools/quest_client_facts.json` no conoce una textura o un ítem nuevo de tu arte, corré `python tools/check_guides.py --write-client-facts`, regenerá con `generate_quests.py` y validá de nuevo. Ese archivo dice cómo dibuja el cliente cada textura (si anima, si es una hoja de baldosas, si el ítem tiene textura plana) y es parte de tu commit.
+
 **4. Vistas previas.**
 ```
 python tools/preview/preview_v2.py sector_x --state steps --screen --panels all --sheet --locale both
@@ -257,6 +259,12 @@ python tools/preview/preview_v2.py sector_x --state steps --screen --panels all 
 - una con `hover` y sin ninguno de los dos queda como aviso en `check_guides.py`: hay que darle un `click`.
 
 Un dibujable es una textura (`ns:textures/….png`), un sprite (`ns:block/…`), `item:<id>` o un color `#rrggbb`. FTB manda cada imagen al cliente como texto, así que no hay recortes ni mosaicos: un patrón repetido son varias imágenes. `check_guides.py` revisa que las texturas y los ítems existan en los JAR fijados y que cada sprite esté en el atlas de bloques.
+
+Lo que el cliente hace distinto de la vista previa, y el motor ya resuelve solo (1/10):
+- Una textura animada del atlas se dibuja como sprite, que anima; FTB dibujaría la tira entera aplastada.
+- Un ítem con textura plana se dibuja como sprite `ns:item/x`, detrás de los nodos. Un ítem 3D (`item:`) se dibuja por encima de nodos y líneas: no lo pongas debajo de un nodo (`check_guides.py` avisa).
+- Una imagen rotada no se recorta fuera de pantalla y se dibuja siempre: rotá sólo lo que lo necesita.
+- Un enlace a una quest oculta abre su capítulo, no la quest.
 
 ### Adornos (`decor`)
 
