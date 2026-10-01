@@ -307,7 +307,9 @@ class Book:
         self.fonts = Fonts(self.A, tree)
         q = self.tree / "pack/config/ftbquests/quests"
         self.chapters = {p.stem: json.loads(p.read_text(encoding="utf-8")) for p in (q / "chapters").glob("*.snbt")}
-        self.lang = {p.stem: json.loads(p.read_text(encoding="utf-8")) for p in (q / "lang").glob("*.snbt")}
+        # en_us and es_es only: the other Spanish locales are copies of es_es (tools/quest_client.py)
+        self.lang = {lang: json.loads((q / "lang" / f"{lang}.snbt").read_text(encoding="utf-8"))
+                     for lang in ("en_us", "es_es")}
         self.quests = {qq["id"]: (name, qq) for name, c in self.chapters.items() for qq in c["quests"]}
         self.theme = self.load_theme()
         self.zq = zipfile.ZipFile(pinned_jar(tree, "ftb-quests-neoforge-"))
@@ -362,9 +364,13 @@ class Book:
         if not ref:
             return None
         if ref.startswith("item:"):
-            s = max(1, min(w, h))
+            s = max(1, min(w, h))   # ItemIcon.draw: the shorter side, centred
             im = self.models.render(ref[5:], s)
-            return im.resize((w, h), Image.NEAREST) if im is not None and (w, h) != (s, s) else im
+            if im is None or (w, h) == (s, s):
+                return im
+            box = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+            box.alpha_composite(im, ((w - s) // 2, (h - s) // 2))
+            return box
         if ref.startswith("#"):
             return Image.new("RGBA", (w, h), argb(ref))
         ns, _, path = ref.partition(":")
@@ -510,6 +516,15 @@ class Book:
         maxx = max(x + w / 2 * NODE / GRID for x, y, w, h in elems) + pad
         miny = min(y - h / 2 * NODE / GRID for x, y, w, h in elems) - pad
         maxy = max(y + h / 2 * NODE / GRID for x, y, w, h in elems) + pad
+        # QuestPanel.alignWidgets rounds every widget from the panel's own origin (the widgets' minimum, less 40 and
+        # 30); a whole-pixel offset from it keeps the client's rounding, seams between touching tiles included.
+        widgets = elems[:len(c["quests"]) + len(c.get("quest_links", []))] + [
+            (i["x"], i["y"], i["width"], i["height"]) for i in c.get("images", [])
+            if not i.get("dependency") or i["dependency"] in done]
+        ftb_x = min(x - w / 2 for x, y, w, h in widgets) - 40
+        ftb_y = min(y - h / 2 for x, y, w, h in widgets) - 30
+        minx = ftb_x + math.floor((minx - ftb_x) * GRID) / GRID
+        miny = ftb_y + math.floor((miny - ftb_y) * GRID) / GRID
         W, H = int((maxx - minx) * GRID), int((maxy - miny) * GRID)
         img = Image.new("RGBA", (W, H), (0, 0, 0, 255))
         bg = Image.open(io.BytesIO(self.zl.read("assets/ftblibrary/textures/gui/background_squares.png"))).convert("RGBA").resize((64, 64), Image.BILINEAR)
@@ -521,11 +536,13 @@ class Book:
         def P(x, y):
             return ((x - minx) * GRID, (y - miny) * GRID)
         self._P = P
-        for im in sorted(c.get("images", []), key=lambda i: i.get("order", 0)):
-            if im.get("dependency") and im["dependency"] not in done:
-                continue
+        renders = []   # item renders: GuiGraphics.renderItem draws them about 150 above the canvas, so over the nodes
+
+        def draw_image(im):
             cx, cy = P(im["x"], im["y"])
             w, h = max(1, round(NODE * im["width"])), max(1, round(NODE * im["height"]))
+            # alignWidgets: x and width rounded apart; the image turns about the centre of that rounded box
+            cx, cy = round(cx - NODE / 2 * im["width"]) + w / 2, round(cy - NODE / 2 * im["height"]) + h / 2
             pic = self.picture(im["image"], w, h) if im["image"] else None
             if pic is not None:
                 color = im.get("color")
@@ -542,6 +559,13 @@ class Book:
                 if raw:
                     self.draw_label(img, cx, cy, w, h, raw, im.get("text_h_align", "middle"),
                                     im.get("text_v_align", "middle"), im.get("rotation", 0), im.get("text_shadow", False))
+        for im in sorted(c.get("images", []), key=lambda i: i.get("order", 0)):
+            if im.get("dependency") and im["dependency"] not in done:
+                continue
+            if im["image"].startswith("item:"):
+                renders.append(im)
+            else:
+                draw_image(im)
         d = ImageDraw.Draw(img, "RGBA")
         thick = max(1, round(16 * float(self.prop("dependency_line_thickness", c)) / 4 * 3))
         for q in c["quests"]:
@@ -602,6 +626,8 @@ class Book:
             tq = target[1] if target else {"tags": [], "dependencies": [], "tasks": [{"type": "checkmark"}]}
             node(l["x"], l["y"], l.get("size", 1), l.get("shape") or "circle", tq,
                  not outside and bool(tq["dependencies"]), state == "done")
+        for im in renders:
+            draw_image(im)
         self.last_origin = (minx, miny)
         big = img.resize((img.width * scale, img.height * scale), Image.NEAREST) if scale != 1 else img
         if out:

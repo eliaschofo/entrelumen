@@ -359,9 +359,13 @@ def min_distance(a, b):
     return (a + b) / 2 * VISUAL + 0.4
 
 
+IMAGE_KEYS = {}   # image id -> its key, for messages (tools/check_guides.py names images by key)
+
+
 def image(key, x, y, w, h, picture, **extra):
     out = {"id": stable_id("image:" + key), "x": num(x), "y": num(y), "width": num(w), "height": num(h),
            "rotation": num(extra.pop("rotation", 0.0)), "image": picture}
+    IMAGE_KEYS[out["id"]] = key
     out.update({k: v for k, v in extra.items() if v is not None})
     return out
 
@@ -495,6 +499,8 @@ def label(key, x, y, texts, languages, scale=2, color="#E8DCB5", anchor="center"
           font=None, bold=False, order=5, hover=None):
     """A caption drawn at an exact scale: the box is exactly 9*scale px per line tall, and wide enough that
     FTB's fit (min of width/text and height/lines) is decided by the height."""
+    align = {"center": "middle"}.get(align, align)   # FTB's ChapterImage.TextAlign: start, middle, end
+    assert align in ("start", "middle", "end"), f"{key}: align {align}"
     for lang in LOCALES:
         t = texts[lang]
         assert t and not re.search(r"[§{}\[\]\\]", t), f"{key}: label text"  # JSON text: '&' is literal

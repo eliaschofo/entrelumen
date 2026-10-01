@@ -52,6 +52,7 @@ DEFAULT_ORDER = {"picture": -5, "sprite": -4, "item": -1, "path": -2, "mosaic": 
 # as sketch for the sketch-first check of tools/check_guides.py.
 SKETCH_COLOR, SKETCH_ALPHA, SKETCH_WIDTH = "#E8DCB5", 64, 0.08
 FAINT = 90
+SEAM = 0.1   # grid units a textured path piece reaches under the next one (tools/quest_client.py SEAM)
 SKETCHABLE = ("path", "picture", "sprite", "frame")
 
 
@@ -325,19 +326,24 @@ def path_images(key, art, extra, ctx, by_key):
     spec = art.get("texture") or art.get("sprite") or art.get("color")
     assert spec, f"{key}: a path draws a color, a texture, a sprite, dots or items"
     overlap = art.get("overlap", 1.04 if spec.startswith("#") else 1.0)
+    # An opaque textured piece reaches SEAM further, under the next piece of its stretch (drawn after it): FTB rounds
+    # each image's position and size apart, which opens 1-pixel gaps between pieces that only touch.
+    seam = 0.0 if spec.startswith("#") or "overlap" in art or extra.get("alpha", 255) < 255 else SEAM
     turn = bool(art.get("turn"))   # the texture's grain runs top to bottom (a shaft, a pipe): turn it along the path
     for span, quest in pieces:
         e = with_reveal(extra, quest)
         if "step" in art:
             span = resample(span, art["step"])
-        for (x0, y0), (x1, y1) in zip(span, span[1:]):
+        segments = [s for s in zip(span, span[1:]) if math.hypot(s[1][0] - s[0][0], s[1][1] - s[0][1]) >= 1e-6]
+        for n, ((x0, y0), (x1, y1)) in enumerate(segments):
             length = math.hypot(x1 - x0, y1 - y0)
-            if length < 1e-6:
-                continue
+            reach = min(seam, length / 4) if n < len(segments) - 1 else 0.0   # the last piece ends the stretch
+            ux, uy = (x1 - x0) / length, (y1 - y0) / length
             angle = math.degrees(math.atan2(y1 - y0, x1 - x0)) + float(art.get("rotation", 0.0))
-            w, h = (width, length * overlap) if turn else (length * overlap, width)
-            out.append(_pic(f"{key}:{len(out)}", (x0 + x1) / 2, (y0 + y1) / 2, w, h, spec, e, ctx,
-                            angle + (90.0 if turn else 0.0)))
+            long = length * overlap + reach
+            w, h = (width, long) if turn else (long, width)
+            out.append(_pic(f"{key}:{len(out)}", (x0 + x1) / 2 + ux * reach / 2, (y0 + y1) / 2 + uy * reach / 2, w, h,
+                            spec, e, ctx, angle + (90.0 if turn else 0.0)))
     return out
 
 

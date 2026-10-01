@@ -21,6 +21,12 @@ extended theme, custom node shapes and the companion's ftbquests-namespace strin
 
 Presentation v2 (tools/quest_v2.py): a guide or a story chapter with "presentation": 2 takes the sectors' text
 markup and canvas art; one without it compiles exactly as before.
+
+What the real client draws (tools/quest_client.py, 1 October 2026): every compiled chapter goes through a last pass
+that corrects what FTB Quests' client would draw or open differently from what the book means (sheets drawn whole,
+item renders above the nodes, seams, rotated fills never culled, links that open hidden quests), and
+every Spanish strings file gets a copy for the other Spanish locales, which FTB and Minecraft match exactly. Its
+facts about textures come from tools/quest_client_facts.json, which tools/check_guides.py keeps in sync with the JARs.
 """
 import argparse
 import hashlib
@@ -31,6 +37,7 @@ import math
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import quest_client  # noqa: E402
 import quest_engine  # noqa: E402
 import quest_v2  # noqa: E402
 
@@ -182,6 +189,7 @@ def label_px(text):
 def image(key, x, y, w, h, picture="", **extra):
     out = {"id": stable_id("image:" + key), "x": num(x), "y": num(y), "width": num(w), "height": num(h),
            "rotation": num(extra.pop("rotation", 0.0)), "image": picture}
+    quest_engine.IMAGE_KEYS[out["id"]] = key
     out.update(extra)
     return out
 
@@ -837,6 +845,14 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
         assert set(first) == {g["id"] for g in book["groups"]}, "every group needs guides"
         hub = build_hub(book, chapters, first, ordered, languages)
         files[OUT / "chapters" / (book["hub"]["chapter"] + ".snbt")] = snbt(hub)
+    # What the real client draws (tools/quest_client.py): sheets as sprites or tile glyphs.
+    quest_client.reset()
+    compiled = {path: quest_client.fix_chapter(json.loads(files[path]), languages)
+                for path in sorted(p for p in files if p.parent == OUT / "chapters")}
+    quest_client.fix_links(list(compiled.values()), languages)   # links to hidden quests open their chapter
+    for path, chapter in compiled.items():
+        files[path] = snbt(chapter)
+    files.update(quest_client.font_files(ROOT))
     files[OUT / "chapter_groups.snbt"] = snbt({"chapter_groups": groups})
     for lang in LOCALES:
         languages[lang]["file.0000000000000001.title"] = book["file_title"]
@@ -851,6 +867,7 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     for lang, values in quest_engine.companion_strings(book, table_langs).items():
         files[FTBQ_LANG / (lang + ".json")] = json.dumps(values, ensure_ascii=False, indent=2) + "\n"
     files.update(quest_engine.quest_text.font_files(ROOT, glyphs))
+    files.update(quest_client.spanish_copies(ROOT, files))   # es_ar, es_mx… would otherwise read English
     return files
 
 

@@ -126,6 +126,29 @@ class Assets:
         an item/generated (or handheld) model with a single layer0 at the item's own path, square and not
         animated. None for 3D block models, layered or retextured items, and animated textures. This is what a
         [li:<item>] glyph can show faithfully (tools/quest_text.icon_texture)."""
+        rel = self.own_layer(item_id)
+        if rel is None or self.exists(rel + '.mcmeta'):
+            return None
+        im = self.png(rel, first_frame=False)
+        if im is None or im.width != im.height:
+            return None
+        ns, path = rel[len('assets/'):].split('/textures/', 1)
+        return f'{ns}:textures/{path}'
+
+    def flat_sprite(self, item_id):
+        """The block-atlas sprite ('ns:item/<path>') that draws the item's inventory icon, under the same rule as
+        flat_icon but animated or not square too: the atlas animates the sprite, and an item/generated model draws
+        its layer stretched to the slot all the same. None for 3D, layered, retextured or custom-loaded models.
+        tools/quest_client.py draws such an item image as this sprite, in canvas order, instead of an item render."""
+        rel = self.own_layer(item_id)
+        if rel is None:
+            return None
+        ns, path = rel[len('assets/'):].split('/textures/', 1)
+        return f'{ns}:{path[:-len(".png")]}'
+
+    def own_layer(self, item_id):
+        """'assets/ns/textures/item/<path>.png' when the item's model is item/generated (or handheld) with a single
+        layer0 at the item's own path and the texture exists; None otherwise."""
         ns, path = item_id.split(':', 1) if ':' in item_id else ('minecraft', item_id)
         ref, parents = f'{ns}:item/{path}', []
         tex, elements = {}, None
@@ -157,12 +180,7 @@ class Assets:
         if layer != f'{ns}:item/{path}':
             return None
         rel = f'assets/{ns}/textures/item/{path}.png'
-        if not self.exists(rel) or self.exists(rel + '.mcmeta'):
-            return None
-        im = self.png(rel, first_frame=False)
-        if im is None or im.width != im.height:
-            return None
-        return f'{ns}:textures/item/{path}.png'
+        return rel if self.exists(rel) else None
 
     def item_textures(self, item_id):
         """Candidate flat textures for an item: (kind, 'ns:textures/...png') in preference order."""

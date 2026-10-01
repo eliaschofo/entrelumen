@@ -5,9 +5,11 @@ Static: what a font or an image looks like in the client is still to be seen (th
 Run on its own or through tools/test_sector_book.py, which imports these cases."""
 import json
 import math
+import re
 import unittest
 
 import quest_art
+import quest_client
 import quest_engine as qe
 import quest_text
 from generate_quests import LOCALES, OUT
@@ -106,8 +108,10 @@ class Fonts(unittest.TestCase):
         self.assertTrue(all(0xE000 <= ord(g) <= 0xF8FF for g in glyphs))
 
     def test_generated_fonts_cover_every_glyph_in_the_book(self):
-        font = json.loads((qe.ROOT / quest_text.FONT_DIR / "quest_icons.json").read_text(encoding="utf-8"))
-        glyphs = {p["chars"][0] for p in font["providers"]}
+        glyphs = set()
+        for name in ("quest_icons", "quest_tiles"):   # inline icons, and canvas sheets cut into tiles (quest_client)
+            font = json.loads((qe.ROOT / quest_text.FONT_DIR / f"{name}.json").read_text(encoding="utf-8"))
+            glyphs |= {p["chars"][0][0] for p in font["providers"]}
         text = json.dumps([json.loads((OUT / "lang" / f"{lang}.snbt").read_text(encoding="utf-8")) for lang in LOCALES],
                           ensure_ascii=False)
         used = {ch for ch in text if 0xE100 <= ord(ch) <= 0xF8FF}
@@ -145,7 +149,14 @@ class Canvas(unittest.TestCase):
                                    "turn": True})
         self.assertEqual(len(imgs), 4)
         self.assertTrue(all(i["rotation"] == 90.0 for i in imgs))
-        self.assertAlmostEqual(imgs[0]["x"], 0.5)
+        # each piece reaches SEAM under the next one (FTB rounds position and size apart); the last ends the path
+        self.assertAlmostEqual(imgs[0]["x"], 0.5 + quest_art.SEAM / 2)
+        self.assertAlmostEqual(imgs[0]["height"], qe.num((1.0 + quest_art.SEAM) / qe.VISUAL))
+        self.assertAlmostEqual(imgs[-1]["x"], 3.5)
+        self.assertAlmostEqual(imgs[-1]["height"], qe.num(1.0 / qe.VISUAL))
+        faint, _, _ = self.compile({"path": [[0, 0], [4, 0]], "texture": "create:textures/block/axis.png", "width": 1.0,
+                                    "step": 1.0, "alpha": 120})
+        self.assertAlmostEqual(faint[0]["x"], 0.5)        # a translucent overlap would draw a darker joint
         imgs, _, _ = self.compile({"path": [[0, 0], [0, 3], [3, 3]], "color": "#FFFFFF", "width": 0.1})
         self.assertEqual([i["rotation"] for i in imgs], [90.0, 0.0])
 
@@ -240,6 +251,235 @@ class Pilots(unittest.TestCase):
                     first = q[lang]["text"][0]
                     with self.subTest(quest=q["key"], lang=lang):
                         self.assertTrue(first.startswith(("[lead]", "[tip]", "[i|")), first)
+
+
+SHEETS = {"sheets": {
+    "m:textures/block/glow.png": {"kind": "animation", "size": [16, 64], "tile": [16, 16]},
+    "m:textures/gui/flow.png": {"kind": "animation", "size": [16, 32], "tile": [16, 16]},
+    "m:textures/block/tiles.png": {"kind": "fusion", "size": [80, 16], "tile": [16, 16]}}}
+
+
+def chapter_of(*images):
+    return {"id": "C", "filename": "c", "quests": [], "images": [dict(i) for i in images]}
+
+
+def picture(ref, **extra):
+    return {"id": "I" + str(abs(hash(ref)) % 1000), "x": 0.0, "y": 0.0, "width": 1.0, "height": 1.0, "rotation": 0.0,
+            "image": ref, **extra}
+
+
+class ClientDraw(unittest.TestCase):
+    """What FTB Quests' client really draws, fixed at compile time (tools/quest_client.py)."""
+
+    def setUp(self):
+        quest_client.reset()
+
+    def fix(self, *images, facts=SHEETS):
+        languages = {lang: {} for lang in LOCALES}
+        return quest_client.fix_chapter(chapter_of(*images), languages, facts)["images"], languages
+
+    def test_an_animated_atlas_texture_draws_as_its_sprite(self):
+        imgs, _ = self.fix(picture("m:textures/block/glow.png", color=0x336699, alpha=120))
+        self.assertEqual(imgs[0]["image"], "m:block/glow")   # the atlas animates it; ImageIcon drew the strip
+        self.assertEqual((imgs[0]["color"], imgs[0]["alpha"]), (0x336699, 120))
+        self.assertIn("m:textures/block/glow.png", quest_client.SEEN["textures"])
+
+    def test_other_sheets_draw_their_first_tile_as_a_glyph(self):
+        imgs, languages = self.fix(picture("m:textures/block/tiles.png", color=0x80C0FF), picture("m:textures/gui/flow.png"))
+        tile, flow = imgs
+        self.assertEqual(tile["image"], "")
+        self.assertTrue(tile["text_on_image"])
+        self.assertAlmostEqual(tile["width"], 10 / 9, places=3)   # the glyph advances 10 px for 9 drawn
+        self.assertAlmostEqual(tile["x"], (10 / 9 - 1) / 2 * qe.VISUAL, places=3)   # the glyph square keeps its centre
+        self.assertNotIn("color", tile)
+        glyphs = quest_client.tile_glyphs(SHEETS)
+        for lang in LOCALES:
+            title = json.loads(languages[lang][f"image.{tile['id']}.title"])
+            self.assertEqual(title[1], {"text": glyphs["m:textures/block/tiles.png"], "font": quest_client.FONT_TILES,
+                                        "color": "#80C0FF"})
+        self.assertEqual(flow["image"], "")                  # animated, but outside the atlas: its first frame
+        self.assertNotIn("m:textures/block/glow.png", glyphs)
+
+    def test_the_tile_font_cuts_each_sheet_into_its_grid(self):
+        font = quest_client.tile_font(SHEETS)["providers"]
+        by_file = {p["file"]: p for p in font}
+        self.assertEqual(set(by_file), {"m:block/tiles.png", "m:gui/flow.png"})
+        self.assertEqual(by_file["m:block/tiles.png"]["chars"], [chr(quest_client.TILE_FIRST + 0) + "\u0000" * 4])
+        self.assertEqual(len(by_file["m:gui/flow.png"]["chars"]), 2)
+        self.assertEqual((by_file["m:gui/flow.png"]["height"], by_file["m:gui/flow.png"]["ascent"]), (9, 7))
+
+    def test_a_translucent_or_noted_sheet_stays_and_is_reported(self):
+        imgs, _ = self.fix(picture("m:textures/block/tiles.png", alpha=60))
+        self.assertEqual(imgs[0]["image"], "m:textures/block/tiles.png")
+        self.assertEqual(quest_client.KEPT[0][2:], ("m:textures/block/tiles.png", "a glyph cannot be translucent"))
+
+    def test_textures_without_facts_are_left_alone(self):
+        imgs, _ = self.fix(picture("m:textures/block/stone.png"), picture(qe.PX, color=0xFFFFFF))
+        self.assertEqual([i["image"] for i in imgs], ["m:textures/block/stone.png", qe.PX])
+
+    def test_flat_items_draw_as_sprites_in_canvas_order(self):
+        facts = dict(SHEETS, items={"m:gem": "m:item/gem", "m:machine": None})
+        imgs, _ = self.fix(picture("item:m:gem", width=1.0, height=1.5, alpha=90, order=-1), facts=facts)
+        gem = imgs[0]
+        self.assertEqual(gem["image"], "m:item/gem")      # an atlas sprite: drawn at the canvas' depth, in order
+        self.assertEqual((gem["width"], gem["height"]), (1.0, 1.0))   # ItemIcon drew the shorter side
+        self.assertNotIn("alpha", gem)                    # the render ignored alpha and tint; the sprite would not
+        self.assertEqual(gem["order"], -1)
+        self.assertIn("m:gem", quest_client.SEEN["items"])
+
+    def test_3d_items_on_a_node_are_reported(self):
+        facts = dict(SHEETS, items={"m:machine": None})
+        chapter = chapter_of(dict(picture("item:m:machine"), id="ON", x=0.3), dict(picture("item:m:machine"), id="OFF", x=3.0))
+        chapter["quests"] = [{"id": "Q", "x": 0.0, "y": 0.0, "size": 1.0}]
+        chapter["quest_links"] = [{"id": "L", "x": 6.0, "y": 0.0, "linked_quest": "Q2"}]
+        chapter["images"].append(dict(picture("item:m:machine"), id="LINK", x=6.4))
+        quest_client.fix_chapter(chapter, {lang: {} for lang in LOCALES}, facts)
+        self.assertEqual(quest_client.OVER_NODES, [("c", "ON", "m:machine", "Q"), ("c", "LINK", "m:machine", "Q2")])
+        self.assertEqual(chapter["images"][0]["image"], "item:m:machine")
+
+    def test_the_facts_name_sprites_for_flat_items_only(self):
+        for item, sprite in quest_client.load_facts()["items"].items():
+            if sprite:
+                with self.subTest(item=item):
+                    ns, path = item.split(":", 1)
+                    self.assertEqual(sprite, f"{ns}:item/{path}")
+
+    def test_touching_tiles_overlap_under_the_later_opaque_one(self):
+        w = 1.0 / qe.VISUAL   # one grid unit
+        a = picture(qe.PX, id="A", x=0.0, width=w, height=w, color=0x112233)
+        b = picture(qe.PX, id="B", x=1.0, width=w, height=w, color=0x445566)
+        under = picture(qe.PX, id="C", x=0.0, y=1.0, width=w, height=w, color=0x778899, alpha=100)
+        imgs, _ = self.fix(a, b, under)
+        self.assertAlmostEqual(imgs[0]["x"], quest_client.SEAM / 2)            # A reaches under B, drawn after it
+        self.assertAlmostEqual(imgs[0]["width"], qe.num(w + quest_client.SEAM / qe.VISUAL))
+        self.assertEqual(imgs[0]["height"], w)                                 # C below is translucent: no overlap
+        self.assertEqual((imgs[1]["x"], imgs[1]["width"]), (1.0, w))           # B is on top: nothing to hide it
+
+    def test_seams_stay_where_the_overlap_would_show(self):
+        w = 1.0 / qe.VISUAL
+        a = picture(qe.PX, id="A", x=0.0, width=w, height=w)
+        cases = {
+            "later tile translucent": picture(qe.PX, id="B", x=1.0, width=w, height=w, alpha=200),
+            "later tile shown later": picture(qe.PX, id="B", x=1.0, width=w, height=w, dependency="Q"),
+            "later tile shorter": picture(qe.PX, id="B", x=1.0, y=0.25, width=w, height=w / 2),
+            "drawn before": picture(qe.PX, id="B", x=1.0, width=w, height=w, order=-5),
+        }
+        for why, b in cases.items():
+            with self.subTest(why):
+                imgs, _ = self.fix(a, b)
+                self.assertEqual((imgs[0]["x"], imgs[0]["width"]), (0.0, w))
+
+    def test_texture_tiles_overlap_by_a_texel_at_most(self):
+        w = 0.5 / qe.VISUAL
+        a = picture("m:textures/block/stone.png", id="A", x=0.0, width=w, height=w)
+        b = picture("m:textures/block/stone.png", id="B", x=0.0, y=0.5, width=w, height=w)
+        imgs, _ = self.fix(a, b)
+        self.assertAlmostEqual(imgs[0]["height"], qe.num(w + 0.5 / 16 / qe.VISUAL))   # a texel of a 16 px texture
+        self.assertAlmostEqual(imgs[0]["y"], 0.5 / 32, places=4)
+
+    def test_colour_fills_turned_by_right_angles_are_unturned(self):
+        imgs, _ = self.fix(picture(qe.PX, id="Q", width=4.0, height=0.1, rotation=90.0, color=1),
+                           picture(qe.PX, id="H", width=4.0, height=0.1, rotation=-180.0, color=1),
+                           picture(qe.PX, id="T", width=4.0, height=0.1, rotation=-90.0, color=1),
+                           picture(qe.PX, id="D", width=4.0, height=0.1, rotation=45.0, color=1),
+                           picture("m:textures/block/stone.png", id="X", width=4.0, height=0.1, rotation=90.0))
+        q, h, t, d, x = imgs
+        self.assertEqual((q["width"], q["height"], q["rotation"]), (0.1, 4.0, 0.0))   # FTB can cull it now
+        self.assertEqual((h["width"], h["height"], h["rotation"]), (4.0, 0.1, 0.0))
+        self.assertEqual((t["width"], t["height"], t["rotation"]), (0.1, 4.0, 0.0))
+        self.assertEqual(d["rotation"], 45.0)                                        # a diagonal stays turned
+        self.assertEqual((x["width"], x["rotation"]), (4.0, 90.0))                    # a texture keeps its grain
+
+    def test_links_to_hidden_quests_open_their_chapter(self):
+        shown = {"id": "S", "dependencies": []}
+        branch = {"id": "H", "dependencies": ["S"], "hide_until_deps_complete": True}
+        secret = {"id": "Z", "dependencies": [], "invisible": True}
+        loose = {"id": "L", "dependencies": [], "hide_until_deps_complete": True}   # nothing to wait for: visible
+        chapter = {"id": "C1", "filename": "one", "quests": [shown, branch, secret, loose],
+                   "images": [dict(picture(qe.PX), id="I", click_action="open_quest:H")]}
+        link = lambda target: json.dumps(["", {"text": "see", "underlined": True,
+                                               "clickEvent": {"action": "change_page", "value": target}}],
+                                         ensure_ascii=False, separators=(",", ":"))
+        languages = {lang: {"quest.S.quest_desc": ["Plain.", link("H/2"), link("S")], "quest.S.title": link("Z"),
+                            "quest.S.quest_subtitle": link("L")} for lang in LOCALES}
+        quest_client.fix_links([chapter], languages)
+        for lang in LOCALES:
+            desc = languages[lang]["quest.S.quest_desc"]
+            self.assertEqual(desc[0], "Plain.")
+            self.assertEqual(json.loads(desc[1])[1]["clickEvent"]["value"], "C1")   # the page number goes too
+            self.assertEqual(json.loads(desc[1])[1]["text"], "see")                # the text stays
+            self.assertEqual(desc[2], link("S"))
+            self.assertEqual(json.loads(languages[lang]["quest.S.title"])[1]["clickEvent"]["value"], "C1")
+            self.assertEqual(languages[lang]["quest.S.quest_subtitle"], link("L"))
+        self.assertEqual(chapter["images"][0]["click_action"], "open_quest:C1")
+        self.assertEqual(sorted(quest_client.LINKS), [("I", "H", "one"), ("S", "H", "one"), ("S", "Z", "one")])
+
+    def test_the_book_links_no_hidden_quest(self):
+        chapters = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((OUT / "chapters").glob("*.snbt"))]
+        hidden = quest_client.hidden_quests(chapters)
+        self.assertTrue(hidden)
+        for chapter in chapters:
+            for img in chapter.get("images", []):
+                self.assertNotIn(img.get("click_action", "")[len("open_quest:"):], hidden, img["id"])
+        for lang in LOCALES:
+            text = (OUT / "lang" / f"{lang}.snbt").read_text(encoding="utf-8")
+            targets = re.findall(r'change_page\\",\\"value\\":\\"([0-9A-F]{16})', text)
+            self.assertGreater(len(targets), 100)
+            self.assertFalse(set(targets) & set(hidden), lang)
+
+    def test_labels_align_with_ftbs_names(self):
+        languages = {lang: {} for lang in LOCALES}
+        texts = {"en_us": "Gold", "es_es": "Oro"}
+        self.assertNotIn("text_h_align", qe.label("k", 0, 0, texts, languages, align="center"))   # FTB says "middle"
+        self.assertEqual(qe.label("k", 0, 0, texts, languages, align="start")["text_h_align"], "start")
+        with self.assertRaises(AssertionError):
+            qe.label("k", 0, 0, texts, languages, align="left")
+
+    def test_no_invisible_image_pads_the_scroll(self):
+        # An alpha-0 image is a widget all the same: it stretches the panel's scroll (QuestPanel.updateMinMax), and the
+        # chapter list opens a chapter at its autofocus quest anyway (ChapterPanel), so it centres nothing.
+        for path in sorted((OUT / "chapters").glob("*.snbt")):
+            images = json.loads(path.read_text(encoding="utf-8")).get("images", [])
+            idle = [i["id"] for i in images if i.get("alpha", 255) == 0 and not i.get("click_action")]   # a hotspot clicks
+            self.assertFalse(idle, path.stem)
+
+    def test_every_spanish_locale_reads_the_spanish_strings(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            hand = root / "pack/resourcepacks/entrelumen/assets/m/lang/es_es.json"
+            hand.parent.mkdir(parents=True)
+            hand.write_text('{"a": "Che"}', encoding="utf-8")
+            book = root / "quests/lang/es_es.snbt"
+            copies = quest_client.spanish_copies(root, {book: "{}", root / "quests/lang/en_us.snbt": "{}"})
+        self.assertEqual(set(copies), {p.with_name(f"{loc}{p.suffix}") for p in (hand, book) for loc in quest_client.SPANISH})
+        self.assertEqual(copies[hand.with_name("es_ar.json")], '{"a": "Che"}')
+        self.assertEqual(copies[book.with_name("es_mx.snbt")], "{}")
+        self.assertEqual(set(quest_client.SPANISH), {"es_ar", "es_cl", "es_ec", "es_mx", "es_uy", "es_ve"})
+
+    def test_the_generated_copies_match_es_es(self):
+        sources = [OUT / "lang/es_es.snbt"]
+        for base in ("companion/src/main/resources/assets", "pack/resourcepacks/entrelumen/assets"):
+            sources += sorted((qe.ROOT / base).glob("*/lang/es_es.json"))
+        self.assertGreaterEqual(len(sources), 4)
+        for source in sources:
+            for locale in quest_client.SPANISH:
+                with self.subTest(file=str(source.relative_to(qe.ROOT)), locale=locale):
+                    copy = source.with_name(locale + source.suffix)
+                    self.assertEqual(copy.read_text(encoding="utf-8"), source.read_text(encoding="utf-8"))
+
+    def test_the_facts_file_names_frames_like_minecraft(self):
+        import check_guides as cg
+        self.assertEqual(cg.frame_size({}, 16, 256), [16, 16])
+        self.assertEqual(cg.frame_size({"height": 8}, 16, 64), [16, 8])
+        self.assertEqual(cg.frame_size({"width": 32}, 32, 128), [32, 128])
+        facts = quest_client.load_facts()
+        self.assertEqual(json.loads(quest_client.facts_text(facts)), facts)
+        for texture, sheet in facts["sheets"].items():
+            with self.subTest(texture=texture):
+                self.assertNotEqual(sheet["tile"], sheet["size"])
+                self.assertIn(sheet["kind"], ("animation",) + cg.CONNECTED)
 
 
 V2_PILOTS = {"guide": "guide_entrelumen_start", "story": "the_lost_crafts"}
