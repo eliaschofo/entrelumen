@@ -2,8 +2,13 @@
 // ship stale (their data files are disabled; nothing of Malum's files is copied).
 const entrelumenMalumCompatRecipes = {"malum:malum/spirit_repair/occultism/gold_chalk":{"mod":"occultism","json":{"type":"malum:spirit_repair","durabilityPercentage":1,"repairMaterial":{"count":1,"tag":"c:dusts/gold"},"spirits":[{"type":"malum:arcane","count":8}],"validItems":["occultism:chalk_gold"]}},"malum:malum/spirit_repair/occultism/purple_chalk":{"mod":"occultism","json":{"type":"malum:spirit_repair","durabilityPercentage":1,"repairMaterial":{"count":2,"tag":"c:dusts/obsidian"},"spirits":[{"type":"malum:arcane","count":8}],"validItems":["occultism:chalk_purple"]}},"malum:malum/spirit_repair/occultism/red_chalk":{"mod":"occultism","json":{"type":"malum:spirit_repair","durabilityPercentage":1,"repairMaterial":{"count":1,"item":"occultism:afrit_essence"},"spirits":[{"type":"malum:arcane","count":8}],"validItems":["occultism:chalk_red"]}},"malum:malum/spirit_repair/occultism/white_chalk":{"mod":"occultism","json":{"type":"malum:spirit_repair","durabilityPercentage":1,"repairMaterial":{"count":1,"item":"occultism:burnt_otherstone"},"spirits":[{"type":"malum:arcane","count":8}],"validItems":["occultism:chalk_white"]}},"malum:create/milling/grim_talc":{"mod":"create","json":{"type":"create:milling","ingredients":[{"item":"malum:grim_talc"}],"processing_time":100,"results":[{"count":6,"id":"minecraft:bone_meal"},{"chance":0.25,"id":"minecraft:yellow_dye"},{"chance":0.25,"count":4,"id":"minecraft:bone_meal"}]}}};
 ServerEvents.recipes(event => {
+  // One recipe at a time: a row KubeJS rejects is reported (failed-row) and does not stop the next.
+  var failedRows = [];
   Object.keys(entrelumenMalumCompatRecipes).forEach(id => {
-    const row = entrelumenMalumCompatRecipes[id];
-    if (Platform.isLoaded(row.mod)) event.custom(row.json).id(id);
+    var row = entrelumenMalumCompatRecipes[id];
+    if (Platform.isLoaded(row.mod) && !entrelumenAddRecipe(event, 'ENTRELUMEN_MALUM_COMPAT', null, id, row.json)) failedRows.push(id);
   });
+  if (failedRows.length) {
+    console.warn('[ENTRELUMEN_MALUM_COMPAT] ' + JSON.stringify({status: 'registered-with-failed-rows', failedRows: failedRows}));
+  }
 });

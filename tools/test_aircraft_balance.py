@@ -80,11 +80,13 @@ class AircraftBalanceTest(unittest.TestCase):
     def test_preflight_precedes_both_recipe_changes(self):
         source = SCRIPT.read_text(encoding='utf-8')
         guard = source.index('if (missingItems.length || missingRecipes.length)')
-        mutation = source.index('event.remove({id: row.id})')
+        mutation = source.index('entrelumenReplaceRecipe(event,')
         self.assertLess(source.index('Item.exists(id)'), guard)
         self.assertLess(source.index('event.containsRecipe({id: row.id})'), guard)
         self.assertLess(guard, mutation)
-        self.assertIn('event.custom(row.json).id(row.id)', source)
+        # The helper builds the replacement first and removes the native recipe only if that worked.
+        self.assertIn("entrelumenReplaceRecipe(event, 'ENTRELUMEN_AIRCRAFT', entrelumenAircraftSourceSha256, row.id, row.json)", source)
+        self.assertNotIn('event.custom(', source)
         self.assertNotIn('event.remove({output:', source)
 
     @needs_jar

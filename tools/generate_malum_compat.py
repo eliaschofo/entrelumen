@@ -63,10 +63,15 @@ def render_script():
         "// ship stale (their data files are disabled; nothing of Malum's files is copied).",
         "const entrelumenMalumCompatRecipes = " + json.dumps(rows, separators=(",", ":")) + ";",
         "ServerEvents.recipes(event => {",
+        "  // One recipe at a time: a row KubeJS rejects is reported (failed-row) and does not stop the next.",
+        "  var failedRows = [];",
         "  Object.keys(entrelumenMalumCompatRecipes).forEach(id => {",
-        "    const row = entrelumenMalumCompatRecipes[id];",
-        "    if (Platform.isLoaded(row.mod)) event.custom(row.json).id(id);",
+        "    var row = entrelumenMalumCompatRecipes[id];",
+        "    if (Platform.isLoaded(row.mod) && !entrelumenAddRecipe(event, 'ENTRELUMEN_MALUM_COMPAT', null, id, row.json)) failedRows.push(id);",
         "  });",
+        "  if (failedRows.length) {",
+        "    console.warn('[ENTRELUMEN_MALUM_COMPAT] ' + JSON.stringify({status: 'registered-with-failed-rows', failedRows: failedRows}));",
+        "  }",
         "});",
     ]
     return "\n".join(lines) + "\n"

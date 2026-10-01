@@ -5,12 +5,16 @@ const entrelumenResourceRecipes = [{"id":"botanypotstiers:elite_upgrade","reason
 
 ServerEvents.recipes(event => {
   // Conditions stay native. Inactive optional/color routes remain inactive.
+  // Row by row: the replacement is built first and the native recipe goes only if that worked (entrelumen_recipe_tools.js).
+  var failedRows = [];
   entrelumenResourceRecipes.forEach(row => {
-    if (event.containsRecipe({id: row.id})) {
-      event.remove({id: row.id});
-      event.custom(row.json).id(row.id);
-    }
+    if (event.containsRecipe({id: row.id}) &&
+        !entrelumenReplaceRecipe(event, 'ENTRELUMEN_RESOURCE_BALANCE', entrelumenResourceSignature, row.id, row.json)) failedRows.push(row.id);
   });
+  if (failedRows.length) {
+    console.warn('[ENTRELUMEN_RESOURCE_BALANCE] ' + JSON.stringify({status: 'registered-with-failed-rows',
+      signature: entrelumenResourceSignature, failedRows: failedRows}));
+  }
 });
 ServerEvents.afterRecipes(event => {
   // One pass over the loaded recipes. This also runs on the server thread for /reload, where two

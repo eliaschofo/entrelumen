@@ -54,10 +54,15 @@ ServerEvents.recipes(event => {
       sourceSha256: entrelumenAircraftSourceSha256, missingItems: missingItems, missingRecipes: missingRecipes}));
     throw new Error('ENTRELUMEN aircraft balance preflight failed; native recipes were not changed');
   }
+  // Row by row: the replacement is built first and the native recipe goes only if that worked (entrelumen_recipe_tools.js).
+  var failedRows = [];
   entrelumenAircraftOverrides.forEach(row => {
-    event.remove({id: row.id});
-    event.custom(row.json).id(row.id);
+    if (!entrelumenReplaceRecipe(event, 'ENTRELUMEN_AIRCRAFT', entrelumenAircraftSourceSha256, row.id, row.json)) failedRows.push(row.id);
   });
+  if (failedRows.length) {
+    console.warn('[ENTRELUMEN_AIRCRAFT] ' + JSON.stringify({status: 'registered-with-failed-rows',
+      sourceSha256: entrelumenAircraftSourceSha256, failedRows: failedRows}));
+  }
 });
 
 ServerEvents.afterRecipes(event => {

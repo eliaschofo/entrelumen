@@ -16,13 +16,20 @@ ServerEvents.recipes(event => {
     console.error('[ENTRELUMEN_PINGPONG7_BALANCE] ' + JSON.stringify({status: 'failed-preflight', signature: entrelumenPingpong7Signature, missing: missing}));
     throw new Error('ENTRELUMEN_PINGPONG7_BALANCE preflight failed; native recipes were not changed');
   }
+  // Row by row: the replacement is built first and the native recipe goes only if that worked (entrelumen_recipe_tools.js),
+  // so a row KubeJS rejects leaves its native recipe alone and does not stop the rows after it.
+  var failedRows = [];
+  var failedRemovals = [];
   entrelumenPingpong7Rows.forEach(row => {
-    event.remove({id: row.id});
-    event.custom(row.json).id(row.id);
+    if (!entrelumenReplaceRecipe(event, 'ENTRELUMEN_PINGPONG7_BALANCE', entrelumenPingpong7Signature, row.id, row.json)) failedRows.push(row.id);
   });
-  entrelumenPingpong7Removals.forEach(id => event.remove({id: id}));
-  console.info('[ENTRELUMEN_PINGPONG7_BALANCE] ' + JSON.stringify({status: 'registered', signature: entrelumenPingpong7Signature, changed: entrelumenPingpong7Rows.length,
-    removed: entrelumenPingpong7Removals.length - absent.length, alreadyAbsent: absent}));
+  entrelumenPingpong7Removals.forEach(id => {
+    if (!entrelumenRemoveRecipe(event, 'ENTRELUMEN_PINGPONG7_BALANCE', entrelumenPingpong7Signature, id)) failedRemovals.push(id);
+  });
+  console.info('[ENTRELUMEN_PINGPONG7_BALANCE] ' + JSON.stringify({status: failedRows.length || failedRemovals.length ? 'registered-with-failed-rows' : 'registered',
+    signature: entrelumenPingpong7Signature, changed: entrelumenPingpong7Rows.length - failedRows.length,
+    removed: entrelumenPingpong7Removals.length - failedRemovals.length - absent.length, alreadyAbsent: absent,
+    failedRows: failedRows.concat(failedRemovals)}));
 });
 function entrelumenPingpong7FieldCheck(event, row) {
   // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.

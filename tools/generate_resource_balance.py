@@ -116,12 +116,16 @@ def build():
 RUNTIME = '''
 ServerEvents.recipes(event => {
   // Conditions stay native. Inactive optional/color routes remain inactive.
+  // Row by row: the replacement is built first and the native recipe goes only if that worked (entrelumen_recipe_tools.js).
+  var failedRows = [];
   entrelumenResourceRecipes.forEach(row => {
-    if (event.containsRecipe({id: row.id})) {
-      event.remove({id: row.id});
-      event.custom(row.json).id(row.id);
-    }
+    if (event.containsRecipe({id: row.id}) &&
+        !entrelumenReplaceRecipe(event, 'ENTRELUMEN_RESOURCE_BALANCE', entrelumenResourceSignature, row.id, row.json)) failedRows.push(row.id);
   });
+  if (failedRows.length) {
+    console.warn('[ENTRELUMEN_RESOURCE_BALANCE] ' + JSON.stringify({status: 'registered-with-failed-rows',
+      signature: entrelumenResourceSignature, failedRows: failedRows}));
+  }
 });
 ServerEvents.afterRecipes(event => {
   // One pass over the loaded recipes. This also runs on the server thread for /reload, where two
@@ -206,7 +210,7 @@ def main():
     rows,sources=build();payload=json.dumps(rows,ensure_ascii=False,separators=(',',':'))
     signature=hashlib.sha256(payload.encode()).hexdigest()
     text='// Generated native resource balance; no campaign/use/gift restrictions.\nconst entrelumenResourceSignature = '+json.dumps(signature)+';\nconst entrelumenResourceSources = '+json.dumps(sources)+';\nconst entrelumenResourceRecipes = '+payload+';\n'+RUNTIME
-    if args.write:TARGET.write_text(text,encoding='utf-8')
+    if args.write:TARGET.write_text(text,encoding='utf-8',newline='\n')
     if args.check and TARGET.read_text(encoding='utf-8-sig')!=text:raise SystemExit('Stale generated resource balance')
     print(json.dumps({'status':'static-PASS','changed':len(rows),'byReason':{reason:sum(r['reason']==reason for r in rows) for reason in sorted({r['reason'] for r in rows})},'runtime':'pending','narrativeActGating':False}))
 

@@ -15,8 +15,13 @@ ServerEvents.recipes(event => {
     console.error('[ENTRELUMEN_COOKING] ' + JSON.stringify({status: 'failed-preflight', errors: errors}));
     throw new Error('Cooking provisions preflight failed');
   }
-  entrelumenCookingRecipes.forEach(row => event.custom(row.json).id(row.id));
-  console.info('[ENTRELUMEN_COOKING] ' + JSON.stringify({status: 'registered', signature: entrelumenCookingSignature, recipes: entrelumenCookingRecipes.length}));
+  // Row by row: one recipe KubeJS rejects is reported (failed-row) and does not stop the rows after it.
+  var failedRows = [];
+  entrelumenCookingRecipes.forEach(row => {
+    if (!entrelumenAddRecipe(event, 'ENTRELUMEN_COOKING', entrelumenCookingSignature, row.id, row.json)) failedRows.push(row.id);
+  });
+  console.info('[ENTRELUMEN_COOKING] ' + JSON.stringify({status: failedRows.length ? 'registered-with-failed-rows' : 'registered',
+    signature: entrelumenCookingSignature, recipes: entrelumenCookingRecipes.length - failedRows.length, failedRows: failedRows}));
 });
 ServerEvents.afterRecipes(event => {
   const checked = entrelumenCookingRecipes.concat([{id: 'entrelumen:integration/travelling_pantry', json: {result: {id: 'entrelumen:ration_bundle'}}}]);

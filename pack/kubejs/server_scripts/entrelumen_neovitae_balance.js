@@ -16,13 +16,20 @@ ServerEvents.recipes(event => {
     console.error('[ENTRELUMEN_NEOVITAE_BALANCE] ' + JSON.stringify({status: 'failed-preflight', signature: entrelumenNeovitaeSignature, missing: missing}));
     throw new Error('ENTRELUMEN_NEOVITAE_BALANCE preflight failed; native recipes were not changed');
   }
+  // Row by row: the replacement is built first and the native recipe goes only if that worked (entrelumen_recipe_tools.js),
+  // so a row KubeJS rejects leaves its native recipe alone and does not stop the rows after it.
+  var failedRows = [];
+  var failedRemovals = [];
   entrelumenNeovitaeRows.forEach(row => {
-    event.remove({id: row.id});
-    event.custom(row.json).id(row.id);
+    if (!entrelumenReplaceRecipe(event, 'ENTRELUMEN_NEOVITAE_BALANCE', entrelumenNeovitaeSignature, row.id, row.json)) failedRows.push(row.id);
   });
-  entrelumenNeovitaeRemovals.forEach(id => event.remove({id: id}));
-  console.info('[ENTRELUMEN_NEOVITAE_BALANCE] ' + JSON.stringify({status: 'registered', signature: entrelumenNeovitaeSignature, changed: entrelumenNeovitaeRows.length,
-    removed: entrelumenNeovitaeRemovals.length - absent.length, alreadyAbsent: absent}));
+  entrelumenNeovitaeRemovals.forEach(id => {
+    if (!entrelumenRemoveRecipe(event, 'ENTRELUMEN_NEOVITAE_BALANCE', entrelumenNeovitaeSignature, id)) failedRemovals.push(id);
+  });
+  console.info('[ENTRELUMEN_NEOVITAE_BALANCE] ' + JSON.stringify({status: failedRows.length || failedRemovals.length ? 'registered-with-failed-rows' : 'registered',
+    signature: entrelumenNeovitaeSignature, changed: entrelumenNeovitaeRows.length - failedRows.length,
+    removed: entrelumenNeovitaeRemovals.length - failedRemovals.length - absent.length, alreadyAbsent: absent,
+    failedRows: failedRows.concat(failedRemovals)}));
 });
 function entrelumenNeovitaeFieldCheck(event, row) {
   // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.

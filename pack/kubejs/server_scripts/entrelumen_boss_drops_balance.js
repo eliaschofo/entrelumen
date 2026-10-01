@@ -16,13 +16,20 @@ ServerEvents.recipes(event => {
     console.error('[ENTRELUMEN_BOSS_DROPS_BALANCE] ' + JSON.stringify({status: 'failed-preflight', signature: entrelumenBossDropsSignature, missing: missing}));
     throw new Error('ENTRELUMEN_BOSS_DROPS_BALANCE preflight failed; native recipes were not changed');
   }
+  // Row by row: the replacement is built first and the native recipe goes only if that worked (entrelumen_recipe_tools.js),
+  // so a row KubeJS rejects leaves its native recipe alone and does not stop the rows after it.
+  var failedRows = [];
+  var failedRemovals = [];
   entrelumenBossDropsRows.forEach(row => {
-    event.remove({id: row.id});
-    event.custom(row.json).id(row.id);
+    if (!entrelumenReplaceRecipe(event, 'ENTRELUMEN_BOSS_DROPS_BALANCE', entrelumenBossDropsSignature, row.id, row.json)) failedRows.push(row.id);
   });
-  entrelumenBossDropsRemovals.forEach(id => event.remove({id: id}));
-  console.info('[ENTRELUMEN_BOSS_DROPS_BALANCE] ' + JSON.stringify({status: 'registered', signature: entrelumenBossDropsSignature, changed: entrelumenBossDropsRows.length,
-    removed: entrelumenBossDropsRemovals.length - absent.length, alreadyAbsent: absent}));
+  entrelumenBossDropsRemovals.forEach(id => {
+    if (!entrelumenRemoveRecipe(event, 'ENTRELUMEN_BOSS_DROPS_BALANCE', entrelumenBossDropsSignature, id)) failedRemovals.push(id);
+  });
+  console.info('[ENTRELUMEN_BOSS_DROPS_BALANCE] ' + JSON.stringify({status: failedRows.length || failedRemovals.length ? 'registered-with-failed-rows' : 'registered',
+    signature: entrelumenBossDropsSignature, changed: entrelumenBossDropsRows.length - failedRows.length,
+    removed: entrelumenBossDropsRemovals.length - failedRemovals.length - absent.length, alreadyAbsent: absent,
+    failedRows: failedRows.concat(failedRemovals)}));
 });
 function entrelumenBossDropsFieldCheck(event, row) {
   // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.

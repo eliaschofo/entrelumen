@@ -460,8 +460,13 @@ ServerEvents.recipes(event => {
     console.error('[ENTRELUMEN_INTEGRATION] ' + JSON.stringify({status: 'failed-preflight', signature: entrelumenIntegrationSignature, added: 0, errors: errors}));
     throw new Error('ENTRELUMEN integration recipes preflight failed; see contextual errors. No integration recipes were added.');
   }
-  entrelumenIntegrationRecipes.forEach(row => event.custom(row.json).id(row.id));
-  console.info('[ENTRELUMEN_INTEGRATION] ' + JSON.stringify({status: 'registered', signature: entrelumenIntegrationSignature, recipes: entrelumenIntegrationRecipes.length}));
+  // Row by row: one recipe KubeJS rejects is reported (failed-row) and does not stop the rows after it.
+  var failedRows = [];
+  entrelumenIntegrationRecipes.forEach(row => {
+    if (!entrelumenAddRecipe(event, 'ENTRELUMEN_INTEGRATION', entrelumenIntegrationSignature, row.id, row.json)) failedRows.push(row.id);
+  });
+  console.info('[ENTRELUMEN_INTEGRATION] ' + JSON.stringify({status: failedRows.length ? 'registered-with-failed-rows' : 'registered',
+    signature: entrelumenIntegrationSignature, recipes: entrelumenIntegrationRecipes.length - failedRows.length, failedRows: failedRows}));
 });
 
 ServerEvents.afterRecipes(event => {

@@ -16,13 +16,20 @@ ServerEvents.recipes(event => {
     console.error('[ENTRELUMEN_ARCANE_BALANCE] ' + JSON.stringify({status: 'failed-preflight', signature: entrelumenArcaneSignature, missing: missing}));
     throw new Error('ENTRELUMEN_ARCANE_BALANCE preflight failed; native recipes were not changed');
   }
+  // Row by row: the replacement is built first and the native recipe goes only if that worked (entrelumen_recipe_tools.js),
+  // so a row KubeJS rejects leaves its native recipe alone and does not stop the rows after it.
+  var failedRows = [];
+  var failedRemovals = [];
   entrelumenArcaneRows.forEach(row => {
-    event.remove({id: row.id});
-    event.custom(row.json).id(row.id);
+    if (!entrelumenReplaceRecipe(event, 'ENTRELUMEN_ARCANE_BALANCE', entrelumenArcaneSignature, row.id, row.json)) failedRows.push(row.id);
   });
-  entrelumenArcaneRemovals.forEach(id => event.remove({id: id}));
-  console.info('[ENTRELUMEN_ARCANE_BALANCE] ' + JSON.stringify({status: 'registered', signature: entrelumenArcaneSignature, changed: entrelumenArcaneRows.length,
-    removed: entrelumenArcaneRemovals.length - absent.length, alreadyAbsent: absent}));
+  entrelumenArcaneRemovals.forEach(id => {
+    if (!entrelumenRemoveRecipe(event, 'ENTRELUMEN_ARCANE_BALANCE', entrelumenArcaneSignature, id)) failedRemovals.push(id);
+  });
+  console.info('[ENTRELUMEN_ARCANE_BALANCE] ' + JSON.stringify({status: failedRows.length || failedRemovals.length ? 'registered-with-failed-rows' : 'registered',
+    signature: entrelumenArcaneSignature, changed: entrelumenArcaneRows.length - failedRows.length,
+    removed: entrelumenArcaneRemovals.length - failedRemovals.length - absent.length, alreadyAbsent: absent,
+    failedRows: failedRows.concat(failedRemovals)}));
 });
 function entrelumenArcaneFieldCheck(event, row) {
   // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.
