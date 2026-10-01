@@ -4,7 +4,10 @@ import com.mojang.brigadier.arguments.*;
 import dev.ftb.mods.ftbteams.api.*;
 import dev.ftb.mods.ftbteams.api.event.TeamEvent;
 import java.util.*;
+import java.util.function.Predicate;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -184,14 +187,46 @@ public final class Entrelumen {
         .toList());
   }
 
+  /** A Solsticio errand item (a named book, map or tool a story mission hands out) is never a material. */
+  static boolean errand(ItemStack stack) {
+    return SolsticioStory.errandOf(stack) != null;
+  }
+
+  /** Whether a stack counts as {@code item} for a project delivery. */
+  static boolean material(ItemStack stack, String item) {
+    return !stack.isEmpty() && !errand(stack)
+        && BuiltInRegistries.ITEM.getKey(stack.getItem()).toString().equals(item);
+  }
+
   static Map<String, Integer> availableMaterials(ServerPlayer player) {
     Map<String, Integer> result = new HashMap<>();
     for (var stack : deliveryStacks(player))
-      result.merge(
-          BuiltInRegistries.ITEM.getKey(stack.getItem()).toString(),
-          stack.getCount(),
-          Integer::sum);
+      if (!stack.isEmpty() && !errand(stack))
+        result.merge(
+            BuiltInRegistries.ITEM.getKey(stack.getItem()).toString(),
+            stack.getCount(),
+            Integer::sum);
     return result;
+  }
+
+  /**
+   * Takes {@code amount} matching items from the delivery stacks: plain stacks first, then those that
+   * carry data (a lodestone-bound compass, a paid survey map, a named copy), each pass in slot order.
+   * Takes what there is if there is less; the caller checks the count first.
+   */
+  static void consume(ServerPlayer player, Predicate<ItemStack> test, int amount) {
+    int remaining = amount;
+    List<ItemStack> stacks = deliveryStacks(player);
+    for (boolean plain : new boolean[] {true, false})
+      for (ItemStack stack : stacks) {
+        if (remaining <= 0) break;
+        if (stack.isEmpty() || stack.getComponentsPatch().isEmpty() != plain || !test.test(stack)) continue;
+        int take = Math.min(remaining, stack.getCount());
+        stack.shrink(take);
+        remaining -= take;
+      }
+    player.getInventory().setChanged();
+    player.containerMenu.broadcastChanges();
   }
 
   public static List<Component> statusLines(ServerPlayer player) {
@@ -254,24 +289,7 @@ public final class Entrelumen {
             p.act(),
             p.items(),
             inventory,
-            () -> {
-              p.items()
-                  .forEach(
-                      (item, count) -> {
-                        int remaining = count;
-                        for (var stack : deliveryStacks(player))
-                          if (BuiltInRegistries.ITEM
-                              .getKey(stack.getItem())
-                              .toString()
-                              .equals(item)) {
-                            int take = Math.min(remaining, stack.getCount());
-                            stack.shrink(take);
-                            remaining -= take;
-                          }
-                      });
-              player.getInventory().setChanged();
-              player.containerMenu.broadcastChanges();
-            });
+            () -> p.items().forEach((item, count) -> consume(player, stack -> material(stack, item), count)));
     if (ok) {
       CampaignData.get(player.server).setDirty();
       if (!p.reward().isEmpty()) {
