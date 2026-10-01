@@ -35,7 +35,8 @@ class LangFeedbackKeysTest {
       java.util.Map.entry("entrelumen.enves.champion.fell", 1),
       java.util.Map.entry("entrelumen.ark.screen.reason.core", 1));
   private static final Pattern TU_FORM = Pattern.compile(
-      "\b(puedes|tienes|haz|vuelve|sostén|toma|usa|ten|mira|elige|pulsa|sal|ven|pagaste tú)\b", Pattern.CASE_INSENSITIVE);
+      "\\b(puedes|tienes|haz|vuelve|sostén|toma|usa|ten|mira|elige|pulsa|sal|ven|pagaste tú)\\b",
+      Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.UNICODE_CHARACTER_CLASS);
 
   private static JsonObject json(String locale) throws Exception {
     return JsonParser.parseString(Files.readString(LANG.resolve(locale + ".json"))).getAsJsonObject();
