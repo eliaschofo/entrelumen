@@ -153,6 +153,26 @@ public final class RuntimeGameTestsSourShackle {
     helper.succeed();
   }
 
+  /** A blow on a part of a multipart boss (the dragon's head here) marks like a blow on its body. */
+  @GameTest(template = "empty", timeoutTicks = 100, batch = "sour_shackle_parts")
+  public static void aHitOnABossPartMarks(GameTestHelper helper) {
+    requireNoCurios(helper);
+    var qa = new Qa(helper, "ShackleParts", true);
+    try {
+      var dragon = qa.mob(helper, EntityType.ENDER_DRAGON, 0.5, 6.5);
+      var part = dragon.getSubEntities()[0];
+      helper.assertTrue(part instanceof net.neoforged.neoforge.entity.PartEntity<?>, "the dragon's head is not a part entity");
+      dragon.invulnerableTime = 0;
+      float before = dragon.getHealth();
+      qa.player.attack(part);
+      helper.assertTrue(dragon.getHealth() < before, "the blow on the head did not reach the dragon");
+      helper.assertTrue(qa.marks() == 1, "a blow on a boss part did not mark: " + qa.marks());
+    } finally {
+      qa.close();
+    }
+    helper.succeed();
+  }
+
   // ---- The burst -----------------------------------------------------------------------------
 
   /**
