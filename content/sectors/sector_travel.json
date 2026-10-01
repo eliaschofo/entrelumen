@@ -741,16 +741,16 @@
       "icon": "minecraft:chest",
       "at": {"x": 7.6, "y": 9.6},
       "en_us": {"title": "Pick up the whole chest", "subtitle": "Contents included.",
-        "text": ["[lead] Hold [key:key.carry.desc], right-click with both hands empty, and the block is on your arms.",
+        "text": ["[lead] Hold [key:key.sneak] and right-click with both hands empty, and the block is on your arms.",
                  "[li] Chests, barrels, furnaces and other blocks with an inventory come along, items inside",
                  "[li] Heavier blocks slow you more, and you can't swing while carrying",
                  "[note] Right-click the ground to set it down again."]},
       "es_es": {"title": "Levantá el cofre entero", "subtitle": "Con todo lo que tiene adentro.",
-        "text": ["[lead] Mantené [key:key.carry.desc], clic derecho con las dos manos vacías, y el bloque queda en tus brazos.",
+        "text": ["[lead] Mantené [key:key.sneak] y hacé clic derecho con las dos manos vacías, y el bloque queda en tus brazos.",
                  "[li] Cofres, barriles, hornos y otros bloques con inventario se vienen con lo que tienen adentro",
                  "[li] Los más pesados te frenan más, y mientras cargás no podés pegar",
                  "[note] Clic derecho al piso para bajarlo otra vez."]},
-      "sources": ["jar:carryon-neoforge-1.21.1-2.2.6.13.jar:assets/carryon/lang/en_us.json#key.carry.desc", "jar:carryon-neoforge-1.21.1-2.2.6.13.jar:tschipp/carryon/common/carry/PickupHandler.class#canCarryGeneral: both hands empty", "repo:pack/config/carryon-common.toml#pickupAllBlocks false, heavyTiles true, hitWhileCarrying false, maxDistance 2.5"]
+      "sources": ["jar:carryon-neoforge-1.21.1-2.2.6.13.jar:assets/carryon/lang/en_us.json#key.carry.desc", "jar:carryon-neoforge-1.21.1-2.2.6.13.jar:tschipp/carryon/client/keybinds/CarryOnKeybinds.class#carry key defaults to UNKNOWN unless platform Forge", "jar:carryon-neoforge-1.21.1-2.2.6.13.jar:tschipp/carryon/CarryOnCommonClient.class#isUnbound -> isShiftKeyDown", "jar:carryon-neoforge-1.21.1-2.2.6.13.jar:tschipp/carryon/common/carry/PickupHandler.class#canCarryGeneral: both hands empty", "repo:pack/config/carryon-common.toml#pickupAllBlocks false, heavyTiles true, hitWhileCarrying false, maxDistance 2.5"]
     },
     {
       "key": "carry_animals", "role": "side", "deps": ["carry_chest"],
