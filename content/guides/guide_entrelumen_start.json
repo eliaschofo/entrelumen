@@ -126,13 +126,13 @@
       "key": "entrelumen_start_pedestal", "deps": ["entrelumen_start_ruin"], "type": "item", "item": "entrelumen:heliodor_compass", "layout": {"x": 9.65, "y": 0, "size": 1.25, "shape": "circle"}, "hide_lines": true,
       "en_us": {"title": "Take the Compass",
         "text": ["[lead] [icon:right_click] Use the pedestal: it gives each player one [item:entrelumen:heliodor_compass|Heliodor Compass] per world, ever.",
-                 "Its first target is the ruin itself, until you wake the Atlas with a [item:minecraft:book|book] and a [item:minecraft:copper_ingot|copper ingot].",
+                 "Its first target is the Signal Tower, 250 to 500 blocks away: the [item:entrelumen:atlas|Atlas] and the [item:entrelumen:signal_ember|Signal Ember] wait on its pedestal. Once your team has been inside, it points back to this ruin until you wake the Atlas.",
                  "Everything else about it: [chapter:guide_entrelumen_compass|The Heliodor Compass]."]},
       "es_es": {"title": "Tomá la brújula",
         "text": ["[lead] [icon:right_click] Usá el pedestal: le da a cada jugador una [item:entrelumen:heliodor_compass|Brújula de Heliodor] por mundo, para siempre.",
-                 "Su primer destino es la propia ruina, hasta que despiertes el Atlas con un [item:minecraft:book|libro] y un [item:minecraft:copper_ingot|lingote de cobre].",
+                 "Primero apunta a la Torre de la Señal, a 250-500 bloques: en su pedestal esperan el [item:entrelumen:atlas|Atlas] y la [item:entrelumen:signal_ember|Brasa de la Señal]. Cuando tu equipo entra, vuelve a la ruina hasta que despiertes el Atlas.",
                  "Todo lo demás sobre ella: [chapter:guide_entrelumen_compass|La Brújula de Heliodor]."]},
-      "sources": ["repo:docs/design/heliodor-compass.md", "repo:content/compass_targets.json"]
+      "sources": ["repo:docs/design/heliodor-compass.md", "repo:content/compass_targets.json", "repo:companion/src/main/resources/data/entrelumen/heliodor_ruin/signal_tower.json", "repo:companion/src/main/java/dev/entrelumen/HeliodorCompass.java"]
     },
     {
       "key": "entrelumen_start_first_steps", "deps": ["entrelumen_start_pedestal"], "type": "item", "item": "minecraft:copper_ingot", "layout": {"x": 12.2, "y": 2.6, "size": 1.0, "shape": "circle"}, "hide_lines": true,
@@ -281,13 +281,13 @@
       "key": "entrelumen_start_close", "deps": ["entrelumen_start_solsticio_link", "entrelumen_start_residual", "entrelumen_start_first_steps"], "type": "item", "item": "entrelumen:atlas", "layout": {"x": 18.2, "y": 1.0, "size": 2.0, "shape": "hexagon"},
       "en_us": {"title": "Ready to Leave the Patio",
         "text": ["[lead] Empty pockets, a compass that knows the way and ruins that will not let you dig them up.",
-                 "Craft the [item:entrelumen:atlas|Atlas] and let it start talking.",
+                 "Follow the compass to the Signal Tower, bring its light to white and take the [item:entrelumen:atlas|Atlas] and the [item:entrelumen:signal_ember|Signal Ember] from its pedestal. Then wake it with a [item:minecraft:book|book] and a [item:minecraft:copper_ingot|copper ingot].",
                  "Good luck, traveller. Mind the columns: four are already broken."]},
       "es_es": {"title": "Listo para dejar el patio",
         "text": ["[lead] Bolsillos vacíos, una brújula que sabe el camino y ruinas que no se dejan excavar.",
-                 "Fabricá el [item:entrelumen:atlas|Atlas] y dejalo hablar.",
+                 "Seguí la brújula hasta la Torre de la Señal, llevá su luz al blanco y tomá del pedestal el [item:entrelumen:atlas|Atlas] y la [item:entrelumen:signal_ember|Brasa de la Señal]. Después despertalo con un [item:minecraft:book|libro] y un [item:minecraft:copper_ingot|lingote de cobre].",
                  "Suerte, viajero. Cuidado con las columnas: cuatro ya están rotas."]},
-      "sources": ["repo:docs/design/story-bible.md"]
+      "sources": ["repo:docs/design/story-bible.md", "repo:content/compass_targets.json", "repo:companion/src/main/resources/data/entrelumen/heliodor_ruin/signal_tower.json", "repo:companion/src/main/java/dev/entrelumen/AtlasGate.java"]
     },
     {
       "key": "entrelumen_start_toy_polish", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 9.65, "y": 1.75, "size": 0.75, "shape": "none"},
