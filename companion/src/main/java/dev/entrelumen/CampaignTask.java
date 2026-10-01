@@ -75,6 +75,11 @@ public final class CampaignTask extends Task {
     return getButtonText();
   }
 
+  /** The campaign milestone this task mirrors. */
+  String milestone() {
+    return milestone;
+  }
+
   /** The Atlas project this task mirrors, by the same name the Atlas shows. */
   private net.minecraft.network.chat.MutableComponent projectName() {
     return net.minecraft.network.chat.Component.translatable("entrelumen.project." + milestone);
@@ -109,12 +114,22 @@ public final class CampaignTask extends Task {
           && data.areDependenciesComplete(getQuest())) data.markTaskCompleted(this);
     } else if (data.getProgress(this) != 0
         || data.getCompletedTime(id).isPresent()
-        || data.getCompletedTime(getQuest().id).isPresent()) {
+        || data.getCompletedTime(getQuest().id).isPresent()
+        || hasClaimedReward(data, player)) {
       data.setProgress(this, 0);
       data.setCompleted(getQuest().id, null);
       data.setCompleted(getQuestChapter().id, null);
       data.setCompleted(getQuestFile().id, null);
+      // A joiner's merged history can bring a claim of a milestone this campaign has not reached;
+      // left in place it would keep the party from ever receiving that milestone's rewards.
+      for (var reward : getQuest().getRewards()) data.resetReward(player.getUUID(), reward);
     }
+  }
+
+  private boolean hasClaimedReward(TeamData data, ServerPlayer player) {
+    for (var reward : getQuest().getRewards())
+      if (data.isRewardClaimed(player.getUUID(), reward)) return true;
+    return false;
   }
 
   @Override
