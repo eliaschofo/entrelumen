@@ -351,20 +351,39 @@ public final class RuntimeGameTestsStory {
         var talk = SolsticioStory.character(player, terra, "inventor");
         assertSaid(helper, talk, "inventor.power");
         assertSaid(helper, talk, "story.battery");
-        player.getInventory().add(battery(helper, false));
+        player.setItemInHand(InteractionHand.OFF_HAND, battery(helper, false));
         assertSaid(helper, SolsticioStory.character(player, terra, "inventor"), "story.battery");
         helper.assertTrue(!campaign.completed.contains(SolsticioStoryRules.POWER), "An empty battery counted as charged");
         player.getInventory().clearContent();
         give(player, coil, 3);
         give(player, plate, 2);
-        player.getInventory().add(battery(helper, true));
+        // A charged FE tool in the hotbar is not the battery: only the off hand counts.
+        ItemStack tool = battery(helper, true);
+        player.getInventory().setItem(0, tool);
         talk = SolsticioStory.character(player, terra, "inventor");
         assertSaid(helper, talk, "story.missing");
+        assertSaid(helper, talk, "story.battery");
         give(player, coil, 1);
+        talk = SolsticioStory.character(player, terra, "inventor");
+        assertSaid(helper, talk, "story.battery");
+        helper.assertTrue(!campaign.completed.contains(SolsticioStoryRules.POWER) && count(player, coil) == 4,
+            "Terra took a charged item from the hotbar with an empty off hand");
+        // Enchanted, even in the off hand, it is somebody's tool.
+        ItemStack enchanted = battery(helper, true);
+        enchanted.enchant(helper.getLevel().registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT)
+            .getHolderOrThrow(net.minecraft.world.item.enchantment.Enchantments.UNBREAKING), 1);
+        player.setItemInHand(InteractionHand.OFF_HAND, enchanted);
+        assertSaid(helper, SolsticioStory.character(player, terra, "inventor"), "story.battery");
+        helper.assertTrue(!campaign.completed.contains(SolsticioStoryRules.POWER) && enchanted.getCount() == 1,
+            "Terra took an enchanted item as the battery");
+        player.setItemInHand(InteractionHand.OFF_HAND, battery(helper, true));
         talk = SolsticioStory.character(player, terra, "inventor");
         assertSaid(helper, talk, "inventor.power_done");
         helper.assertTrue(campaign.completed.contains(SolsticioStoryRules.POWER) && count(player, coil) == 0 && count(player, plate) == 0
-            && SolsticioStory.battery(player) == null, "Terra did not take the parts and the battery");
+            && player.getOffhandItem().isEmpty() && SolsticioStory.battery(player) == null,
+            "Terra did not take the parts and the off-hand battery");
+        helper.assertTrue(player.getInventory().getItem(0) == tool && tool.getCount() == 1,
+            "Terra took the charged tool from the hotbar instead of the off-hand battery");
         ItemStack diagram = player.getInventory().items.stream().filter(stack -> stack.is(Items.WRITTEN_BOOK)).findFirst()
             .orElse(ItemStack.EMPTY);
         helper.assertTrue(key(diagram.get(DataComponents.CUSTOM_NAME)).equals("entrelumen.solsticio.lore.terraprism.title"),

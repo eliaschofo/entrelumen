@@ -37,6 +37,17 @@ class SolsticioStoryRulesTest {
   }
 
   @Test
+  void juansSeedTagRemovesResourceSeeds() throws Exception {
+    var tag = json("src/main/resources/data/entrelumen/tags/item/solsticio/seeds.json");
+    Set<String> removed = new HashSet<>();
+    for (var entry : tag.getAsJsonArray("remove")) {
+      assertFalse(entry.getAsJsonObject().get("required").getAsBoolean(), "A removal must not need its mod");
+      removed.add(entry.getAsJsonObject().get("id").getAsString());
+    }
+    assertEquals(Set.of("#mysticalagriculture:seeds", "mowziesmobs:foliaath_seed"), removed);
+  }
+
+  @Test
   void theQuestChapterFollowsTheServerGraph() throws Exception {
     assertEquals(SolsticioStoryRules.MISSIONS, List.copyOf(SolsticioStoryRules.REQUIRES.keySet()));
     var chapter = json("../content/act_six.json");
@@ -222,6 +233,18 @@ class SolsticioStoryRulesTest {
     List<String> carried = List.of("a", "b", "a", "c", "d", "e", "f", "g", "b", "h", "i");
     assertEquals(List.of("a", "b", "c", "d", "e", "f", "g", "h"), SolsticioStoryRules.distinct(carried, 8));
     assertEquals(List.of(), SolsticioStoryRules.distinct(List.of("a", "a", "a"), 2), "Quantity is not variety");
+    Map<String, Integer> seeds = new LinkedHashMap<>();
+    seeds.put("rare", 1);
+    seeds.put("wheat", 40);
+    seeds.put("carrot", 5);
+    seeds.put("beet", 5);
+    assertEquals(List.of("wheat", "carrot", "beet"), SolsticioStoryRules.mostCarried(seeds, 3),
+        "The plentiful species go first, ties in inventory order");
+    assertEquals(List.of(), SolsticioStoryRules.mostCarried(seeds, 5), "Four species are not five");
+    assertTrue(SolsticioStoryRules.gardenSeed("minecraft:wheat_seeds"));
+    assertTrue(SolsticioStoryRules.gardenSeed("farmersdelight:rice"));
+    assertFalse(SolsticioStoryRules.gardenSeed("mysticalagriculture:nether_star_seeds"), "Resource seeds are no species");
+    assertFalse(SolsticioStoryRules.gardenSeed("mysticalcustomization:custom_seeds"));
     Map<String, Integer> meals = new LinkedHashMap<>();
     meals.put("stew", 16);
     meals.put("soup", 15);

@@ -293,6 +293,30 @@ public final class SolsticioStoryRules {
   }
 
   /**
+   * Namespaces whose seeds are not garden species: Mystical Agriculture's resource seeds (Nether
+   * star, dragon egg, gaia...) reach {@code #c:seeds}, and Juan never takes them.
+   */
+  public static final Set<String> NOT_GARDEN_SEEDS = Set.of("mysticalagriculture", "mysticalcustomization");
+
+  /** Whether an item id counts as a species for Juan's seed mission. */
+  public static boolean gardenSeed(String id) {
+    int colon = id.indexOf(':');
+    return !NOT_GARDEN_SEEDS.contains(colon < 0 ? "minecraft" : id.substring(0, colon));
+  }
+
+  /**
+   * The {@code count} ids carried in the largest amounts, from per-id totals in inventory order
+   * (ties keep that order): one of each is taken, so the plentiful ones go and the rare ones stay.
+   * Empty when fewer ids are carried.
+   */
+  public static List<String> mostCarried(Map<String, Integer> totals, int count) {
+    if (totals.size() < count) return List.of();
+    List<String> ids = new ArrayList<>(totals.keySet());
+    ids.sort(java.util.Comparator.comparingInt((String id) -> totals.get(id)).reversed());
+    return List.copyOf(ids.subList(0, count));
+  }
+
+  /**
    * The first {@code kinds} ids that reach {@code each} items, from per-id totals in inventory
    * order; empty when fewer ids reach it.
    */
