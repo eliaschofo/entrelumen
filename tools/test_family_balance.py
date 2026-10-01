@@ -848,6 +848,10 @@ UNTAGGED_QUEST_BOSSES = {
     'immersiveengineering:bulwark': f"{FARMABLE} (IE's raid variant of a vindicator, evoker or ravager)",
     'irons_spellbooks:ice_spider': f"{FARMABLE} (a snow hunter; Iron's Spells tags only the Dead King and Tyros)",
     'eternal_starlight:permafrost': f"{FARMABLE} (an ESBoss without a boss bar; Eternal Starlight's own c:bosses leaves it out)",
+    # Neo Vitae's realm demons (1/10): no boss bar and no c:bosses from the mod, so the 29/9 rule (only Occultism's
+    # unbound Afrit and Marid joined the tag) keeps them farmable.
+    'neovitae:daemonium_ignis': f"{FARMABLE} (Neo Vitae's fire demon of the Endless Realm; no boss bar, the mod tags it nowhere as a boss)",
+    'neovitae:daemonium_glaciaris': f"{FARMABLE} (Neo Vitae's ice demon of the Endless Realm; no boss bar, the mod tags it nowhere as a boss)",
 }
 
 
