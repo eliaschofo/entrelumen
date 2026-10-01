@@ -783,6 +783,23 @@ def v2_glyphs(data):
             for para in q[lang]["text"] for ref in quest_engine.quest_text.icon_refs_in(para)}
 
 
+def check_unbound_keys(languages):
+    """Every quest text that shows a key the pack ships unbound (tools/unbound_keys.json) also says where to set it:
+    the bound key would print "[Not Bound]" as if it were the instruction (F49)."""
+    unbound = quest_engine.unbound_keys()
+    missing = []
+    for lang in LOCALES:
+        said = quest_engine.UNBOUND_SAID[lang]
+        for name, lines in languages[lang].items():
+            if not name.endswith(".quest_desc"):
+                continue
+            text = "\n".join(lines)
+            keys = {k for k in re.findall(r'"keybind":"([^"]+)"', text) if k in unbound}
+            if keys and not said.search(text):
+                missing.append(f"{name} ({lang}): {', '.join(sorted(keys))}")
+    assert not missing, "unbound keys cited without saying where to set them: " + "; ".join(missing)
+
+
 def generate_book(chapters=None, guides=None, book=None, sectors=None):
     """Every generated file: story (generate_all), hub, guides, sector chapters, chapter groups, reward
     tables, data.snbt presets, theme and the companion's ftbquests strings."""
@@ -862,6 +879,7 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     for lang in LOCALES:
         languages[lang]["file.0000000000000001.title"] = book["file_title"]
     assert languages["en_us"].keys() == languages["es_es"].keys(), "locale key mismatch"
+    check_unbound_keys(languages)
     for lang in LOCALES:
         files[OUT / "lang" / (lang + ".snbt")] = snbt(languages[lang])
     files[TASK_IDS] = json.dumps(dict(sorted(task_ids.items())), ensure_ascii=False, indent=1) + "\n"

@@ -363,6 +363,76 @@ class QuestBook(unittest.TestCase):
             with self.subTest(target=target), self.assertRaisesRegex(AssertionError, error):
                 generate_guide(guide, 'x', 0, self.book, {l: {} for l in LOCALES}, set(), keys, names)
 
+    def test_held_counts_carry_a_note_in_both_languages(self):
+        # F40: a non-consuming item task counts the most items held in the main inventory at one moment, so a count
+        # of two or more says so, in the quest's own words or in the note the generator adds.
+        checked = 0
+        for data in self.story + self.guides + self.sectors:
+            for q in data['quests']:
+                if not quest_engine.held_counts(q):
+                    continue
+                checked += 1
+                qid = stable_id('quest:' + q['key'])
+                for lang, said in (('en_us', 'at once'), ('es_es', 'a la vez')):
+                    with self.subTest(quest=q['key'], lang=lang):
+                        self.assertIn(said, '\n'.join(self.lang[lang][f'quest.{qid}.quest_desc']))
+        self.assertGreater(checked, 100)
+
+    def test_auto_notes(self):
+        def quest(*tasks, en=('Eight stones.',), es=('Ocho piedras.',)):
+            return {'key': 'x', 'tasks': list(tasks), 'en_us': {'title': 'Stone', 'text': list(en)},
+                    'es_es': {'title': 'Piedra', 'text': list(es)}}
+        notes = quest_engine.auto_notes(quest({'item': 'minecraft:stone', 'count': 8}))
+        self.assertEqual(notes, {'en_us': ["[note] Carry all 8 at once; placed or installed ones don't count."],
+                                 'es_es': ['[note] Tené las 8 unidades encima a la vez; las colocadas o instaladas no cuentan.']})
+        self.assertEqual(quest_engine.auto_notes(quest({'item': 'a:b', 'count': 2}, {'item': 'a:c', 'count': 3}))['en_us'],
+                         ["[note] Carry each full amount at once; placed or installed ones don't count."])
+        for tasks in ([{'item': 'a:b', 'count': 64, 'consume': True}], [{'item': 'a:b'}],
+                      [{'type': 'kill', 'entity': 'a:b', 'value': 5}]):
+            self.assertEqual(quest_engine.auto_notes(quest(*tasks)), {'en_us': [], 'es_es': []})
+        said = quest({'item': 'a:b', 'count': 4}, en=('Hold all four at once.',), es=('Tené las cuatro a la vez.',))
+        self.assertEqual(quest_engine.auto_notes(said), {'en_us': [], 'es_es': []})
+        # F49: unbound keys cited, one or several, unless the text already says where to set them.
+        unbound = sorted(quest_engine.unbound_keys())[:2]
+        one = quest({'type': 'checkmark'}, en=(f'Press [key:{unbound[0]}].',), es=(f'Tocá [key:{unbound[0]}].',))
+        self.assertEqual(quest_engine.auto_notes(one), {'en_us': ['[note] This key ships unbound: set it in Controls.'],
+                                                        'es_es': ['[note] Esta tecla viene sin asignar: asignala en Controles.']})
+        two = quest({'type': 'checkmark'}, en=(f'[key:{unbound[0]}] or [key:{unbound[1]}].',),
+                    es=(f'[key:{unbound[0]}] o [key:{unbound[1]}].',))
+        self.assertEqual(quest_engine.auto_notes(two)['es_es'],
+                         ['[note] Estas teclas vienen sin asignar: asignalas en Controles.'])
+        told = quest({'type': 'checkmark'}, en=(f'Bind [key:{unbound[0]}] in Controls.',),
+                     es=(f'Asigná [key:{unbound[0]}] en Controles.',))
+        self.assertEqual(quest_engine.auto_notes(told), {'en_us': [], 'es_es': []})
+        bound = quest({'type': 'checkmark'}, en=('Press [key:key.jump].',), es=('Tocá [key:key.jump].',))
+        self.assertEqual(quest_engine.auto_notes(bound), {'en_us': [], 'es_es': []})
+        # A note that would push a one-page text past MAX_PAGE_CHARS opens its own page, in both languages.
+        long = quest({'item': 'minecraft:stone', 'count': 8}, en=('Stones. ' * 38 + 'End.',), es=('Piedras. ' * 34 + 'Fin.',))
+        ctx = {'items': set(), 'names': set(), 'keys': set(), 'textures': set(), 'accent': '#FFFFFF', 'presentation': 2}
+        texts = quest_engine.with_notes(long, 't', ctx)
+        self.assertEqual([t[1] for t in texts.values()], ['{page}', '{page}'])
+        self.assertEqual(quest_engine.with_notes(quest({'item': 'minecraft:stone', 'count': 8}), 't', ctx)['en_us'][1:],
+                         ["[note] Carry all 8 at once; placed or installed ones don't count."])
+
+    def test_unbound_keys_list_and_check(self):
+        # tools/unbound_keys.json never lists a key defaultoptions binds, and an unbound key without a word on where to
+        # set it fails the book (generate_quests.check_unbound_keys).
+        import generate_quests
+        bound = set()
+        for line in (ROOT / 'pack/config/defaultoptions/keybindings.txt').read_text(encoding='utf-8').splitlines():
+            if line.startswith('key_'):
+                name, value = line[4:].split(':', 1)
+                if not value.startswith('key.keyboard.unknown'):
+                    bound.add(name)
+        self.assertFalse(bound & quest_engine.unbound_keys())
+        key = sorted(quest_engine.unbound_keys())[0]
+        line = json.dumps(['', {'text': '', 'extra': [{'keybind': key}]}], separators=(',', ':'))
+        bad = {'en_us': {'quest.A.quest_desc': [line]}, 'es_es': {'quest.A.quest_desc': [line, 'Asignala en Controles.']}}
+        with self.assertRaisesRegex(AssertionError, r'quest\.A\.quest_desc \(en_us\)'):
+            generate_quests.check_unbound_keys(bad)
+        bad['en_us']['quest.A.quest_desc'].append('Set it in Controls.')
+        generate_quests.check_unbound_keys(bad)
+
 
 if __name__ == '__main__':
     unittest.main()

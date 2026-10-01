@@ -610,6 +610,18 @@ class Sectors(unittest.TestCase):
                                      and not t["item"].get("components"), t)
         self.assertGreaterEqual(seen, 23)
 
+    def test_unbound_keys_say_where_to_set_them(self):
+        # F49: every quest that shows a key the pack ships unbound says where to bind it, in both languages.
+        unbound = qe.unbound_keys()
+        cited = 0
+        for lang in LOCALES:
+            for name, lines in self.lang[lang].items():
+                text = "\n".join(lines) if name.endswith(".quest_desc") else ""
+                if any(f'"keybind":"{k}"' in text for k in unbound):
+                    cited += 1
+                    self.assertRegex(text, qe.UNBOUND_SAID[lang], name)
+        self.assertGreater(cited, 0)
+
 class TaskIds(unittest.TestCase):
     """F48: a task's ID follows what it asks for, not its position, so saved progress never lands on another task."""
 

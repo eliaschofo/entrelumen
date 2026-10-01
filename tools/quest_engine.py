@@ -79,6 +79,9 @@ EXPLICIT_TASK_ID = re.compile(r"[0-9A-F]{16}")
 CARRIED_ITEMS_FILE = ROOT / "tools/carried_items.json"
 CARRIED_TASK = "entrelumen:carried_item"
 _CARRIED = None
+# Keys the pack ships unbound (tools/unbound_keys.json): a quest that cites one says where to set it (F49).
+UNBOUND_KEYS_FILE = ROOT / "tools/unbound_keys.json"
+_UNBOUND = None
 
 # Copy palette (docs/design/quest-copy.md). Items teal, keys yellow, links blue, tips gold.
 COLORS = {"item": "#8FD6C8", "key": "#F2D060", "link": "#9DC3FF", "tip": "#E8B04A", "warn": "#FF8C7A",
@@ -265,23 +268,88 @@ def quest_copy(q, name, ctx):
     compile_sector and tools/quest_draft.py, so a draft passes exactly the rules the book compiles with."""
     key = q["key"]
     texts = {}
+    paragraphs = with_notes(q, name, ctx)
     for lang in LOCALES:
         copy = q[lang]
         where = f"{name}:{key}:{lang}"
-        lines, first = compile_text(copy["text"], lang, ctx, where)
+        lines, first = compile_text(paragraphs[lang], lang, ctx, where)
         check_copy(copy["title"], copy.get("subtitle"), first, lang, where)
         texts[lang] = (lines, first)
     assert bool(q["en_us"].get("subtitle")) == bool(q["es_es"].get("subtitle")), f"{key}: subtitle parity"
     assert texts["en_us"][0].count("{@pagebreak}") == texts["es_es"][0].count("{@pagebreak}"), f"{key}: page parity"
     refs = {}
     for lang in LOCALES:
-        raw = " ".join(q[lang]["text"])
+        raw = " ".join(paragraphs[lang])
         refs[lang] = {(m.group(1), m.group(2)) for m in TAG.finditer(raw) if m.group(1) in LINKED_TAGS}
         visible = TAG.sub(lambda m: " ".join(m.group(3).split("|")[1:]) if m.group(3) else "", raw)
         assert not HARD_KEYS.search(visible), f"{name}:{key}:{lang}: hard-coded key; use [key:...]"
     assert refs["en_us"] == refs["es_es"], \
         f"{key}: linked items, keys and quests differ between languages ({sorted(refs['en_us'] ^ refs['es_es'])})"
     return texts
+
+
+# Notes the generator adds from a quest's own data (quest-copy.md), in both languages or in neither.
+UNBOUND_NOTE = {"en_us": ("[note] This key ships unbound: set it in Controls.",
+                          "[note] These keys ship unbound: set them in Controls."),
+                "es_es": ("[note] Esta tecla viene sin asignar: asignala en Controles.",
+                          "[note] Estas teclas vienen sin asignar: asignalas en Controles.")}
+UNBOUND_SAID = {"en_us": re.compile(r"\bControls\b|\bunbound\b", re.I),
+                "es_es": re.compile(r"\bControles\b|\bsin asignar\b", re.I)}
+CARRY_NOTE = {"en_us": ("[note] Carry all {n} at once; placed or installed ones don't count.",
+                        "[note] Carry each full amount at once; placed or installed ones don't count."),
+              "es_es": ("[note] Tené las {n} unidades encima a la vez; las colocadas o instaladas no cuentan.",
+                        "[note] Tené cada cantidad completa encima a la vez; las unidades colocadas o instaladas no cuentan.")}
+CARRY_SAID = {"en_us": re.compile(r"\bat once\b", re.I), "es_es": re.compile(r"\ba la vez\b", re.I)}
+
+
+def held_counts(q):
+    """Counts of the quest's non-consuming item tasks that ask for two or more: FTB checks the most items held in the
+    main inventory at one moment, so placed or installed ones never count (F40). Sector tasks, or the one task of a
+    guide or story quest."""
+    if "tasks" in q or "task" in q:
+        tasks = tasks_of(q)
+    elif "item" in q and q.get("type", "item") == "item":
+        tasks = [{"item": q["item"], "count": q.get("count", 1)}]
+    else:
+        tasks = []
+    return [t.get("count", 1) for t in tasks
+            if task_kind(t) == "item" and not t.get("consume") and t.get("count", 1) >= 2]
+
+
+def cited_unbound_keys(paragraphs):
+    return sorted({m.group(2) for m in TAG.finditer(" ".join(paragraphs)) if m.group(1) == "key"} & unbound_keys())
+
+
+def auto_notes(q):
+    """{lang: [note paragraphs]} the quest's data asks for: the unbound keys it cites (F49), unless the text already
+    says where to set them, and the held count of its item tasks (F40), unless it already says "at once"."""
+    notes = {lang: [] for lang in LOCALES}
+    texts = {lang: q[lang]["text"] for lang in LOCALES}
+    keys = cited_unbound_keys(texts["en_us"] + texts["es_es"])
+    if keys and not all(UNBOUND_SAID[lang].search(" ".join(texts[lang])) for lang in LOCALES):
+        for lang in LOCALES:
+            notes[lang].append(UNBOUND_NOTE[lang][len(keys) > 1])
+    counts = held_counts(q)
+    if counts and not all(CARRY_SAID[lang].search(" ".join(texts[lang])) for lang in LOCALES):
+        for lang in LOCALES:
+            notes[lang].append(CARRY_NOTE[lang][0].format(n=counts[0]) if len(counts) == 1 else CARRY_NOTE[lang][1])
+    return notes
+
+
+def with_notes(q, name, ctx):
+    """{lang: paragraphs}: the quest's text with its auto_notes at the end. When they would push a one-page text past
+    MAX_PAGE_CHARS they open a page of their own."""
+    notes = auto_notes(q)
+    texts = {lang: list(q[lang]["text"]) for lang in LOCALES}
+    if not notes["en_us"]:
+        return texts
+    paged = False
+    if all("{page}" not in texts[lang] for lang in LOCALES):
+        for lang in LOCALES:
+            probe = dict(ctx, items=set(), names=set(), keys=set(), textures=set())
+            _, first = compile_text(texts[lang] + notes[lang], lang, probe, f"{name}:{q['key']}:{lang}")
+            paged |= len(first) > MAX_PAGE_CHARS
+    return {lang: texts[lang] + (["{page}"] if paged else []) + notes[lang] for lang in LOCALES}
 
 
 def check_copy(title, subtitle, first_page, lang, where):
@@ -625,6 +693,14 @@ def carried_task(out):
     out["type"] = CARRIED_TASK
     out.pop("consume_items", None)
     return out
+
+
+def unbound_keys():
+    """Key mapping ids the pack ships unbound (tools/unbound_keys.json, read once)."""
+    global _UNBOUND
+    if _UNBOUND is None:
+        _UNBOUND = frozenset(json.loads(UNBOUND_KEYS_FILE.read_text(encoding="utf-8"))["keys"])
+    return _UNBOUND
 
 
 def task_target(t):
