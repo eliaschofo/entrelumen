@@ -150,9 +150,32 @@ public final class RuntimeGameTestsCompass {
     var origin = ruin.origin();
     // The Sealed Stair reaches below the patio: the template sinks by its ground marker's layer.
     var template = level.getStructureManager().get(HeliodorRuins.START).orElseThrow();
-    int sink = HeliodorRuins.groundLayer(template, new net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings());
-    helper.assertTrue(origin.equals(new BlockPos(x0, ground - sink, z0)),
-        "Template floor was not anchored at ground level: " + origin + " (sink " + sink + ")");
+    var settings = new net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings();
+    int sink = HeliodorRuins.groundLayer(template, settings);
+    // Ground near the bottom of the world (the superflat test world: the stair is deeper than the
+    // ground is high) lifts the template onto the world floor instead of cutting the stair off.
+    int minBuild = level.getMinBuildHeight();
+    int lift = Math.max(0, minBuild - (ground - sink));
+    helper.assertTrue(origin.equals(new BlockPos(x0, ground - sink + lift, z0)) && origin.getY() >= minBuild,
+        "Template floor was not anchored at ground level: " + origin + " (sink " + sink + ", lift " + lift + ")");
+    // The Envés gate exists, inside the world and on the antechamber floor, and no step of the
+    // Sealed Stair hangs over the void.
+    BlockPos gate = null;
+    for (var info : template.filterBlocks(origin, settings, Blocks.STRUCTURE_BLOCK))
+      if (info.nbt() != null && EnvesEntrance.GATE_MARKER.equals(info.nbt().getString("metadata"))) gate = info.pos();
+    helper.assertTrue(gate != null, "The start ruin template has no Envés gate marker");
+    for (int dx = -1; dx <= 1; dx++)
+      for (int dy = 0; dy < 4; dy++)
+        helper.assertTrue(level.isInWorldBounds(gate.offset(dx, dy, 0)), "An Envés gate cell lies outside the world");
+    helper.assertTrue(!level.getBlockState(gate.below()).canBeReplaced(), "The Envés gate has no floor under it");
+    int steps = 0;
+    for (var info : template.filterBlocks(origin, settings, Blocks.TUFF_BRICK_STAIRS)) {
+      steps++;
+      helper.assertTrue(level.getBlockState(info.pos()).is(Blocks.TUFF_BRICK_STAIRS)
+          && level.isInWorldBounds(info.pos().below()) && !level.getBlockState(info.pos().below()).canBeReplaced(),
+          "A step of the Sealed Stair is missing or hangs over the void: " + info.pos());
+    }
+    helper.assertTrue(steps > 0, "The start ruin template has no Sealed Stair");
     helper.assertTrue(ruin.box().getXSpan() == size.getX() && ruin.box().getZSpan() == size.getZ()
         && ruin.box().maxY() == origin.getY() + size.getY() - 1,
         "Registered box does not match the template size " + size + ": " + ruin.box());
@@ -175,6 +198,20 @@ public final class RuntimeGameTestsCompass {
         Math.max(ruin.box().minZ() - arrival.getZ(), arrival.getZ() - ruin.box().maxZ()));
     helper.assertTrue(outside && gap == 1 && HeliodorRuins.standable(level, arrival),
         "Arrival point is not a safe spot beside the ruin: " + arrival);
+    if (lift > 0) {
+      // A lifted ruin's arrival step leads down to the ground by a tuff stair: every tread rests on
+      // something, and the last one meets the ground.
+      int treads = 0;
+      BlockPos support = arrival.offset(0, -2, 1);
+      while (level.getBlockState(support).is(Blocks.TUFF_STAIRS)) {
+        helper.assertTrue(level.isInWorldBounds(support.below()) && !level.getBlockState(support.below()).canBeReplaced(),
+            "A tread of the arrival stair hangs in the air: " + support);
+        treads++;
+        support = support.offset(0, -1, 1);
+      }
+      helper.assertTrue(treads > 0 && !level.getBlockState(support).canBeReplaced(),
+          "The lifted ruin's arrival step has no stair down to the ground (" + treads + " treads)");
+    }
 
     // Once per world: a second call returns the record and never rebuilds. The probe sits on the
     // floor layer (the template's corner is under ground and may be below this world's bottom).
@@ -204,7 +241,7 @@ public final class RuntimeGameTestsCompass {
   }
 
   @GameTest(template = "empty", timeoutTicks = 100)
-  public static void pedestalGivesEachPlayerOneCompassEver(GameTestHelper helper) {
+  public static void pedestalGivesACompassToEachPlayerWhoCarriesNone(GameTestHelper helper) {
     var pedestal = helper.absolutePos(new BlockPos(2, 1, 2));
     helper.getLevel().setBlockAndUpdate(pedestal, HeliodorContent.PEDESTAL.get().defaultBlockState());
     helper.assertTrue(helper.getLevel().getBlockState(pedestal)
@@ -230,15 +267,137 @@ public final class RuntimeGameTestsCompass {
     helper.assertTrue(compasses(first) == 1, "An item in hand bypassed the one-per-player rule");
     second.gameMode.useItemOn(second, helper.getLevel(), ItemStack.EMPTY, InteractionHand.MAIN_HAND, hit);
     helper.assertTrue(compasses(second) == 1, "A later player could not take their own compass");
-    // One per UUID ever: losing it does not reopen the pedestal.
+    // A lost compass is re-issued: a player who carries none gets a new one, attuned.
     first.getInventory().clearContent();
     first.gameMode.useItemOn(first, helper.getLevel(), ItemStack.EMPTY, InteractionHand.MAIN_HAND, hit);
-    helper.assertTrue(compasses(first) == 0, "A lost compass was replaced by the pedestal");
+    helper.assertTrue(compasses(first) == 1, "The pedestal did not replace a lost compass");
+    helper.assertTrue(first.getInventory().items.stream().filter(s -> s.is(HeliodorContent.COMPASS.get()))
+        .allMatch(s -> s.has(HeliodorContent.COMPASS_STATE.get())), "The replacement compass arrived unattuned");
+    // ...but never a second one while the first is carried.
+    first.gameMode.useItemOn(first, helper.getLevel(), ItemStack.EMPTY, InteractionHand.MAIN_HAND, hit);
+    helper.assertTrue(compasses(first) == 1, "The pedestal handed a second compass to a player carrying one");
+    // A dropped compass survives fire, lava, cactus and explosions.
+    var dropped = new net.minecraft.world.entity.item.ItemEntity(helper.getLevel(), pedestal.getX() + 0.5,
+        pedestal.getY() + 3, pedestal.getZ() + 0.5, new ItemStack(HeliodorContent.COMPASS.get()));
+    var sources = helper.getLevel().damageSources();
+    for (var source : List.of(sources.lava(), sources.inFire(), sources.cactus(),
+        sources.explosion(null, null), sources.generic()))
+      helper.assertTrue(!dropped.hurt(source, 1000f) && !dropped.isRemoved(),
+          "A dropped compass was destroyed by " + source.getMsgId());
+    helper.assertTrue(dropped.getItem().has(net.minecraft.core.component.DataComponents.FIRE_RESISTANT),
+        "The compass is not fire resistant");
     var data = CompassData.get(first.server);
     var reloaded = CompassData.load(data.save(new CompoundTag(), helper.getLevel().registryAccess()),
         helper.getLevel().registryAccess());
     helper.assertTrue(reloaded.claimed.contains(first.getUUID()) && reloaded.claimed.contains(second.getUUID()),
         "Claims did not survive a reload");
+    helper.succeed();
+  }
+
+  /**
+   * The start ruin's site search runs inside ServerStartedEvent, under the dedicated server's
+   * watchdog: it generates a bounded number of new chunks, however rough the terrain.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void startRuinSiteSearchKeepsToItsChunkBudget(GameTestHelper helper) {
+    var level = helper.getLevel();
+    var size = new net.minecraft.core.Vec3i(16, 8, 16);
+    // Chunks nobody has loaded: far from the test grid and from every other case.
+    int baseX = (helper.absolutePos(BlockPos.ZERO).getX() >> 4 << 4) - 24_576;
+    int baseZ = (helper.absolutePos(BlockPos.ZERO).getZ() >> 4 << 4) + 12_288;
+    var budget = new HeliodorRuins.SiteBudget(level, 3, Long.MAX_VALUE);
+    for (int i = 0; i < 3; i++)
+      helper.assertTrue(budget.afford(baseX + i * 64, baseZ, size), "The budget refused its own chunks");
+    helper.assertTrue(!budget.afford(baseX + 3 * 64, baseZ, size) && budget.spent() && budget.newChunks() == 3,
+        "The budget let a fourth new chunk through");
+    var loaded = helper.absolutePos(BlockPos.ZERO);
+    helper.assertTrue(!budget.afford(loaded.getX(), loaded.getZ(), new net.minecraft.core.Vec3i(1, 1, 1)),
+        "A spent budget answered again");
+    var late = new HeliodorRuins.SiteBudget(level, 64, -1);
+    helper.assertTrue(!late.afford(loaded.getX(), loaded.getZ(), new net.minecraft.core.Vec3i(1, 1, 1)) && late.spent(),
+        "The budget ignored its time limit");
+    var free = new HeliodorRuins.SiteBudget(level, 0, Long.MAX_VALUE);
+    helper.assertTrue(free.afford(loaded.getX(), loaded.getZ(), new net.minecraft.core.Vec3i(1, 1, 1)),
+        "Chunks already loaded were counted as new");
+    if (level.getChunkSource().getGenerator() instanceof net.minecraft.world.level.levelgen.FlatLevelSource)
+      helper.assertTrue(HeliodorRuins.noiseSpread(level, baseX, baseZ, size) == 0,
+          "The noise screen saw relief on a flat world");
+
+    // The whole search, on the real template size, from an area nobody has generated.
+    var template = level.getStructureManager().get(HeliodorRuins.START).orElseThrow().getSize();
+    var near = new BlockPos(baseX, 0, baseZ + 4096);
+    int reach = HeliodorRuins.SEARCH_RADIUS + Math.max(template.getX(), template.getZ()) / 2 + 32;
+    int fromX = (near.getX() - reach) >> 4, toX = (near.getX() + reach) >> 4;
+    int fromZ = (near.getZ() - reach) >> 4, toZ = (near.getZ() + reach) >> 4;
+    int before = 0;
+    for (int cx = fromX; cx <= toX; cx++)
+      for (int cz = fromZ; cz <= toZ; cz++) if (level.getChunkSource().getChunkNow(cx, cz) != null) before++;
+    long started = System.nanoTime();
+    var site = HeliodorRuins.chooseSite(level, near, template);
+    long millis = (System.nanoTime() - started) / 1_000_000L;
+    int after = 0;
+    for (int cx = fromX; cx <= toX; cx++)
+      for (int cz = fromZ; cz <= toZ; cz++) if (level.getChunkSource().getChunkNow(cx, cz) != null) after++;
+    LOGGER.info("Start ruin site search from fresh terrain: {} new chunks in {} ms, site {}", after - before, millis,
+        site);
+    // The budget, plus the column the fallback reads at the centre.
+    helper.assertTrue(after - before <= HeliodorRuins.MAX_NEW_CHUNKS + 1,
+        "The site search generated " + (after - before) + " new chunks");
+    helper.assertTrue(Math.abs(site.getX() + template.getX() / 2 - near.getX()) <= HeliodorRuins.SEARCH_RADIUS
+        && Math.abs(site.getZ() + template.getZ() / 2 - near.getZ()) <= HeliodorRuins.SEARCH_RADIUS,
+        "The site search left its radius: " + site);
+    helper.succeed();
+  }
+
+  /** Anchors are known points: a registered ruin is found however far from the holder it lies. */
+  @GameTest(template = "empty", timeoutTicks = 100)
+  public static void anchorTargetsPointAtARuinAtAnyDistance(GameTestHelper helper) {
+    var player = arrive(helper, "FarAnchor");
+    var level = helper.getLevel();
+    var id = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("entrelumen",
+        "qa_far_anchor_" + Long.toHexString(player.getUUID().getMostSignificantBits() & 0xffffffL));
+    var origin = helper.absolutePos(BlockPos.ZERO).offset(CompassTargets.MAX_RADIUS * 3, 0, 0);
+    var ruin = new RuinData.Ruin(id, id, Level.OVERWORLD, 1,
+        new net.minecraft.world.level.levelgen.structure.BoundingBox(origin.getX(), origin.getY(), origin.getZ(),
+            origin.getX() + 8, origin.getY() + 8, origin.getZ() + 8),
+        origin, origin.above(), List.of(), level.getGameTime());
+    var registry = RuinData.get(level.getServer());
+    registry.add(ruin);
+    try {
+      var list = List.of(objective("qa_far_anchor", 1, CompassTargets.Kind.STRUCTURE,
+          new CompassTargets.Target(CompassTargets.TargetType.ANCHOR, id.toString(), "minecraft:overworld", null,
+              CompassTargets.MIN_RADIUS),
+          new CompassTargets.Condition(CompassTargets.ConditionType.MILESTONE, "qa_never", 1)));
+      var state = HeliodorCompass.compute(player, list);
+      helper.assertTrue(state.state() == CompassState.POINTING
+          && state.target().equals(Optional.of(GlobalPos.of(Level.OVERWORLD, ruin.center()))),
+          "An anchor " + (CompassTargets.MAX_RADIUS * 3) + " blocks away was not pointed at: " + state);
+    } finally {
+      registry.remove(id);
+      StructureProtection.invalidate(level.getServer());
+    }
+    helper.succeed();
+  }
+
+  /**
+   * Dedicated-server spawn protection leaves the shared ruin blocks to everyone: the exempt tag
+   * holds the pedestal, the Envés gate and seals and the Solsticio portal, only ENTRELUMEN blocks,
+   * all unbreakable.
+   */
+  @GameTest(template = "empty", timeoutTicks = 20)
+  public static void spawnProtectionExemptsOnlyTheSharedUnbreakableBlocks(GameTestHelper helper) {
+    var tag = HeliodorRuins.SPAWN_PROTECTION_EXEMPT;
+    for (var block : List.of(HeliodorContent.PEDESTAL.get(), Enves.GATE.get(), Enves.SEAL.get(),
+        Solsticio.PORTAL.get(), RuinContent.PEDESTAL.get(), RuinContent.GATE.get()))
+      helper.assertTrue(block.defaultBlockState().is(tag), block + " is not exempt from spawn protection");
+    int count = 0;
+    for (var holder : net.minecraft.core.registries.BuiltInRegistries.BLOCK.getTagOrEmpty(tag)) {
+      count++;
+      var key = holder.unwrapKey().orElseThrow().location();
+      helper.assertTrue(key.getNamespace().equals("entrelumen"), key + " is not an ENTRELUMEN block");
+      helper.assertTrue(holder.value().defaultDestroyTime() < 0, key + " can be broken inside spawn protection");
+    }
+    helper.assertTrue(count >= 6, "The spawn protection tag lost entries: " + count);
     helper.succeed();
   }
 

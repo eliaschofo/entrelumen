@@ -62,7 +62,9 @@ Implemented by `HeliodorRuins`, with `RuinData` as the registry.
   - An optional DATA structure block with metadata `spawn` marks the arrival point. It is removed after placement.
   - Every `entrelumen:heliodor_pedestal` in the template is registered as a pedestal. A template without one gets a pedestal beside the arrival point.
 - **Site.** The search starts at the vanilla spawn. Candidate centres are sampled every 4 blocks in square rings up to 64 blocks away. A footprint is rejected over water, lava or tree trunks. The first footprint with at most 2 blocks of height spread and no canopy wins. Otherwise the best one seen wins (spread, canopy and distance). The floor height is the most common ground level across the footprint.
+  - The search runs on the server thread inside `ServerStartedEvent`, so it counts against a dedicated server's 60 s watchdog. Before loading a candidate's chunks it reads the generator's noise surface (`getBaseHeight`, `WORLD_SURFACE_WG`) at the footprint's corners and centre, without generating anything, and skips the candidate when that spread exceeds 4 blocks. It then generates at most 24 new chunks and spends at most 10 s; when either runs out it settles for the best site seen (or, when every candidate was screened out, the smoothest one, if the budget still allows reading it), and logs that it stopped early.
 - **Anchoring.** Dips under the floor are filled downwards with the floor block itself, or tuff when that block is not a full cube, down to 12 blocks. The ruin never floats.
+  - Ground near the bottom of the world (a superflat world: the Sealed Stair is deeper than the ground is high) would sink the template below the world floor, cutting the stair off and leaving the Envés gate outside the world. The template is lifted onto the world floor instead; the arrival point then always takes the tuff step on the south side, and a one-wide tuff stair leads from it down to the ground, with tuff poured under every tread.
 - **Spawn.** The arrival point is the middle of the south side, one block outside the ruin, on safe ground; the other sides are fallbacks. When none of the four offers footing (a ruin surrounded by open water, as the full-pack test site 4096 blocks east of spawn is), a tuff step is laid at the south middle, level with the ruin floor, and cleared above; the old last resort (the floor at the centre) now only covers a step outside the build height. The world spawn moves there, facing the ruin. A brand-new player on first login (zero play time, no bed) is placed exactly on the arrival point. Vanilla spawn fuzz would otherwise scatter them within `spawnRadius`. Returning players are never moved.
 - **Template** (design `art/structures/ruin_start.py`, serialised by `tools/build_heliodor_ruin_start.py`, deterministic; `--check` verifies the committed file). A 15×9×15 sun patio:
   - a round tuff floor (radius 7) with a polished tuff rim, a calcite ring and an oxidized-copper sun of eight rays around a chiseled tuff centre; pearlescent froglights glow at the four diagonals of the pedestal;
@@ -96,9 +98,15 @@ ruins: list of {
 
 In Java, `RuinData.get(server).ruins()` returns immutable `RuinData.Ruin` records, and `Ruin.contains(dimension, pos)` tests membership. Only placement code writes the registry. Later anchor ruins should be appended with the same record, so compass `anchor` targets resolve them for free. The pedestal is already unbreakable, so the only compass source cannot be removed. Every other protection (blocks, containers, lecterns, item frames, act locks) belongs to the protection worker.
 
-### Pedestal: one compass per player
+### Pedestal: a compass for whoever carries none
 
-Using the pedestal (`entrelumen:heliodor_pedestal`, with any item or an empty hand) gives the player one Heliodor Compass. The rule is one per player UUID, ever, per world, recorded in `CompassData.claimed`. A second attempt only shows "The pedestal already gave you your compass". Every later player takes their own. A lost compass is not replaced. **Pending for Elias:** a recipe, a re-issue rule, or keep-on-death.
+Using the pedestal (`entrelumen:heliodor_pedestal`, with any item or an empty hand) gives the player a Heliodor Compass. The first claim of each player UUID is recorded in `CompassData.claimed`. A player who already carries a compass only gets "The pedestal already gave you your compass"; a player who carries none (lost, burnt, left in a chest) gets a new one, attuned (Elias, 1 October 2026, review finding F33). There is no crafting recipe. A dropped compass is fire resistant and ignores every damage source (lava, fire, cactus, explosions); it still despawns after the usual five minutes.
+
+### Spawn protection and claims at the start ruin
+
+The world spawn moves beside the pedestal, so on a dedicated server with operators vanilla spawn protection (16 blocks by default) would refuse non-operators the compass and the Envés gate before any mod event fires. The blocks tagged `entrelumen:spawn_protection_exempt` (the Heliodor pedestal, the ruin challenge blocks, the Envés gate and seals and the Solsticio portal, all unbreakable) are left out of it by `DedicatedServerSpawnProtectionMixin`. A dedicated server with spawn protection on logs that once at start; `spawn-protection=0` opens the rest of the spawn area.
+
+With FTB Chunks installed, `FtbChunksClaimGuard` refuses a claim whose chunk touches a protected region (the start ruin, the act ruins, the Overworld rift, the Envés and Solsticio dimensions), the Sealed Stair's heart, seals, gate or antechamber, or the Overworld Solsticio portal, with "This chunk holds a shared site…". The FTB Chunks `interact_whitelist` block tag gains only ENTRELUMEN blocks: the pedestal, the Envés gate and seals and the Solsticio portal.
 
 ## 3. The Heliodor Compass
 
@@ -127,13 +135,13 @@ Guidance must never depend on one structure existing nearby. So `advance_when` p
 
 | `target.type` | Resolves to | Cost |
 |---|---|---|
-| `anchor` | Nearest registered ruin with that ID in the dimension (`RuinData`) | map lookup |
+| `anchor` | Nearest registered ruin with that ID in the dimension (`RuinData`), at any distance; takes no `radius` | map lookup |
 | `position` | Fixed `pos` in `dimension` | none |
 | `dimension` | "Go there": no position | none |
 | `structure` | ID or `#tag`, nearest start within `radius` | bounded search, cached |
 | `biome` | ID or `#tag`, nearest sample within `radius` | bounded search, cached |
 
-`radius` defaults to **1500 blocks and cannot exceed 1500** (Elias, 24 September). When nothing lies within it, the compass shows `NOT_FOUND`: the needle rests and the tooltip and Atlas say there is no trace nearby. It does not spin. A target in another dimension shows `ELSEWHERE`, with a resting needle and the dimension value set.
+`radius` (structure and biome targets only) defaults to **1500 blocks and cannot exceed 1500** (Elias, 24 September). Anchors resolve a ruin the server already registered, a known point however far it was placed, so they take no radius and a `radius` field on one is rejected (review finding F29). When nothing lies within it, the compass shows `NOT_FOUND`: the needle rests and the tooltip and Atlas say there is no trace nearby. It does not spin. A target in another dimension shows `ELSEWHERE`, with a resting needle and the dimension value set.
 
 ### Searches: never a locate per tick
 
@@ -240,13 +248,17 @@ Delivery stays disabled there. The Atlas opens on this entry when the act has no
 ## 5. Tests
 
 - JUnit:
-  - `CompassTargetsTest`: shipped draft equals the authored file; optional mods; every target and condition; invalid documents.
+  - `CompassTargetsTest`: shipped draft equals the authored file; optional mods; every target and condition; anchors take no radius; invalid documents.
+  - `FtbChunksClaimGuardTest`: claims touching a region or a site are refused; the refusal is translated; the FTB Chunks whitelist and the spawn protection tag add only registered ENTRELUMEN blocks.
   - `CompassProgressTest`: first unreached objective; latching; skipping ahead; act gate; completion; lore order.
   - `RingCursorTest`: coverage without duplicates; resumable cursor; 189×189 bound.
 - Isolated GameTests (`RuntimeGameTestsCompass`), also registered on the full-pack QA server since the 24 September merge:
   - `newPlayerArrivesWithAnEmptyInventory`. Only the isolated server must lack a start ruin; a real server places one at its first start.
-  - `startRuinIsAnchoredRegisteredAndPlacedOnce`: dip filled; box equals template size; arrival beside and safe; spawn moved; second call is a no-op; registry reload; newcomer placed and veteran untouched. The site lies 4096 blocks east of the test; on the full pack that is open ocean, so the case first has worldgen generate the site through a ticket and places the ruin once every chunk is ready (generating ~120 chunks inside one tick hit the 60 s watchdog).
-  - `pedestalGivesEachPlayerOneCompassEver`
+  - `startRuinIsAnchoredRegisteredAndPlacedOnce`: dip filled; on the superflat world the template is lifted onto the world floor, the Envés gate lies inside the world on its floor, no stair step hangs over the void and a tuff stair leads from the arrival step down to the ground; box equals template size; arrival beside and safe; spawn moved; second call is a no-op; registry reload; newcomer placed and veteran untouched. The site lies 4096 blocks east of the test; on the full pack that is open ocean, so the case first has worldgen generate the site through a ticket and places the ruin once every chunk is ready (generating ~120 chunks inside one tick hit the 60 s watchdog).
+  - `pedestalGivesACompassToEachPlayerWhoCarriesNone`: one compass per claim; an item in hand does not bypass it; a lost compass is re-issued, never a second one; a dropped compass survives lava, fire, cactus and explosions.
+  - `startRuinSiteSearchKeepsToItsChunkBudget`: the site budget refuses the chunk past its limit and any read past its time; from fresh terrain the whole search generates at most 24 chunks plus the fallback column.
+  - `anchorTargetsPointAtARuinAtAnyDistance`: a ruin three radii away is pointed at.
+  - `spawnProtectionExemptsOnlyTheSharedUnbreakableBlocks`.
   - `compassMovesToTheNextObjectiveWhenTheTeamMeetsTheCondition`: key-item count; latching; party inheritance; shared objective; act lock; shipped draft; item component; Atlas view and wire codec. The draft's first objective reads `NOT_FOUND` without a start ruin and `POINTING` at it when the server placed one.
   - `compassSearchesStayBoundedAndCooperative`: on the superflat world every plains village is predicted and rejected over the whole square; on noise terrain a found village must lie within the radius, otherwise the whole square is scanned. An End biome (absent from any overworld source) samples the whole radius, the biome under the origin is found in one tick, an End city (no End biome) is answered without a search, and no step reaches 250 ms. The snowy village and jungle of the first version only worked on the superflat world.
 - Full pack (QA JAR): `fullpackPlayerArrivesEmptyHanded` and `fullpackFirstJoinGiftsStayDisabled`.
