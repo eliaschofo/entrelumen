@@ -5,13 +5,19 @@ no second JAR list), the companion JAR, pack/ without client-only paths, a serve
 and start scripts. It never writes into the repository tree or into a QA server (tools/runtime.py and
 tools/sync_pack.py stay the isolated QA path). It never starts a server.
 
-    python tools/build_server_pack.py --jar companion/build/libs/entrelumen-0.1.0.jar --zip
+The marker file records every file the builder wrote. A rebuild replaces only a folder whose content still
+matches that record; a folder that was used (world/, server.properties, libraries/, logs/, ops.json, edited
+files, ...) is refused unless --replace is passed, and --replace deletes all of it. To update a running
+server, build into a new folder and copy mods/ and the config folders into the running server instead.
+
+    python tools/build_server_pack.py --output E:/servers/entrelumen --jar companion/build/libs/entrelumen-0.1.0.jar --zip
 """
 from __future__ import annotations
 
 import argparse
 import contextlib
 import fnmatch
+import hashlib
 import io
 import json
 import os
@@ -27,6 +33,7 @@ from runtime import NEOFORGE  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 MARKER = '.entrelumen-server-pack.json'
+HASH_LIMIT = 4 * 1024 * 1024  # files up to this size are fingerprinted by sha256 in the marker
 TEST_MARKERS = ('.entrelumen-test-server.json', '.entrelumen-test-client.json')
 
 # Paths below pack/ that only a client uses (resources, menus, client scripts, display settings).
@@ -62,6 +69,9 @@ ARGS="libraries/net/neoforged/neoforge/$NEOFORGE/unix_args.txt"
 URL="https://maven.neoforged.net/releases/net/neoforged/neoforge/$NEOFORGE/$INSTALLER"
 
 command -v java >/dev/null 2>&1 || { echo "Java 21 is required and was not found on PATH." >&2; exit 1; }
+JAVA_MAJOR=$(java -version 2>&1 | sed -n 's/.* version "\\([0-9][0-9]*\\).*/\\1/p' | head -n 1)
+case "$JAVA_MAJOR" in ''|*[!0-9]*) JAVA_MAJOR=0 ;; esac
+if [ "$JAVA_MAJOR" -lt 21 ]; then echo "Java 21 or newer is required; the java on PATH reports major version $JAVA_MAJOR (0 means unreadable)." >&2; exit 1; fi
 
 # The template is copied only once: an existing server.properties is never overwritten.
 [ -f server.properties ] || cp server.properties.template server.properties
@@ -97,6 +107,14 @@ set URL=https://maven.neoforged.net/releases/net/neoforged/neoforge/%NEOFORGE%/%
 where java >nul 2>nul
 if errorlevel 1 (
   echo Java 21 is required and was not found on PATH.
+  exit /b 1
+)
+set JAVAVER=
+for /f "tokens=3" %%v in ('java -version 2^>^&1 ^| findstr /c:" version "') do if not defined JAVAVER set JAVAVER=%%~v
+set JAVAMAJOR=0
+for /f "delims=.-+" %%m in ("%JAVAVER%") do set JAVAMAJOR=%%m
+if %JAVAMAJOR% LSS 21 (
+  echo Java 21 or newer is required; the java on PATH reports version "%JAVAVER%".
   exit /b 1
 )
 
@@ -188,8 +206,63 @@ def find_companion_jar() -> Path:
     return max(candidates, key=lambda p: p.stat().st_mtime)
 
 
-def check_destination(destination: Path) -> None:
-    """Refuse the repository tree, a QA server or client, and any folder this tool did not create."""
+def scan_tree(folder: Path) -> tuple[dict, list]:
+    """Return ({relative file: {size, sha256}}, [relative dirs]); stop on any link, never follow one.
+
+    Files up to HASH_LIMIT carry a sha256 so an edit (an accepted eula.txt, a tuned config) shows up as a change;
+    larger files (JARs) are compared by size only.
+    """
+    files: dict = {}
+    dirs: list = []
+    for current, dnames, fnames in os.walk(folder):
+        for name in dnames + fnames:
+            path = Path(current, name)
+            if path.is_symlink() or path.is_junction():
+                raise SystemExit(f'Refusing {folder}: it holds a link: {path}')
+        for name in dnames:
+            dirs.append(Path(current, name).relative_to(folder).as_posix())
+        for name in fnames:
+            path = Path(current, name)
+            size = path.stat().st_size
+            digest = hashlib.sha256(path.read_bytes()).hexdigest() if size <= HASH_LIMIT else None
+            files[path.relative_to(folder).as_posix()] = {'size': size, 'sha256': digest}
+    return files, sorted(dirs)
+
+
+def read_marker(destination: Path) -> dict:
+    try:
+        data = json.loads((destination / MARKER).read_text(encoding='utf-8'))
+    except (OSError, ValueError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def write_marker(destination: Path, complete: bool) -> None:
+    """Record what the builder wrote, so a later rebuild can tell a pristine folder from a used one."""
+    marker = {'owner': 'entrelumen', 'kind': 'server-pack', 'neoforge': NEOFORGE, 'complete': complete}
+    if complete:
+        files, dirs = scan_tree(destination)
+        files.pop(MARKER, None)
+        marker['files'] = files
+        marker['dirs'] = dirs
+    write_text(destination / MARKER, json.dumps(marker, indent=1, sort_keys=True) + '\n')
+
+
+def foreign_entries(destination: Path, marker: dict) -> list:
+    """Paths in destination that the builder did not write, or that changed since: world, properties, logs, edits."""
+    if not isinstance(marker.get('files'), dict) or not isinstance(marker.get('dirs'), list):
+        return ['(the marker records no file list)']
+    files, dirs = scan_tree(destination)
+    files.pop(MARKER, None)
+    known = marker['files']
+    found = [rel for rel, now in files.items() if known.get(rel) != now]
+    found += [rel + '/' for rel in dirs if rel not in marker['dirs']]
+    return sorted(found)
+
+
+def check_destination(destination: Path, replace: bool = False) -> None:
+    """Refuse the repository tree, a QA server or client, any folder this tool did not create and,
+    unless replace is set, a pack folder that has been used or edited since it was built."""
     if destination == ROOT or destination.is_relative_to(ROOT):
         raise SystemExit('Refusing to write the server pack inside the repository tree')
     if ROOT.is_relative_to(destination):
@@ -197,18 +270,30 @@ def check_destination(destination: Path) -> None:
     for folder in (destination, *destination.parents):
         if any((folder / m).exists() for m in TEST_MARKERS):
             raise SystemExit(f'Refusing a QA instance: {folder}')
-    if destination.exists() and not (destination / MARKER).is_file():
+    if not destination.exists():
+        return
+    if not (destination / MARKER).is_file():
         if not destination.is_dir() or any(destination.iterdir()):
             raise SystemExit('Refusing a non-empty folder that is not a previous server pack')
+        return
+    marker = read_marker(destination)
+    if marker.get('owner') != 'entrelumen' or marker.get('kind') != 'server-pack':
+        raise SystemExit('Refusing a folder whose server-pack marker is unreadable')
+    if marker.get('complete') is False or replace:
+        return  # an unfinished build never ran, or the person asked for a wipe
+    foreign = foreign_entries(destination, marker)
+    if foreign:
+        shown = ', '.join(foreign[:8]) + (f' and {len(foreign) - 8} more' if len(foreign) > 8 else '')
+        raise SystemExit(
+            f'Refusing to replace {destination}: it holds files this tool did not write or that changed since ({shown}). '
+            'Build into a new folder and copy mods/ and the config folders into the running server; '
+            'or pass --replace to delete this whole folder, world included.')
 
 
 def remove_previous(destination: Path) -> None:
     """Delete a previous server pack folder; stop on any link, never follow one."""
-    for current, dirs, files in os.walk(destination):
-        for name in dirs + files:
-            path = Path(current, name)
-            if path.is_symlink() or path.is_junction():
-                raise SystemExit(f'Refusing to delete {destination}: it holds a link: {path}')
+    scan_tree(destination)
+
     def writable(function, path, _error):
         os.chmod(path, stat.S_IWRITE)
         function(path)
@@ -231,20 +316,43 @@ def install_jars(destination: Path) -> int:
     return code
 
 
-def build(output: Path, jar: Path, pvp: bool = False, make_zip: bool = False) -> dict:
+def zip_path(destination: Path) -> Path:
+    return Path(str(destination) + '.zip')
+
+
+def check_zip(destination: Path) -> None:
+    """Refuse to overwrite a zip next to the output unless it is a previous archive of this tool's pack."""
+    archive = zip_path(destination)
+    if not archive.exists():
+        return
+    inner = f'{destination.name}/{MARKER}'
+    try:
+        with zipfile.ZipFile(archive) as bundle:
+            marker = json.loads(bundle.read(inner).decode('utf-8'))
+    except (OSError, KeyError, ValueError, zipfile.BadZipFile):
+        marker = None
+    if not isinstance(marker, dict) or marker.get('owner') != 'entrelumen' or marker.get('kind') != 'server-pack':
+        raise SystemExit(f'Refusing to overwrite {archive}: it is not a server pack archive written by this tool. '
+                         'Move or delete it, or pick another --output.')
+
+
+def build(output: Path, jar: Path, pvp: bool = False, make_zip: bool = False, replace: bool = False) -> dict:
     destination = output.resolve()
     jar = jar.resolve()
     if not jar.is_file() or not jar.name.startswith('entrelumen-') or jar.suffix != '.jar':
         raise SystemExit('Expected a built entrelumen-*.jar')
-    check_destination(destination)
+    check_destination(destination, replace)
+    if make_zip:
+        check_zip(destination)  # before anything is deleted
     if destination.exists():
         remove_previous(destination)
     destination.mkdir(parents=True)
-    write_text(destination / MARKER, json.dumps({'owner': 'entrelumen', 'kind': 'server-pack', 'neoforge': NEOFORGE}, indent=2) + '\n')
+    write_marker(destination, complete=False)
     install_jars(destination)
     shutil.copy2(jar, destination / 'mods' / jar.name)
     files = copy_pack(ROOT / 'pack', destination)
     write_launchers(destination, pvp)
+    write_marker(destination, complete=True)
     result = {'output': str(destination), 'neoforge': NEOFORGE, 'packFiles': files,
               'mods': len(list((destination / 'mods').glob('*.jar')))}
     if make_zip:
@@ -253,7 +361,8 @@ def build(output: Path, jar: Path, pvp: bool = False, make_zip: bool = False) ->
 
 
 def zip_folder(destination: Path) -> Path:
-    archive = Path(str(destination) + '.zip')
+    archive = zip_path(destination)
+    check_zip(destination)
     if archive.exists():
         archive.unlink()
     with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as bundle:
@@ -270,13 +379,17 @@ def zip_folder(destination: Path) -> Path:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--output', type=Path, default=ROOT.parent / 'server-pack',
-                        help='new folder outside the repository (default: server-pack next to it)')
+    parser.add_argument('--output', type=Path, required=True,
+                        help='server folder to create, outside the repository and off C: (about 1.1 GB, twice with --zip); '
+                             'there is no default on purpose')
     parser.add_argument('--jar', type=Path, help='built entrelumen-*.jar (default: newest in companion/build/libs)')
     parser.add_argument('--pvp', choices=['true', 'false'], default='false', help='pvp in the template (default false)')
     parser.add_argument('--zip', action='store_true', help='also write <output>.zip')
+    parser.add_argument('--replace', action='store_true',
+                        help='delete a previous server pack folder even if it was used (world, server.properties, libraries, '
+                             'edits); without it only a pristine folder is replaced')
     args = parser.parse_args()
-    result = build(args.output, args.jar or find_companion_jar(), args.pvp == 'true', args.zip)
+    result = build(args.output, args.jar or find_companion_jar(), args.pvp == 'true', args.zip, args.replace)
     print(json.dumps(result, indent=2))
     return 0
 

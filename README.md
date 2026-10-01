@@ -30,13 +30,16 @@ The updated dedicated server starts and saves cleanly. The updated clients have 
 python tools/build_server_pack.py --jar companion/build/libs/entrelumen-<version>.jar --output <new folder> --zip
 ```
 
-The folder holds the server-side dependency JARs (installed from the same lock as the client, `curate_pack.py --side server`), the companion JAR, `pack/` without its client-only paths (`resourcepacks/`, `kubejs/client_scripts/`, `kubejs/assets/`, `config/fancymenu/`, `config/defaultoptions/`, client display configs), `server.properties.template`, `eula.txt` (`eula=false`), `user_jvm_args.txt` (`-Xmx6G`) and the launchers `start.sh` / `start.bat`. With Java 21 installed, set `eula=true` after reading the Minecraft EULA and run the launcher: it downloads and verifies the NeoForge 21.1.249 installer on first run, copies the template to `server.properties` only if none exists, and starts the server.
+`--output` is required on purpose: the folder is about 1.1 GB (twice with `--zip`, plus the libraries the NeoForge installer adds on first run), so pick a drive with room and not C:.
+
+The folder holds the server-side dependency JARs (installed from the same lock as the client, `curate_pack.py --side server`), the companion JAR, `pack/` without its client-only paths (`resourcepacks/`, `kubejs/client_scripts/`, `kubejs/assets/`, `config/fancymenu/`, `config/defaultoptions/`, client display configs), `server.properties.template`, `eula.txt` (`eula=false`), `user_jvm_args.txt` (`-Xmx6G`) and the launchers `start.sh` / `start.bat`. With Java 21 or newer installed (the launchers stop with a message on an older Java), set `eula=true` after reading the Minecraft EULA and run the launcher: it downloads and verifies the NeoForge 21.1.249 installer on first run, copies the template to `server.properties` only if none exists, and starts the server.
 
 Template defaults: `allow-flight=true`, `spawn-protection=0`, `simulation-distance=6`, `view-distance=10`, `max-players=10`, empty `server-ip` and `level-seed`, and `pvp=false` (this is a co-op pack; pass `--pvp true` to change it).
 
 - **`allow-flight=true` is required.** Vanilla (`false`) kicks Immersive Aircraft pilots after about 160 ticks of level flight, and jetpacks hit the same check.
 - `spawn-protection=0` is recommended: with the vanilla default only operators can build near the world spawn, which blocks the first-hour starter area.
-- An existing `server.properties` is never overwritten, so upgrade an old server by editing it by hand.
+- The launcher never overwrites an existing `server.properties`. To update a server that is already running, build a new folder and copy its `mods/` and config folders (`config/`, `defaultconfigs/`, `kubejs/`) into the running server; edit `server.properties` by hand.
+- Run the builder again on the same `--output` only for a pristine folder: the marker file lists what the builder wrote, and a folder that was used (`world/`, `server.properties`, `libraries/`, `logs/`, `ops.json`, `whitelist.json`, an accepted `eula.txt`) is refused. `--replace` overrides that and deletes the whole folder, world included. An existing `<output>.zip` is overwritten only if it is an archive this tool wrote.
 - `tools/runtime.py` and `tools/sync_pack.py` are the isolated local QA path, not the server pack.
 
 ## Español
@@ -59,13 +62,16 @@ La meta de rendimiento usa i7-8750H, GTX 1070 y 16 GB de RAM, a 1080p, 10 chunks
 python tools/build_server_pack.py --jar companion/build/libs/entrelumen-<versión>.jar --output <carpeta nueva> --zip
 ```
 
-La carpeta trae los JAR de servidor (instalados desde el mismo lock que el cliente, `curate_pack.py --side server`), el JAR del mod propio, `pack/` sin sus rutas de cliente (`resourcepacks/`, `kubejs/client_scripts/`, `kubejs/assets/`, `config/fancymenu/`, `config/defaultoptions/`, configuraciones de pantalla del cliente), `server.properties.template`, `eula.txt` (`eula=false`), `user_jvm_args.txt` (`-Xmx6G`) y los lanzadores `start.sh` / `start.bat`. Con Java 21 instalado, leé el EULA de Minecraft, poné `eula=true` y ejecutá el lanzador: la primera vez descarga y verifica el instalador de NeoForge 21.1.249, copia la plantilla a `server.properties` sólo si no existe y arranca el servidor.
+`--output` es obligatorio a propósito: la carpeta pesa cerca de 1,1 GB (el doble con `--zip`, más las librerías que el instalador de NeoForge suma en la primera ejecución), así que elegí un disco con lugar y no C:.
+
+La carpeta trae los JAR de servidor (instalados desde el mismo lock que el cliente, `curate_pack.py --side server`), el JAR del mod propio, `pack/` sin sus rutas de cliente (`resourcepacks/`, `kubejs/client_scripts/`, `kubejs/assets/`, `config/fancymenu/`, `config/defaultoptions/`, configuraciones de pantalla del cliente), `server.properties.template`, `eula.txt` (`eula=false`), `user_jvm_args.txt` (`-Xmx6G`) y los lanzadores `start.sh` / `start.bat`. Con Java 21 o superior instalado (los lanzadores se detienen con un aviso si la versión es anterior), leé el EULA de Minecraft, poné `eula=true` y ejecutá el lanzador: la primera vez descarga y verifica el instalador de NeoForge 21.1.249, copia la plantilla a `server.properties` sólo si no existe y arranca el servidor.
 
 Valores de la plantilla: `allow-flight=true`, `spawn-protection=0`, `simulation-distance=6`, `view-distance=10`, `max-players=10`, `server-ip` y `level-seed` vacíos, y `pvp=false` (es un pack cooperativo; con `--pvp true` se cambia).
 
 - **`allow-flight=true` es obligatorio.** Con el valor de vanilla (`false`) el servidor expulsa a quien pilotea un Immersive Aircraft tras unos 160 ticks de vuelo nivelado, y los jetpacks chocan con la misma regla.
 - `spawn-protection=0` es lo recomendado: con el valor de vanilla sólo los operadores construyen cerca del spawn y eso traba la zona de las primeras horas.
-- Un `server.properties` existente nunca se pisa; para actualizar un servidor viejo, editalo a mano.
+- El lanzador nunca pisa un `server.properties` existente. Para actualizar un servidor que ya está andando, armá una carpeta nueva y copiá su `mods/` y sus carpetas de configuración (`config/`, `defaultconfigs/`, `kubejs/`) al servidor en uso; el `server.properties` se edita a mano.
+- Volvé a correr el armador sobre el mismo `--output` sólo si la carpeta está intacta: el archivo marcador lista lo que escribió el armador, y una carpeta que ya se usó (`world/`, `server.properties`, `libraries/`, `logs/`, `ops.json`, `whitelist.json`, un `eula.txt` aceptado) se rechaza. `--replace` lo fuerza y borra la carpeta entera, mundo incluido. Un `<output>.zip` existente sólo se sobrescribe si es un archivo que escribió esta herramienta.
 - `tools/runtime.py` y `tools/sync_pack.py` son el camino local de QA aislado, no el server pack.
 
 ## Source and project layout / Código y estructura
