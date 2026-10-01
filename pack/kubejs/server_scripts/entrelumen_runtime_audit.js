@@ -3693,7 +3693,6 @@ const entrelumenAuditTargets = {
     "minecraft:rail",
     "minecraft:raw_iron",
     "minecraft:recovery_compass",
-    "minecraft:red_bed",
     "minecraft:red_candle",
     "minecraft:red_mushroom",
     "minecraft:redstone",
@@ -6185,7 +6184,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "3638513412915901"
+  "signature": "bc708872e2a81e63"
 };
 
 ServerEvents.afterRecipes(event => {
