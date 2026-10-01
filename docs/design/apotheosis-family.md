@@ -199,11 +199,10 @@ Book separation at the Ark became redundant with the Apothic and Atlas libraries
 
 ## Keybindings
 
-Native defaults are kept and now pinned in the client preset, with no world-context collision:
+The client preset pins these, with no world-context collision and no shadowing of a bare key by a Ctrl+ or Shift+ combination:
 
-- Ctrl+T opens the World Tier screen. FTB Quests' Ctrl+T acts only in its quest editor GUI.
-- Ctrl+O toggles radial mining. JEI's Ctrl+O acts only in GUIs, and NeoForge 21.1's modifier lookup gives the Ctrl binding precedence over Occultism's plain O.
-- Shift+T links an item to chat inside inventories. Just Dire Things' Shift+T acts in the world.
+- Alt+F5 opens the World Tier screen and Alt+9 toggles radial mining (changed 2026-10-01). Their native Ctrl+T and Ctrl+O were wrong for this pack: NeoForge 21.1's modifier lookup gives a Ctrl binding precedence over the plain key, and Ctrl is held to sprint, so a running player pressing T for chat opened the World Tier screen and O for Occultism's satchel toggled radial mining. See docs/design/keybinding-review.md.
+- Shift+T links an item to chat inside inventories (a GUI-only binding, so it hides nothing in the world). Just Dire Things' tool UI left Shift+T for the same reason.
 
 The compare key (Left Shift) is inert because comparisons are disabled. Placebo's keypad 8/9 supporter-trail toggles were already present.
 

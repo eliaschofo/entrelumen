@@ -23,7 +23,7 @@ guardadas; Restablecer en Controles adopta el preset.
 | Backpack / Mochila | B |
 | Claims / Parcelas | K |
 | Tool belt / Cinturón | R (world / mundo) |
-| Tool belt slot / Ranura del cinturón | Shift+R |
+| Tool belt slot / Ranura del cinturón | Shift+] |
 | Ars spell selection / Selección de hechizos Ars | F6 |
 | Mekanism armor modes / Modos de armadura Mekanism | Alt+arrows / Alt+flechas |
 | Villager pickup / Levantar aldeano | Alt+O |
