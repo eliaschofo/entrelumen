@@ -66,7 +66,8 @@ textures the canvas draws, and tools/quest_client_facts.json has to name exactly
 texture, or a Fusion or CTM connected-texture sheet, read from its .mcmeta through the pinned JARs, the companion
 and the pack's resource pack). A stale file is an error: the client would draw a strip of frames or tiles squeezed
 into the box. Rewrite it with --write-client-facts and regenerate. A sheet the compile had to leave as a strip is an
-error too.
+error too. A 3D item render that sits on a node is a warning (FTB draws it above the node), and a link to a quest the
+canvas still hides, which the compile points at the quest's chapter, is listed as INFO.
 
 Registry caches live outside the repository, one file per set of JARs, so worktrees with different
 locks do not rebuild each other's.
@@ -1202,9 +1203,10 @@ def client_facts(textures, items, assets):
             'sheets': sheets, 'items': {item: assets.flat_sprite(item) for item in sorted(items)}}
 
 
-def client_checks(errors, warnings, write=False, assets=None, quest_keys=None):
+def client_checks(errors, warnings, write=False, assets=None, quest_keys=None, infos=None):
     """What the client draws, after a compile (image_budget): the facts file against the JARs, the sheets the compile
-    left as strips (errors) and the 3D item renders that sit on a node (warnings)."""
+    left as strips (errors), the 3D item renders that sit on a node (warnings) and the links to hidden quests that
+    the compile pointed at their chapter (infos)."""
     import quest_client
     expected = client_facts(quest_client.SEEN['textures'], quest_client.SEEN['items'], assets or preview_assets())
     if write:
@@ -1230,6 +1232,11 @@ def client_checks(errors, warnings, write=False, assets=None, quest_keys=None):
         warnings.append(f'{chapter}: image {quest_engine.IMAGE_KEYS.get(image, image)} draws {item} as a 3D render '
                         f'over node {keys.get(node, node)}: FTB draws item renders about 150 above the canvas '
                         '(GuiGraphics.renderItem), over the node frame; move it off the node or draw a flat picture')
+    if infos is not None:
+        for (source, hidden), chapter in sorted({(s, t): c for s, t, c in quest_client.LINKS}.items()):
+            where = keys.get(source) or quest_engine.IMAGE_KEYS.get(source, source)
+            infos.append(f'{where} links to {keys.get(hidden, hidden)}, which the canvas hides until its time: the '
+                         f'link opens chapter {chapter} instead')
 
 
 def picked(name, flt, *others):
@@ -1241,7 +1248,7 @@ def main():
     args = sys.argv[1:]
     write_facts = '--write-client-facts' in args
     flt = tuple(a for a in args if not a.startswith('--'))   # chapter names or substrings; several are allowed
-    errors, chapters, keys, warnings = [], set(), set(), []
+    errors, chapters, keys, warnings, infos = [], set(), set(), [], []
     total = 0
     files = sorted(GUIDES.glob('*.json'))
     for p in files:
@@ -1281,9 +1288,11 @@ def main():
     try:
         image_budget(warnings, flt)
         quest_keys = {quest_engine.stable_id('quest:' + k): k for k in all_keys}
-        client_checks(errors, warnings, write_facts, quest_keys=quest_keys)
+        client_checks(errors, warnings, write_facts, quest_keys=quest_keys, infos=infos)
     except AssertionError as e:   # the book does not compile: generate_quests.py reports it in full
         warnings.append(f'image budget not counted: the book does not compile ({e})')
+    for i in infos:
+        print('INFO', i)
     for w in warnings:
         print('WARN', w)
     for e in errors:

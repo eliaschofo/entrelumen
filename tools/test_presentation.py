@@ -5,6 +5,7 @@ Static: what a font or an image looks like in the client is still to be seen (th
 Run on its own or through tools/test_sector_book.py, which imports these cases."""
 import json
 import math
+import re
 import unittest
 
 import quest_art
@@ -388,6 +389,43 @@ class ClientDraw(unittest.TestCase):
         self.assertEqual((t["width"], t["height"], t["rotation"]), (0.1, 4.0, 0.0))
         self.assertEqual(d["rotation"], 45.0)                                        # a diagonal stays turned
         self.assertEqual((x["width"], x["rotation"]), (4.0, 90.0))                    # a texture keeps its grain
+
+    def test_links_to_hidden_quests_open_their_chapter(self):
+        shown = {"id": "S", "dependencies": []}
+        branch = {"id": "H", "dependencies": ["S"], "hide_until_deps_complete": True}
+        secret = {"id": "Z", "dependencies": [], "invisible": True}
+        loose = {"id": "L", "dependencies": [], "hide_until_deps_complete": True}   # nothing to wait for: visible
+        chapter = {"id": "C1", "filename": "one", "quests": [shown, branch, secret, loose],
+                   "images": [dict(picture(qe.PX), id="I", click_action="open_quest:H")]}
+        link = lambda target: json.dumps(["", {"text": "see", "underlined": True,
+                                               "clickEvent": {"action": "change_page", "value": target}}],
+                                         ensure_ascii=False, separators=(",", ":"))
+        languages = {lang: {"quest.S.quest_desc": ["Plain.", link("H/2"), link("S")], "quest.S.title": link("Z"),
+                            "quest.S.quest_subtitle": link("L")} for lang in LOCALES}
+        quest_client.fix_links([chapter], languages)
+        for lang in LOCALES:
+            desc = languages[lang]["quest.S.quest_desc"]
+            self.assertEqual(desc[0], "Plain.")
+            self.assertEqual(json.loads(desc[1])[1]["clickEvent"]["value"], "C1")   # the page number goes too
+            self.assertEqual(json.loads(desc[1])[1]["text"], "see")                # the text stays
+            self.assertEqual(desc[2], link("S"))
+            self.assertEqual(json.loads(languages[lang]["quest.S.title"])[1]["clickEvent"]["value"], "C1")
+            self.assertEqual(languages[lang]["quest.S.quest_subtitle"], link("L"))
+        self.assertEqual(chapter["images"][0]["click_action"], "open_quest:C1")
+        self.assertEqual(sorted(quest_client.LINKS), [("I", "H", "one"), ("S", "H", "one"), ("S", "Z", "one")])
+
+    def test_the_book_links_no_hidden_quest(self):
+        chapters = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((OUT / "chapters").glob("*.snbt"))]
+        hidden = quest_client.hidden_quests(chapters)
+        self.assertTrue(hidden)
+        for chapter in chapters:
+            for img in chapter.get("images", []):
+                self.assertNotIn(img.get("click_action", "")[len("open_quest:"):], hidden, img["id"])
+        for lang in LOCALES:
+            text = (OUT / "lang" / f"{lang}.snbt").read_text(encoding="utf-8")
+            targets = re.findall(r'change_page\\",\\"value\\":\\"([0-9A-F]{16})', text)
+            self.assertGreater(len(targets), 100)
+            self.assertFalse(set(targets) & set(hidden), lang)
 
     def test_every_spanish_locale_reads_the_spanish_strings(self):
         import tempfile

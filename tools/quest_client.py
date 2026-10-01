@@ -26,6 +26,10 @@ in tools/generate_quests.py, after the chapters are built and before they are wr
   draws it every frame wherever the view is (15,328 in the book, 411 in Create · Kinetics). A colour fill turned a
   quarter turn is the same box with width and height swapped, and one turned half a turn is the same box unturned
   (unturn). Textures keep their rotation: their grain would change.
+- Links to hidden quests. A description's change_page link and an image's open_quest click call QuestScreen.open,
+  which opens a quest's panel whether or not the player may see it yet (viewQuest ignores visibility). A link to a
+  quest that the canvas hides (an invisible secret, or hide_until_deps_complete with dependencies) opens that
+  quest's chapter instead, keeping its text (fix_links); tools/check_guides.py lists them as info (LINKS).
 - Spanish players. FTB sends a player the book's strings for their exact locale (TranslationManager
   .sendTableToPlayer) and English otherwise, and Minecraft loads a resource pack's or a mod's lang file for the exact
   locale too: a player on es_ar, es_mx, es_cl, es_uy, es_ve or es_ec would read the book, the companion and the
@@ -58,6 +62,7 @@ SPANISH = ("es_ar", "es_cl", "es_ec", "es_mx", "es_uy", "es_ve")   # vanilla's S
 SEEN = {"textures": set(), "items": set()}   # what the last pass met: check_guides.py checks the facts against it
 KEPT = []         # sheets the last pass had to leave as strips: (chapter, image id, texture, why)
 OVER_NODES = []   # 3D item renders on a node: (chapter, image id, item, quest id; for a link, its quest's)
+LINKS = []        # links retargeted to a chapter: (source: quest/image id, hidden quest id, its chapter's file name)
 _FACTS = None
 
 
@@ -84,6 +89,7 @@ def reset():
         refs.clear()
     KEPT.clear()
     OVER_NODES.clear()
+    LINKS.clear()
 
 
 def atlas_sprite(texture):
@@ -293,6 +299,66 @@ def close_seams(images):
             a[extent] = _num(a[extent] + step / VISUAL)
         grown += bool(grow)
     return grown
+
+
+def hidden_quests(chapters):
+    """{quest id: (chapter id, chapter file name)} of the quests a player does not see before their time: invisible
+    ones, and hide_until_deps_complete ones that have dependencies."""
+    out = {}
+    for chapter in chapters:
+        for q in chapter.get("quests", []):
+            if q.get("invisible") or (q.get("hide_until_deps_complete") and q.get("dependencies")):
+                out[q["id"]] = (chapter["id"], chapter.get("filename", chapter["id"]))
+    return out
+
+
+def _retarget(component, hidden, found):
+    """Point every change_page click of a text component at a hidden quest to its chapter instead."""
+    if isinstance(component, list):
+        for part in component:
+            _retarget(part, hidden, found)
+    elif isinstance(component, dict):
+        click = component.get("clickEvent")
+        if isinstance(click, dict) and click.get("action") == "change_page":
+            target = str(click.get("value", "")).split("/", 1)[0]
+            if target in hidden:
+                click["value"] = hidden[target][0]
+                found.append(target)
+        for key in ("extra", "with"):
+            if key in component:
+                _retarget(component[key], hidden, found)
+        hover = component.get("hoverEvent")
+        if isinstance(hover, dict) and hover.get("action") == "show_text":
+            _retarget(hover.get("contents"), hidden, found)
+
+
+def fix_links(chapters, languages):
+    """Links and image clicks that would open a hidden quest open its chapter (see the module notes). chapters is
+    every compiled chapter (dicts, changed in place); languages the book's tables (changed in place)."""
+    hidden = hidden_quests(chapters)
+    for chapter in chapters:
+        for img in chapter.get("images", []):
+            click = img.get("click_action", "")
+            if click.startswith("open_quest:") and click[len("open_quest:"):] in hidden:
+                target = click[len("open_quest:"):]
+                img["click_action"] = "open_quest:" + hidden[target][0]
+                LINKS.append((img["id"], target, hidden[target][1]))
+    for lang, table in languages.items():
+        for key, value in table.items():
+            lines = value if isinstance(value, list) else [value]
+            changed = False
+            for n, line in enumerate(lines):
+                if '"change_page"' not in line:
+                    continue
+                component, found = json.loads(line), []
+                _retarget(component, hidden, found)
+                if found:
+                    lines[n] = json.dumps(component, ensure_ascii=False, separators=(",", ":"))
+                    changed = True
+                    if lang == "en_us":
+                        LINKS.extend((key.split(".")[1], target, hidden[target][1]) for target in found)
+            if changed and not isinstance(value, list):
+                table[key] = lines[0]
 
 
 def spanish_copies(root, files):

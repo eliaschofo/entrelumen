@@ -23,7 +23,8 @@ Presentation v2 (tools/quest_v2.py): a guide or a story chapter with "presentati
 markup and canvas art; one without it compiles exactly as before.
 
 What the real client draws (tools/quest_client.py, 1 October 2026): every compiled chapter goes through a last pass
-that corrects what FTB Quests' client would draw differently from what the canvas means (sheets drawn whole), and
+that corrects what FTB Quests' client would draw or open differently from what the book means (sheets drawn whole,
+item renders above the nodes, seams, rotated fills never culled, links that open hidden quests), and
 every Spanish strings file gets a copy for the other Spanish locales, which FTB and Minecraft match exactly. Its
 facts about textures come from tools/quest_client_facts.json, which tools/check_guides.py keeps in sync with the JARs.
 """
@@ -846,8 +847,11 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
         files[OUT / "chapters" / (book["hub"]["chapter"] + ".snbt")] = snbt(hub)
     # What the real client draws (tools/quest_client.py): sheets as sprites or tile glyphs.
     quest_client.reset()
-    for path in sorted(p for p in files if p.parent == OUT / "chapters"):
-        files[path] = snbt(quest_client.fix_chapter(json.loads(files[path]), languages))
+    compiled = {path: quest_client.fix_chapter(json.loads(files[path]), languages)
+                for path in sorted(p for p in files if p.parent == OUT / "chapters")}
+    quest_client.fix_links(list(compiled.values()), languages)   # links to hidden quests open their chapter
+    for path, chapter in compiled.items():
+        files[path] = snbt(chapter)
     files.update(quest_client.font_files(ROOT))
     files[OUT / "chapter_groups.snbt"] = snbt({"chapter_groups": groups})
     for lang in LOCALES:
