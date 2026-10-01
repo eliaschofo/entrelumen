@@ -28,9 +28,17 @@ public final class Entrelumen {
   public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks("entrelumen");
   public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
       DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, "entrelumen");
+  /**
+   * The six Ark modules are one-time rewards without a recipe, so none may be lost: blast-proof (3 to
+   * mine, 1200 against explosions, wither- and dragon-immune by tag), dropped by any tool, and as items
+   * fireproof, undamageable and never despawning ({@link ArkFieldJournalItem}).
+   */
+  static BlockBehaviour.Properties moduleProperties() {
+    return BlockBehaviour.Properties.of().strength(3f, 1200f);
+  }
+
   public static final DeferredBlock<LogisticsModuleBlock> LOGISTICS_MODULE = BLOCKS.register(
-      "logistics_module", () -> new LogisticsModuleBlock(
-          BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
+      "logistics_module", () -> new LogisticsModuleBlock(moduleProperties()));
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LogisticsStock>>
       LOGISTICS_STOCK = BLOCK_ENTITIES.register("logistics_stock",
           () -> BlockEntityType.Builder.of(LogisticsStock::new, LOGISTICS_MODULE.get()).build(null));
@@ -69,12 +77,11 @@ public final class Entrelumen {
     for (var kind : ArkFieldJournals.Kind.values()) {
       String id = kind.module();
       if (kind == ArkFieldJournals.Kind.LOGISTICS) {
-        ITEMS.register(id, () -> new ArkFieldJournalItem(LOGISTICS_MODULE.get(), new Item.Properties()));
+        ITEMS.register(id, () -> new ArkFieldJournalItem(LOGISTICS_MODULE.get(), new Item.Properties().fireResistant()));
         continue;
       }
-      var module = BLOCKS.register(id, () -> new ArkFieldJournalBlock(kind,
-          BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
-      ITEMS.register(id, () -> new ArkFieldJournalItem(module.get(), new Item.Properties()));
+      var module = BLOCKS.register(id, () -> new ArkFieldJournalBlock(kind, moduleProperties()));
+      ITEMS.register(id, () -> new ArkFieldJournalItem(module.get(), new Item.Properties().fireResistant()));
     }
     var surveyStation = BLOCKS.register("survey_station", () -> new SignalStationBlock(
         BlockBehaviour.Properties.of().strength(3f).sound(SoundType.WOOD).noOcclusion().requiresCorrectToolForDrops()));
