@@ -143,7 +143,7 @@ public final class CompassTargets {
         switch (type) {
           case STRUCTURE -> Set.of("type", "structure", "dimension", "radius");
           case BIOME -> Set.of("type", "biome", "dimension", "radius");
-          case ANCHOR -> Set.of("type", "anchor", "dimension", "radius");
+          case ANCHOR -> Set.of("type", "anchor", "dimension");
           case POSITION -> Set.of("type", "pos", "dimension");
           case DIMENSION -> Set.of("type", "dimension");
           case CITY_MARKER -> Set.of("type", "marker");
@@ -160,6 +160,7 @@ public final class CompassTargets {
       throw invalid(path + ".dimension", "fixed positions need a dimension");
     if (type == TargetType.CITY_MARKER) dimension = "entrelumen:solsticio";
     if (dimension == null) dimension = OVERWORLD;
+    // Anchors resolve registered ruins, known points at any distance: they take no radius.
     int radius =
         target.has("radius")
             ? integer(target, "radius", path, MIN_RADIUS, MAX_RADIUS)
@@ -173,7 +174,7 @@ public final class CompassTargets {
               dimension, null, radius);
       case ANCHOR ->
           new Target(type, location(string(target, "anchor", path), path + ".anchor", false),
-              dimension, null, radius);
+              dimension, null, 0);
       case POSITION -> new Target(type, "", dimension, position(target, path), 0);
       case DIMENSION -> new Target(type, "", dimension, null, 0);
       case CITY_MARKER -> {

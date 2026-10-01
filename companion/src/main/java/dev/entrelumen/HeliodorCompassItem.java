@@ -4,13 +4,18 @@ import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-/** The Heliodor compass. The server refreshes its component about once a second while carried. */
+/**
+ * The Heliodor compass. The server refreshes its component about once a second while carried. A
+ * dropped compass ignores fire, lava, cactus and explosions; the pedestal hands a new one to a player
+ * who carries none.
+ */
 public final class HeliodorCompassItem extends Item {
   static final int REFRESH_TICKS = 20;
 
@@ -23,6 +28,11 @@ public final class HeliodorCompassItem extends Item {
     if (level.isClientSide || !(entity instanceof ServerPlayer player)) return;
     if (Math.floorMod(player.tickCount + slot, REFRESH_TICKS) != 0) return;
     HeliodorCompass.refresh(player, stack);
+  }
+
+  @Override
+  public boolean canBeHurtBy(ItemStack stack, DamageSource source) {
+    return false;
   }
 
   @Override
