@@ -376,6 +376,19 @@ class ClientDraw(unittest.TestCase):
         self.assertAlmostEqual(imgs[0]["height"], qe.num(w + 0.5 / 16 / qe.VISUAL))   # a texel of a 16 px texture
         self.assertAlmostEqual(imgs[0]["y"], 0.5 / 32, places=4)
 
+    def test_colour_fills_turned_by_right_angles_are_unturned(self):
+        imgs, _ = self.fix(picture(qe.PX, id="Q", width=4.0, height=0.1, rotation=90.0, color=1),
+                           picture(qe.PX, id="H", width=4.0, height=0.1, rotation=-180.0, color=1),
+                           picture(qe.PX, id="T", width=4.0, height=0.1, rotation=-90.0, color=1),
+                           picture(qe.PX, id="D", width=4.0, height=0.1, rotation=45.0, color=1),
+                           picture("m:textures/block/stone.png", id="X", width=4.0, height=0.1, rotation=90.0))
+        q, h, t, d, x = imgs
+        self.assertEqual((q["width"], q["height"], q["rotation"]), (0.1, 4.0, 0.0))   # FTB can cull it now
+        self.assertEqual((h["width"], h["height"], h["rotation"]), (4.0, 0.1, 0.0))
+        self.assertEqual((t["width"], t["height"], t["rotation"]), (0.1, 4.0, 0.0))
+        self.assertEqual(d["rotation"], 45.0)                                        # a diagonal stays turned
+        self.assertEqual((x["width"], x["rotation"]), (4.0, 90.0))                    # a texture keeps its grain
+
     def test_every_spanish_locale_reads_the_spanish_strings(self):
         import tempfile
         from pathlib import Path

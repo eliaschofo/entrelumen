@@ -22,6 +22,10 @@ in tools/generate_quests.py, after the chapters are built and before they are wr
   it by SEAM (0.1 grid units; at most one texel of a texture tile, whose texture stretches with it): the later tile
   hides the overlap, so nothing visible moves (close_seams). Translucent tiles keep their edges: an overlap would draw
   a darker stripe. Textured path pieces overlap the same way along the path (tools/quest_art.py).
+- Rotated images. ChapterImageButton.collidesWith is true for any rotated image, so the panel never culls one and
+  draws it every frame wherever the view is (15,328 in the book, 411 in Create · Kinetics). A colour fill turned a
+  quarter turn is the same box with width and height swapped, and one turned half a turn is the same box unturned
+  (unturn). Textures keep their rotation: their grain would change.
 - Spanish players. FTB sends a player the book's strings for their exact locale (TranslationManager
   .sendTableToPlayer) and English otherwise, and Minecraft loads a resource pack's or a mod's lang file for the exact
   locale too: a player on es_ar, es_mx, es_cl, es_uy, es_ve or es_ec would read the book, the companion and the
@@ -201,6 +205,19 @@ def fix_item(img, chapter, facts, nodes):
     return img
 
 
+def unturn(img):
+    """A colour fill turned by a multiple of 90 degrees, as the same box unrotated (so FTB can cull it)."""
+    if img.get("image") != PX or img.get("text_on_image"):
+        return img
+    r = float(img.get("rotation", 0.0)) % 360
+    quarter = round(r / 90)
+    if r and abs(r - 90 * quarter) < 1e-6:
+        if quarter % 2:
+            img["width"], img["height"] = img["height"], img["width"]
+        img["rotation"] = 0.0
+    return img
+
+
 def _tile(img):
     """(x0, y0, x1, y1) of an image that can close a seam: a colour fill, a texture or a sprite, unrotated (or turned
     half a turn, the same box), no text; None otherwise."""
@@ -306,7 +323,7 @@ def fix_chapter(chapter, languages, facts=None):
             img = fix_sheet(img, name, facts, glyphs, languages)
         elif ref.startswith("item:"):
             img = fix_item(img, name, facts, nodes)
-        images.append(img)
+        images.append(unturn(img))
     close_seams(images)
     if "images" in chapter:
         chapter["images"] = images
