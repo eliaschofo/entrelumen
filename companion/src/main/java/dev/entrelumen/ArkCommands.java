@@ -29,7 +29,8 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 /**
  * Player commands the Ark's modules unlock, for every player with or without cheats: {@code /sethome}
  * and {@code /home} (Habitation: one home per player, 15 minutes between trips, after five seconds
- * standing still and unhurt) and {@code /rtp} (Exploration: once an hour). {@code /rtp} loads its
+ * standing still and unhurt) and {@code /rtp} (Exploration: once an hour; a hit cancels a pending
+ * search, and the End stays closed until its dragon has died once). {@code /rtp} loads its
  * candidate chunks with a ticket and reads them on later ticks, so the server thread never waits for
  * chunk generation. There is no {@code /back}: the only one in the pinned pack, Moonlight's
  * operator-only {@code /moonlight back}, has no config switch, so it is refused before it runs
@@ -52,8 +53,11 @@ public final class ArkCommands {
       tickWarmups(event.getServer());
     });
     NeoForge.EVENT_BUS.addListener((LivingDamageEvent.Post event) -> {
-      if (event.getEntity() instanceof ServerPlayer player && WARMUPS.remove(player.getUUID()) != null)
+      if (!(event.getEntity() instanceof ServerPlayer player)) return;
+      if (WARMUPS.remove(player.getUUID()) != null)
         player.sendSystemMessage(Component.translatable("entrelumen.home.hurt"));
+      if (cancelSearch(player))
+        player.sendSystemMessage(Component.translatable("entrelumen.rtp.hurt"));
     });
     NeoForge.EVENT_BUS.addListener(ArkCommands::refuseBack);
   }
@@ -225,6 +229,10 @@ public final class ArkCommands {
       player.sendSystemMessage(Component.translatable("entrelumen.rtp.dimension"));
       return 0;
     }
+    if (dragonLocked(player.serverLevel())) {
+      player.sendSystemMessage(Component.translatable("entrelumen.rtp.dragon"));
+      return 0;
+    }
     if (SEARCHES.containsKey(player.getUUID())) {
       player.sendSystemMessage(Component.translatable("entrelumen.rtp.searching"));
       return 0;
@@ -242,6 +250,30 @@ public final class ArkCommands {
     next(level, search);
     player.sendSystemMessage(Component.translatable("entrelumen.rtp.started"));
     return 1;
+  }
+
+  /**
+   * The End's ring of 1,000 to 5,000 blocks is the outer islands: closed to {@code /rtp} until the
+   * dragon of this world has been killed once, so End cities and elytra wait for the fight.
+   */
+  static boolean dragonLocked(ServerLevel level) {
+    return level.dimension() == Level.END && level.getDragonFight() != null
+        && !level.getDragonFight().hasPreviouslyKilledDragon();
+  }
+
+  /** Drops a pending {@code /rtp} search (hurt players stay put); the cooldown is not spent. */
+  static boolean cancelSearch(ServerPlayer player) {
+    Search search = SEARCHES.remove(player.getUUID());
+    if (search == null) return false;
+    ServerLevel level = player.server.getLevel(search.dimension);
+    if (level != null && search.chunk != null)
+      level.getChunkSource().removeRegionTicket(RTP_TICKET, search.chunk, 0, search.chunk);
+    return true;
+  }
+
+  /** Whether a {@code /rtp} search is pending (tests). */
+  static boolean searching(ServerPlayer player) {
+    return SEARCHES.containsKey(player.getUUID());
   }
 
   private static void next(ServerLevel level, Search search) {
