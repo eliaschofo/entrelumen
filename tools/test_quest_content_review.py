@@ -72,7 +72,7 @@ class Softlocks(unittest.TestCase):
         self.assertIn("te dejó Terra", text(quest("act_two.json", "crafts_precision"), "es_es"))
         atlas = quest("guides/guide_entrelumen_atlas.json", "entrelumen_atlas_act2")
         self.assertIn("gives one, plus the metallurgic infuser", text(atlas))
-        self.assertIn("da uno, más el infusor metalúrgico", text(atlas, "es_es"))
+        self.assertIn("da uno y el infusor metalúrgico", text(atlas, "es_es"))
 
     def test_act_three_counts_match_their_recipes(self):
         want = {"exchange_processors": 2, "exchange_palis": 2, "exchange_circuits": 2, "exchange_steel": 2,
