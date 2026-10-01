@@ -307,7 +307,9 @@ class Book:
         self.fonts = Fonts(self.A, tree)
         q = self.tree / "pack/config/ftbquests/quests"
         self.chapters = {p.stem: json.loads(p.read_text(encoding="utf-8")) for p in (q / "chapters").glob("*.snbt")}
-        self.lang = {p.stem: json.loads(p.read_text(encoding="utf-8")) for p in (q / "lang").glob("*.snbt")}
+        # en_us and es_es only: the other Spanish locales are copies of es_es (tools/quest_client.py)
+        self.lang = {lang: json.loads((q / "lang" / f"{lang}.snbt").read_text(encoding="utf-8"))
+                     for lang in ("en_us", "es_es")}
         self.quests = {qq["id"]: (name, qq) for name, c in self.chapters.items() for qq in c["quests"]}
         self.theme = self.load_theme()
         self.zq = zipfile.ZipFile(pinned_jar(tree, "ftb-quests-neoforge-"))

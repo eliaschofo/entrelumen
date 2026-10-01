@@ -23,7 +23,8 @@ Presentation v2 (tools/quest_v2.py): a guide or a story chapter with "presentati
 markup and canvas art; one without it compiles exactly as before.
 
 What the real client draws (tools/quest_client.py, 1 October 2026): every compiled chapter goes through a last pass
-that corrects what FTB Quests' client would draw differently from what the canvas means (sheets drawn whole). Its
+that corrects what FTB Quests' client would draw differently from what the canvas means (sheets drawn whole), and
+every Spanish strings file gets a copy for the other Spanish locales, which FTB and Minecraft match exactly. Its
 facts about textures come from tools/quest_client_facts.json, which tools/check_guides.py keeps in sync with the JARs.
 """
 import argparse
@@ -861,6 +862,7 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     for lang, values in quest_engine.companion_strings(book, table_langs).items():
         files[FTBQ_LANG / (lang + ".json")] = json.dumps(values, ensure_ascii=False, indent=2) + "\n"
     files.update(quest_engine.quest_text.font_files(ROOT, glyphs))
+    files.update(quest_client.spanish_copies(ROOT, files))   # es_ar, es_mx… would otherwise read English
     return files
 
 

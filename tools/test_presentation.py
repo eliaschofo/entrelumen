@@ -309,6 +309,32 @@ class ClientDraw(unittest.TestCase):
         imgs, _ = self.fix(picture("m:textures/block/stone.png"), picture(qe.PX, color=0xFFFFFF))
         self.assertEqual([i["image"] for i in imgs], ["m:textures/block/stone.png", qe.PX])
 
+    def test_every_spanish_locale_reads_the_spanish_strings(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            hand = root / "pack/resourcepacks/entrelumen/assets/m/lang/es_es.json"
+            hand.parent.mkdir(parents=True)
+            hand.write_text('{"a": "Che"}', encoding="utf-8")
+            book = root / "quests/lang/es_es.snbt"
+            copies = quest_client.spanish_copies(root, {book: "{}", root / "quests/lang/en_us.snbt": "{}"})
+        self.assertEqual(set(copies), {p.with_name(f"{loc}{p.suffix}") for p in (hand, book) for loc in quest_client.SPANISH})
+        self.assertEqual(copies[hand.with_name("es_ar.json")], '{"a": "Che"}')
+        self.assertEqual(copies[book.with_name("es_mx.snbt")], "{}")
+        self.assertEqual(set(quest_client.SPANISH), {"es_ar", "es_cl", "es_ec", "es_mx", "es_uy", "es_ve"})
+
+    def test_the_generated_copies_match_es_es(self):
+        sources = [OUT / "lang/es_es.snbt"]
+        for base in ("companion/src/main/resources/assets", "pack/resourcepacks/entrelumen/assets"):
+            sources += sorted((qe.ROOT / base).glob("*/lang/es_es.json"))
+        self.assertGreaterEqual(len(sources), 4)
+        for source in sources:
+            for locale in quest_client.SPANISH:
+                with self.subTest(file=str(source.relative_to(qe.ROOT)), locale=locale):
+                    copy = source.with_name(locale + source.suffix)
+                    self.assertEqual(copy.read_text(encoding="utf-8"), source.read_text(encoding="utf-8"))
+
     def test_the_facts_file_names_frames_like_minecraft(self):
         import check_guides as cg
         self.assertEqual(cg.frame_size({}, 16, 256), [16, 16])

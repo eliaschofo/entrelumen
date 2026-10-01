@@ -11,6 +11,11 @@ in tools/generate_quests.py, after the chapters are built and before they are wr
   textures/item/…) is drawn as its atlas sprite (ns:block/x), which the client animates; any other sheet is drawn as
   one glyph of a bitmap font that cuts the sheet into its tiles (entrelumen:quest_tiles, written into the
   companion): the image becomes a text_on_image label whose text is that glyph, scaled to the box.
+- Spanish players. FTB sends a player the book's strings for their exact locale (TranslationManager
+  .sendTableToPlayer) and English otherwise, and Minecraft loads a resource pack's or a mod's lang file for the exact
+  locale too: a player on es_ar, es_mx, es_cl, es_uy, es_ve or es_ec would read the book, the companion and the
+  pack's strings in English. Every es_es strings file (the book's, the companion's, the resource pack's) gets a copy
+  under each of those locales (spanish_copies); the text is rioplatense either way.
 
 Facts about textures live in the pinned JARs, and the generator reads the repository only, so they come from a
 committed file, tools/quest_client_facts.json: the sheets among the textures the book draws (size, tile, kind). It
@@ -30,6 +35,7 @@ TILE_FIRST, TILE_LAST = 0xF800, 0xF8FF   # the end of the Private Use Area; ques
 # its left edge.
 TILE_HEIGHT, TILE_ASCENT, TILE_ADVANCE = 9, 7, 10
 VISUAL = 24 / 28
+SPANISH = ("es_ar", "es_cl", "es_ec", "es_mx", "es_uy", "es_ve")   # vanilla's Spanish locales besides es_es
 SEEN = {"textures": set()}   # what the last pass met: tools/check_guides.py checks the facts against it
 KEPT = []                    # sheets the last pass had to leave as strips: (chapter, image id, texture, why)
 _FACTS = None
@@ -138,6 +144,18 @@ def fix_sheet(img, chapter, facts, glyphs, languages):
         KEPT.append((chapter, img["id"], texture, "its hover note would become the glyph"))
         return img
     return _glyph_label(img, glyphs[texture], languages)
+
+
+def spanish_copies(root, files):
+    """{path: text}: a copy of every Spanish strings file for each other Spanish locale (SPANISH). The book's
+    lang/es_es.snbt and the companion's ftbquests strings come from files (this compile); the companion's own and
+    the resource pack's es_es.json are read from the repository, so editing one and regenerating keeps them in step
+    (tools/generate_quests.py --check reports a copy that drifted)."""
+    sources = {p: t for p, t in files.items() if p.name in ("es_es.snbt", "es_es.json") and p.parent.name == "lang"}
+    for base in ("companion/src/main/resources/assets", "pack/resourcepacks/entrelumen/assets"):
+        for p in sorted((root / base).glob("*/lang/es_es.json")):
+            sources.setdefault(p, p.read_text(encoding="utf-8"))
+    return {p.with_name(locale + p.suffix): text for p, text in sorted(sources.items()) for locale in SPANISH}
 
 
 def fix_chapter(chapter, languages, facts=None):

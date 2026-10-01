@@ -9,6 +9,7 @@ import re
 import unittest
 
 import quest_art
+import quest_client
 import quest_engine as qe
 import quest_text
 import build_quest_placeholders as placeholders
@@ -744,6 +745,7 @@ class QuestRewards(unittest.TestCase):
 
     def test_every_other_file_stays_byte_identical(self):
         changed = {OUT / "chapters" / (self.CHAPTER + ".snbt"), OUT / "lang" / "en_us.snbt", OUT / "lang" / "es_es.snbt"}
+        changed |= {OUT / "lang" / f"{locale}.snbt" for locale in quest_client.SPANISH}   # copies of es_es
         new = {OUT / "reward_tables" / f"{self.CHAPTER}__{n}.snbt" for n in ("perfect_genes", "starter_bees")}
         self.assertEqual({p for p in self.files if p not in self.base_files}, new)
         for path, content in self.files.items():
