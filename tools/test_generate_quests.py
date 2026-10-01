@@ -469,7 +469,8 @@ class ChapterContracts(unittest.TestCase):
     self.assertEqual(mapping[task['milestone']],{'quest_id':q['id'],'task_id':task['id']})
    elif task['type']=='item':self.assertFalse(task['consume_items'])
    else:self.assertEqual((task['type'],q.get('optional')),('checkmark',True))
-  required={'horizon_controller':('lodestone','magnetita'),
+  # The controller takes a compass since 1 October 2026: vanilla 1.21.1's lodestone needs netherite.
+  required={'horizon_controller':('[item:minecraft:compass|compass]','[item:minecraft:compass|brújula]'),
    'horizon_engineering':('eight blocks of redstone','ocho bloques de redstone'),
    'horizon_logistics':('Hero of the Village','Héroe de la Aldea'),
    'horizon_placement':('Show guide','Mostrar guía'),
