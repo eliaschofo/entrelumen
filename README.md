@@ -22,6 +22,23 @@ The target machine is an i7-8750H, GTX 1070 and 16 GB system RAM, at 1080p, 10 r
 
 The updated dedicated server starts and saves cleanly. The updated clients have not been launched under the current no-Computer-Use constraint. Release also requires the natural first-hour playtest, full campaign and pacing tests, final visual review, upgrade/restoration checks, approved CurseForge files, a verified public installation and the weekly issue-review acceptance. Follow the [execution contract](docs/delivery/spec.md) and [implementation plan](docs/delivery/plan.json).
 
+## Running a dedicated server
+
+`tools/build_server_pack.py` assembles a distributable server folder (it never writes into the repository or into the QA server, and it never starts anything):
+
+```
+python tools/build_server_pack.py --jar companion/build/libs/entrelumen-<version>.jar --output <new folder> --zip
+```
+
+The folder holds the server-side dependency JARs (installed from the same lock as the client, `curate_pack.py --side server`), the companion JAR, `pack/` without its client-only paths (`resourcepacks/`, `kubejs/client_scripts/`, `kubejs/assets/`, `config/fancymenu/`, `config/defaultoptions/`, client display configs), `server.properties.template`, `eula.txt` (`eula=false`), `user_jvm_args.txt` (`-Xmx6G`) and the launchers `start.sh` / `start.bat`. With Java 21 installed, set `eula=true` after reading the Minecraft EULA and run the launcher: it downloads and verifies the NeoForge 21.1.249 installer on first run, copies the template to `server.properties` only if none exists, and starts the server.
+
+Template defaults: `allow-flight=true`, `spawn-protection=0`, `simulation-distance=6`, `view-distance=10`, `max-players=10`, empty `server-ip` and `level-seed`, and `pvp=false` (this is a co-op pack; pass `--pvp true` to change it).
+
+- **`allow-flight=true` is required.** Vanilla (`false`) kicks Immersive Aircraft pilots after about 160 ticks of level flight, and jetpacks hit the same check.
+- `spawn-protection=0` is recommended: with the vanilla default only operators can build near the world spawn, which blocks the first-hour starter area.
+- An existing `server.properties` is never overwritten, so upgrade an old server by editing it by hand.
+- `tools/runtime.py` and `tools/sync_pack.py` are the isolated local QA path, not the server pack.
+
 ## Español
 
 ENTRELUMEN es un kitchen sink original para **Minecraft 1.21.1 · NeoForge**, sobre recuperar conocimientos y reconstruir una red de mundos. Ingeniería, magia, naturaleza, exploración, logística y vida cotidiana contribuyen al **Arca de los Horizontes**.
@@ -33,6 +50,23 @@ El prototipo tiene **178 dependencias de cliente y 143 de servidor, más el mod 
 El Arca ensamblada ofrece un taller que repara con materiales, una biblioteca que separa libros compuestos conservando sus encantamientos y un alojamiento temporal que guarda tu hogar anterior. Los visitantes pueden usarlos sin adelantar su historia. Naturaleza, exploración, logística y las maestrías siguen pendientes. La última familia de construcción incorpora vidrios funcionales, postigos, cercos, iluminación, medición y conversión de materiales; sus casos nativos seleccionados tienen [evidencia de servidor](docs/verification/habitation-restart-runtime.json).
 
 La meta de rendimiento usa i7-8750H, GTX 1070 y 16 GB de RAM, a 1080p, 10 chunks de renderizado, 6 de simulación, sin shaders y hasta 8 GB para Java. **Aún no está acreditada.** Faltan recorridos representativos, bases industriales, generación de terreno, dos horas de estabilidad y cooperativo de seis jugadores. El servidor actualizado inicia y guarda correctamente; el cliente actualizado sigue sin abrirse mientras trabajamos sin Computer Use. Las maquetas visuales y las mediciones aisladas no son aceptación final.
+
+## Servidor dedicado
+
+`tools/build_server_pack.py` arma una carpeta de servidor distribuible (no escribe en el repositorio ni en el servidor de QA, y no arranca nada):
+
+```
+python tools/build_server_pack.py --jar companion/build/libs/entrelumen-<versión>.jar --output <carpeta nueva> --zip
+```
+
+La carpeta trae los JAR de servidor (instalados desde el mismo lock que el cliente, `curate_pack.py --side server`), el JAR del mod propio, `pack/` sin sus rutas de cliente (`resourcepacks/`, `kubejs/client_scripts/`, `kubejs/assets/`, `config/fancymenu/`, `config/defaultoptions/`, configuraciones de pantalla del cliente), `server.properties.template`, `eula.txt` (`eula=false`), `user_jvm_args.txt` (`-Xmx6G`) y los lanzadores `start.sh` / `start.bat`. Con Java 21 instalado, leé el EULA de Minecraft, poné `eula=true` y ejecutá el lanzador: la primera vez descarga y verifica el instalador de NeoForge 21.1.249, copia la plantilla a `server.properties` sólo si no existe y arranca el servidor.
+
+Valores de la plantilla: `allow-flight=true`, `spawn-protection=0`, `simulation-distance=6`, `view-distance=10`, `max-players=10`, `server-ip` y `level-seed` vacíos, y `pvp=false` (es un pack cooperativo; con `--pvp true` se cambia).
+
+- **`allow-flight=true` es obligatorio.** Con el valor de vanilla (`false`) el servidor expulsa a quien pilotea un Immersive Aircraft tras unos 160 ticks de vuelo nivelado, y los jetpacks chocan con la misma regla.
+- `spawn-protection=0` es lo recomendado: con el valor de vanilla sólo los operadores construyen cerca del spawn y eso traba la zona de las primeras horas.
+- Un `server.properties` existente nunca se pisa; para actualizar un servidor viejo, editalo a mano.
+- `tools/runtime.py` y `tools/sync_pack.py` son el camino local de QA aislado, no el server pack.
 
 ## Source and project layout / Código y estructura
 
