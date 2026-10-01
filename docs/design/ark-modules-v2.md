@@ -36,7 +36,7 @@ La queja fue: «esas 6 cosas súper OP de late game sólo se desbloquean en late
 - **El Arca es un multibloque estético,** con un lugar definido para cada módulo y para el controlador. La forma la diseña el controlador de la sesión (arte) en `docs/design/ark-multiblock.md`. Se ve en el mundo con una guía fantasma que muestra dónde va cada bloque.
 - **Sin lotes.** Se eliminan las entregas por módulo.
 - **Un módulo conseguido ya está activo.** Colocarlo en su lugar, con el Arca bien armada y el controlador puesto, prende su efecto global (revisión: el controlador es obligatorio). Poner más módulos o más Arcas no suma nada: cuenta una por equipo.
-- **El controlador** es la quilla del Arca. Hoy es una receta suelta de magnetita, Núcleo de señal y diamante; se hace desde el acto I porque el Núcleo sale del primer hito. Marca dónde se construye el Arca y hace falta para la activación final.
+- **El controlador** es la quilla del Arca. Hoy es una receta suelta en columna: diamante, Núcleo de señal y brújula; se hace desde el acto I porque el Núcleo sale del primer hito. La brújula reemplazó a la magnetita el 1 de octubre de 2026: la magnetita de vanilla 1.21.1 pide un lingote de netherita, y con ella `/sethome` y `/rtp` no llegaban a los actos I y II. Marca dónde se construye el Arca y hace falta para la activación final.
 - **Qué acto da cada módulo** (el proyecto del Atlas que lo entrega pasa a ese acto, con materiales de ese acto):
 
 | Acto | Módulo | Efecto |

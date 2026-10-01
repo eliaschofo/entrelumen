@@ -49,7 +49,10 @@ public final class TerraArm {
   /** Curios accepts items of {@code curios:<slot>} in that slot; the arm goes on the hands. */
   public static final TagKey<Item> CURIOS_HANDS =
       ItemTags.create(ResourceLocation.fromNamespaceAndPath(CuriosCompat.MOD_ID, "hands"));
-  /** Chest of the act II ruin, the sunken workshop; the arm is guaranteed. */
+  /**
+   * The vault barrel of the act II ruin, the sunken workshop. Since 1 October 2026 it holds the
+   * workshop's stores, not the arm: the Atlas gives the arm back with the Workshop Archive.
+   */
   public static final ResourceKey<LootTable> WORKSHOP_LOOT =
       ResourceKey.create(Registries.LOOT_TABLE, id("chests/ruin_act2_workshop"));
 

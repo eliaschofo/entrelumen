@@ -19,7 +19,10 @@ SOLSTICIO_STORY={'solsticio_mayor':['solsticio_arrival'],'solsticio_seeds':['sol
 # Ark v2 (25 September 2026, docs/design/ark-modules-v2.md) replaced the digests of acts I-IV and of the
 # activation on purpose: each of acts I-IV gained its module quest (a dependency of the act's finale),
 # the activation lost the six batch quests and the four earlier modules, and kept the last two.
-SEMANTIC={'a_light_among_ruins':'ae91bef690524c436f7c482f41d2726a3ed818f6587bc653d16711c5d94e3dd3',
+# The Signal Tower quest (1 October 2026) replaced act I's digest on purpose: one new quest, a root that
+# asks for the Signal Ember and gates nothing; every earlier quest keeps its ID, task, dependencies and icon.
+# The same day the bed tip's icon turned white, like the bed Habitation asks for.
+SEMANTIC={'a_light_among_ruins':'4c48c86d43f000dd58e40df8528d6db7049fa45d75f548926bd01822d555b294',
  'the_lost_crafts':'fdd54d54fd867c6547a2d7521cbde893aaf7177c97cb52ffe56a00de1248fde2',
  'routes_of_exchange':'ed083ae115c10fab16961320a073d1c28930a218c4782bc3db46308fc9947c6d',
  'voices_of_the_atlas':'4f168343f3502deb1623e2b666f67e4f0dcb4dd1f0d3e981c3ae992397cc241d',
@@ -121,8 +124,9 @@ class ChapterContracts(unittest.TestCase):
  def test_first_hour_ids_unchanged(self):
   c=json.loads(generate_all(self.chapters)[OUT/'chapters/a_light_among_ruins.snbt'])
   ids=[c['id']]+[i for q in content(c['quests']) for i in (q['id'],q['tasks'][0]['id'])]
-  # Ark v2: the Habitation Module quest joined act I.
-  self.assertEqual(hashlib.sha256('\n'.join(ids).encode()).hexdigest(),'acf9d153068ce368d2bab9079c2b577aa9ee63592f43771219dd73605864c1a6')
+  # Ark v2: the Habitation Module quest joined act I. The Signal Tower quest (1 October 2026) joined
+  # it before First Signal; the earlier IDs keep their order.
+  self.assertEqual(hashlib.sha256('\n'.join(ids).encode()).hexdigest(),'73399845b93e155f752273b034d8c2f58a76a6796f6df7738e8a7189af551b27')
  def test_cross_chapter_cycle_rejected(self):
   next(q for q in self.chapters[0]['quests'] if q['key']=='atlas')['deps']=['crafts_welcome']
   with self.assertRaisesRegex(AssertionError,'cycle|reading direction'):generate_all(self.chapters)
@@ -305,8 +309,8 @@ class ChapterContracts(unittest.TestCase):
    'the_lost_crafts':'26dcb9e26fa44e764b56f1667141abae1ea0d37f66ec671b4d2e7a3263aa57e5',
    'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c',
    'voices_of_the_atlas':'7e5407195c10e48c213b4588b6fc8c06a1b2862d9c531fb14c0a3277b7d8733c'}
-  # Ark v2 added one module quest to each of acts I-IV.
-  self.assertEqual(sum(len(counted(c)) for c in self.chapters[:4]),110)
+  # Ark v2 added one module quest to each of acts I-IV; act I gained the Signal Tower on 1 October 2026.
+  self.assertEqual(sum(len(counted(c)) for c in self.chapters[:4]),111)
   for chapter in expected:
    self.assertEqual(semantic_digest(out[OUT/'chapters'/(chapter+'.snbt')]),SEMANTIC[chapter])
   prior=generate_all(self.chapters[:4])
@@ -404,7 +408,7 @@ class ChapterContracts(unittest.TestCase):
   from generate_quests import snbt
   out=generate_all(self.chapters)
   prior=generate_all(self.chapters[:5])
-  self.assertEqual(sum(len(counted(c)) for c in self.chapters[:5]),134)
+  self.assertEqual(sum(len(counted(c)) for c in self.chapters[:5]),135)   # 134 before the Signal Tower quest
   hashes={'a_light_among_ruins':'28fdd2969fdd6829c2cad480e2a54b74c9d1ba7ab980e7203831f2fea5304bae',
    'the_lost_crafts':'26dcb9e26fa44e764b56f1667141abae1ea0d37f66ec671b4d2e7a3263aa57e5',
    'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c',
@@ -469,7 +473,8 @@ class ChapterContracts(unittest.TestCase):
     self.assertEqual(mapping[task['milestone']],{'quest_id':q['id'],'task_id':task['id']})
    elif task['type']=='item':self.assertFalse(task['consume_items'])
    else:self.assertEqual((task['type'],q.get('optional')),('checkmark',True))
-  required={'horizon_controller':('lodestone','magnetita'),
+  # The controller takes a compass since 1 October 2026: vanilla 1.21.1's lodestone needs netherite.
+  required={'horizon_controller':('[item:minecraft:compass|compass]','[item:minecraft:compass|brújula]'),
    'horizon_engineering':('eight blocks of redstone','ocho bloques de redstone'),
    'horizon_logistics':('Hero of the Village','Héroe de la Aldea'),
    'horizon_placement':('Show guide','Mostrar guía'),
