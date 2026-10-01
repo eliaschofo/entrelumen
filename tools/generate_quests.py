@@ -47,6 +47,7 @@ BOOK = ROOT / "content/quest_book.json"
 GUIDES = ROOT / "content/guides"
 THEME = ROOT / "companion/src/main/resources/assets/ftbquests/ftb_quests_theme.txt"
 FTBQ_LANG = ROOT / "companion/src/main/resources/assets/ftbquests/lang"
+TASK_IDS = ROOT / "tools/task_ids.json"   # sector task ID -> content signature (quest_engine.task_ids)
 LOCALES = ("en_us", "es_es")
 # Acts renumbered 24 September 2026: act V is two chapters (the plan and the activation), act VI Solsticio.
 CHAPTER_SOURCES = ("first_hour.json", "act_two.json", "act_three.json", "act_four.json",
@@ -789,9 +790,10 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     sectors = sectors if sectors is not None else quest_engine.load_sectors()
     files = generate_all(chapters, book)
     languages = {lang: json.loads(files[OUT / "lang" / (lang + ".snbt")]) for lang in LOCALES}
-    story_ids = {q["id"] for data in chapters
-                 for q in json.loads(files[OUT / "chapters" / (data["chapter"] + ".snbt")])["quests"]}
-    seen = set(story_ids) | {stable_id("task:" + q["key"]) for data in chapters for q in data["quests"]}
+    # Every ID the story emitted, its quests' and their tasks': guides and sectors may take none of them.
+    seen = {i for data in chapters for q in json.loads(files[OUT / "chapters" / (data["chapter"] + ".snbt")])["quests"]
+            for i in [q["id"]] + [t["id"] for t in q["tasks"]]}
+    task_ids = {}   # sector task ID -> its content signature (tools/task_ids.json)
     groups = []
     first = {}
     for group in book["groups"]:
@@ -835,6 +837,7 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
                 data, book, tables, languages, seen, all_keys, chapter_names, gid, order[gid], gated)
             presets.update(sector_presets)
             glyphs |= sector_ctx.get("glyphs", set())
+            task_ids.update(sector_ctx["task_ids"])
         else:
             chapter = generate_guide(data, gid, order[gid], book, languages, seen, all_keys, chapter_names)
             glyphs |= v2_glyphs(data)
@@ -859,6 +862,7 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     assert languages["en_us"].keys() == languages["es_es"].keys(), "locale key mismatch"
     for lang in LOCALES:
         files[OUT / "lang" / (lang + ".snbt")] = snbt(languages[lang])
+    files[TASK_IDS] = json.dumps(dict(sorted(task_ids.items())), ensure_ascii=False, indent=1) + "\n"
     data_snbt = json.loads(files[OUT / "data.snbt"])
     data_snbt.update(drop_loot_crates=False, icon={"id": book["hub"]["icon"]},
                      presets=quest_engine.presets_block(presets))
@@ -871,10 +875,25 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     return files
 
 
+def task_id_changes(old, new):
+    """Task IDs that tools/task_ids.json knows and that now stand for another requirement: a team's saved progress
+    on the old one would count for the new one (F48)."""
+    return sorted(f"{tid}: {old[tid]} -> {new[tid]}" for tid in old.keys() & new.keys() if old[tid] != new[tid])
+
+
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true')
+    parser.add_argument('--accept-task-id-changes',action='store_true',
+                        help='let a task ID of tools/task_ids.json stand for another requirement (saved progress follows it)')
+    args=parser.parse_args()
     chapters=load_chapters(); book=load_book(); guides=load_guides(book)
     files=generate_book(chapters,guides,book);failures=[]
+    old_ids=json.loads(TASK_IDS.read_text(encoding='utf-8')) if TASK_IDS.exists() else {}
+    moved=task_id_changes(old_ids,json.loads(files[TASK_IDS]))
+    if moved and not args.accept_task_id_changes:
+        raise SystemExit('Task IDs would change meaning (a team keeps its progress by task ID): '+'; '.join(moved)+
+                         '. Give the rewritten task its own "id", or rerun with --accept-task-id-changes if the progress '
+                         'should carry over.')
     expected={p.resolve() for p in files}
     stale=[p for folder in ('chapters','reward_tables') for p in (OUT/folder).glob('*.snbt') if p.resolve() not in expected]
     for path,content in files.items():

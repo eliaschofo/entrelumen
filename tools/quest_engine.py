@@ -73,6 +73,7 @@ FILTER_COMPONENT = "ftbfiltersystem:filter"
 FILTER_MODS = ("ftbfiltersystem", "ftbxmodcompat")
 ANY_ENTRY = re.compile(r"#?[a-z0-9_.-]+:[a-z0-9_./-]+")
 _FILTER_MODS_LOCKED = None
+EXPLICIT_TASK_ID = re.compile(r"[0-9A-F]{16}")
 
 # Copy palette (docs/design/quest-copy.md). Items teal, keys yellow, links blue, tips gold.
 COLORS = {"item": "#8FD6C8", "key": "#F2D060", "link": "#9DC3FF", "tip": "#E8B04A", "warn": "#FF8C7A",
@@ -598,11 +599,65 @@ def any_icon(t, ctx, key=""):
     return {"id": items[0]}
 
 
-def compile_task(t, key, index, languages, ctx):
+def task_target(t):
+    """What a task asks for, without its count or consume flag: the item and its components, the any-of filter, or
+    the advancement, dimension, biome, structure, entity, observed target or stat. A checkmark asks for nothing."""
+    kind = task_kind(t)
+    if kind == "item" and "any" in t:
+        return filter_expression(sorted(t["any"]))
+    if kind == "item":
+        components = t.get("components")
+        return t["item"] + (json.dumps(components, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+                            if components else "")
+    if kind == "advancement":
+        return t["advancement"] + ("#" + t["criterion"] if t.get("criterion") else "")
+    if kind in ("dimension", "biome", "structure"):
+        return t[kind]
+    if kind == "kill":
+        return t["entity"]
+    if kind == "observation":
+        return f"{t['observe']}={t['target']}"
+    if kind == "stat":
+        return t["stat"]
+    return ""
+
+
+def task_ids(q):
+    """[(task ID, content signature)] of a sector quest. FTB keeps a team's progress by task ID, so an ID must keep
+    meaning the same requirement whatever is inserted or reordered around it (F48):
+    - the signature is task:<quest>:<kind>:<target> (task_target), with :2, :3… for a repeated identical task; the
+      count and consume flag are not part of it, so raising a count keeps the progress;
+    - a quest with several tasks takes stable_id(signature) for each;
+    - a quest with one task keeps task:<quest>, the ID the book always gave it;
+    - a task may pin its ID with "id" (16 hex digits), to keep a team's progress when its target is rewritten.
+    tools/task_ids.json records every ID's signature; tools/generate_quests.py refuses to let an existing ID change
+    meaning without --accept-task-id-changes."""
+    key = q["key"]
+    tasks = tasks_of(q)
+    seen, out = {}, []
+    for t in tasks:
+        base = f"task:{key}:{task_kind(t)}:{task_target(t)}"
+        seen[base] = seen.get(base, 0) + 1
+        signature = base if seen[base] == 1 else f"{base}:{seen[base]}"
+        if "id" in t:
+            tid = t["id"]
+            assert isinstance(tid, str) and EXPLICIT_TASK_ID.fullmatch(tid) and 0 < int(tid, 16) < 2 ** 63, \
+                f"{key}: a task's own id is 16 uppercase hex digits of a positive 63-bit number"
+        elif len(tasks) == 1:
+            tid = stable_id(f"task:{key}")
+        else:
+            tid = stable_id(signature)
+        out.append((tid, signature))
+    assert len({tid for tid, _ in out}) == len(out), f"{key}: two tasks share an ID"
+    return out
+
+
+def compile_task(t, key, tid, languages, ctx):
+    """One task of a sector quest; tid comes from task_ids."""
     kind = task_kind(t)
     assert kind in TASK_TYPES, f"{key}: task type {kind}"
     assert "any" not in t or kind == "item", f"{key}: any-of is an item task"
-    tid = stable_id(f"task:{key}" if index == 0 else f"task:{key}:{index}")
+    assert isinstance(tid, str) and EXPLICIT_TASK_ID.fullmatch(tid), f"{key}: task ID {tid!r}"
     out = {"id": tid, "type": kind}
     if kind == "item" and "any" in t:
         out.update(any_item_task(t, key, ctx))
@@ -905,7 +960,7 @@ def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_id
     assert len(by_key) == len(quests), f"{name}: duplicate key"
     ctx = {"items": set(), "names": set(), "keys": set(), "textures": set(), "entities": set(),
            "structures": set(), "advancements": set(), "accent": motif["accent"],
-           "presentation": data.get("presentation", 1)}
+           "presentation": data.get("presentation", 1), "task_ids": {}}
 
     def resolve_quest(target, where):
         assert target in all_keys, f"{where}: link to unknown quest {target}"
@@ -1039,8 +1094,11 @@ def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_id
             curves[stable_id("quest:" + dep)] = bezier_points((x, y), size, placed[dep], bend)
         if curves:
             out["dep_control_pts"] = curves
-        for i, t in enumerate(tasks):
-            out["tasks"].append(compile_task(t, key, i, languages, ctx))
+        for t, (tid, signature) in zip(tasks, task_ids(q)):
+            assert tid not in seen_ids, f"{key}: task ID {tid} ({signature}) is already taken"
+            seen_ids.add(tid)
+            ctx["task_ids"][tid] = signature
+            out["tasks"].append(compile_task(t, key, tid, languages, ctx))
         chapter["quests"].append(out)
         nodes.append((key, x, y, size))
         texts = quest_copy(q, name, ctx)

@@ -144,10 +144,10 @@ class AnyOfTasks(unittest.TestCase):
         cls.guides = load_guides(cls.book)
         cls.sectors = {s["chapter"]: s for s in qe.load_sectors()}
 
-    def compile(self, task, index=0):
+    def compile(self, task, tid=None):
         languages = {lang: {} for lang in LOCALES}
         ctx = ctx_for()
-        return qe.compile_task(task, "crb_press", index, languages, ctx), languages, ctx
+        return qe.compile_task(task, "crb_press", tid or qe.stable_id("task:crb_press"), languages, ctx), languages, ctx
 
     def test_items_and_tags_compile_to_one_smart_filter(self):
         out, languages, ctx = self.compile({"any": ["minecraft:oak_log", "#minecraft:logs"], "count": 4,
@@ -162,9 +162,11 @@ class AnyOfTasks(unittest.TestCase):
         self.assertEqual((ctx["items"], ctx["item_tags"]), ({"minecraft:oak_log"}, {"minecraft:logs"}))
 
     def test_one_tag_needs_no_or_and_takes_the_given_icon(self):
-        out, _, _ = self.compile({"any": ["#c:ingots/copper"], "icon": "minecraft:copper_ingot", "consume": True,
-                                  "title": self.TITLE}, 1)
-        self.assertEqual(out["id"], qe.stable_id("task:crb_press:1"))
+        task = {"any": ["#c:ingots/copper"], "icon": "minecraft:copper_ingot", "consume": True, "title": self.TITLE}
+        tid, signature = qe.task_ids({"key": "crb_press", "tasks": [{"item": "create:shaft"}, task]})[1]
+        self.assertEqual(signature, "task:crb_press:item:item_tag(c:ingots/copper)")
+        out, _, _ = self.compile(task, tid)
+        self.assertEqual(out["id"], qe.stable_id(signature))
         self.assertEqual(out["item"]["components"], {"ftbfiltersystem:filter": "item_tag(c:ingots/copper)"})
         self.assertEqual((out["icon"], out["consume_items"], out["count"]), ({"id": "minecraft:copper_ingot"}, True, 1))
 
@@ -591,6 +593,64 @@ class Sectors(unittest.TestCase):
             with self.subTest(message=message):
                 with self.assertRaisesRegex(AssertionError, message):
                     generate_book(self.story, self.guides, self.book, sectors)
+
+class TaskIds(unittest.TestCase):
+    """F48: a task's ID follows what it asks for, not its position, so saved progress never lands on another task."""
+
+    @staticmethod
+    def quest(*tasks):
+        return {"key": "crb_press", "tasks": list(tasks)}
+
+    def test_signature_ids_survive_inserts_reorders_and_new_counts(self):
+        a, b = {"item": "create:shaft", "count": 4}, {"type": "advancement", "advancement": "create:root"}
+        c = {"type": "kill", "entity": "minecraft:zombie", "value": 3}
+        first = dict(qe.task_ids(self.quest(a, b)))
+        later = dict(qe.task_ids(self.quest(c, dict(b), dict(a, count=64, consume=True))))
+        self.assertEqual({sig: tid for tid, sig in first.items()},
+                         {sig: tid for tid, sig in later.items() if sig in first.values()})
+        self.assertEqual(sorted(later.values()), ["task:crb_press:advancement:create:root",
+                                                  "task:crb_press:item:create:shaft",
+                                                  "task:crb_press:kill:minecraft:zombie"])
+        self.assertTrue(all(tid == qe.stable_id(sig) for tid, sig in later.items()))
+
+    def test_targets_cover_every_kind_and_repeats_take_an_occurrence(self):
+        tasks = [{"item": "create:wrench", "components": {"ars_technica:runic_wrench": True}},
+                 {"any": ["#minecraft:logs", "minecraft:stick"], "title": {}},
+                 {"type": "observation", "observe": "block", "target": "minecraft:bell"},
+                 {"type": "stat", "stat": "minecraft:jump", "value": 10},
+                 {"type": "dimension", "dimension": "minecraft:the_nether"},
+                 {"item": "create:shaft"}, {"item": "create:shaft", "count": 9}]
+        sigs = [sig for _, sig in qe.task_ids(self.quest(*tasks))]
+        self.assertEqual(sigs, ['task:crb_press:item:create:wrench{"ars_technica:runic_wrench":true}',
+                                "task:crb_press:item:or(item_tag(minecraft:logs)item(minecraft:stick))",
+                                "task:crb_press:observation:block=minecraft:bell",
+                                "task:crb_press:stat:minecraft:jump", "task:crb_press:dimension:minecraft:the_nether",
+                                "task:crb_press:item:create:shaft", "task:crb_press:item:create:shaft:2"])
+
+    def test_one_task_keeps_its_old_id_and_an_explicit_id_wins(self):
+        self.assertEqual(qe.task_ids(self.quest({"item": "create:shaft"})),
+                         [(qe.stable_id("task:crb_press"), "task:crb_press:item:create:shaft")])
+        pinned = qe.task_ids(self.quest({"item": "create:shaft", "id": "0123456789ABCDEF"}, {"item": "create:cogwheel"}))
+        self.assertEqual(pinned[0], ("0123456789ABCDEF", "task:crb_press:item:create:shaft"))
+        for bad in ("123", "0123456789abcdef", "F123456789ABCDEF", "0000000000000000"):
+            with self.subTest(id=bad), self.assertRaisesRegex(AssertionError, "own id"):
+                qe.task_ids(self.quest({"item": "create:shaft", "id": bad}))
+        with self.assertRaisesRegex(AssertionError, "share an ID"):
+            qe.task_ids(self.quest({"item": "create:shaft", "id": "0123456789ABCDEF"},
+                                   {"item": "create:cogwheel", "id": "0123456789ABCDEF"}))
+
+    def test_committed_task_ids_keep_their_meaning(self):
+        # tools/task_ids.json records each sector task ID's signature: an ID that now stands for another requirement
+        # would hand a team's saved progress to it. generate_quests.py refuses that without --accept-task-id-changes.
+        import generate_quests
+        committed = json.loads(generate_quests.TASK_IDS.read_text(encoding="utf-8"))
+        sectors = qe.load_sectors()
+        current = {tid: sig for data in sectors for q in data["quests"] for tid, sig in qe.task_ids(q)}
+        self.assertEqual(generate_quests.task_id_changes(committed, current), [])
+        self.assertEqual(len(current), sum(len(qe.tasks_of(q)) for d in sectors for q in d["quests"]))
+        self.assertEqual(generate_quests.task_id_changes({"A": "task:x:item:a"}, {"A": "task:x:item:b", "B": "y"}),
+                         ["A: task:x:item:a -> task:x:item:b"])
+
 
 
 def egg(bee, **extra):
