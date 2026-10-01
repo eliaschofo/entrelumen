@@ -2,14 +2,21 @@
 
 `server_scripts/entrelumen_runtime_audit.js` observes registries and final loaded recipes through `ServerEvents.afterRecipes`. It runs during server data loading/reload; no player or operator action is necessary. It does not edit recipes, grant items, modify teams, complete quests or change campaign state.
 
-The output consists of `[ENTRELUMEN_AUDIT]` JSON lines in the KubeJS server log (also forwarded to the main server log): one begin, selected item records, exact recipe/output records with alternative recipe IDs, and a terminal summary. An absent summary is failure, not a pass. A source signature makes stale results distinguishable after the quests/projects change.
+The output consists of `[ENTRELUMEN_AUDIT]` JSON lines in the KubeJS server log (also forwarded to the main server log): one begin, exact recipe/output records with alternative recipe IDs, and a terminal summary. The summary carries the source signature, the counts and `missingItems`, the target items that do not exist. An absent summary is failure, not a pass. A source signature makes stale results distinguishable after the quests/projects change. The per-item records (one for each of the 6,000 target items) are opt-in: they used to be written on every load and every `/reload`, 6,030 lines each time.
 
 ```powershell
 python tools/check_runtime_content.py --sync
 python tools/check_runtime_content.py --log 'INSTANCE/logs/kubejs/server.log'
 ```
 
-Use the actual KubeJS log location created by the running instance, or its main `logs/latest.log`. The checker validates the last audit cycle and requires exact current-source coverage. An error after that cycle starts fails validation; errors before it still need normal server-log review. Without `--log` the command checks source coverage only and never claims the game was tested.
+Use the actual KubeJS log location created by the running instance, or its main `logs/latest.log`. The checker validates the last audit cycle and requires exact current-source coverage; it reads both variants of the audit (`itemLines: summary|full` in its result). An error after that cycle starts fails validation; errors before it still need normal server-log review. Without `--log` the command checks source coverage only and never claims the game was tested.
+
+### Full item audit (test phase)
+
+For the final test phase, to keep the evidence of every target and not only of the ones that fail, turn the per-item records on with either switch and reload. The begin line says whether it took effect (`"full":true`, and `"flagFile":"on"` for the file). The file is read through KubeJS `JsonIO` and only a boot confirms it; if the begin line says `"flagFile":"off"` or `unreadable`, use the generation switch.
+
+- Runtime, nothing to regenerate: put `{"full": true}` in `kubejs/config/entrelumen_audit.json` of the instance (the game directory, next to `kubejs/server_scripts`). It is read on every load; delete the file or set `false` to go back.
+- At generation: `python tools/check_runtime_content.py --sync --full`, then reinstall the script. Do not commit that variant (plain `--sync` writes the committed one); `python tools/check_runtime_content.py` accepts both.
 
 Targets come from the first-hour chapter's item/icon references, act-one project delivery items and corresponding companion recipes. Farmer's Delight `flint_knife` and `cutting_board` recipe IDs/results were read from its installed 1.3.3 JAR. The selected alternative recipes are capped at 64 IDs per output with a total count retained. No full registry export or per-tick work is performed.
 

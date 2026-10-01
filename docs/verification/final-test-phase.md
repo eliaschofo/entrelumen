@@ -8,7 +8,7 @@ La fase arranca con la PC libre: un solo controlador, sin otras sesiones ni agen
 
 1. Servidor: arranque limpio con el pack entero, sin errores de carga ni de recetas.
 2. GameTests pendientes, en una sola corrida guardada (`scratchpad/guarded_gametests.sh` como base).
-3. Auditoría de runtime de recetas y balance (`entrelumen_runtime_audit.js` y los `*_balance.js` con su chequeo `loaded-ingredient-check`).
+3. Auditoría de runtime de recetas y balance (`entrelumen_runtime_audit.js` y los `*_balance.js` con su chequeo `loaded-ingredient-check`). La auditoría viene con las líneas por ítem apagadas (eran 6.030 por carga): para esta fase prendé `{"full": true}` en `kubejs/config/entrelumen_audit.json` del servidor o generá el script con `python tools/check_runtime_content.py --sync --full` (README de `pack/kubejs`) y verificá con `--log`. En el log mirá también `[ENTRELUMEN_RECIPE_INDEX]` (`indexed` y `scans: 0`; con `fallback-to-scans` o `indexed-outputs-by-scan`, anotar el motivo) y cualquier `failed-row`: una fila que KubeJS rechazó, con su receta nativa todavía en pie.
 4. Cliente: el libro de quests, capítulo por capítulo, y lo visual de cada frente.
 5. Rendimiento con el pack entero.
 6. Playtest de Elias.
