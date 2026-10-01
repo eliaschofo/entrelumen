@@ -24,9 +24,12 @@ SOLSTICIO_STORY={'solsticio_mayor':['solsticio_arrival'],'solsticio_seeds':['sol
 # The same day the bed tip's icon turned white, like the bed Habitation asks for.
 # The review of 1 October 2026 (F25) replaced the inventory branch's digest on purpose: its backpack task became an
 # entrelumen:carried_item (worn backpacks count); same ID, item and count.
+# The same review (F72, batch quest-content) replaced act III's digest on purpose: seven exchange quests ask the
+# counts their recipes need (2 circuits, menril, logic processors, palis crystals, logic chips, steel plates; 6 blank
+# modules); same IDs, items and dependencies.
 SEMANTIC={'a_light_among_ruins':'4c48c86d43f000dd58e40df8528d6db7049fa45d75f548926bd01822d555b294',
  'the_lost_crafts':'fdd54d54fd867c6547a2d7521cbde893aaf7177c97cb52ffe56a00de1248fde2',
- 'routes_of_exchange':'ed083ae115c10fab16961320a073d1c28930a218c4782bc3db46308fc9947c6d',
+ 'routes_of_exchange':'3ca113a73d2b3903ef20ad086b421b3e73bae7f726d34dc894b1ce0c669e3cc9',
  'voices_of_the_atlas':'4f168343f3502deb1623e2b666f67e4f0dcb4dd1f0d3e981c3ae992397cc241d',
  'world_we_build':'9e0b57563392a48374cb3c6ae0431474bfbef478379d29098366d5738b36084e',
  'last_horizon':'c560d4e1a73b07cd12234cf170e4c2e577ca5c1b440b37b0c05dfc7635bedc41',
