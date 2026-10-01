@@ -79,8 +79,10 @@ class PackConfigReviewTest(unittest.TestCase):
         self.assertEqual(display['description'], {
             'translate': 'entrelumen.apotheosis.tier.root.desc',
             'with': [{'keybind': 'key.apotheosis.open_world_tier_select'}]})
-        self.assertEqual(root['criteria'], {'tick': {'trigger': 'minecraft:tick'}})
-        self.assertEqual(root['requirements'], [['tick']])
+        # Same always-true tick trigger as the five tier files; the criterion is named "campaign" like theirs so the
+        # file stays under the repository's copy threshold for All Rights Reserved JAR data (check_loot_tables --copies).
+        self.assertEqual(root['criteria'], {'campaign': {'trigger': 'minecraft:tick'}})
+        self.assertEqual(root['requirements'], [['campaign']])
         self.assertEqual(display['icon'], {'count': 1, 'id': 'apotheosis:boss_summoner'})
         self.assertEqual(display['background'], 'apotheosis:textures/advancements/bg/apoth.png')
         self.assertIs(display['announce_to_chat'], False)
