@@ -27,6 +27,8 @@ public final class CampaignTask extends Task {
             ResourceLocation.fromNamespaceAndPath("entrelumen", "campaign"),
             CampaignTask::new,
             () -> ItemIcon.getItemIcon(Items.BOOK));
+    // The carried-item task shares this registration and the tick below (Entrelumen.java calls only us).
+    CarriedItemTask.register();
   }
 
   public static void tick(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
@@ -49,6 +51,7 @@ public final class CampaignTask extends Task {
                   for (CampaignTask campaign : cachedTasks)
                     campaign.submitTask(data, player, ItemStack.EMPTY);
               }
+              CarriedItemTask.poll(file, event.getServer().getPlayerList().getPlayers());
             });
   }
 
