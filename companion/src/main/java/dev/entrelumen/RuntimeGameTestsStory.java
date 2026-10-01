@@ -311,8 +311,11 @@ public final class RuntimeGameTestsStory {
 
   // ---- missions 5-6: Terra ----------------------------------------------------------------------
 
-  /** A charged battery: the fixture's, or in the full pack any energy mod's item that holds 100,000 FE. */
-  private static ItemStack battery(GameTestHelper helper, boolean charged) {
+  /**
+   * A charged battery: the fixture's, or in the full pack any energy mod's item that holds 100,000 FE
+   * and is not armour, the same kind of item {@link SolsticioStory#battery} accepts in the off hand.
+   */
+  private static ItemStack battery(GameTestHelper helper, ServerPlayer player, boolean charged) {
     Item fixture = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("entrelumen_gametest_fixture", "test_battery"));
     List<Item> candidates = new ArrayList<>();
     if (fixture != Items.AIR) candidates.add(fixture);
@@ -320,6 +323,12 @@ public final class RuntimeGameTestsStory {
     for (Item item : candidates) {
       ItemStack stack = new ItemStack(item);
       net.neoforged.neoforge.energy.IEnergyStorage energy;
+      try {
+        if (player.getEquipmentSlotForItem(stack).getType() == net.minecraft.world.entity.EquipmentSlot.Type.HUMANOID_ARMOR)
+          continue; // a MekaSuit piece or jetpack holds FE, but Terra never takes armour
+      } catch (RuntimeException odd) {
+        continue;
+      }
       try {
         energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
       } catch (RuntimeException odd) {
@@ -351,14 +360,14 @@ public final class RuntimeGameTestsStory {
         var talk = SolsticioStory.character(player, terra, "inventor");
         assertSaid(helper, talk, "inventor.power");
         assertSaid(helper, talk, "story.battery");
-        player.setItemInHand(InteractionHand.OFF_HAND, battery(helper, false));
+        player.setItemInHand(InteractionHand.OFF_HAND, battery(helper, player, false));
         assertSaid(helper, SolsticioStory.character(player, terra, "inventor"), "story.battery");
         helper.assertTrue(!campaign.completed.contains(SolsticioStoryRules.POWER), "An empty battery counted as charged");
         player.getInventory().clearContent();
         give(player, coil, 3);
         give(player, plate, 2);
         // A charged FE tool in the hotbar is not the battery: only the off hand counts.
-        ItemStack tool = battery(helper, true);
+        ItemStack tool = battery(helper, player, true);
         player.getInventory().setItem(0, tool);
         talk = SolsticioStory.character(player, terra, "inventor");
         assertSaid(helper, talk, "story.missing");
@@ -369,14 +378,14 @@ public final class RuntimeGameTestsStory {
         helper.assertTrue(!campaign.completed.contains(SolsticioStoryRules.POWER) && count(player, coil) == 4,
             "Terra took a charged item from the hotbar with an empty off hand");
         // Enchanted, even in the off hand, it is somebody's tool.
-        ItemStack enchanted = battery(helper, true);
+        ItemStack enchanted = battery(helper, player, true);
         enchanted.enchant(helper.getLevel().registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT)
             .getHolderOrThrow(net.minecraft.world.item.enchantment.Enchantments.UNBREAKING), 1);
         player.setItemInHand(InteractionHand.OFF_HAND, enchanted);
         assertSaid(helper, SolsticioStory.character(player, terra, "inventor"), "story.battery");
         helper.assertTrue(!campaign.completed.contains(SolsticioStoryRules.POWER) && enchanted.getCount() == 1,
             "Terra took an enchanted item as the battery");
-        player.setItemInHand(InteractionHand.OFF_HAND, battery(helper, true));
+        player.setItemInHand(InteractionHand.OFF_HAND, battery(helper, player, true));
         talk = SolsticioStory.character(player, terra, "inventor");
         assertSaid(helper, talk, "inventor.power_done");
         helper.assertTrue(campaign.completed.contains(SolsticioStoryRules.POWER) && count(player, coil) == 0 && count(player, plate) == 0
