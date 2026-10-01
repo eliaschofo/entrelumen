@@ -194,4 +194,101 @@ class RuinRulesTest {
       assertTrue(r >= 1999 && r <= 2801, "a candidate of ring 2 at " + r);
     }
   }
+
+  @Test
+  void aLockedBiomeRanksBehindRoughFreeGround() {
+    var lockedFlat = new RuinRules.Sample(new int[] {64, 64, 64, 64}, new boolean[4], true, true);
+    var roughFree = new RuinRules.Sample(new int[] {50, 64, 72, 90}, new boolean[4], true, false);
+    var shoreFree = new RuinRules.Sample(new int[] {50, 64, 72, 90}, new boolean[] {true, false, false, false}, false);
+    assertTrue(RuinRules.score(lockedFlat) > RuinRules.score(roughFree), "A flat locked site comes after a rough free one");
+    assertTrue(RuinRules.score(lockedFlat) > RuinRules.score(shoreFree), "...and after a rough shore");
+    assertTrue(RuinRules.avoided(RuinRules.score(lockedFlat)) && !RuinRules.avoided(RuinRules.score(roughFree)));
+    assertEquals(RuinRules.score(new RuinRules.Sample(new int[] {64, 64}, new boolean[2], true)),
+        RuinRules.score(new RuinRules.Sample(new int[] {64, 64}, new boolean[2], true, false)), "Free by default");
+    assertFalse(RuinRules.avoided(Integer.MAX_VALUE), "A rejected site is not a last resort");
+  }
+
+  @Test
+  void aSiteWithAStructureComesAfterEverySiteWithout() {
+    // The worst a structure-free site can cost: a whole world's height of spread, a quarter of it wet, a
+    // shore, a locked biome; then the real terrain's water and canopy (RuinPlacement.evaluate).
+    int[] heights = new int[49];
+    boolean[] water = new boolean[49];
+    for (int i = 0; i < heights.length; i++) heights[i] = i % 2 == 0 ? -64 : 320;
+    for (int i = 0; i < 12; i++) water[i] = true;
+    int worst = RuinRules.score(new RuinRules.Sample(heights, water, false, true)) + 12 * 40 + 49 * 2;
+    assertTrue(worst < RuinRules.STRUCTURE_PENALTY, "Worst free site " + worst);
+    int flatWithVillage = RuinRules.score(new RuinRules.Sample(new int[] {64, 64}, new boolean[2], true))
+        + RuinRules.STRUCTURE_PENALTY;
+    assertTrue(flatWithVillage > worst && RuinRules.avoided(flatWithVillage));
+  }
+
+  @Test
+  void aThinSuperflatRaisesTheFloorInsteadOfRejectingTheSite() {
+    // The default superflat: grass at -61 over a world from -64. The Sunken Workshop's ground layer is 17
+    // over its bottom, the Dome Greenhouse's 6.
+    assertEquals(-46, RuinRules.surfaceFloor(-61, -64, 17));
+    assertEquals(-57, RuinRules.surfaceFloor(-61, -64, 6));
+    assertEquals(70, RuinRules.surfaceFloor(70, -64, 17), "Normal ground stays as it is");
+    int floor = RuinRules.surfaceFloor(-61, -64, 17);
+    assertTrue(floor - 17 > -64, "The bottom is inside the world");
+  }
+
+  @Test
+  void aFailedPlacementBacksOffUpToSixHours() {
+    assertEquals(RuinRules.RETRY_TICKS, RuinRules.retryDelay(0));
+    assertEquals(RuinRules.RETRY_TICKS, RuinRules.retryDelay(1));
+    assertEquals(2 * RuinRules.RETRY_TICKS, RuinRules.retryDelay(2));
+    assertEquals(4 * RuinRules.RETRY_TICKS, RuinRules.retryDelay(3));
+    assertEquals(RuinRules.MAX_RETRY_TICKS, RuinRules.retryDelay(7));
+    assertEquals(RuinRules.MAX_RETRY_TICKS, RuinRules.retryDelay(1000));
+    assertEquals(6 * 60 * 60 * 20, RuinRules.MAX_RETRY_TICKS, "Six hours of ticks");
+  }
+
+  @Test
+  void sitesStayInsideTheWorldBorder() {
+    double[] border = {-500, -500, 500, 500};
+    assertTrue(RuinRules.inside(border, 0, 0, 64, 64, 10));
+    // Centre 458: the footprint ends at 489 and the margin at 499, the last block inside.
+    assertTrue(RuinRules.inside(border, 458, 0, 64, 64, 10), "The margin's last block by the edge");
+    assertFalse(RuinRules.inside(border, 459, 0, 64, 64, 10), "One more and the margin crosses it");
+    assertTrue(RuinRules.inside(border, -458, 0, 64, 64, 10), "The low edge is inside");
+    assertFalse(RuinRules.inside(border, 0, -459, 64, 64, 10));
+    // The vanilla default border never gets in the way.
+    double[] vanilla = {-29_999_984, -29_999_984, 29_999_984, 29_999_984};
+    int far = RuinRules.borderFit(vanilla, 0, 0, 85, 85, 10);
+    assertTrue(far > 29_000_000);
+    int[] wide = RuinRules.ring(400, 1200, RuinRules.WIDER_RINGS);
+    assertSame(wide, RuinRules.clampRing(wide, far));
+    // Every site within fit of the centre fits, whatever its direction.
+    int fit = RuinRules.borderFit(border, 100, -50, 64, 48, 10);
+    assertEquals(400 - 32 - 10, fit, "The nearest edge (x=500) less half the larger side and the margin");
+    for (int[] c : RuinRules.candidates(9L, "entrelumen:qa", 100, -50, 0, fit, 200))
+      assertTrue(RuinRules.inside(border, c[0], c[1], 64, 48, 10), "A site within fit at " + Arrays.toString(c));
+    // A ring past the border is cut to a ring as wide just inside it; one that starts inside stays.
+    int[] ring = {400, 1200};
+    assertSame(ring, RuinRules.clampRing(ring, 900));
+    assertArrayEquals(new int[] {0, 358}, RuinRules.clampRing(ring, 358));
+    assertArrayEquals(new int[] {100, 300}, RuinRules.clampRing(new int[] {400, 600}, 300));
+    assertNull(RuinRules.clampRing(ring, -1), "No room at all");
+    assertTrue(RuinRules.borderFit(border, 480, 0, 64, 64, 10) < 0, "A centre by the edge leaves no room");
+  }
+
+  @Test
+  void theShapingLeavesTheColumnsUnderAStructuresPiecesAlone() {
+    // A 10x6 grid from (100, 200); a piece box crossing its east edge and one wholly outside.
+    boolean[] covered = RuinRules.covered(List.of(new int[] {107, 201, 115, 202}, new int[] {300, 300, 310, 310}),
+        100, 200, 10, 6);
+    int count = 0;
+    for (boolean c : covered) if (c) count++;
+    assertEquals(3 * 2, count);
+    assertTrue(covered[1 * 10 + 7] && covered[2 * 10 + 9] && !covered[1 * 10 + 6] && !covered[3 * 10 + 8]);
+    assertEquals(0, countTrue(RuinRules.covered(List.of(), 0, 0, 4, 4)));
+  }
+
+  private static int countTrue(boolean[] values) {
+    int n = 0;
+    for (boolean v : values) if (v) n++;
+    return n;
+  }
 }

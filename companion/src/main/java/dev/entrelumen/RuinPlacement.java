@@ -14,6 +14,7 @@ import net.minecraft.Util;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestServer;
@@ -30,12 +31,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.TicketType;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.EmptyBlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -45,10 +48,16 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
@@ -101,14 +110,19 @@ public final class RuinPlacement {
   private static final String STRUCTURE_BLOCK = "minecraft:structure_block";
 
   private static final Map<MinecraftServer, Deque<Job>> JOBS = new WeakHashMap<>();
-  /** A ruin whose placement failed waits this long before a trigger tries it again. */
-  static final long RETRY_TICKS = 12_000;
-  private static final Map<MinecraftServer, Map<ResourceLocation, Long>> FAILED = new WeakHashMap<>();
+  /**
+   * When each ruin's placement last failed and how many times in a row: a trigger tries it again after
+   * {@link RuinRules#retryDelay}, which doubles per failure up to six hours.
+   */
+  private static final Map<MinecraftServer, Map<ResourceLocation, long[]>> FAILED = new WeakHashMap<>();
+  /** Biomes a mod locks until its boss falls (Twilight Forest): a ruin there is a last resort. */
+  static final TagKey<Biome> RUIN_AVOID = TagKey.create(Registries.BIOME,
+      ResourceLocation.fromNamespaceAndPath("entrelumen", "ruin_avoid"));
 
   private static boolean waiting(MinecraftServer server, ResourceLocation id) {
     synchronized (FAILED) {
-      Long at = FAILED.getOrDefault(server, Map.of()).get(id);
-      return at != null && server.overworld().getGameTime() - at < RETRY_TICKS;
+      long[] failure = FAILED.getOrDefault(server, Map.of()).get(id);
+      return failure != null && server.overworld().getGameTime() - failure[0] < RuinRules.retryDelay((int) failure[1]);
     }
   }
 
@@ -351,10 +365,19 @@ public final class RuinPlacement {
   /** What a ring's search found: the dry candidates, best first, and the sites under water. */
   record Sites(List<Candidate> dry, List<Wet> wet) {}
 
-  /** Everything the off-thread site search reads; the generator and biome source are thread-safe. */
+  /**
+   * Everything the off-thread site search reads; the generator and biome source are thread-safe, and the
+   * world border ({minX, minZ, maxX, maxZ}, null: none) is a copy taken on the server thread.
+   */
   record Siting(ChunkGenerator generator, RandomState random, LevelHeightAccessor height, BiomeSource biomes,
       RuinDefinitions.Mode mode, long seed, String ruin, int cx, int cy, int cz, int min, int max,
-      int sizeX, int sizeZ, int above, int below, List<ProtectionRules.Box> exclusions, int ring) {}
+      int sizeX, int sizeZ, int above, int below, List<ProtectionRules.Box> exclusions, int ring,
+      @Nullable double[] border) {}
+
+  /** How far past its footprint a ruin must stay inside the world border: a surface ruin reshapes its margin. */
+  static int borderMargin(RuinDefinitions.Mode mode) {
+    return mode == RuinDefinitions.Mode.SURFACE ? RuinTerrain.MAX_MARGIN : 0;
+  }
 
   static ProtectionRules.Box footprint(int cx, int cz, int sizeX, int sizeZ) {
     int x0 = cx - sizeX / 2, z0 = cz - sizeZ / 2;
@@ -368,6 +391,10 @@ public final class RuinPlacement {
     for (int[] c : RuinRules.candidates(in.seed(), RuinRules.ringKey(in.ruin(), in.ring()), in.cx(), in.cz(),
         in.min(), in.max(), CANDIDATES)) {
       if (!RuinRules.clear(footprint(c[0], c[1], in.sizeX(), in.sizeZ()), in.exclusions(), EXCLUSION_MARGIN))
+        continue;
+      // Past the world border nobody could reach it, dry or under water.
+      if (in.border() != null
+          && !RuinRules.inside(in.border(), c[0], c[1], in.sizeX(), in.sizeZ(), borderMargin(in.mode())))
         continue;
       Candidate candidate;
       try {
@@ -418,12 +445,25 @@ public final class RuinPlacement {
       under.add(new Wet(x, z, floor, RuinTerrain.mostCommon(tops, floor), in.ring()));
       return null;
     }
+    // A thin superflat: the ruin stands higher and the blend fills up to it, instead of no site at all.
+    floor = RuinRules.surfaceFloor(floor, in.height().getMinBuildHeight(), in.below());
     if (!fits(in.height(), floor - in.below(), in.below() + in.above())) return null;
     var biome = in.biomes().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(floor), QuartPos.fromBlock(z),
         in.random().sampler());
     boolean suits = !biome.is(BiomeTags.IS_OCEAN) && !biome.is(BiomeTags.IS_RIVER) && !biome.is(BiomeTags.IS_BEACH);
-    int score = RuinRules.score(new RuinRules.Sample(heights, water, suits));
+    // A biome locked until its boss falls, at the centre or a corner: the site comes last.
+    boolean locked = false;
+    for (int[] at : corners(x, z, in.sizeX(), in.sizeZ()))
+      locked |= in.biomes().getNoiseBiome(QuartPos.fromBlock(at[0]), QuartPos.fromBlock(floor),
+          QuartPos.fromBlock(at[1]), in.random().sampler()).is(RUIN_AVOID);
+    int score = RuinRules.score(new RuinRules.Sample(heights, water, suits, locked));
     return score == Integer.MAX_VALUE ? null : new Candidate(x, z, floor, score);
+  }
+
+  /** The centre and the four corner columns of a footprint centred on {@code (x, z)}. */
+  static int[][] corners(int x, int z, int sizeX, int sizeZ) {
+    int x0 = x - sizeX / 2, z0 = z - sizeZ / 2, x1 = x0 + sizeX - 1, z1 = z0 + sizeZ - 1;
+    return new int[][] {{x, z}, {x0, z0}, {x1, z0}, {x0, z1}, {x1, z1}};
   }
 
   private static Candidate cavern(Siting in, int x, int z) {
@@ -518,6 +558,13 @@ public final class RuinPlacement {
      * water it saw, for an islet when no ring has land.
      */
     int ring, maxRings = RuinRules.WIDER_RINGS;
+    /**
+     * The world border when the search began ({minX, minZ, maxX, maxZ}), how far from the centre a site
+     * may lie inside it, and the ring being searched as cut to it.
+     */
+    double[] border;
+    int fit = Integer.MAX_VALUE;
+    int[] ringBounds;
     final List<Wet> wet = new ArrayList<>();
     /** An islet raised under the ruin: where, over which seabed, and how far its building got. */
     Wet islet;
@@ -534,6 +581,8 @@ public final class RuinPlacement {
     int spread = -1;
     // The terrain, over the grid grown by RuinTerrain.MAX_MARGIN: natural ground and top per column.
     int[] natural, surfaceTop;
+    /** Columns of the grown grid under a structure's piece (a fixed site, an islet, a last resort): left as they are. */
+    boolean[] guarded;
     int margin, scanIndex, shapeIndex, supportIndex;
     Palette palette = Palette.DEFAULT;
     final List<BlockState> surfaces = new ArrayList<>(), fillers = new ArrayList<>(), rocks = new ArrayList<>();
@@ -664,7 +713,8 @@ public final class RuinPlacement {
     job.busyTicks++;
     if (job.failed && !job.survey)
       synchronized (FAILED) {
-        FAILED.computeIfAbsent(server, ignored -> new HashMap<>()).put(job.id, server.overworld().getGameTime());
+        FAILED.computeIfAbsent(server, ignored -> new HashMap<>()).merge(job.id,
+            new long[] {server.overworld().getGameTime(), 1}, (before, now) -> new long[] {now[0], before[1] + 1});
       }
     if (job.done || job.failed) {
       release(job);
@@ -760,37 +810,55 @@ public final class RuinPlacement {
       }
       case SITING -> {
         var placement = job.definition.placement();
-        int[] ring = RuinRules.ring(placement.min(), placement.max(), job.ring);
+        var p = job.prepared;
         if (job.siting == null) {
-          var p = job.prepared;
+          int[] ring = RuinRules.ring(placement.min(), placement.max(), job.ring);
+          // The world border, copied here on the server thread: no site may lie past it.
+          var border = job.level.getWorldBorder();
+          job.border = new double[] {border.getMinX(), border.getMinZ(), border.getMaxX(), border.getMaxZ()};
+          job.fit = RuinRules.borderFit(job.border, job.center.getX(), job.center.getZ(), p.sizeX(), p.sizeZ(),
+              borderMargin(placement.mode()));
+          int[] clamped = RuinRules.clampRing(ring, job.fit);
+          if (clamped == null) {
+            LOGGER.error("Heliodor ruin {}: the world border {} leaves no room for it around {}; not placed", job.id,
+                borderText(job.border), job.center.toShortString());
+            job.failed = true;
+            return;
+          }
+          if (clamped != ring) {
+            LOGGER.warn("Heliodor ruin {}: the world border {} cuts the ring {}..{} to {}..{}; the search stays inside it",
+                job.id, borderText(job.border), ring[0], ring[1], clamped[0], clamped[1]);
+            job.maxRings = job.ring;
+          }
+          job.ringBounds = clamped;
           var source = job.level.getChunkSource();
           var siting = new Siting(source.getGenerator(), source.randomState(), job.level,
               source.getGenerator().getBiomeSource(), placement.mode(), job.level.getSeed(), job.definition.id(),
-              job.center.getX(), job.center.getY(), job.center.getZ(), ring[0], ring[1],
-              p.sizeX(), p.sizeZ(), p.above(), p.ground(), exclusions(job.level), job.ring);
+              job.center.getX(), job.center.getY(), job.center.getZ(), clamped[0], clamped[1],
+              p.sizeX(), p.sizeZ(), p.above(), p.ground(), exclusions(job.level), job.ring, job.border.clone());
           job.siting = CompletableFuture.supplyAsync(() -> site(siting), Util.backgroundExecutor());
           return;
         }
         if (!job.siting.isDone()) return;
+        int[] ring = job.ringBounds;
         var sites = job.siting.join();
         job.siting = null;
         job.candidates = sites.dry();
         job.wet.addAll(sites.wet());
-        if (job.candidates.isEmpty() && !sites.wet().isEmpty() && job.ring < job.maxRings) {
-          // The whole ring is under water: the next one out.
-          widen(job, "every site in ring " + ring[0] + ".." + ring[1] + " is under water");
-          return;
-        }
         if (job.candidates.isEmpty()) {
-          // Nothing scored well: fall back to the ring's candidates, judged on the real terrain.
+          // No usable site: the next ring out first, whether the ring is under water or not.
+          if (widen(job, sites.wet().isEmpty() ? "no site in ring " + ring[0] + ".." + ring[1] + " will do"
+              : "every site in ring " + ring[0] + ".." + ring[1] + " is under water")) return;
+          // The last ring: its candidates, unscored, judged on the real terrain (never past the border).
           List<Candidate> fallback = new ArrayList<>();
           for (int[] c : RuinRules.candidates(job.level.getSeed(), RuinRules.ringKey(job.definition.id(), job.ring),
               job.center.getX(), job.center.getZ(), ring[0], ring[1], 8))
-            fallback.add(new Candidate(c[0], c[1], Integer.MIN_VALUE, 1000));
+            if (RuinRules.inside(job.border, c[0], c[1], p.sizeX(), p.sizeZ(), borderMargin(placement.mode())))
+              fallback.add(new Candidate(c[0], c[1], Integer.MIN_VALUE, 1000));
           job.candidates = fallback;
         }
         LOGGER.info("Heliodor ruin {}: {} candidate sites in ring {}..{}, best {}", job.id, job.candidates.size(),
-            ring[0], ring[1], job.candidates.getFirst());
+            ring[0], ring[1], job.candidates.isEmpty() ? "none" : job.candidates.getFirst());
         job.stage = Stage.CHECKING;
       }
       case CHECKING -> checking(job);
@@ -847,6 +915,10 @@ public final class RuinPlacement {
     return job.survey ? Stage.HOLD : Stage.SCANNING;
   }
 
+  static String borderText(double[] border) {
+    return String.format(Locale.ROOT, "%.0f,%.0f..%.0f,%.0f", border[0], border[1], border[2], border[3]);
+  }
+
   private static List<ProtectionRules.Box> exclusions(ServerLevel level) {
     List<ProtectionRules.Box> boxes = new ArrayList<>();
     var data = RuinData.get(level.getServer());
@@ -871,12 +943,14 @@ public final class RuinPlacement {
   /** Skips candidates where players already spent time: a base, a farm, a path they use. */
   private static void checking(Job job) {
     if (job.candidate >= job.candidates.size()) {
+      // A structure in the way of the best site seen, or a locked biome under it: the next ring out
+      // first, keeping that site in hand as the last resort.
+      if (!job.fixed && job.best != null && job.definition.placement().mode() == RuinDefinitions.Mode.SURFACE
+          && RuinRules.avoided(job.bestScore)
+          && widen(job, "every site in its ring has a structure in the way or lies in a locked biome")) return;
       if (job.best == null || job.bestScore == Integer.MAX_VALUE) {
         // A ruin never fails to place (Elias, 27 September): the next ring out, then an islet.
-        if (!job.fixed && job.ring < job.maxRings) {
-          widen(job, "no site in its ring will do");
-          return;
-        }
+        if (!job.fixed && widen(job, "no site in its ring will do")) return;
         if (!job.fixed && job.definition.placement().mode() == RuinDefinitions.Mode.SURFACE && !job.wet.isEmpty()) {
           islet(job);
           return;
@@ -894,6 +968,13 @@ public final class RuinPlacement {
     }
     var candidate = job.candidates.get(job.candidate);
     var p = job.prepared;
+    if (!job.fixed && job.border != null && !RuinRules.inside(job.border, candidate.x(), candidate.z(), p.sizeX(),
+        p.sizeZ(), borderMargin(job.definition.placement().mode()))) {
+      LOGGER.info("Heliodor ruin {}: site {},{} skipped, past the world border {}", job.id, candidate.x(),
+          candidate.z(), borderText(job.border));
+      job.candidate++;
+      return;
+    }
     int x0 = candidate.x() - p.sizeX() / 2, z0 = candidate.z() - p.sizeZ() / 2;
     var chunkMap = job.level.getChunkSource().chunkMap;
     boolean pending = false;
@@ -963,22 +1044,31 @@ public final class RuinPlacement {
     job.tickets.clear();
   }
 
-  /** Searches the next ring out, from scratch. */
-  private static void widen(Job job, String why) {
+  /**
+   * Searches the next ring out, from scratch but for the best site seen so far, which stays the last
+   * resort. Refuses (false) past the last ring and when the next ring starts outside the world border.
+   */
+  private static boolean widen(Job job, String why) {
+    if (job.fixed || job.ring >= job.maxRings) return false;
+    var placement = job.definition.placement();
+    int[] ring = RuinRules.ring(placement.min(), placement.max(), job.ring + 1);
+    if (ring[0] > job.fit) {
+      LOGGER.warn("Heliodor ruin {}: {}, but the ring {}..{} lies past the world border {}", job.id, why, ring[0],
+          ring[1], job.border == null ? "?" : borderText(job.border));
+      job.maxRings = job.ring;
+      return false;
+    }
     release(job);
     job.ring++;
-    var placement = job.definition.placement();
-    int[] ring = RuinRules.ring(placement.min(), placement.max(), job.ring);
     LOGGER.warn("Heliodor ruin {}: {}; searching the ring {}..{} around {}", job.id, why, ring[0], ring[1],
         job.center.toShortString());
     job.candidates = List.of();
     job.candidate = 0;
     job.attempts = 0;
-    job.best = null;
-    job.bestScore = Integer.MAX_VALUE;
     job.resume = null;
     job.siting = null;
     job.stage = Stage.SITING;
+    return true;
   }
 
   /**
@@ -1136,12 +1226,19 @@ public final class RuinPlacement {
       // balances what the blend fills and what it carves.
       int[] base = base(level, cursor, p, x0, z0);
       floor = RuinTerrain.median(base.length > 0 ? base : heights);
+      // A thin superflat: the ruin stands higher and the blend fills up to it.
+      floor = RuinRules.surfaceFloor(floor, level.getMinBuildHeight(), p.ground());
       int[] under = base.length > 0 ? base : heights;
       int spread = Arrays.stream(under).max().getAsInt() - Arrays.stream(under).min().getAsInt();
       job.spread = spread;
-      int structures = structures(level, x0, z0, p, floor);
-      score = RuinRules.score(new RuinRules.Sample(under, new boolean[under.length], true));
-      if (score != Integer.MAX_VALUE) score += wet * 40 + canopy * 2 + structures * 100;
+      // Every structure (village, outpost...) with a piece under the footprint or the margin the blend
+      // reshapes, down to the deepest the blend reaches: each one outweighs anything the terrain costs.
+      int structures = structureHits(level, grownBox(level, x0, z0, p), floor - RuinTerrain.MAX_BLEND);
+      boolean locked = false;
+      for (int[] at : corners(x0 + p.sizeX() / 2, z0 + p.sizeZ() / 2, p.sizeX(), p.sizeZ()))
+        locked |= level.getBiome(cursor.set(at[0], floor + 1, at[1])).is(RUIN_AVOID);
+      score = RuinRules.score(new RuinRules.Sample(under, new boolean[under.length], true, locked));
+      if (score != Integer.MAX_VALUE) score += wet * 40 + canopy * 2 + structures * RuinRules.STRUCTURE_PENALTY;
       if (wet * 4 > heights.length) {
         score = Integer.MAX_VALUE;
         // Under water: an islet could stand here if no ring has land.
@@ -1158,7 +1255,8 @@ public final class RuinPlacement {
       }
       // Suitable: gentle ground, almost no water, no big trees, no village or outpost in the way. When no
       // candidate is (Elias, 26 September), the one with the smallest spread wins and the blend does the rest.
-      good = spread <= MAX_SPREAD && wet * 8 <= heights.length && canopy * 4 <= heights.length && structures == 0;
+      good = spread <= MAX_SPREAD && wet * 8 <= heights.length && canopy * 4 <= heights.length && structures == 0
+          && !locked;
     } else if (mode == RuinDefinitions.Mode.CAVERN) {
       good = true;
       int[] floors = new int[9];
@@ -1171,7 +1269,14 @@ public final class RuinPlacement {
         score = Integer.MAX_VALUE;
       } else {
         floor = RuinRules.floor(floors);
-        score = (Arrays.stream(floors).max().getAsInt() - Arrays.stream(floors).min().getAsInt()) * 8;
+        // A fortress, a bastion or another structure through the template's volume: never accepted
+        // (the best seen still places it when no site is free).
+        int bottom = floor - p.ground();
+        int structures = structureHits(level, new BoundingBox(x0, bottom, z0, x0 + p.sizeX() - 1,
+            bottom + p.sizeY() - 1, z0 + p.sizeZ() - 1), bottom);
+        good = structures == 0;
+        score = (Arrays.stream(floors).max().getAsInt() - Arrays.stream(floors).min().getAsInt()) * 8
+            + structures * 100;
       }
     } else {
       good = true;
@@ -1191,7 +1296,7 @@ public final class RuinPlacement {
     }
     good = job.fixed || score != Integer.MAX_VALUE && switch (mode) {
       case SURFACE -> good;
-      case CAVERN -> score <= MAX_SPREAD * 8;
+      case CAVERN -> good && score <= MAX_SPREAD * 8;
       case SKY -> score <= 24;
     };
     if (!good) {
@@ -1249,14 +1354,54 @@ public final class RuinPlacement {
         job.level.dimension().location());
   }
 
-  /** Surface structures (villages, outposts...) crossing the footprint, on a coarse grid. */
-  private static int structures(ServerLevel level, int x0, int z0, Prepared p, int floor) {
-    int hits = 0;
-    for (int x = x0 + 2; x < x0 + p.sizeX(); x += 8)
-      for (int z = z0 + 2; z < z0 + p.sizeZ(); z += 8)
-        if (level.structureManager().getStructureWithPieceAt(new BlockPos(x, floor + 2, z), holder -> true).isValid())
-          hits++;
-    return hits;
+  /** The footprint of a surface template from {@code (x0, z0)} grown by the widest margin, full height. */
+  static BoundingBox grownBox(LevelHeightAccessor level, int x0, int z0, Prepared p) {
+    int m = RuinTerrain.MAX_MARGIN;
+    return new BoundingBox(x0 - m, level.getMinBuildHeight(), z0 - m, x0 + p.sizeX() - 1 + m,
+        level.getMaxBuildHeight() - 1, z0 + p.sizeZ() - 1 + m);
+  }
+
+  /** The structures in a ruin's way: how many, and the boxes of their pieces that cross it. */
+  record Obstacles(int starts, List<BoundingBox> pieces) {}
+
+  /** How many structures have a piece that crosses {@code grown} in X and Z, reaches {@code minY} and starts under its top. */
+  static int structureHits(ServerLevel level, BoundingBox grown, int minY) {
+    return obstacles(level, grown, minY).starts();
+  }
+
+  /**
+   * The structures with a piece that crosses {@code grown} in X and Z, reaches up to {@code minY} and
+   * starts no higher than its top, from the references of the loaded chunks under it (those of a job
+   * are under its ticket), each start counted once. A start's chunk is never generated for this.
+   */
+  static Obstacles obstacles(ServerLevel level, BoundingBox grown, int minY) {
+    Set<StructureStart> seen = Collections.newSetFromMap(new IdentityHashMap<>());
+    List<BoundingBox> pieces = new ArrayList<>();
+    int starts = 0;
+    for (int cx = grown.minX() >> 4; cx <= grown.maxX() >> 4; cx++)
+      for (int cz = grown.minZ() >> 4; cz <= grown.maxZ() >> 4; cz++) {
+        LevelChunk chunk = level.getChunkSource().getChunkNow(cx, cz);
+        if (chunk == null) continue;
+        for (Map.Entry<Structure, it.unimi.dsi.fastutil.longs.LongSet> entry : chunk.getAllReferences().entrySet())
+          for (long reference : entry.getValue()) {
+            ChunkPos at = new ChunkPos(reference);
+            ChunkAccess holder = level.getChunk(at.x, at.z, ChunkStatus.STRUCTURE_STARTS, false);
+            if (holder == null) continue;
+            StructureStart start = level.structureManager().getStartForStructure(
+                SectionPos.of(at, level.getMinSection()), entry.getKey(), holder);
+            if (start == null || !start.isValid() || !seen.add(start)) continue;
+            boolean hit = false;
+            for (StructurePiece piece : start.getPieces()) {
+              BoundingBox box = piece.getBoundingBox();
+              if (box.maxY() < minY || box.minY() > grown.maxY() || box.maxX() < grown.minX()
+                  || box.minX() > grown.maxX() || box.maxZ() < grown.minZ() || box.minZ() > grown.maxZ()) continue;
+              hit = true;
+              pieces.add(box);
+            }
+            if (hit) starts++;
+          }
+      }
+    return new Obstacles(starts, List.copyOf(pieces));
   }
 
   private static int realCavernFloor(ServerLevel level, int x, int z, Prepared p) {
@@ -1332,6 +1477,19 @@ public final class RuinPlacement {
       job.natural = new int[n];
       job.surfaceTop = new int[n];
       job.scanIndex = 0;
+      // A fixed site, an islet or a last resort may still have a structure in the way: the ground under
+      // its pieces is neither carved nor filled, and no tree is felled from there.
+      int floor = job.origin.getY() + p.ground();
+      var obstacles = obstacles(level, grownBox(level, job.origin.getX(), job.origin.getZ(), p),
+          floor - RuinTerrain.MAX_BLEND);
+      job.guarded = null;
+      if (!obstacles.pieces().isEmpty()) {
+        List<int[]> boxes = new ArrayList<>();
+        for (BoundingBox box : obstacles.pieces()) boxes.add(new int[] {box.minX(), box.minZ(), box.maxX(), box.maxZ()});
+        job.guarded = RuinRules.covered(boxes, job.origin.getX() - m, job.origin.getZ() - m, w, grownDepth(p));
+        LOGGER.warn("Heliodor ruin {}: {} structures cross its site at {}; the ground under their pieces stays as it is",
+            job.id, obstacles.starts(), job.origin.toShortString());
+      }
     }
     var cursor = new BlockPos.MutableBlockPos();
     while (job.scanIndex < n) {
@@ -1478,6 +1636,7 @@ public final class RuinPlacement {
     var cursor = new BlockPos.MutableBlockPos();
     while (job.shapeIndex < n) {
       int i = job.shapeIndex++;
+      if (job.guarded != null && job.guarded[i]) continue;
       int x = i % w - m, z = i / w - m;
       boolean inside = x >= 0 && z >= 0 && x < p.sizeX() && z < p.sizeZ();
       int column = inside ? z * p.sizeX() + x : -1;
@@ -1605,6 +1764,15 @@ public final class RuinPlacement {
     return state.is(Blocks.VINE) || state.is(Blocks.COCOA) || state.is(Blocks.BEE_NEST) || state.is(Blocks.SNOW);
   }
 
+  /** Whether a world column lies under a structure's piece that the shaping leaves alone. */
+  static boolean guarded(Job job, int wx, int wz) {
+    if (job.guarded == null) return false;
+    var p = job.prepared;
+    int m = RuinTerrain.MAX_MARGIN, gx = wx - job.origin.getX() + m, gz = wz - job.origin.getZ() + m;
+    int w = grownWidth(p);
+    return gx >= 0 && gz >= 0 && gx < w && gz < grownDepth(p) && job.guarded[gz * w + gx];
+  }
+
   /** How far around the template trees are felled and loose leaves swept. */
   static final int FELLING_REACH = RuinTerrain.MAX_MARGIN + 8;
 
@@ -1629,6 +1797,8 @@ public final class RuinPlacement {
         for (BlockPos next : BlockPos.betweenClosed(at.offset(-1, -1, -1), at.offset(1, 1, 1))) {
           if (next.getX() < x0 || next.getX() > x1 || next.getZ() < z0 || next.getZ() > z1) continue;
           if (!loaded(level, next)) continue;
+          // A structure's piece (a village house of logs) is never felled.
+          if (guarded(job, next.getX(), next.getZ())) continue;
           BlockState state = level.getBlockState(next);
           if (state.is(BlockTags.LEAVES) && state.hasProperty(LeavesBlock.PERSISTENT)
               && !state.getValue(LeavesBlock.PERSISTENT)) leafy = true;

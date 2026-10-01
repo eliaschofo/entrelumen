@@ -146,8 +146,27 @@ public final class RuinRules {
     return result;
   }
 
-  /** A sampled surface site: ground heights, water flags and whether the biome suits. */
-  public record Sample(int[] heights, boolean[] water, boolean biome) {}
+  /**
+   * A sampled surface site: ground heights, water flags, whether the biome suits, and whether part of
+   * it lies in a biome a mod locks until its boss falls ({@code entrelumen:ruin_avoid}).
+   */
+  public record Sample(int[] heights, boolean[] water, boolean biome, boolean locked) {
+    public Sample(int[] heights, boolean[] water, boolean biome) {
+      this(heights, water, biome, false);
+    }
+  }
+
+  /**
+   * What a site in a locked biome costs, and what each structure in its way costs. Both outweigh
+   * anything the terrain can cost (a spread of a whole world's height, water, a shore), so a free site
+   * always beats a locked one, and a site with no structure beats every site with one.
+   */
+  public static final int LOCKED_PENALTY = 5000, STRUCTURE_PENALTY = 10_000;
+
+  /** Whether a surface score carries a locked biome or a structure: a site to take only when nothing else is left. */
+  public static boolean avoided(int score) {
+    return score >= LOCKED_PENALTY && score != Integer.MAX_VALUE;
+  }
 
   /**
    * Lower is better; {@link Integer#MAX_VALUE} rejects a site mostly under water. A spread only costs:
@@ -164,7 +183,75 @@ public final class RuinRules {
     if (sample.heights().length == 0) return Integer.MAX_VALUE;
     int spread = max - min;
     if (wet * 4 > sample.heights().length) return Integer.MAX_VALUE;
-    return spread * 8 + wet * 40 + (sample.biome() ? 0 : 200);
+    return spread * 8 + wet * 40 + (sample.biome() ? 0 : 200) + (sample.locked() ? LOCKED_PENALTY : 0);
+  }
+
+  /**
+   * The ground level of a surface ruin whose ground layer is {@code below} layers over its bottom: the
+   * site's floor, raised where the template would reach under the world (a thin superflat). The blend
+   * fills up to it.
+   */
+  public static int surfaceFloor(int floor, int minBuildHeight, int below) {
+    return Math.max(floor, minBuildHeight + below + 1);
+  }
+
+  /** A ruin whose placement failed waits this long before a trigger tries it again, doubling per failure. */
+  public static final long RETRY_TICKS = 12_000, MAX_RETRY_TICKS = 432_000;
+
+  public static long retryDelay(int failures) {
+    if (failures <= 1) return RETRY_TICKS;
+    return Math.min(RETRY_TICKS << Math.min(failures - 1, 20), MAX_RETRY_TICKS);
+  }
+
+  // ---- The world border ------------------------------------------------------------------------
+
+  /**
+   * Whether the footprint of a ruin centred on {@code (cx, cz)}, grown by {@code margin}, lies inside a
+   * world border {@code {minX, minZ, maxX, maxZ}} (a block is inside when {@code min <= x < max}).
+   */
+  public static boolean inside(double[] bounds, int cx, int cz, int sizeX, int sizeZ, int margin) {
+    long x0 = (long) cx - sizeX / 2 - margin, z0 = (long) cz - sizeZ / 2 - margin;
+    long x1 = (long) cx - sizeX / 2 + sizeX - 1 + margin, z1 = (long) cz - sizeZ / 2 + sizeZ - 1 + margin;
+    return x0 >= bounds[0] && z0 >= bounds[1] && x1 < bounds[2] && z1 < bounds[3];
+  }
+
+  /**
+   * How far from {@code (cx, cz)} a ruin's centre can go in any direction and keep its footprint and
+   * margin inside the border: the nearest edge, less half the larger side and the margin. Negative when
+   * not even a ruin centred there fits.
+   */
+  public static int borderFit(double[] bounds, int cx, int cz, int sizeX, int sizeZ, int margin) {
+    double edge = Math.min(Math.min(cx - bounds[0], bounds[2] - cx), Math.min(cz - bounds[1], bounds[3] - cz));
+    double fit = edge - Math.max(sizeX, sizeZ) / 2.0 - margin;
+    return (int) Math.floor(Math.max(Math.min(fit, Integer.MAX_VALUE / 2.0), Integer.MIN_VALUE / 2.0));
+  }
+
+  /**
+   * A search ring cut to the border: as it is when its inner edge fits, else a ring as wide just
+   * inside {@code fit}; null when nothing fits.
+   */
+  public static int[] clampRing(int[] ring, int fit) {
+    if (fit < 0) return null;
+    if (ring[0] <= fit) return ring;
+    return new int[] {Math.max(0, fit - (ring[1] - ring[0])), fit};
+  }
+
+  // ---- Structures in the way -------------------------------------------------------------------
+
+  /**
+   * The columns of the grid {@code width} by {@code depth} from {@code (x0, z0)} that lie inside any box
+   * {@code {minX, minZ, maxX, maxZ}} (inclusive), index {@code z * width + x}: the terrain shaping leaves
+   * them alone.
+   */
+  public static boolean[] covered(List<int[]> boxes, int x0, int z0, int width, int depth) {
+    boolean[] out = new boolean[width * depth];
+    for (int[] box : boxes) {
+      int fromX = Math.max(box[0] - x0, 0), toX = Math.min(box[2] - x0, width - 1);
+      int fromZ = Math.max(box[1] - z0, 0), toZ = Math.min(box[3] - z0, depth - 1);
+      for (int z = fromZ; z <= toZ; z++)
+        for (int x = fromX; x <= toX; x++) out[z * width + x] = true;
+    }
+    return out;
   }
 
   /** The most common height of a sample: the floor a surface ruin stands on. */
