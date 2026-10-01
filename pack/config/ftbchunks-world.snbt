@@ -2,6 +2,18 @@
 # The companion gives that stage to every player outside the Envés and takes it away inside, so the
 # dungeon's fog map is the only map there (docs/design/dungeon-enves.md). Everything else keeps FTB
 # Chunks' defaults. Server admins may override in <world>/serverconfig/ftbchunks-world.snbt.
+#
+# Claims are also refused in the Envés and Solsticio. By default any player can claim chunks anywhere,
+# and block interaction is then limited to allies, so a non-ally could claim the Envés slot or the
+# Solsticio portal and shops and cancel every right-click of the other teams (claims inside the Envés
+# also outlive the attempt, so the next team reusing the slot could not light its seals). Neither
+# dimension is a place to build a base: both are authored spaces with their own protection.
 {
 	require_game_stage: true
+	claiming: {
+		claim_dimension_blacklist: [
+			"entrelumen:enves"
+			"entrelumen:solsticio"
+		]
+	}
 }
