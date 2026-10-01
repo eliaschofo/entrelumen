@@ -15,12 +15,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * protection (16 blocks by default on a dedicated server with operators) would refuse non-operators
  * the compass and the gate before any mod event fires, so the blocks tagged
  * {@code entrelumen:spawn_protection_exempt} are left out of it. They are all unbreakable.
+ *
+ * <p>Vanilla only checks the clicked block, so the exemption is withheld while the player sneaks
+ * with something in hand: that click skips the block's own use and would place a block, pour a
+ * bucket or light fire beside it instead. Without sneaking the block's use answers the click.
  */
 @Mixin(DedicatedServer.class)
 public abstract class DedicatedServerSpawnProtectionMixin {
   @Inject(method = "isUnderSpawnProtection", at = @At("HEAD"), cancellable = true, require = 1)
   private void entrelumen$exemptRuinBlocks(ServerLevel level, BlockPos pos, Player player,
       CallbackInfoReturnable<Boolean> callback) {
+    if (player != null && player.isSecondaryUseActive() && !(player.getMainHandItem().isEmpty() && player.getOffhandItem().isEmpty()))
+      return;
     if (level.getBlockState(pos).is(HeliodorRuins.SPAWN_PROTECTION_EXEMPT)) callback.setReturnValue(false);
   }
 }

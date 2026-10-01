@@ -194,6 +194,8 @@ public final class HeliodorRuins {
     int[] offset = new int[2];
     RingCursor cursor = new RingCursor(SEARCH_RADIUS / STEP);
     while (cursor.next(offset)) {
+      // The noise screen costs time too: the clock is checked before every candidate.
+      if (budget.expired()) break;
       int x0 = near.getX() + offset[0] * STEP - size.getX() / 2;
       int z0 = near.getZ() + offset[1] * STEP - size.getZ() / 2;
       int noise = noiseSpread(level, x0, z0, size);
@@ -267,11 +269,7 @@ public final class HeliodorRuins {
      * generation. Once the chunks or the time run out it answers false for good.
      */
     boolean afford(int x0, int z0, Vec3i size) {
-      if (spent) return false;
-      if (System.nanoTime() - started > maxNanos) {
-        spent = true;
-        return false;
-      }
+      if (expired()) return false;
       int missing = 0;
       for (int cx = x0 >> 4; cx <= (x0 + size.getX() - 1) >> 4; cx++)
         for (int cz = z0 >> 4; cz <= (z0 + size.getZ() - 1) >> 4; cz++)
@@ -282,6 +280,12 @@ public final class HeliodorRuins {
       }
       newChunks += missing;
       return true;
+    }
+
+    /** Whether the budget is gone, by chunks or by wall time; once it is, it stays gone. */
+    boolean expired() {
+      if (!spent && System.nanoTime() - started > maxNanos) spent = true;
+      return spent;
     }
 
     boolean spent() {
