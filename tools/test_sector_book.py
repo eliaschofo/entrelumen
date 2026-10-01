@@ -683,6 +683,11 @@ class TaskIds(unittest.TestCase):
 class ReviewEngine(unittest.TestCase):
     """Engine rules of the 1 October 2026 review that need no whole book."""
 
+    def test_emi_binds_are_not_keys(self):
+        # F50: EMI's binds are its own config, so the keybind component would print the action's name.
+        with self.assertRaisesRegex(AssertionError, "EMI config bind"):
+            qe.compile_paragraph("Press [key:key.emi.view_uses] on it.", "en_us", ctx_for(), "t")
+
     def test_carried_task_only_for_listed_non_consuming_items(self):
         item = sorted(qe.carried_items())[0]
         out = qe.carried_task({"id": "0123456789ABCDEF", "type": "item", "item": {"id": item, "count": 1}, "count": 2,

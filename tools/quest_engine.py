@@ -197,6 +197,10 @@ def compile_paragraph(text, lang, ctx, where):
             seg = {"translate": arg, "color": COLORS["item"]}
         elif name == "key":
             assert arg and re.fullmatch(r"[a-z0-9_]+(\.[A-Za-z0-9_]+)+", arg) and not parts, f"{where}: [key:key.id]"
+            # EMI's binds live in its own config, not in Controls: the keybind component would print the action's
+            # name ("[View Uses]"). Write the default key in words instead.
+            assert not arg.startswith("key.emi."), \
+                f"{where}: [key:{arg}] is an EMI config bind, not a key mapping: write its default key in words"
             ctx["keys"].add(arg)
             seg = {"text": "", "extra": [{"text": "["}, {"keybind": arg}, {"text": "]"}], "color": COLORS["key"]}
         elif name in ("quest", "chapter"):
