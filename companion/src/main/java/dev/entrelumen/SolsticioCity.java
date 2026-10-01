@@ -541,6 +541,34 @@ public final class SolsticioCity {
     return true;
   }
 
+  /**
+   * A disbanded party's plots go back to its owner's personal campaign when the owner has no plot;
+   * otherwise they are freed (the blocks inside stay), so party churn never uses the city's plots up.
+   */
+  public static boolean releaseCampaign(MinecraftServer server, UUID campaign, UUID owner) {
+    SolsticioData data = SolsticioData.get(server);
+    if (!releaseCampaign(data, campaign, owner)) return false;
+    data.setDirty();
+    StructureProtection.invalidate(server);
+    return true;
+  }
+
+  static boolean releaseCampaign(SolsticioData data, UUID campaign, UUID owner) {
+    boolean changed = false;
+    for (SolsticioData.Plot plot : data.plots) {
+      if (!campaign.equals(plot.owner)) continue;
+      changed = true;
+      if (owner != null && data.plotOf(owner) < 0) {
+        plot.owner = owner;
+      } else {
+        plot.owner = null;
+        plot.ownerName = "";
+        plot.claimedAt = 0;
+      }
+    }
+    return changed;
+  }
+
   /** The protection regions Solsticio contributes: the whole bordered city and the rift. */
   static List<ProtectionRules.Region> regions(MinecraftServer server) {
     SolsticioData data = SolsticioData.get(server);

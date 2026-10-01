@@ -39,6 +39,15 @@ public final class NatureRestorationData extends SavedData {
     return true;
   }
 
+  /** A new party keeps its founder's garden site; returns whether it changed anything. */
+  boolean copyIfAbsent(UUID from, UUID to) {
+    GlobalPos site = sites.get(from);
+    if (site == null || sites.containsKey(to)) return false;
+    sites.put(to, site);
+    setDirty();
+    return true;
+  }
+
   int size() {
     return sites.size();
   }

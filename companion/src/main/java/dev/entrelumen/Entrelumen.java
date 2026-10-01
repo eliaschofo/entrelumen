@@ -128,17 +128,21 @@ public final class Entrelumen {
     TeamEvent.CREATED.register(
         event -> {
           if (event.getTeam().isPartyTeam()) {
-            var data = CampaignData.get(FTBTeamsAPI.api().getManager().getServer());
+            var server = FTBTeamsAPI.api().getManager().getServer();
+            var data = CampaignData.get(server);
             data.campaigns.party(event.getTeam().getId(), event.getCreatorId());
             data.setDirty();
+            TeamHandoff.onCreated(server, event.getTeam().getId(), event.getCreatorId());
           }
         });
     TeamEvent.DELETED.register(
         event -> {
           if (event.getTeam().isPartyTeam()) {
-            var data = CampaignData.get(FTBTeamsAPI.api().getManager().getServer());
+            var server = FTBTeamsAPI.api().getManager().getServer();
+            var data = CampaignData.get(server);
             data.campaigns.archive(event.getTeam().getId());
             data.setDirty();
+            TeamHandoff.onDeleted(server, event.getTeam().getId(), event.getTeam().getOwner());
           }
         });
   }

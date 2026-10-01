@@ -49,13 +49,6 @@ public final class Campaigns {
     if (parties.containsKey(team)) parties.get(team).archived = true;
   }
 
-  public boolean recover(UUID team) {
-    Campaign c = parties.get(team);
-    if (c == null || !c.archived) return false;
-    c.archived = false;
-    return true;
-  }
-
   public static boolean deliver(
       Campaign c,
       String project,

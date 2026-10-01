@@ -20,6 +20,15 @@ public final class CampaignActions {
     return team.isPartyTeam() ? team.getId() : player.getUUID();
   }
 
+  /**
+   * The campaign of a player FTB Teams knows, or null: a fake player with a UUID no team was made for
+   * (a deployer printed by a Schematicannon) has none, and never falls back to its own UUID.
+   */
+  static UUID campaignIdOrNull(ServerPlayer player) {
+    return FTBTeamsAPI.api().getManager().getTeamForPlayer(player)
+        .map(team -> team.isPartyTeam() ? team.getId() : player.getUUID()).orElse(null);
+  }
+
   public static Result perform(
       ServerPlayer player, UUID expectedCampaign, Action action, String project) {
     if (!campaignId(player).equals(expectedCampaign)) {
