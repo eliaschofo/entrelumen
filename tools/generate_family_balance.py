@@ -88,6 +88,18 @@ def when_item_exists(path, item_id, why):
 DISABLED_STUB = {'neoforge:conditions': [{'type': 'neoforge:false'}]}
 
 
+def stub_text(path, upstream):
+    """The text of a disabled stub: the false condition alone, plus the upstream recipe's `type` for a recipe.
+
+    KubeJS reads a recipe file's `type` before its load conditions and, for one that has none, logs "Skipping recipe ...,
+    not a json object" on every load. The type is one resource location naming the mod's serializer, not data of the
+    mod; nothing else of the upstream file is written."""
+    stub = dict(DISABLED_STUB)
+    if re.fullmatch(r'data/[^/]+/recipe/.+', path) and isinstance(upstream.get('type'), str):
+        stub['type'] = upstream['type']
+    return json.dumps(stub, indent=2) + '\n'
+
+
 def disabled(path, why, *, stub=False):
     """Disable a broken upstream data file with a neoforge:false condition.
 
@@ -1812,7 +1824,7 @@ def build_data(name, found=None, templates=None):
             kept = original.get('neoforge:conditions', [])
             assert {'type': 'neoforge:false'} not in kept, f"{spec['path']}: already disabled"
             if spec['stub']:  # nothing of the upstream body is written; the check above still watches the file
-                outputs_by_path[spec['path'][len('data/'):]] = json.dumps(DISABLED_STUB, indent=2) + '\n'
+                outputs_by_path[spec['path'][len('data/'):]] = stub_text(spec['path'], original)
                 continue
             result = {**original, 'neoforge:conditions': [{'type': 'neoforge:false'}] + kept}
             if not kept:
@@ -2618,19 +2630,19 @@ ServerEvents.recipes(event => {
   console.info('[TAG] ' + JSON.stringify({status: 'exclusive-outputs', signature: SIGNATURE,
     creations: CREATIONS.length, displaced: displaced}));
 });
-ServerEvents.afterRecipes(event => {
+entrelumenAfterRecipes('TAG', index => {
   var failed = [];
   CREATIONS.forEach(row => {
-    var own = event.countRecipes({id: row.id, output: row.output});
-    var producers = event.countRecipes({output: row.output});
+    var own = index.countIdOutput(row.id, row.output);
+    var producers = index.countOutput(row.output);
     var farmed = 0;
-    row.farmed.forEach(id => { farmed += event.countRecipes({id: id, output: row.output}); });
+    row.farmed.forEach(id => { farmed += index.countIdOutput(id, row.output); });
     if (own !== 1 || farmed !== row.farmed.length || producers !== 1 + row.farmed.length) {
       failed.push({recipe: row.id, loadedOutput: own, farmedLoaded: farmed, producers: producers});
     }
   });
   UNCRAFTABLE.forEach(output => {
-    var producers = event.countRecipes({output: output});
+    var producers = index.countOutput(output);
     if (producers !== 0) failed.push({output: output, producers: producers});
   });
   console.info('[TAG] ' + JSON.stringify({status: failed.length ? 'failed-creation-check' : 'creations-loaded',
@@ -2657,10 +2669,10 @@ def render_creations(family, prefix):
 
 
 ADDITIONS_RUNTIME = '''
-ServerEvents.afterRecipes(event => {
+entrelumenAfterRecipes('TAG', index => {
   var failed = [];
   ADDITIONS.forEach(row => {
-    var loaded = event.countRecipes({id: row.id, output: row.output});
+    var loaded = index.countIdOutput(row.id, row.output);
     if (loaded !== 1) failed.push({recipe: row.id, loadedOutput: loaded});
   });
   console.info('[TAG] ' + JSON.stringify({status: failed.length ? 'failed-addition-check' : 'additions-loaded',
@@ -2681,37 +2693,32 @@ ServerEvents.recipes(event => {
     console.error('[TAG] ' + JSON.stringify({status: 'failed-preflight', signature: SIGNATURE, missing: missing}));
     throw new Error('TAG preflight failed; native recipes were not changed');
   }
+  // Row by row: the replacement is built first and the native recipe goes only if that worked (entrelumen_recipe_tools.js),
+  // so a row KubeJS rejects leaves its native recipe alone and does not stop the rows after it.
+  var failedRows = [];
+  var failedRemovals = [];
   ROWS.forEach(row => {
-    event.remove({id: row.id});
-    event.custom(row.json).id(row.id);
+    if (!entrelumenReplaceRecipe(event, 'TAG', SIGNATURE, row.id, row.json)) failedRows.push(row.id);
   });
-  REMOVALS.forEach(id => event.remove({id: id}));
-  console.info('[TAG] ' + JSON.stringify({status: 'registered', signature: SIGNATURE, changed: ROWS.length,
-    removed: REMOVALS.length - absent.length, alreadyAbsent: absent}));
+  REMOVALS.forEach(id => {
+    if (!entrelumenRemoveRecipe(event, 'TAG', SIGNATURE, id)) failedRemovals.push(id);
+  });
+  console.info('[TAG] ' + JSON.stringify({status: failedRows.length || failedRemovals.length ? 'registered-with-failed-rows' : 'registered',
+    signature: SIGNATURE, changed: ROWS.length - failedRows.length,
+    removed: REMOVALS.length - failedRemovals.length - absent.length, alreadyAbsent: absent,
+    failedRows: failedRows.concat(failedRemovals)}));
 });
-function FIELDCHECK(event, row) {
-  // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.
-  var found = 0;
-  try {
-    var stack = Item.of(row.component);
-    event.forEachRecipe({id: row.id}, holder => {
-      holder.value()[row.field].forEach(ingredient => { if (ingredient.test(stack)) found++; });
-    });
-  } catch (error) {
-    console.warn('[TAG] ' + JSON.stringify({status: 'field-check-error', recipe: row.id, error: String(error)}));
-    return -1;
-  }
-  return found;
-}
-ServerEvents.afterRecipes(event => {
+// The checks read one shared index of the loaded recipes (entrelumen_recipe_tools.js), not a scan per row.
+entrelumenAfterRecipes('TAG', index => {
   var failed = [];
   ROWS.forEach(row => {
-    var loaded = event.countRecipes({id: row.id, output: row.output});
-    var staged = event.countRecipes({id: row.id, input: row.component});
-    if (staged === 0 && row.field) staged = FIELDCHECK(event, row);
+    var loaded = index.countIdOutput(row.id, row.output);
+    var staged = index.countIdInput(row.id, row.component);
+    // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.
+    if (staged === 0 && row.field) staged = index.countField('TAG', row.id, row.field, row.component);
     if (loaded !== 1 || staged !== 1) failed.push({recipe: row.id, loadedOutput: loaded, stagedInput: staged});
   });
-  REMOVALS.forEach(id => { var left = event.countRecipes({id: id}); if (left !== 0) failed.push({recipe: id, remaining: left}); });
+  REMOVALS.forEach(id => { var left = index.count(id); if (left !== 0) failed.push({recipe: id, remaining: left}); });
   console.info('[TAG] ' + JSON.stringify({status: failed.length ? 'failed-loaded-check' : 'loaded-ingredient-check',
     signature: SIGNATURE, checked: ROWS.length + REMOVALS.length, failed: failed}));
 });
@@ -2737,7 +2744,7 @@ def render(name, rows, removals, used_files):
     prefix = 'entrelumen' + ''.join(part.title() for part in name.split('_'))
     payload = json.dumps({'rows': rows, 'removals': removals}, ensure_ascii=False, separators=(',', ':'))
     signature = hashlib.sha256(payload.encode('utf-8')).hexdigest()
-    body = (RUNTIME.replace('FIELDCHECK', prefix + 'FieldCheck').replace('ROWS', prefix + 'Rows').replace('REMOVALS', prefix + 'Removals')
+    body = (RUNTIME.replace('ROWS', prefix + 'Rows').replace('REMOVALS', prefix + 'Removals')
             .replace('SIGNATURE', prefix + 'Signature').replace('TAG', family['tag']))
     if not rows and not removals and family.get('creations'):
         body = ''  # a creation-only family edits no native recipe

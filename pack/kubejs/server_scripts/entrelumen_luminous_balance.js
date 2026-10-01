@@ -23,19 +23,19 @@ ServerEvents.recipes(event => {
   console.info('[ENTRELUMEN_LUMINOUS_BALANCE] ' + JSON.stringify({status: 'exclusive-outputs', signature: entrelumenLuminousCreationsSignature,
     creations: entrelumenLuminousCreations.length, displaced: displaced}));
 });
-ServerEvents.afterRecipes(event => {
+entrelumenAfterRecipes('ENTRELUMEN_LUMINOUS_BALANCE', index => {
   var failed = [];
   entrelumenLuminousCreations.forEach(row => {
-    var own = event.countRecipes({id: row.id, output: row.output});
-    var producers = event.countRecipes({output: row.output});
+    var own = index.countIdOutput(row.id, row.output);
+    var producers = index.countOutput(row.output);
     var farmed = 0;
-    row.farmed.forEach(id => { farmed += event.countRecipes({id: id, output: row.output}); });
+    row.farmed.forEach(id => { farmed += index.countIdOutput(id, row.output); });
     if (own !== 1 || farmed !== row.farmed.length || producers !== 1 + row.farmed.length) {
       failed.push({recipe: row.id, loadedOutput: own, farmedLoaded: farmed, producers: producers});
     }
   });
   entrelumenLuminousUncraftable.forEach(output => {
-    var producers = event.countRecipes({output: output});
+    var producers = index.countOutput(output);
     if (producers !== 0) failed.push({output: output, producers: producers});
   });
   console.info('[ENTRELUMEN_LUMINOUS_BALANCE] ' + JSON.stringify({status: failed.length ? 'failed-creation-check' : 'creations-loaded',

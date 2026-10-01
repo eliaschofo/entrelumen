@@ -54,13 +54,19 @@ ServerEvents.recipes(event => {
       sourceSha256: entrelumenAircraftSourceSha256, missingItems: missingItems, missingRecipes: missingRecipes}));
     throw new Error('ENTRELUMEN aircraft balance preflight failed; native recipes were not changed');
   }
+  // Row by row: the replacement is built first and the native recipe goes only if that worked (entrelumen_recipe_tools.js).
+  var failedRows = [];
   entrelumenAircraftOverrides.forEach(row => {
-    event.remove({id: row.id});
-    event.custom(row.json).id(row.id);
+    if (!entrelumenReplaceRecipe(event, 'ENTRELUMEN_AIRCRAFT', entrelumenAircraftSourceSha256, row.id, row.json)) failedRows.push(row.id);
   });
+  if (failedRows.length) {
+    console.warn('[ENTRELUMEN_AIRCRAFT] ' + JSON.stringify({status: 'registered-with-failed-rows',
+      sourceSha256: entrelumenAircraftSourceSha256, failedRows: failedRows}));
+  }
 });
 
-ServerEvents.afterRecipes(event => {
+// The checks read the shared index of the loaded recipes (entrelumen_recipe_tools.js), not a scan per recipe.
+entrelumenAfterRecipes('ENTRELUMEN_AIRCRAFT', index => {
   var ops = Java.loadClass('com.mojang.serialization.JsonOps').INSTANCE;
   var failures = [];
   var routeIds = {};
@@ -72,11 +78,12 @@ ServerEvents.afterRecipes(event => {
   entrelumenAircraftOverrides.forEach(row => {
     var found = [];
     try {
-      event.forEachRecipe({id: row.id}, holder => {
+      var holder = index.holder(row.id);
+      if (holder) {
         var encoded = holder.getSerializer().codec().codec()
           .encodeStart(ops, holder.getRecipe()).getOrThrow();
         found.push(JSON.parse(String(encoded)));
-      });
+      }
       if (found.length !== 1) {
         failures.push({id: row.id, reason: 'recipe-count', count: found.length});
         return;
@@ -99,9 +106,7 @@ ServerEvents.afterRecipes(event => {
   });
   entrelumenAircraftRouteOutputs.forEach(name => {
     var output = 'immersive_aircraft:' + name;
-    var ids = [];
-    event.forEachRecipe({output: output}, holder => ids.push(String(holder.getOrCreateId())));
-    ids.sort();
+    var ids = index.producers(output);
     routeIds[output] = ids;
     if (ids.length !== 1 || ids[0] !== output) {
       failures.push({output: output, reason: 'unexpected-acquisition-route', ids: ids.slice(0, 32), total: ids.length});

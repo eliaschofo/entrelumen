@@ -5,45 +5,40 @@ const entrelumenResourceRecipes = [{"id":"botanypotstiers:elite_upgrade","reason
 
 ServerEvents.recipes(event => {
   // Conditions stay native. Inactive optional/color routes remain inactive.
+  // Row by row: the replacement is built first and the native recipe goes only if that worked (entrelumen_recipe_tools.js).
+  var failedRows = [];
   entrelumenResourceRecipes.forEach(row => {
-    if (event.containsRecipe({id: row.id})) {
-      event.remove({id: row.id});
-      event.custom(row.json).id(row.id);
-    }
+    if (event.containsRecipe({id: row.id}) &&
+        !entrelumenReplaceRecipe(event, 'ENTRELUMEN_RESOURCE_BALANCE', entrelumenResourceSignature, row.id, row.json)) failedRows.push(row.id);
   });
+  if (failedRows.length) {
+    console.warn('[ENTRELUMEN_RESOURCE_BALANCE] ' + JSON.stringify({status: 'registered-with-failed-rows',
+      signature: entrelumenResourceSignature, failedRows: failedRows}));
+  }
 });
-ServerEvents.afterRecipes(event => {
-  // One pass over the loaded recipes. This also runs on the server thread for /reload, where two
-  // filtered scans of every recipe per row (about 30 s on the full pack) left no margin under the
-  // 60 s watchdog. Each tracked row is a vanilla crafting or smithing recipe; its loaded result is
-  // read through the recipe's own codec.
-  // Plain var: Rhino treats block-scoped const inside repeated callbacks unreliably.
+// Reads the shared index of loaded recipes (entrelumen_recipe_tools.js). Each tracked row is a vanilla crafting or
+// smithing recipe; its loaded result is read through the recipe's own codec. Plain var: Rhino treats block-scoped
+// const inside repeated callbacks unreliably.
+entrelumenAfterRecipes('ENTRELUMEN_RESOURCE_BALANCE', index => {
   var ops = Java.loadClass('com.mojang.serialization.JsonOps').INSTANCE;
-  var expected = {};
-  entrelumenResourceRecipes.forEach(row => { expected[row.id] = row.json.result.id; });
-  var counts = {};
-  var outputs = {};
-  event.forEachRecipe('*', holder => {
-    var id = String(holder.getOrCreateId());
-    if (expected[id] === undefined) return;
-    counts[id] = (counts[id] || 0) + 1;
-    try {
-      var encoded = JSON.parse(String(holder.getSerializer().codec().codec()
-        .encodeStart(ops, holder.getRecipe()).getOrThrow()));
-      outputs[id] = encoded.result ? String(encoded.result.id) : 'no result';
-    } catch (error) {
-      outputs[id] = 'codec: ' + error;
-    }
-  });
   var failed = [];
   var mismatches = [];
   var active = 0;
   entrelumenResourceRecipes.forEach(row => {
-    if (!counts[row.id]) return;
+    var holder = index.holder(row.id);
+    if (!holder) return;
     active++;
-    if (counts[row.id] !== 1 || outputs[row.id] !== row.json.result.id) {
+    var output;
+    try {
+      var encoded = JSON.parse(String(holder.getSerializer().codec().codec()
+        .encodeStart(ops, holder.getRecipe()).getOrThrow()));
+      output = encoded.result ? String(encoded.result.id) : 'no result';
+    } catch (error) {
+      output = 'codec: ' + error;
+    }
+    if (output !== row.json.result.id) {
       failed.push(row.id);
-      if (mismatches.length < 3) mismatches.push({id: row.id, count: counts[row.id], output: outputs[row.id]});
+      if (mismatches.length < 3) mismatches.push({id: row.id, count: 1, output: output});
     }
   });
   console.info('[ENTRELUMEN_RESOURCE_BALANCE] ' + JSON.stringify({signature: entrelumenResourceSignature,

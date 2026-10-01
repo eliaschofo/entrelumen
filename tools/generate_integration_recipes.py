@@ -192,14 +192,19 @@ ServerEvents.recipes(event => {
     console.error('[ENTRELUMEN_INTEGRATION] ' + JSON.stringify({status: 'failed-preflight', signature: entrelumenIntegrationSignature, added: 0, errors: errors}));
     throw new Error('ENTRELUMEN integration recipes preflight failed; see contextual errors. No integration recipes were added.');
   }
-  entrelumenIntegrationRecipes.forEach(row => event.custom(row.json).id(row.id));
-  console.info('[ENTRELUMEN_INTEGRATION] ' + JSON.stringify({status: 'registered', signature: entrelumenIntegrationSignature, recipes: entrelumenIntegrationRecipes.length}));
+  // Row by row: one recipe KubeJS rejects is reported (failed-row) and does not stop the rows after it.
+  var failedRows = [];
+  entrelumenIntegrationRecipes.forEach(row => {
+    if (!entrelumenAddRecipe(event, 'ENTRELUMEN_INTEGRATION', entrelumenIntegrationSignature, row.id, row.json)) failedRows.push(row.id);
+  });
+  console.info('[ENTRELUMEN_INTEGRATION] ' + JSON.stringify({status: failedRows.length ? 'registered-with-failed-rows' : 'registered',
+    signature: entrelumenIntegrationSignature, recipes: entrelumenIntegrationRecipes.length - failedRows.length, failedRows: failedRows}));
 });
 
-ServerEvents.afterRecipes(event => {
+entrelumenAfterRecipes('ENTRELUMEN_INTEGRATION', index => {
   const missing = [];
   entrelumenIntegrationRecipes.forEach(row => {
-    if (event.countRecipes({id: row.id, output: entrelumenIntegrationOutput(row)}) !== 1) missing.push(row.id);
+    if (index.countIdOutput(row.id, entrelumenIntegrationOutput(row)) !== 1) missing.push(row.id);
   });
   const receipt = {status: missing.length ? 'failed-loaded-check' : 'loaded', signature: entrelumenIntegrationSignature, checked: entrelumenIntegrationRecipes.length, missing: missing};
   if (missing.length) console.error('[ENTRELUMEN_INTEGRATION] ' + JSON.stringify(receipt));
@@ -218,7 +223,7 @@ def main():
     check_existing_ids(rows)
     expected = render(rows)
     if args.write:
-        TARGET.write_text(expected, encoding="utf-8")
+        TARGET.write_text(expected, encoding="utf-8", newline="\n")
     elif not TARGET.exists() or TARGET.read_text(encoding="utf-8") != expected:
         raise ValueError("Generated script differs from source; run --write")
     print("PASS: 16 static recipes (15 shaped and symmetric, the frame by metallurgic infusing), drawings equal to the design inputs, no Ark module at the table, valid yields, bilingual project titles, component DAG, two story frames, reserved IDs and source parity. Crafting runtime not tested.")

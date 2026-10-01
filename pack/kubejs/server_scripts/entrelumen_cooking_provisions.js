@@ -15,12 +15,17 @@ ServerEvents.recipes(event => {
     console.error('[ENTRELUMEN_COOKING] ' + JSON.stringify({status: 'failed-preflight', errors: errors}));
     throw new Error('Cooking provisions preflight failed');
   }
-  entrelumenCookingRecipes.forEach(row => event.custom(row.json).id(row.id));
-  console.info('[ENTRELUMEN_COOKING] ' + JSON.stringify({status: 'registered', signature: entrelumenCookingSignature, recipes: entrelumenCookingRecipes.length}));
+  // Row by row: one recipe KubeJS rejects is reported (failed-row) and does not stop the rows after it.
+  var failedRows = [];
+  entrelumenCookingRecipes.forEach(row => {
+    if (!entrelumenAddRecipe(event, 'ENTRELUMEN_COOKING', entrelumenCookingSignature, row.id, row.json)) failedRows.push(row.id);
+  });
+  console.info('[ENTRELUMEN_COOKING] ' + JSON.stringify({status: failedRows.length ? 'registered-with-failed-rows' : 'registered',
+    signature: entrelumenCookingSignature, recipes: entrelumenCookingRecipes.length - failedRows.length, failedRows: failedRows}));
 });
-ServerEvents.afterRecipes(event => {
+entrelumenAfterRecipes('ENTRELUMEN_COOKING', index => {
   const checked = entrelumenCookingRecipes.concat([{id: 'entrelumen:integration/travelling_pantry', json: {result: {id: 'entrelumen:ration_bundle'}}}]);
-  const failed = checked.filter(row => event.countRecipes({id: row.id, output: row.json.result.id}) !== 1).map(row => row.id);
+  const failed = checked.filter(row => index.countIdOutput(row.id, row.json.result.id) !== 1).map(row => row.id);
   const receipt = {status: failed.length ? 'failed-loaded-check' : 'loaded-output-check-only', signature: entrelumenCookingSignature, checked: checked.length, failed: failed};
   if (failed.length) console.error('[ENTRELUMEN_COOKING] ' + JSON.stringify(receipt));
   else console.info('[ENTRELUMEN_COOKING] ' + JSON.stringify(receipt));

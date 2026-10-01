@@ -276,6 +276,20 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual({k: written[k] for k in fd[0]['value']}, fd[0]['value'])
         self.assertEqual(written['neoforge:conditions'], [{'type': 'neoforge:mod_loaded', 'modid': 'silentgear'}])
 
+    def test_recipe_stubs_keep_the_upstream_type_and_nothing_else(self):
+        # KubeJS reads a recipe's type before its conditions and logs "not a json object" for a file without one.
+        stub = json.loads(balance.stub_text('data/x/recipe/y/z.json', {'type': 'x:serializer', 'ingredients': [1]}))
+        self.assertEqual(stub, {**balance.DISABLED_STUB, 'type': 'x:serializer'})
+        for path in ('data/x/advancement/y.json', 'data/x/loot_table/y.json', 'data/x/tier_augments/y.json'):
+            self.assertEqual(json.loads(balance.stub_text(path, {'type': 'x:other'})), balance.DISABLED_STUB, path)
+        self.assertEqual(json.loads(balance.stub_text('data/x/recipe/y.json', {})), balance.DISABLED_STUB)
+
+    def test_every_recipe_file_of_the_pack_has_a_type(self):
+        for path in sorted(balance.PACK_DATA.glob('*/recipe/**/*.json')):
+            data = json.loads(path.read_text(encoding='utf-8-sig'))
+            self.assertIsInstance(data, dict, path)
+            self.assertIn('type', data, f'{path.relative_to(balance.PACK_DATA)}: KubeJS skips a recipe without a type on every load')
+
     def test_disable_keeps_existing_conditions_and_renames_several_keys(self):
         conditional = {'neoforge:conditions': [{'type': 'neoforge:mod_loaded', 'modid': 'create'}],
                        'type': 'create:crushing', 'results': [{'item': 'x:out'}]}
@@ -1164,14 +1178,20 @@ class ReservedDataTest(unittest.TestCase):
     """The repository is public: no file under pack/kubejs/data may copy a mod whose license reserves its data
     (docs/design/mod-pingpong.md#datos-de-mods-con-derechos-reservados-309)."""
 
-    def test_stub_disable_writes_the_false_condition_alone(self):
+    def test_stub_disable_writes_the_false_condition_and_a_recipe_type_alone(self):
         original = {'neoforge:conditions': [{'type': 'neoforge:mod_loaded', 'modid': 'x'}], 'type': 'x:recipe',
                     'result': {'id': 'x:out'}}
         spec = balance.disabled('data/x/recipe/y.json', '', stub=True)
         found = upstream(spec['path'], original)
         with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            # A recipe keeps its type (KubeJS reads it before the conditions); nothing else of the upstream file.
             self.assertEqual(json.loads(balance.build_data('probe', found)['x/recipe/y.json']),
-                             {'neoforge:conditions': [{'type': 'neoforge:false'}]})
+                             {'neoforge:conditions': [{'type': 'neoforge:false'}], 'type': 'x:recipe'})
+        advancement = balance.disabled('data/x/advancement/y.json', '', stub=True)
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [advancement]}}):
+            self.assertEqual(json.loads(balance.build_data('probe', upstream(advancement['path'], original))['x/advancement/y.json']),
+                             balance.DISABLED_STUB)
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
             found[spec['path']] = [('Mod-x.jar', '', json.dumps(balance.DISABLED_STUB).encode())]
             with self.assertRaises(AssertionError):  # already disabled upstream: the stub has nothing to do
                 balance.build_data('probe', found)
