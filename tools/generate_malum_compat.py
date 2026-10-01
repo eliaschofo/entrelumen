@@ -104,7 +104,8 @@ def generate(write=False, log=None, audit_token=None):
                     raise ValueError("Upstream milling result changed")
             # Every mechanic and condition is the native one: our recipe with its stale keys back is the file.
             assert {**stale(recipe), "neoforge:conditions": original["neoforge:conditions"]} == original, relative
-            text = json.dumps(STUB, indent=2) + "\n"
+            # KubeJS reads a recipe file's `type` before its load conditions; without one it logs "not a json object" on every load.
+            text = json.dumps({**STUB, "type": recipe["type"]}, indent=2) + "\n"
             expected[recipe_id(relative)] = {k: v for k, v in recipe.items() if k != "type"}
             inventory.append((recipe_id(relative), hashlib.sha256(jar.read("data/malum/recipe/" + relative)).hexdigest(),
                               hashlib.sha256(json.dumps(recipe, sort_keys=True).encode()).hexdigest()))

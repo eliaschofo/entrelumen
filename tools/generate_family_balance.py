@@ -88,6 +88,18 @@ def when_item_exists(path, item_id, why):
 DISABLED_STUB = {'neoforge:conditions': [{'type': 'neoforge:false'}]}
 
 
+def stub_text(path, upstream):
+    """The text of a disabled stub: the false condition alone, plus the upstream recipe's `type` for a recipe.
+
+    KubeJS reads a recipe file's `type` before its load conditions and, for one that has none, logs "Skipping recipe ...,
+    not a json object" on every load. The type is one resource location naming the mod's serializer, not data of the
+    mod; nothing else of the upstream file is written."""
+    stub = dict(DISABLED_STUB)
+    if re.fullmatch(r'data/[^/]+/recipe/.+', path) and isinstance(upstream.get('type'), str):
+        stub['type'] = upstream['type']
+    return json.dumps(stub, indent=2) + '\n'
+
+
 def disabled(path, why, *, stub=False):
     """Disable a broken upstream data file with a neoforge:false condition.
 
@@ -1812,7 +1824,7 @@ def build_data(name, found=None, templates=None):
             kept = original.get('neoforge:conditions', [])
             assert {'type': 'neoforge:false'} not in kept, f"{spec['path']}: already disabled"
             if spec['stub']:  # nothing of the upstream body is written; the check above still watches the file
-                outputs_by_path[spec['path'][len('data/'):]] = json.dumps(DISABLED_STUB, indent=2) + '\n'
+                outputs_by_path[spec['path'][len('data/'):]] = stub_text(spec['path'], original)
                 continue
             result = {**original, 'neoforge:conditions': [{'type': 'neoforge:false'}] + kept}
             if not kept:
