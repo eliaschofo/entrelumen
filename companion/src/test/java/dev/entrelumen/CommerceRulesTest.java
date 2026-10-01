@@ -231,6 +231,19 @@ class CommerceRulesTest {
   }
 
   @Test
+  void tradesThatPayEmeraldsNeverTakeADiscount() throws IOException {
+    assertFalse(CommerceRules.discounts("minecraft:emerald"));
+    assertFalse(CommerceRules.discounts("minecraft:emerald_block"));
+    assertTrue(CommerceRules.discounts("minecraft:bookshelf"));
+    assertTrue(CommerceRules.discounts("minecraft:string"));
+    // The city's own tables never sell emeralds, so skipping them costs no Solsticio discount.
+    for (boolean natives : new boolean[] {false, true})
+      for (var table : tables(natives ? "solsticio_natives" : "solsticio_shops", natives).values())
+        for (var offer : all(table))
+          assertTrue(CommerceRules.discounts(offer.sell().item()), table.id() + " sells " + offer.sell().item());
+  }
+
+  @Test
   void discountsRoundAlwaysShowAndNeverReachZero() {
     assertEquals(24, CommerceRules.discounted(40, 0.6));
     assertEquals(10, CommerceRules.discounted(16, 0.6), "9.6 rounds to 10");

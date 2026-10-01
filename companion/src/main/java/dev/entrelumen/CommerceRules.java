@@ -103,6 +103,22 @@ public final class CommerceRules {
     return multiplier;
   }
 
+  /** Results whose trades never take a Solsticio discount: a buying trade that pays emeralds. */
+  public static final List<String> UNDISCOUNTED_RESULTS = List.of(EMERALD, "minecraft:emerald_block");
+
+  /**
+   * Whether an offer with this result takes the Solsticio multiplier. A trade that pays emeralds
+   * does not: discounting its cost would let Solsticio stock be resold to a settled villager for
+   * more emeralds than it cost (docs/design/solsticio-commerce.md).
+   */
+  public static boolean discounts(String resultId) {
+    return resultId == null || !UNDISCOUNTED_RESULTS.contains(resultId);
+  }
+
+  public static boolean discounts(net.minecraft.world.item.ItemStack result) {
+    return discounts(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(result.getItem()).toString());
+  }
+
   /**
    * A price after a multiplier: rounded to the nearest item, at least one item cheaper whenever
    * there is a discount (so it always shows), and never below one.
