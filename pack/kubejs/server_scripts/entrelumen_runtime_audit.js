@@ -6188,29 +6188,26 @@ const entrelumenAuditTargets = {
   "signature": "3638513412915901"
 };
 
-ServerEvents.afterRecipes(event => {
-  const targets = entrelumenAuditTargets;
-  const run = String(Date.now());
-  let failures = 0;
-  const emit = row => {
+// Reads the shared index of the loaded recipes (entrelumen_recipe_tools.js): the loaded recipe, not the source JSON or a
+// guessed result, answers each id/output pair.
+entrelumenAfterRecipes('ENTRELUMEN_AUDIT', index => {
+  var targets = entrelumenAuditTargets;
+  var run = String(Date.now());
+  var failures = 0;
+  var emit = row => {
     row.run = run;
     row.signature = targets.signature;
     console.info('[ENTRELUMEN_AUDIT] ' + JSON.stringify(row));
   };
   emit({kind: 'begin', items: targets.items.length, recipes: targets.recipes.length});
   targets.items.forEach(id => {
-    const exists = Item.exists(id);
+    var exists = Item.exists(id);
     if (!exists) failures++;
     emit({kind: 'item', id: id, exists: exists});
   });
   targets.recipes.forEach(spec => {
-    // Filter evaluates the loaded recipe, not the source JSON or a guessed result.
-    const matches = event.countRecipes({id: spec.id, output: spec.output});
-    const alternatives = [];
-    event.forEachRecipe({output: spec.output}, recipe => {
-      alternatives.push(String(recipe.getOrCreateId()));
-    });
-    alternatives.sort();
+    var matches = index.countIdOutput(spec.id, spec.output);
+    var alternatives = index.producers(spec.output);
     if (matches !== 1) failures++;
     emit({kind: 'recipe', id: spec.id, output: spec.output, matches: matches,
       alternatives: alternatives.slice(0, 64), alternativesTotal: alternatives.length});

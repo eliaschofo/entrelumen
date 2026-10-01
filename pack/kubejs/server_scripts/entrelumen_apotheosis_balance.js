@@ -31,37 +31,25 @@ ServerEvents.recipes(event => {
     removed: entrelumenApotheosisRemovals.length - failedRemovals.length - absent.length, alreadyAbsent: absent,
     failedRows: failedRows.concat(failedRemovals)}));
 });
-function entrelumenApotheosisFieldCheck(event, row) {
-  // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.
-  var found = 0;
-  try {
-    var stack = Item.of(row.component);
-    event.forEachRecipe({id: row.id}, holder => {
-      holder.value()[row.field].forEach(ingredient => { if (ingredient.test(stack)) found++; });
-    });
-  } catch (error) {
-    console.warn('[ENTRELUMEN_APOTHEOSIS_BALANCE] ' + JSON.stringify({status: 'field-check-error', recipe: row.id, error: String(error)}));
-    return -1;
-  }
-  return found;
-}
-ServerEvents.afterRecipes(event => {
+// The checks read one shared index of the loaded recipes (entrelumen_recipe_tools.js), not a scan per row.
+entrelumenAfterRecipes('ENTRELUMEN_APOTHEOSIS_BALANCE', index => {
   var failed = [];
   entrelumenApotheosisRows.forEach(row => {
-    var loaded = event.countRecipes({id: row.id, output: row.output});
-    var staged = event.countRecipes({id: row.id, input: row.component});
-    if (staged === 0 && row.field) staged = entrelumenApotheosisFieldCheck(event, row);
+    var loaded = index.countIdOutput(row.id, row.output);
+    var staged = index.countIdInput(row.id, row.component);
+    // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.
+    if (staged === 0 && row.field) staged = index.countField('ENTRELUMEN_APOTHEOSIS_BALANCE', row.id, row.field, row.component);
     if (loaded !== 1 || staged !== 1) failed.push({recipe: row.id, loadedOutput: loaded, stagedInput: staged});
   });
-  entrelumenApotheosisRemovals.forEach(id => { var left = event.countRecipes({id: id}); if (left !== 0) failed.push({recipe: id, remaining: left}); });
+  entrelumenApotheosisRemovals.forEach(id => { var left = index.count(id); if (left !== 0) failed.push({recipe: id, remaining: left}); });
   console.info('[ENTRELUMEN_APOTHEOSIS_BALANCE] ' + JSON.stringify({status: failed.length ? 'failed-loaded-check' : 'loaded-ingredient-check',
     signature: entrelumenApotheosisSignature, checked: entrelumenApotheosisRows.length + entrelumenApotheosisRemovals.length, failed: failed}));
 });
 const entrelumenApotheosisAdditions = [{"id":"entrelumen:cartographer_shelf","output":"entrelumen:cartographer_shelf"},{"id":"entrelumen:patina_shelf","output":"entrelumen:patina_shelf"},{"id":"entrelumen:lumen_shelf","output":"entrelumen:lumen_shelf"},{"id":"entrelumen:horizon_shelf","output":"entrelumen:horizon_shelf"},{"id":"entrelumen:atlas_library","output":"entrelumen:atlas_library"},{"id":"entrelumen:augment_min_delay","output":"entrelumen:augment_min_delay"},{"id":"entrelumen:augment_max_delay","output":"entrelumen:augment_max_delay"},{"id":"entrelumen:augment_spawn_range","output":"entrelumen:augment_spawn_range"},{"id":"entrelumen:augment_player_range","output":"entrelumen:augment_player_range"},{"id":"entrelumen:augment_silent","output":"entrelumen:augment_silent"},{"id":"entrelumen:augment_youthful","output":"entrelumen:augment_youthful"},{"id":"entrelumen:augment_spawn_count","output":"entrelumen:augment_spawn_count"},{"id":"entrelumen:augment_max_nearby","output":"entrelumen:augment_max_nearby"},{"id":"entrelumen:augment_initial_health","output":"entrelumen:augment_initial_health"},{"id":"entrelumen:augment_burning","output":"entrelumen:augment_burning"},{"id":"entrelumen:augment_echoing","output":"entrelumen:augment_echoing"},{"id":"entrelumen:augment_ignore_conditions","output":"entrelumen:augment_ignore_conditions"},{"id":"entrelumen:augment_ignore_light","output":"entrelumen:augment_ignore_light"},{"id":"entrelumen:augment_ignore_players","output":"entrelumen:augment_ignore_players"},{"id":"entrelumen:augment_no_ai","output":"entrelumen:augment_no_ai"},{"id":"entrelumen:augment_redstone_control","output":"entrelumen:augment_redstone_control"}];
-ServerEvents.afterRecipes(event => {
+entrelumenAfterRecipes('ENTRELUMEN_APOTHEOSIS_BALANCE', index => {
   var failed = [];
   entrelumenApotheosisAdditions.forEach(row => {
-    var loaded = event.countRecipes({id: row.id, output: row.output});
+    var loaded = index.countIdOutput(row.id, row.output);
     if (loaded !== 1) failed.push({recipe: row.id, loadedOutput: loaded});
   });
   console.info('[ENTRELUMEN_APOTHEOSIS_BALANCE] ' + JSON.stringify({status: failed.length ? 'failed-addition-check' : 'additions-loaded',

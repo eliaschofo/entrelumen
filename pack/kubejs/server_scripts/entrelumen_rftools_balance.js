@@ -22,7 +22,7 @@ ServerEvents.recipes(event => {
   console.info('[ENTRELUMEN_RFTOOLS_BALANCE] ' + JSON.stringify({status: failedRows.length ? 'registered-with-failed-rows' : 'registered',
     signature: entrelumenRFToolsSignature, recipes: entrelumenRFToolsRecipes.length - failedRows.length, failedRows: failedRows}));
 });
-ServerEvents.afterRecipes(event => {
-  const failed = entrelumenRFToolsRecipes.filter(row => event.countRecipes({id: row.id, output: row.json.recipe ? row.json.recipe.result.id : row.json.result.id}) !== 1).map(row => row.id);
+entrelumenAfterRecipes('ENTRELUMEN_RFTOOLS_BALANCE', index => {
+  const failed = entrelumenRFToolsRecipes.filter(row => index.countIdOutput(row.id, row.json.recipe ? row.json.recipe.result.id : row.json.result.id) !== 1).map(row => row.id);
   console.info('[ENTRELUMEN_RFTOOLS_BALANCE] ' + JSON.stringify({status: failed.length ? 'failed-loaded-check' : 'loaded-output-check-only', signature: entrelumenRFToolsSignature, failed: failed}));
 });

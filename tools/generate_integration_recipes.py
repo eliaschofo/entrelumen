@@ -201,10 +201,10 @@ ServerEvents.recipes(event => {
     signature: entrelumenIntegrationSignature, recipes: entrelumenIntegrationRecipes.length - failedRows.length, failedRows: failedRows}));
 });
 
-ServerEvents.afterRecipes(event => {
+entrelumenAfterRecipes('ENTRELUMEN_INTEGRATION', index => {
   const missing = [];
   entrelumenIntegrationRecipes.forEach(row => {
-    if (event.countRecipes({id: row.id, output: entrelumenIntegrationOutput(row)}) !== 1) missing.push(row.id);
+    if (index.countIdOutput(row.id, entrelumenIntegrationOutput(row)) !== 1) missing.push(row.id);
   });
   const receipt = {status: missing.length ? 'failed-loaded-check' : 'loaded', signature: entrelumenIntegrationSignature, checked: entrelumenIntegrationRecipes.length, missing: missing};
   if (missing.length) console.error('[ENTRELUMEN_INTEGRATION] ' + JSON.stringify(receipt));

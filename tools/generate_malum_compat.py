@@ -133,7 +133,7 @@ def generate(write=False, log=None, audit_token=None):
         script += "const elMalumAuditExpected = " + json.dumps(expected) + ";\n"
         script += MALUM_AUDIT_JS
         if write:
-            audit.write_text(script, encoding="utf-8")
+            audit.write_text(script, encoding="utf-8", newline="\n")
         elif not audit.exists() or audit.read_text(encoding="utf-8") != script:
             raise ValueError("Audit script stale: generate/install a fresh token before reload")
     if log:
@@ -145,24 +145,24 @@ def generate(write=False, log=None, audit_token=None):
     print("PASS: five exact recipe IDs; source hash, native schema and all non-key semantics preserved; no file of Malum copied.")
 
 MALUM_AUDIT_JS = r"""
-ServerEvents.afterRecipes(event => {
-  const ops = Java.loadClass('com.mojang.serialization.JsonOps').INSTANCE;
-  const run = String(Date.now());
-  const emit = row => {
+entrelumenAfterRecipes('ENTRELUMEN_MALUM_AUDIT', index => {
+  var ops = Java.loadClass('com.mojang.serialization.JsonOps').INSTANCE;
+  var run = String(Date.now());
+  var emit = row => {
     row.token = elMalumAuditToken; row.signature = elMalumAuditSignature; row.run = run;
     console.info('[ENTRELUMEN_MALUM_AUDIT] ' + JSON.stringify(row));
   };
   emit({kind: 'begin'});
-  let failures = 0;
+  var failures = 0;
   Object.keys(elMalumAuditExpected).forEach(id => {
-    let count = 0;
+    var count = 0;
     try {
-      event.forEachRecipe({id: id}, holder => {
+      var holder = index.holder(id);
+      if (holder) {
         count++;
-        const recipe = holder.getRecipe();
-        const encoded = holder.getSerializer().codec().codec().encodeStart(ops, recipe).getOrThrow();
+        var encoded = holder.getSerializer().codec().codec().encodeStart(ops, holder.getRecipe()).getOrThrow();
         emit({kind: 'recipe', id: id, actual: JSON.parse(String(encoded))});
-      });
+      }
       if (count !== 1) { failures++; emit({kind: 'error', id: id, count: count}); }
     } catch (error) { failures++; emit({kind: 'error', id: id, message: String(error)}); }
   });

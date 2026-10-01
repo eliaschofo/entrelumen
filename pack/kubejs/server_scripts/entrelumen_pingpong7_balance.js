@@ -31,29 +31,17 @@ ServerEvents.recipes(event => {
     removed: entrelumenPingpong7Removals.length - failedRemovals.length - absent.length, alreadyAbsent: absent,
     failedRows: failedRows.concat(failedRemovals)}));
 });
-function entrelumenPingpong7FieldCheck(event, row) {
-  // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.
-  var found = 0;
-  try {
-    var stack = Item.of(row.component);
-    event.forEachRecipe({id: row.id}, holder => {
-      holder.value()[row.field].forEach(ingredient => { if (ingredient.test(stack)) found++; });
-    });
-  } catch (error) {
-    console.warn('[ENTRELUMEN_PINGPONG7_BALANCE] ' + JSON.stringify({status: 'field-check-error', recipe: row.id, error: String(error)}));
-    return -1;
-  }
-  return found;
-}
-ServerEvents.afterRecipes(event => {
+// The checks read one shared index of the loaded recipes (entrelumen_recipe_tools.js), not a scan per row.
+entrelumenAfterRecipes('ENTRELUMEN_PINGPONG7_BALANCE', index => {
   var failed = [];
   entrelumenPingpong7Rows.forEach(row => {
-    var loaded = event.countRecipes({id: row.id, output: row.output});
-    var staged = event.countRecipes({id: row.id, input: row.component});
-    if (staged === 0 && row.field) staged = entrelumenPingpong7FieldCheck(event, row);
+    var loaded = index.countIdOutput(row.id, row.output);
+    var staged = index.countIdInput(row.id, row.component);
+    // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.
+    if (staged === 0 && row.field) staged = index.countField('ENTRELUMEN_PINGPONG7_BALANCE', row.id, row.field, row.component);
     if (loaded !== 1 || staged !== 1) failed.push({recipe: row.id, loadedOutput: loaded, stagedInput: staged});
   });
-  entrelumenPingpong7Removals.forEach(id => { var left = event.countRecipes({id: id}); if (left !== 0) failed.push({recipe: id, remaining: left}); });
+  entrelumenPingpong7Removals.forEach(id => { var left = index.count(id); if (left !== 0) failed.push({recipe: id, remaining: left}); });
   console.info('[ENTRELUMEN_PINGPONG7_BALANCE] ' + JSON.stringify({status: failed.length ? 'failed-loaded-check' : 'loaded-ingredient-check',
     signature: entrelumenPingpong7Signature, checked: entrelumenPingpong7Rows.length + entrelumenPingpong7Removals.length, failed: failed}));
 });

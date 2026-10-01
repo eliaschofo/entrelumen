@@ -8,6 +8,9 @@ functions from their events. It holds what must not be repeated in every script:
     replacement is built first (RecipesKubeEvent.custom) and the native recipe goes only once that worked, so a
     row KubeJS cannot parse leaves the native recipe where it was, logs one `failed-row` line with the recipe ID
     and lets the next row run.
+  * entrelumenAfterRecipes: the afterRecipes checks of every script, run against one shared index of the loaded
+    recipes (id -> recipe, output item -> recipe IDs, ingredient tests) built in a single pass, instead of one full
+    scan of the recipe list for each countRecipes/forEachRecipe call.
 
 usage: generate_recipe_tools.py --write | --check
 """
@@ -27,9 +30,15 @@ HEADER = '''// priority: 1000
 '''
 
 HELPERS = '''
+// Rhino build.91 JSON.stringify leaves a quote unescaped after a backslash, which breaks a receipt line as JSON; error
+// texts that may quote JSON go through this first.
+function entrelumenPlainText(value) {
+  return String(value).split(String.fromCharCode(92)).join('/');
+}
+
 function entrelumenRecipeFailure(tag, signature, recipe, stage, error) {
   console.error('[' + tag + '] ' + JSON.stringify({status: 'failed-row', signature: signature, recipe: String(recipe),
-    stage: stage, error: String(error)}));
+    stage: stage, error: entrelumenPlainText(error)}));
 }
 
 // Replace (or add) one recipe. The replacement is built first and the native recipe is removed only if that worked:
@@ -75,8 +84,173 @@ function entrelumenRemoveRecipe(event, tag, signature, id) {
 '''
 
 
+INDEX = r'''
+// One shared pass over the loaded recipes for every afterRecipes check of the pack. countRecipes and forEachRecipe
+// with a filter walk the whole recipe list on each call (about 43,000 recipes), and output filters read every recipe's
+// result item; some 500 of them per load and per /reload cost seconds on the server thread. Each script registers its
+// check here instead; the checks run in registration order (the order of the scripts) against one index:
+//   index.has(id) / index.count(id)             a recipe with that ID is loaded
+//   index.holder(id)                            its RecipeHolder (null when absent)
+//   index.countIdOutput(id, outputItem)         1 when recipe `id` loaded and its result item is `outputItem`
+//   index.countOutput(outputItem)               how many loaded recipes produce the item
+//   index.producers(outputItem)                 their IDs, sorted
+//   index.countIdInput(id, item)                1 when one of the recipe's ingredients accepts the item
+//   index.countField(tag, id, field, item)      the same for a machine recipe's own list field (-1 on error)
+// The answers are those of the filters they replace ({id}, {id, output}, {output}, {id, input}). If the pass cannot be
+// built, every call falls back to the scan it replaces (index.scans counts them), so a check never loses its meaning. The closing receipt says `reason`, not `error`:
+// tools/check_runtime_content.py --log treats any line with the word error after the audit began as a runtime error.
+var entrelumenRecipeChecks = [];
+function entrelumenAfterRecipes(tag, check) {
+  entrelumenRecipeChecks.push({tag: tag, check: check});
+}
+
+function entrelumenBuildRecipeIndex(event) {
+  var index = {ok: true, outputsOk: true, recipes: 0, outputs: 0, unreadable: 0, scans: 0, error: null};
+  var holders = Object.create(null);
+  var outputOf = null;
+  var producersOf = null;
+  var outputsOk = true;
+  var stacks = Object.create(null);
+  try {
+    event.forEachRecipe('*', function (holder) {
+      holders[String(holder.getOrCreateId())] = holder;
+      index.recipes++;
+    });
+  } catch (error) {
+    index.ok = false;
+    index.error = entrelumenPlainText(error);
+    holders = Object.create(null);
+  }
+  function scan(filter) {
+    index.scans++;
+    return event.countRecipes(filter);
+  }
+  function stackOf(item) {
+    if (!stacks[item]) stacks[item] = Item.of(item);
+    return stacks[item];
+  }
+  // The result item of every recipe, read once and on the first output query (what the {output} filter reads per scan).
+  function readOutputs() {
+    if (outputOf !== null) return;
+    outputOf = Object.create(null);
+    producersOf = Object.create(null);
+    try {
+      var access = Java.loadClass('dev.latvian.mods.kubejs.util.RegistryAccessContainer').current.access();
+      for (var id in holders) {
+        var out = null;
+        try {
+          var stack = holders[id].getRecipe().getResultItem(access);
+          if (stack && !stack.isEmpty()) {
+            out = stack.id;
+            if (typeof out !== 'string') throw new Error('an ItemStack without an id');
+          }
+        } catch (error) {
+          index.unreadable++;
+          out = null;
+        }
+        if (out === null) continue;
+        outputOf[id] = out;
+        if (!producersOf[out]) producersOf[out] = [];
+        producersOf[out].push(id);
+        index.outputs++;
+      }
+      // Recipes without any readable result item cannot be 43,000 recipes with none: the read itself failed.
+      if (index.recipes > 0 && index.outputs === 0) throw new Error('no recipe has a readable result item');
+    } catch (error) {
+      outputsOk = false;
+      index.outputsOk = false;
+      index.error = entrelumenPlainText(error);
+    }
+  }
+  function indexed() {
+    if (!index.ok) return false;
+    readOutputs();
+    return outputsOk;
+  }
+  index.has = function (id) { return index.ok ? holders[id] !== undefined : index.count(id) > 0; };
+  index.count = function (id) {
+    if (index.ok) return holders[id] === undefined ? 0 : 1;
+    return scan({id: id});
+  };
+  index.holder = function (id) {
+    if (index.ok) return holders[id] === undefined ? null : holders[id];
+    var found = null;
+    index.scans++;
+    event.forEachRecipe({id: id}, function (holder) { found = holder; });
+    return found;
+  };
+  index.countIdOutput = function (id, output) {
+    if (indexed()) return outputOf[id] === String(output) ? 1 : 0;
+    return scan({id: id, output: output});
+  };
+  index.countOutput = function (output) {
+    if (indexed()) return producersOf[output] ? producersOf[output].length : 0;
+    return scan({output: output});
+  };
+  index.producers = function (output) {
+    if (indexed()) return producersOf[output] ? producersOf[output].slice().sort() : [];
+    var ids = [];
+    index.scans++;
+    event.forEachRecipe({output: output}, function (holder) { ids.push(String(holder.getOrCreateId())); });
+    return ids.sort();
+  };
+  index.countIdInput = function (id, item) {
+    if (index.ok) {
+      var holder = holders[id];
+      if (holder === undefined) return 0;
+      try {
+        var ingredients = holder.getRecipe().getIngredients();
+        var stack = stackOf(item);
+        for (var i = 0; i < ingredients.size(); i++) {
+          if (ingredients.get(i).test(stack)) return 1;
+        }
+        return 0;
+      } catch (error) {
+        // fall through to the scan, which asks KubeJS itself
+      }
+    }
+    return scan({id: id, input: item});
+  };
+  // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.
+  index.countField = function (tag, id, field, item) {
+    var found = 0;
+    try {
+      var stack = stackOf(item);
+      var holder = index.holder(id);
+      if (holder) holder.value()[field].forEach(function (ingredient) { if (ingredient.test(stack)) found++; });
+    } catch (error) {
+      console.warn('[' + tag + '] ' + JSON.stringify({status: 'field-check-error', recipe: id, error: entrelumenPlainText(error)}));
+      return -1;
+    }
+    return found;
+  };
+  return index;
+}
+
+ServerEvents.afterRecipes(function (event) {
+  if (entrelumenRecipeChecks.length === 0) return;
+  var started = Date.now();
+  var index = entrelumenBuildRecipeIndex(event);
+  var built = Date.now();
+  var failedChecks = 0;
+  entrelumenRecipeChecks.forEach(function (entry) {
+    try {
+      entry.check(index, event);
+    } catch (error) {
+      failedChecks++;
+      console.error('[' + entry.tag + '] ' + JSON.stringify({status: 'failed-check', error: entrelumenPlainText(error)}));
+    }
+  });
+  console.info('[ENTRELUMEN_RECIPE_INDEX] ' + JSON.stringify({
+    status: !index.ok ? 'fallback-to-scans' : index.outputsOk ? 'indexed' : 'indexed-outputs-by-scan',
+    recipes: index.recipes, outputs: index.outputs, unreadable: index.unreadable, checks: entrelumenRecipeChecks.length,
+    failedChecks: failedChecks, scans: index.scans, reason: index.error, indexMs: built - started, checksMs: Date.now() - built}));
+});
+'''
+
+
 def render() -> str:
-    return HEADER + HELPERS
+    return HEADER + HELPERS + INDEX
 
 
 def main():

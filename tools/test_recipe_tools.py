@@ -39,6 +39,19 @@ class RecipeToolsTest(unittest.TestCase):
         self.assertIn('creationError', body)  # a schema rejection comes back as an unregistered recipe, not an exception
         self.assertIn("'failed-row'", text)
 
+    def test_after_recipes_checks_read_the_shared_index_not_a_scan_per_call(self):
+        # countRecipes / forEachRecipe with a filter walk the whole recipe list on every call. The market guard keeps its single
+        # type scan: it asks which recipes of one type loaded, which the index does not carry.
+        for path in scripts():
+            with self.subTest(script=path.name):
+                text = path.read_text(encoding='utf-8')
+                if path.name != 'entrelumen_market_compat.js':
+                    self.assertNotIn('ServerEvents.afterRecipes', text)
+                    self.assertNotRegex(text, r'\.(countRecipes|forEachRecipe)\(')
+        text = TOOLS.read_text(encoding='utf-8')
+        self.assertEqual(text.count("forEachRecipe('*'"), 1)  # the one pass
+        self.assertEqual(text.count('ServerEvents.afterRecipes('), 1)
+
     def test_rows_that_change_recipes_report_failed_rows(self):
         for path in scripts():
             text = path.read_text(encoding='utf-8')
