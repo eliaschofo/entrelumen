@@ -28,7 +28,7 @@ Seis búsquedas de sólo lectura en paralelo, una por familia: Create; AE2 y alm
 | Alshanex's Familiars 4.0.4 + FamiliarsLib 1.8 | Familiares magos de Iron's que se doman y pelean con hechizos | II–V | Medir su worldgen; su mago carga creepers |
 | Ars Affinity 1.1.1 | Afinidad por escuela de Ars: pasivas y una habilidad activa | II–IV | Compilado contra Ars 5.10: probar en 5.13.1 |
 | Sanguine Neural Networks 2.0 | Sangre para el altar de Neo Vitae desde un modelo de HNN, sin granja de mobs | IV | Entra con Neo Vitae |
-| Psionic Utilities 1.4 | Colores y atajos para programar Psi | III | Cliente |
+| Psionic Utilities 1.4 | Colores y atajos para programar Psi | III | Cliente. Retirado el 1/10: sus mixins no calzan con Psi 110 (ver [mod-pingpong](../design/mod-pingpong.md)) |
 | Irons Spell N FTB Teams 1.0.0 | Las invocaciones de Iron's no atacan a tu equipo | II–VI | Beta de un mixin: pedirle un GameTest; se apaga por config |
 
 Resultado: entraron en las rondas 5 y 6 ([mod-pingpong](../design/mod-pingpong.md#ronda-6-279-contenido-de-la-búsqueda-hacia-afuera)), salvo Petrol's Parts: su librería fija JEI en rangos que no incluyen el del pack.
