@@ -957,7 +957,9 @@ def check_sector(path, errors, all_keys):
             errors.append(f'{where}: item {item} not found in the pinned JARs')
     rewarded = check_sector_rewards(data, where, errors, items, reg)
     for adv in sorted(refs['advancements']):
-        if adv not in reg['advancements']:
+        # The repository's own advancements count too (entrelumen:productivebees/..., written by
+        # port_productivebees_advancements.py); check_advancement_tasks checks that each one loads in 1.21.
+        if adv not in reg['advancements'] and adv not in repository_advancements():
             errors.append(f'{where}: advancement {adv} not found')
     for ent in sorted(refs['entities']):
         if ent not in reg['entities']:
@@ -1304,6 +1306,17 @@ def jar_advancements(jars):
     except Exception:
         pass
     return out
+
+
+_REPOSITORY_ADVANCEMENTS = None
+
+
+def repository_advancements():
+    """The ids of pack_advancements(), read once per run."""
+    global _REPOSITORY_ADVANCEMENTS
+    if _REPOSITORY_ADVANCEMENTS is None:
+        _REPOSITORY_ADVANCEMENTS = frozenset(pack_advancements())
+    return _REPOSITORY_ADVANCEMENTS
 
 
 def pack_advancements(root=ROOT):
