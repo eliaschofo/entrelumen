@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
 
 /**
  * Server side of the Heliodor compass: picks the team's current objective, latches reached ones,
- * resolves where the needle points and hands out one compass per player at a ruin pedestal.
+ * resolves where the needle points and hands a compass to a player at a ruin pedestal.
  */
 public final class HeliodorCompass {
   /** A player must travel this far from an empty search before the compass searches again. */
@@ -102,10 +102,11 @@ public final class HeliodorCompass {
             : pointing(key, marker, dimension, kind, id);
       }
       case ANCHOR -> {
+        // A registered ruin is a known point: no radius, however far it was placed.
         ResourceLocation anchor = ResourceLocation.parse(target.value());
         BlockPos nearest = nearest(RuinData.get(player.server).ruins().stream()
             .filter(ruin -> ruin.id().equals(anchor) && ruin.dimension().equals(key))
-            .map(RuinData.Ruin::center), here, radiusSqr);
+            .map(RuinData.Ruin::center), here, Long.MAX_VALUE);
         yield nearest == null
             ? new CompassState(Optional.empty(), CompassState.NOT_FOUND, dimension, kind, id)
             : pointing(key, nearest, dimension, kind, id);
@@ -225,16 +226,19 @@ public final class HeliodorCompass {
   }
 
   /**
-   * One compass per player UUID, ever, per world. Returns true when a compass was handed over.
+   * A compass for a player who carries none: the first claim is recorded per player UUID, and a
+   * later claim re-issues a lost compass. A player already carrying one is refused. Returns true
+   * when a compass was handed over.
    */
   public static boolean claim(ServerPlayer player) {
     if (player.isSpectator()) return false;
     CompassData data = CompassData.get(player.server);
-    if (!data.claimed.add(player.getUUID())) {
+    boolean first = data.claimed.add(player.getUUID());
+    if (!first && player.getInventory().contains(s -> s.is(HeliodorContent.COMPASS.get()))) {
       player.displayClientMessage(Component.translatable("entrelumen.pedestal.claimed"), true);
       return false;
     }
-    data.setDirty();
+    if (first) data.setDirty();
     ItemStack compass = new ItemStack(HeliodorContent.COMPASS.get());
     refresh(player, compass);
     if (!player.getInventory().add(compass)) player.drop(compass, false);

@@ -148,6 +148,18 @@ class CompassTargetsTest {
   }
 
   @Test
+  void anchorsAreKnownPointsWithoutARadius() {
+    // A registered ruin is pointed at however far it lies (finding F29): anchors take no radius.
+    var ruin = CompassTargets.parse(document(RUIN), mod -> true, item -> true).getFirst();
+    assertEquals(CompassTargets.TargetType.ANCHOR, ruin.target().type());
+    assertEquals(0, ruin.target().radius());
+    var error = assertThrows(IllegalArgumentException.class, () -> CompassTargets.parse(document(
+        RUIN.replace("\"entrelumen:heliodor_ruin_start\"", "\"entrelumen:heliodor_ruin_start\", \"radius\": 600")),
+        mod -> true, item -> true));
+    assertTrue(error.getMessage().contains("radius"), error.getMessage());
+  }
+
+  @Test
   void invalidDocumentsAreRejectedWithTheirPath() {
     Map<String, String> invalid = new LinkedHashMap<>();
     invalid.put("unknown field", RUIN.replace("\"lore\": true", "\"color\": 3"));

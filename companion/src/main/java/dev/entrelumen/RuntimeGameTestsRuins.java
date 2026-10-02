@@ -864,10 +864,31 @@ public final class RuntimeGameTestsRuins {
           "The shaft is climbable only for the team");
       helper.assertTrue(!StructureProtection.check(helper.getLevel(), gate, ProtectionRules.Action.BREAK,
           StructureProtection.actor(a)).allowed(), "The gate can be broken");
+      // Chorus fruit cannot hop past a closed gate: aimed inside the ruin, or aimed above it and
+      // falling into it, the teleport is cancelled for B; A, whose gates are open, and a target
+      // outside the ruin pass.
+      var inside = Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(2, 2, 2)));
+      var above = Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(2, 9, 2)));
+      var outside = Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(2, 1, 2)).offset(0, 0, 40));
+      helper.assertTrue(fixture.ruin.box().isInside(RuinGates.landing(helper.getLevel(), BlockPos.containing(above))),
+          "The QA aim above the ruin does not land in it");
+      helper.assertTrue(chorusCancelled(b, inside) && chorusCancelled(b, above),
+          "Chorus fruit carried a team past a gate it did not open");
+      helper.assertTrue(!chorusCancelled(a, inside) && !chorusCancelled(b, outside),
+          "Chorus fruit was refused to the team that opened the gates, or outside the ruin");
+      b.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
+      helper.assertTrue(!chorusCancelled(b, inside), "Creative mode was refused a chorus teleport");
       leave(a);
       leave(b);
     }
     helper.succeed();
+  }
+
+  /** Posts a chorus fruit teleport of {@code player} to {@code target}; true when it was cancelled. */
+  static boolean chorusCancelled(ServerPlayer player, Vec3 target) {
+    var event = new net.neoforged.neoforge.event.entity.EntityTeleportEvent.ChorusFruit(player, target.x, target.y,
+        target.z);
+    return net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event).isCanceled();
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)
@@ -1008,6 +1029,36 @@ public final class RuntimeGameTestsRuins {
       var mob = (LivingEntity) helper.getLevel().getEntity(groupA.mobs.getFirst());
       helper.assertTrue(mob != null && mob.getMaxHealth() == 77f && mob.getAttributeValue(Attributes.SCALE) == 1.4,
           "Attributes not applied");
+      helper.assertTrue(mob.getTags().contains(RuinBosses.TAG), "The guardian carries no entity tag");
+      // Other entities are left alone: joining and dying give them no NeoForge data.
+      var pig = net.minecraft.world.entity.EntityType.PIG.create(helper.getLevel());
+      pig.moveTo(Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(0, 1, 4))));
+      helper.assertTrue(helper.getLevel().addFreshEntity(pig), "A pig could not join");
+      pig.hurt(helper.getLevel().damageSources().playerAttack(b), 10_000f);
+      helper.assertTrue(!pig.isAlive() && !pig.saveWithoutId(new net.minecraft.nbt.CompoundTag()).contains("NeoForgeData"),
+          "A plain entity got persistent data from the guardian listeners");
+      // A guardian of a finished run (saved with a chunk, no live group) never joins again.
+      var stale = net.minecraft.world.entity.EntityType.VINDICATOR.create(helper.getLevel());
+      stale.moveTo(Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(4, 1, 0))));
+      stale.addTag(RuinBosses.TAG);
+      stale.getPersistentData().putString(RuinBosses.TAG, "entrelumen:qa_finished|guard|" + UUID.randomUUID());
+      helper.assertTrue(!helper.getLevel().addFreshEntity(stale), "A guardian of a finished run came back");
+      // One saved before the entity tag existed (persistent, named, only the persistent key) stays
+      // out too; a name-tagged mob without the key still joins.
+      var legacy = net.minecraft.world.entity.EntityType.VINDICATOR.create(helper.getLevel());
+      legacy.moveTo(Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(4, 1, 2))));
+      legacy.setCustomName(net.minecraft.network.chat.Component.literal("Old guardian"));
+      legacy.setPersistenceRequired();
+      legacy.getPersistentData().putString(RuinBosses.TAG, "entrelumen:qa_finished|guard|" + UUID.randomUUID());
+      helper.assertTrue(!helper.getLevel().addFreshEntity(legacy) && legacy.getTags().contains(RuinBosses.TAG),
+          "A guardian saved before the entity tag came back");
+      var named = net.minecraft.world.entity.EntityType.PIG.create(helper.getLevel());
+      named.moveTo(Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(2, 1, 4))));
+      named.setCustomName(net.minecraft.network.chat.Component.literal("Named pig"));
+      named.setPersistenceRequired();
+      helper.assertTrue(helper.getLevel().addFreshEntity(named) && !named.getTags().contains(RuinBosses.TAG),
+          "A name-tagged mob was taken for a guardian");
+      named.discard();
       helper.assertTrue(mob.getCustomName() != null && mob.getCustomName().getContents()
           instanceof net.minecraft.network.chat.contents.TranslatableContents t && t.getKey().equals("entrelumen.ruin.boss.toll_guardian"),
           "The guardian has no name");

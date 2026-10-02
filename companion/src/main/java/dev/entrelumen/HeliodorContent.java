@@ -42,7 +42,7 @@ public final class HeliodorContent {
           builder -> builder.persistent(CompassState.CODEC)
               .networkSynchronized(CompassState.STREAM_CODEC));
   public static final DeferredItem<HeliodorCompassItem> COMPASS = ITEMS.register(
-      "heliodor_compass", () -> new HeliodorCompassItem(new Item.Properties().stacksTo(1)));
+      "heliodor_compass", () -> new HeliodorCompassItem(new Item.Properties().stacksTo(1).fireResistant()));
   public static final DeferredBlock<HeliodorPedestalBlock> PEDESTAL = BLOCKS.register(
       "heliodor_pedestal", () -> new HeliodorPedestalBlock(BlockBehaviour.Properties.of()
           .mapColor(MapColor.TERRACOTTA_CYAN).strength(-1f, 3_600_000f).noLootTable()
@@ -61,6 +61,7 @@ public final class HeliodorContent {
     NeoForge.EVENT_BUS.addListener(HeliodorRuins::onCreateSpawn);
     NeoForge.EVENT_BUS.addListener(HeliodorRuins::onServerStarted);
     NeoForge.EVENT_BUS.addListener(EventPriority.LOW, HeliodorRuins::onLogin);
+    FtbChunksClaimGuard.register();
     FirstJoinGifts.register();
     NeoForge.EVENT_BUS.addListener(
         (AddReloadListenerEvent event) -> event.addListener(new TargetsReloadListener()));

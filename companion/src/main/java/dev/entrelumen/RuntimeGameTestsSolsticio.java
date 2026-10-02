@@ -599,4 +599,107 @@ public final class RuntimeGameTestsSolsticio {
       }
     });
   }
+
+  // ---- Return point and portals ----------------------------------------------------------
+
+  /** A lit Nether portal at x = 1..2, y = 1..3 in the plane z = 2, framed by obsidian, on a stone floor. */
+  private static void netherPortal(GameTestHelper helper) {
+    floor(helper);
+    var level = helper.getLevel();
+    for (int x = 0; x <= 3; x++) {
+      level.setBlock(at(helper, x, 0, 2), Blocks.OBSIDIAN.defaultBlockState(), 2 | 16);
+      level.setBlock(at(helper, x, 4, 2), Blocks.OBSIDIAN.defaultBlockState(), 2 | 16);
+    }
+    for (int y = 1; y <= 3; y++) {
+      level.setBlock(at(helper, 0, y, 2), Blocks.OBSIDIAN.defaultBlockState(), 2 | 16);
+      level.setBlock(at(helper, 3, y, 2), Blocks.OBSIDIAN.defaultBlockState(), 2 | 16);
+      for (int x = 1; x <= 2; x++)
+        level.setBlock(at(helper, x, y, 2), Blocks.NETHER_PORTAL.defaultBlockState()
+            .setValue(net.minecraft.world.level.block.NetherPortalBlock.AXIS, Direction.Axis.X), 2 | 16);
+    }
+  }
+
+  private static boolean inPortal(ServerPlayer player) {
+    var level = player.serverLevel();
+    var pos = player.blockPosition();
+    return level.getBlockState(pos).getBlock() instanceof net.minecraft.world.level.block.Portal
+        || level.getBlockState(pos.above()).getBlock() instanceof net.minecraft.world.level.block.Portal;
+  }
+
+  /**
+   * Going home with the Light Key or a waystone never drops the player into the Overworld portal
+   * they left by: a saved point inside it is avoided, and leaving through it saves a spot beside it.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void returnHomeNeverLandsInsideAPortal(GameTestHelper helper) {
+    netherPortal(helper);
+    var level = helper.getLevel();
+    BlockPos portal = at(helper, 1, 1, 2);
+    helper.assertTrue(level.getBlockState(portal).is(Blocks.NETHER_PORTAL), "The QA portal is not lit");
+    helper.assertTrue(!SolsticioTravel.standable(level, portal) && !SolsticioTravel.standable(level, portal.below())
+        && SolsticioTravel.standable(level, at(helper, 1, 1, 1)), "A portal cell counts as a place to stand");
+    var qa = new QaPlayer(helper, "PortalHome");
+    var player = qa.player;
+    var data = SolsticioData.get(player.server);
+    var saved = data.returns.get(player.getUUID());
+    // Leaving through the portal: the spot beside it is saved, not the portal cell.
+    player.teleportTo(level, portal.getX() + 0.5, portal.getY(), portal.getZ() + 0.5, 0f, 0f);
+    SolsticioTravel.rememberHome(player);
+    var remembered = data.returns.get(player.getUUID()).pos();
+    helper.assertTrue(SolsticioTravel.standable(level, remembered) && remembered.getY() == portal.getY()
+        && remembered.distManhattan(portal) <= 2, "Leaving through a portal saved " + remembered);
+    // An older save inside the portal: home() lands the player beside it, and they stay.
+    data.returns.put(player.getUUID(), new SolsticioData.ReturnPoint(Level.OVERWORLD, portal, 0f));
+    player.teleportTo(level, portal.getX() + 0.5, portal.getY() + 20, portal.getZ() + 6.5, 0f, 0f);
+    helper.assertTrue(SolsticioTravel.home(player), "home() refused");
+    helper.assertTrue(!inPortal(player) && player.level().dimension().equals(Level.OVERWORLD),
+        "home() put the player inside the portal at " + player.blockPosition());
+    // Portal travel runs in the player's own tick: tick them past the 80-tick portal delay.
+    helper.onEachTick(() -> {
+      if (!player.isRemoved()) player.doTick();
+    });
+    helper.runAfterDelay(100, () -> {
+      try {
+        helper.assertTrue(player.level().dimension().equals(Level.OVERWORLD) && !inPortal(player),
+            "The player was pulled through the portal after going home");
+      } finally {
+        if (saved == null) data.returns.remove(player.getUUID());
+        else data.returns.put(player.getUUID(), saved);
+        qa.close();
+      }
+      helper.succeed();
+    });
+  }
+
+  /** The piston check resolves the push only near a protected region (13 blocks, every axis). */
+  @GameTest(template = "empty", timeoutTicks = 20)
+  public static void pistonChecksOnlyRunNearAProtectedRegion(GameTestHelper helper) {
+    var server = helper.getLevel().getServer();
+    var level = helper.getLevel();
+    var region = isolatedRegion(helper, "piston_reach", UUID.randomUUID());
+    StructureProtection.addTransient(server, region);
+    try {
+      var box = region.box();
+      int r = StructureProtection.PISTON_REACH;
+      int cx = (box.minX() + box.maxX()) / 2, cz = (box.minZ() + box.maxZ()) / 2;
+      helper.assertTrue(StructureProtection.nearRegion(level, new BlockPos(cx, box.maxY() + r, cz), r)
+          && StructureProtection.nearRegion(level, new BlockPos(box.maxX() + r, box.minY(), box.maxZ() + r), r),
+          "A push 13 blocks from the region skipped the check");
+      // Everything else agrees with a plain scan of every region in the dimension.
+      var regions = StructureProtection.regions(level);
+      for (var probe : List.of(new BlockPos(cx, box.maxY() + r + 1, cz), new BlockPos(box.maxX() + r + 1, box.minY(), cz),
+          new BlockPos(cx, box.minY(), box.minZ() - r - 1), new BlockPos(cx + 40_000, box.minY(), cz))) {
+        var reach = new ProtectionRules.Box(probe.getX() - r, probe.getY() - r, probe.getZ() - r,
+            probe.getX() + r, probe.getY() + r, probe.getZ() + r);
+        boolean expected = regions.stream().anyMatch(other -> other.box().intersects(reach));
+        helper.assertTrue(StructureProtection.nearRegion(level, probe, r) == expected,
+            "The piston reach check disagrees with a full scan at " + probe);
+        helper.assertTrue(regions.stream().filter(other -> other.id().equals(region.id()))
+            .noneMatch(other -> other.box().intersects(reach)), "The probe " + probe + " is not 14 blocks away");
+      }
+    } finally {
+      StructureProtection.removeTransient(server, region.id());
+    }
+    helper.succeed();
+  }
 }
