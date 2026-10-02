@@ -13,6 +13,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -150,6 +151,57 @@ public final class QuestIntegrationFullpackGameTests {
           "An offline kick dropped the party's claim (double claim)");
       helper.assertTrue(QuestClaimGuard.partyEntry(founder.player.server, guestId) == 0,
           "The offline kick did not clear the recorded entry time");
+    }
+    helper.succeed();
+  }
+
+  /**
+   * A sector bounty (a repeatable quest) completed solo and claimed in a new party is not paid again after
+   * leaving: FTB's repeat reset leaves no claim to copy, so the stale personal copy must be reset instead.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void partyBountyIsNotPaidTwiceAfterLeaving(GameTestHelper helper) throws Exception {
+    ServerQuestFile file = file(helper);
+    Quest bounty = repeatableBounty(file);
+    var manager = FTBTeamsAPI.api().getManager();
+    try (Session founder = Session.connect(helper, "BountySolo")) {
+      UUID id = founder.player.getUUID();
+      TeamData personal = file.getOrCreateTeamData(manager.getPlayerTeamForPlayerID(id).orElseThrow());
+      Date done = new Date(System.currentTimeMillis() - 60_000L);
+      personal.setStarted(bounty.id, done);
+      personal.setCompleted(bounty.id, done);
+      for (var task : bounty.getTasks()) {
+        personal.setStarted(task.id, done);
+        personal.setCompleted(task.id, done);
+      }
+      helper.assertTrue(personal.isCompleted(bounty) && bounty.getRewards().stream()
+          .noneMatch(reward -> personal.isRewardClaimed(id, reward)), "The solo bounty is not completed and unclaimed");
+      int soloCount = personal.getCompletionCount(bounty);
+
+      PartyTeam party = (PartyTeam) manager.createPartyTeam(founder.player,
+          "Entrelumen bounty QA " + id, "", Color4I.WHITE);
+      founder.partyId = party.getId();
+      TeamData partyData = file.getOrCreateTeamData(party);
+      helper.assertTrue(partyData.isCompleted(bounty), "Creating the party did not copy the completed bounty");
+      int entryCount = partyData.getCompletionCount(bounty);
+      for (Reward reward : bounty.getRewards())
+        helper.assertTrue(partyData.markRewardAsClaimed(id, reward, System.currentTimeMillis()),
+            "The party could not claim the bounty reward " + reward);
+      helper.assertTrue(partyData.getCompletionCount(bounty) == entryCount + 1 && !partyData.isCompleted(bounty),
+          "FTB no longer resets a fully claimed repeatable; this check needs a new fixture");
+
+      founder.leaveParty();
+      helper.assertTrue(manager.getTeamForPlayer(founder.player).orElseThrow().isPlayerTeam(),
+          "Leaving did not return the founder to the personal team");
+      helper.assertFalse(personal.isCompleted(bounty) || personal.isStarted(bounty),
+          "The personal team still offers the bounty the party already paid (double claim)");
+      for (Reward reward : bounty.getRewards())
+        helper.assertFalse(personal.isRewardClaimed(id, reward), "The reset left a stale claim: " + reward);
+      helper.assertTrue(personal.getCompletionCount(bounty) == soloCount,
+          "The reset changed the personal completion count");
+      // Idempotent: the reset quest holds nothing to consume.
+      helper.assertTrue(QuestClaimGuard.consumeRepeatables(file, partyData, personal, id, 0, java.util.Map.of()) == 0,
+          "A second pass reset the bounty again");
     }
     helper.succeed();
   }
@@ -331,6 +383,17 @@ public final class QuestIntegrationFullpackGameTests {
     if (found.size() < count)
       throw new IllegalStateException("The quest book has fewer than " + count + " team rewards");
     return found;
+  }
+
+  /** A real repeatable quest of the book (a sector bounty) whose rewards are all team rewards. */
+  private static Quest repeatableBounty(ServerQuestFile file) {
+    Quest[] found = {null};
+    file.forAllQuests(quest -> {
+      if (found[0] == null && quest.canBeRepeated() && !quest.getRewards().isEmpty()
+          && quest.getRewards().stream().allMatch(Reward::isTeamReward)) found[0] = quest;
+    });
+    if (found[0] == null) throw new IllegalStateException("The quest book has no repeatable bounty with team rewards");
+    return found[0];
   }
 
   /** A quest the fresh player's team can start, with no campaign task. */
