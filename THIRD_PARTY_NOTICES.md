@@ -46,6 +46,42 @@ Some files under `pack/kubejs/data` are derived from data files of Ad Astra 1.16
 >
 > THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+### Occultism
+
+Some files under `pack/kubejs/data/occultism` are derived from data files of Occultism 1.224.4 (`occultism-1.21.1-neoforge-1.224.4.jar`). Occultism is by Kli Kli (klikli-dev), the author its mod metadata names, published at https://github.com/klikli-dev/occultism; the same metadata declares the MIT License, and the JAR ships no license file with a copyright line.
+
+- `pack/kubejs/data/occultism/recipe/crushing/` (27 files, one `<metal>_dirty_dust_from_clump.json` per metal) and `pack/kubejs/data/occultism/recipe/crystallize/ender_pearl.json`: the mod's recipes of the same paths with the yield changed (the `loops` family); the conditions, recipe types and result codec are the mod's.
+
+`tools/generate_family_balance.py` (family `loops`) writes these files from the pinned JAR.
+
+> MIT License
+>
+> Copyright (c) 2024 Compact Mods
+>
+> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+### Ad Astra
+
+Some files under `pack/kubejs/data` are derived from data files of Ad Astra 1.16.19 (`adastra-1.21.1-1.16.19-neoforge.jar`). Ad Astra is by Alex Nijjar, the author its mod metadata names, and the contributors it credits (CodexAdrian, Facu, Fizz, MsRandom, ThatGravyBoat and Mrbysco), published by Terrarium at https://github.com/terrarium-earth/Ad-Astra. Its Terrarium License v1 (https://github.com/terrarium-earth/Ad-Astra/blob/1.21.1/LICENSE) licenses every file under the mod's `resources/data/` under the MIT License below; everything else in the mod is all rights reserved and is not copied here. The license text has no separate copyright line.
+
+- `pack/kubejs/data/ad_astra/loot_table/chests/` (the Moon dungeon, large Moon dungeon, Mars temple, Lunarian blacksmith and Lunarian house tables) and `pack/kubejs/data/minecraft/loot_table/loot.json`: the mod's chest tables moved from `loot_tables/` to the 1.21 folder; the enchanted books name `#minecraft:on_random_loot`.
+- `pack/kubejs/data/ad_astra/worldgen/template_pool/dungeon/moon/room.json`: the mod's Moon dungeon room pool, its library element pointed at the `libary` template the mod ships.
+- The 49 files under `pack/kubejs/data/create/recipe/`, `pack/kubejs/data/mekanism/recipe/` and `pack/kubejs/data/immersiveengineering/recipe/` that share their path with the mod's compat recipes: those recipes, disabled with a `neoforge:false` condition.
+
+`tools/generate_family_balance.py` (family `pingpong`) writes these files from the pinned JAR. `pack/kubejs/data/ad_astra/tags/worldgen/biome/has_structure/venus_bullet.json` replaces a tag of the mod with an empty one and holds nothing of it.
+
+> MIT License
+>
+> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 ### Loot tables written for other mods
 
 These files are ENTRELUMEN's own. None copies the named mod's data; each only names that mod's IDs.

@@ -149,8 +149,13 @@ def copied(path, source, why, *, owners, to=None):
     return {'path': path, 'op': 'copy', 'source': source, 'owners': owners, 'to': to or path, 'why': why}
 
 
+ABSENT = object()  # in `rewritten`'s `expect`: the upstream file does not write that field
+
+
 def rewritten(path, expect, value, why):
-    """Replace whole top-level fields of an upstream data file; every other field stays native."""
+    """Replace whole top-level fields of an upstream data file; every other field stays native.
+
+    `expect` holds the upstream value of each field (ABSENT for one the mod leaves out, so the rewrite adds it)."""
     return {'path': path, 'op': 'rewrite', 'expect': expect, 'value': value, 'why': why}
 
 
@@ -781,6 +786,12 @@ LUMINOUS_FARMED = [
 ]
 
 
+# The 27 metals whose Occultism 1.224.4 ships a `<metal>_dirty_dust_from_clump` crushing recipe (the `loops` family).
+OCCULTISM_CLUMP_METALS = (
+    'osmium', 'platinum', 'mithril', 'crimson_iron', 'titanium', 'quicksilver', 'tin', 'lead', 'vibranium', 'iesnium',
+    'tungsten', 'unobtainium', 'iridium', 'nickel', 'copper', 'graphite', 'cobalt', 'uranium', 'iron', 'zinc',
+    'aluminum', 'gold', 'silver', 'pewter', 'allthemodium', 'azure_silver', 'antimony')
+
 FAMILIES = {
     'industrial': {
         'script': 'entrelumen_industrial_balance.js',
@@ -1260,6 +1271,10 @@ FAMILIES = {
             # No boss spawns from a machine (Elias, 27 September 2026). A spawned dragon has no End fight, so
             # no heart or egg, but Draconic Evolution gave it about 64 draconium dust for 100,000 FE.
             'rftoolsutility:minecraft_ender_dragon',
+            # Reformation turned ghast tears into an elytra 1:1 for whoever already owned one (the template),
+            # about six emeralds each. The elytra is the End ships' prize (Elias, 1 October 2026: the review's
+            # decision D3); skulls and shells stay reachable through Hostile Neural Networks (27 September).
+            'theurgy:incubation/elytra',
         ],
         'data': [
             # Bosses their own mods leave out of c:bosses (28 September 2026), so every capture tool and
@@ -1281,6 +1296,49 @@ FAMILIES = {
                            'possible_rewards', [QUEEN_STAR_BOTTLE], 'Royal jelly is renewable through royal bees'),
             without_values('data/the_bumblezone/bz_bee_queen_trades/royal_jelly_bucket_block_trades.json',
                            'possible_rewards', [QUEEN_STAR_BUCKET], 'Royal jelly is renewable through royal bees'),
+        ],
+    },
+    # Multiplication loops that the adversarial review of 1 October 2026 closed (docs/design/mod-pingpong.md,
+    # "Bucles de materia"): every one turns a raw material into more of itself for energy alone.
+    'loops': {
+        'script': 'entrelumen_loops_balance.js',
+        'tag': 'ENTRELUMEN_LOOPS_BALANCE',
+        'namespaces': set(),
+        'changes': [],
+        'removals': [
+            # Oritech's assembler (4 powder a rod) and Immersive Engineering's press (5) are beaten by every
+            # other powder-to-rod route, Occultism (6 to 12), Industrial Foregoing's squeezer (5) and an Ender
+            # IO SAG Mill with a grinding ball (4.8 to 7), so the rod multiplied for energy alone.
+            'oritech:assembler/blazerod',
+            'immersiveengineering:metalpress/blaze_rod',
+            # The only crystal-to-quartz route: quartz to shard to 2-3 crystals (Oritech, Occultism) to two
+            # quartz each grew up to six times per loop. Prismarine crystals stay dropped, mined and crafted.
+            'create:crushing/prismarine_crystals',
+            # Utilitarian's uncrafting returns nine ice from a packed ice and nine packed ice from a blue
+            # one, against Utilitarian's own 1:1 freezing; bulk ice was already unlimited from water.
+            'utilitarian:utility/ice',
+            'utilitarian:utility/packed_ice',
+        ],
+        'data': [
+            # The Ender IO SAG Mill turns a pearl into nine powdered pearls, and Occultism crystallized each
+            # one back into a whole pearl at any tier (it ignores the tier multiplier): nine pearls per loop.
+            # Only AE2's ender dust, which grinds one pearl to one dust, crystallizes now. Same recipe ID,
+            # the mod's own result codec (`occultism:tag`) and conditions; the tags stay as they are.
+            rewritten('data/occultism/recipe/crystallize/ender_pearl.json',
+                      {'ingredient': {'tag': 'c:dusts/ender_pearl'}},
+                      {'ingredient': {'item': 'ae2:ender_dust'}},
+                      'Powdered pearls from Ender IO multiplied pearls 9:1; AE2 ender dust is 1:1'),
+        ] + [
+            # A clump is crushed to two dirty dusts times the crusher's tier, and Mekanism's shards and
+            # Create's crushed ores are tagged as clumps too: a Marid made 24 ingots from one ore. One dirty
+            # dust per clump, whatever the tier, like the mod's own ingot, gem and ore crushing.
+            rewritten(f'data/occultism/recipe/crushing/{metal}_dirty_dust_from_clump.json',
+                      {'ignore_crushing_multiplier': ABSENT,
+                       'result': {'type': 'occultism:tag', 'count': 2, 'tag': f'c:dirty_dusts/{metal}'}},
+                      {'ignore_crushing_multiplier': True,
+                       'result': {'type': 'occultism:tag', 'count': 1, 'tag': f'c:dirty_dusts/{metal}'}},
+                      'Two dirty dusts per clump at 2x the crusher tier multiplied ores up to 35 times')
+            for metal in OCCULTISM_CLUMP_METALS
         ],
     },
 }
@@ -1870,10 +1928,15 @@ def build_data(name, found=None, templates=None):
             reverse['mainhand'] = original['mainhand']
         elif spec['op'] == 'rewrite':
             assert set(spec['expect']) == set(spec['value']), f"{spec['path']}: rewrite fields differ"
-            assert all(original.get(k) == v for k, v in spec['expect'].items()), f"{spec['path']}: changed upstream"
+            assert all((k not in original) if v is ABSENT else original.get(k) == v
+                       for k, v in spec['expect'].items()), f"{spec['path']}: changed upstream"
             result.update(copy.deepcopy(spec['value']))
             reverse = copy.deepcopy(result)
-            reverse.update(copy.deepcopy(spec['expect']))
+            for k, v in spec['expect'].items():  # a field the mod does not write is added; reversing drops it
+                if v is ABSENT:
+                    del reverse[k]
+                else:
+                    reverse[k] = copy.deepcopy(v)
         elif spec['op'] == 'remove_values':
             values = result[spec['field']]
             assert all(values.count(v) == 1 for v in spec['values']), f"{spec['path']}: values changed upstream"
