@@ -14,7 +14,7 @@ Estado actual: ocho layouts aceptados por el parser de FancyMenu **3.9.12**; Dri
 | `generic_dirt_message_screen` | Mensaje transitorio | Texto original |
 | `drippy_loading_overlay` | Overlay de recursos Mojang | Progreso real |
 
-Los controles conservan acciones, foco, teclado y traducciones de Minecraft/NeoForge; la posición usa anclaje mid-left y coordenadas enteras. La implementación mueve los ocho widgets nativos a una columna izquierda: seis filas de 160×20 con paso 24 y dos accesos de 20×20. No crea botones duplicados ni áreas invisibles que intercepten clics. No fija una escala global de GUI. El fondo conserva proporción; los widgets siguen respondiendo a la resolución nativa.
+Los controles conservan acciones, foco, teclado y traducciones de Minecraft/NeoForge; la posición usa anclaje mid-left y coordenadas enteras. La implementación mueve los ocho widgets nativos a una columna izquierda: cinco filas de 160×20 con paso 24 y dos accesos de 20×20. El botón de Realms queda oculto a propósito (`is_hidden = true` en el generador): un cliente con mods no puede servir a Realms, y estilizado como un camino válido sólo llevaba a un callejón sin salida; sin él, los botones visibles son cinco. No crea botones duplicados ni áreas invisibles que intercepten clics. No fija una escala global de GUI. El fondo conserva proporción; los widgets siguen respondiendo a la resolución nativa.
 
 ## Interfaz de assets para el integrador de arte
 
@@ -45,7 +45,7 @@ Las instrucciones de acceso al editor y activación provienen de [Getting Starte
 
 Fuente de formato inspeccionada: `Layout.serialize/deserialize`, `MenuBackgroundBuilder`, `ImageMenuBackgroundBuilder`, `ColorMenuBackgroundBuilder`, `PropertiesParser`, `UniversalScreenIdentifierRegistry`. Formato: `type = fancymenu_layout`; contenedores `layout-meta`, `customization`, `menu_background`; tipo `image` y prefijo local `[source:local]/config/fancymenu/assets/...`.
 
-No se añadieron consejos bilingües nuevos. Los seis botones principales tienen texturas propias normal/hover/inactive y conservan sus acciones y etiquetas nativas. Drippy cubre el overlay de recursos de Mojang y fue observado funcionando con progreso real; no cubre la ventana temprana de NeoForge, launcher ni errores. La ubicación de los iconos pequeños continúa pendiente de QA. El hook de identificación de cuatro widgets del título está compilado en el cliente nuevo (hash prefijo `5AAF`), sin comprobación visual: la interacción quedó pausada.
+No se añadieron consejos bilingües nuevos. Los cinco botones principales visibles (Realms está oculto) tienen texturas propias normal/hover/inactive y conservan sus acciones y etiquetas nativas. Drippy cubre el overlay de recursos de Mojang y fue observado funcionando con progreso real; no cubre la ventana temprana de NeoForge, launcher ni errores. La ubicación de los iconos pequeños continúa pendiente de QA. El hook de identificación de cuatro widgets del título está compilado en el cliente nuevo (hash prefijo `5AAF`), sin comprobación visual: la interacción quedó pausada.
 
 
 ## Verificación del origen pixel art
