@@ -942,7 +942,8 @@ class LoopsTest(unittest.TestCase):
     def test_removals_close_the_blaze_quartz_and_ice_loops(self):
         self.assertEqual(set(balance.FAMILIES['loops']['removals']),
                          {'oritech:assembler/blazerod', 'immersiveengineering:metalpress/blaze_rod',
-                          'create:crushing/prismarine_crystals', 'utilitarian:utility/ice', 'utilitarian:utility/packed_ice'})
+                          'create:crushing/prismarine_crystals', 'utilitarian:utility/ice', 'utilitarian:utility/packed_ice',
+                          'functionalstorage:compacting/ice', 'functionalstorage:compacting/packed_ice'})
         self.assertEqual(balance.FAMILIES['loops']['changes'], [])
 
     def test_the_ender_pearl_only_crystallizes_from_ae2_dust(self):

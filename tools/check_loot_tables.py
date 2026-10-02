@@ -772,6 +772,15 @@ OPEN = re.compile(r'\b(?:MIT|Apache|BSD|L?GPL|GNU|MPL|EPL|CC0|CC[- ]BY|Unlicense
 # (github.com/terrarium-earth/Ad-Astra/blob/1.21.1/LICENSE); THIRD_PARTY_NOTICES.md carries its notice.
 OPEN_DATA = {'adastra-': 'Terrarium License v1: files under resources/data/ are MIT'}
 NEAR, LEAVES = 0.8, 5
+# Read by hand: overrides of a reserved mod's file that must keep its identity to work at all. What they share with
+# the mod's file is IDs, texture paths, translation keys, flags and a criterion name that saved worlds already hold;
+# the text and the design are ours. Each entry says why the file exists and what is ours.
+SHARED_IDENTITY = {
+    'data/apotheosis/advancement/progression/root.json':
+        "Apotheosis's advancement tab root (F52): same ID, icon, background, title key, flags and the 'tick' "
+        "criterion its saved progress is stored under; only the description is ours (a companion lang key with "
+        "the tier screen's keybind instead of the stale 'Press CTRL+T').",
+}
 
 
 def is_restricted(filename, license):
@@ -847,7 +856,7 @@ def copies(sources, reserved, root=PACK / 'data'):
         mine = None
         for index, theirs in candidates.get((parts[1], parts[-1]), []):
             mine = mine if mine is not None else path.read_bytes()
-            if self_drop_form(name, mine):
+            if self_drop_form(name, mine) or name in SHARED_IDENTITY:
                 break
             why = copy_of(mine, sources.read(theirs, index))
             if why:

@@ -79,10 +79,12 @@ class PackConfigReviewTest(unittest.TestCase):
         self.assertEqual(display['description'], {
             'translate': 'entrelumen.apotheosis.tier.root.desc',
             'with': [{'keybind': 'key.apotheosis.open_world_tier_select'}]})
-        # Same always-true tick trigger as the five tier files; the criterion is named "campaign" like theirs so the
-        # file stays under the repository's copy threshold for All Rights Reserved JAR data (check_loot_tables --copies).
-        self.assertEqual(root['criteria'], {'campaign': {'trigger': 'minecraft:tick'}})
-        self.assertEqual(root['requirements'], [['campaign']])
+        # The mod's own always-true criterion keeps its name, so a saved world's progress under "tick" still matches;
+        # check_loot_tables --copies exempts this override by name, with its reason, instead of a renamed criterion.
+        self.assertEqual(root['criteria'], {'tick': {'trigger': 'minecraft:tick'}})
+        self.assertEqual(root['requirements'], [['tick']])
+        import check_loot_tables
+        self.assertIn('data/apotheosis/advancement/progression/root.json', check_loot_tables.SHARED_IDENTITY)
         self.assertEqual(display['icon'], {'count': 1, 'id': 'apotheosis:boss_summoner'})
         self.assertEqual(display['background'], 'apotheosis:textures/advancements/bg/apoth.png')
         self.assertIs(display['announce_to_chat'], False)

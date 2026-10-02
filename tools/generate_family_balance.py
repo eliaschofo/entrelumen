@@ -1318,6 +1318,12 @@ FAMILIES = {
             # one, against Utilitarian's own 1:1 freezing; bulk ice was already unlimited from water.
             'utilitarian:utility/ice',
             'utilitarian:utility/packed_ice',
+            # Functional Storage's own compacting pairs (1 packed ice = 9 ice, 1 blue ice = 9 packed ice) work
+            # both ways in a Compacting Drawer, so the 1:1 freezers of Aether, Refurbished Furniture, Create
+            # Dragons Plus and Twilight Delight still made nine of each per loop. Vanilla has no 1-to-9 recipe
+            # for either, so the drawer has no other pair to infer.
+            'functionalstorage:compacting/ice',
+            'functionalstorage:compacting/packed_ice',
         ],
         'data': [
             # The Ender IO SAG Mill turns a pearl into nine powdered pearls, and Occultism crystallized each
