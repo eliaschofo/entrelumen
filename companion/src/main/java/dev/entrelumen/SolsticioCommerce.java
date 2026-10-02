@@ -715,7 +715,7 @@ public final class SolsticioCommerce {
 
   /**
    * When a player starts trading, after vanilla's reputation and hero discounts: applies the
-   * Solsticio multiplier and closes, for this player only, the offers of acts they have not
+   * Solsticio multiplier (never to a trade that pays emeralds) and closes, for this player only, the offers of acts they have not
    * reached and a sleeping native's Luminosity (shown out of stock until trading stops).
    */
   public static void onTradeOpen(Villager villager, Player player) {
@@ -727,6 +727,8 @@ public final class SolsticioCommerce {
     double multiplier = CommerceRules.multiplier(role, SolsticioData.get(level.getServer()).liberated, awakened, prices());
     MerchantOffers offers = villager.getOffers();
     for (MerchantOffer offer : offers) {
+      // A trade that pays emeralds keeps its price: no resale loop through a settled villager.
+      if (!CommerceRules.discounts(offer.getResult())) continue;
       ItemStack base = offer.getBaseCostA();
       int adjustment = CommerceRules.priceAdjustment(base.getCount(), offer.getDemand(), offer.getPriceMultiplier(),
           offer.getSpecialPriceDiff(), base.getMaxStackSize(), multiplier);

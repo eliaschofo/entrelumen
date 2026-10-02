@@ -32,6 +32,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.CatVariant;
@@ -220,14 +221,21 @@ public final class SolsticioStory {
     return totals;
   }
 
-  /** Takes {@code amount} matching items from the inventory; the caller checked they are there. */
+  /**
+   * Takes {@code amount} matching items from the inventory; the caller checked they are there. Plain
+   * stacks go first: a copy that carries data (a bound compass, a paid survey map, an errand item, a
+   * renamed or enchanted tool) is taken only when the plain ones run out.
+   */
   static void take(ServerPlayer player, Predicate<ItemStack> test, int amount) {
-    for (ItemStack stack : Entrelumen.deliveryStacks(player)) {
-      if (amount <= 0) break;
-      if (stack.isEmpty() || !test.test(stack)) continue;
-      int taken = Math.min(amount, stack.getCount());
-      stack.shrink(taken);
-      amount -= taken;
+    List<ItemStack> stacks = Entrelumen.deliveryStacks(player);
+    for (boolean plain : new boolean[] {true, false}) {
+      for (ItemStack stack : stacks) {
+        if (amount <= 0) break;
+        if (stack.isEmpty() || stack.getComponentsPatch().isEmpty() != plain || !test.test(stack)) continue;
+        int taken = Math.min(amount, stack.getCount());
+        stack.shrink(taken);
+        amount -= taken;
+      }
     }
     player.getInventory().setChanged();
     player.containerMenu.broadcastChanges();
@@ -406,15 +414,19 @@ public final class SolsticioStory {
     }
   }
 
-  /** The first charged battery the player carries (any mod's energy item), or null. */
+  /**
+   * The charged battery the player holds in the off hand (any mod's energy item), or null. Only the
+   * off hand counts, so Terra never takes a charged tool, terminal or armour piece the player merely
+   * carries; enchanted stacks and armour are refused even there.
+   */
   static ItemStack battery(ServerPlayer player) {
-    for (ItemStack stack : Entrelumen.deliveryStacks(player)) {
-      if (stack.isEmpty()) continue;
-      var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-      if (energy != null && SolsticioStoryRules.charged(energy.getEnergyStored(), energy.getMaxEnergyStored()))
-        return stack;
-    }
-    return null;
+    ItemStack stack = player.getOffhandItem();
+    if (stack.isEmpty() || stack.isEnchanted()
+        || player.getEquipmentSlotForItem(stack).getType() == EquipmentSlot.Type.HUMANOID_ARMOR)
+      return null;
+    var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+    return energy != null && SolsticioStoryRules.charged(energy.getEnergyStored(), energy.getMaxEnergyStored())
+        ? stack : null;
   }
 
   private static void gardener(ServerPlayer player, Campaigns.Campaign c, String stage, Talk talk, Component name,
@@ -422,13 +434,12 @@ public final class SolsticioStory {
     if (SolsticioStoryRules.arrived(c) && SolsticioStoryRules.done(c, SolsticioStoryRules.SEEDS)) basket(player, talk, name);
     switch (stage) {
       case "seeds" -> {
-        List<String> kinds = new ArrayList<>();
-        for (ItemStack stack : Entrelumen.deliveryStacks(player)) if (!stack.isEmpty() && stack.is(SEEDS)) kinds.add(id(stack));
-        List<String> chosen = SolsticioStoryRules.distinct(kinds, SolsticioStoryRules.SEED_SPECIES);
+        // Garden species only (no resource seeds); one of each of the most plentiful goes.
+        Map<String, Integer> kinds = totals(player, stack -> stack.is(SEEDS) && SolsticioStoryRules.gardenSeed(id(stack)));
+        List<String> chosen = SolsticioStoryRules.mostCarried(kinds, SolsticioStoryRules.SEED_SPECIES);
         if (chosen.isEmpty()) {
           talk.say(name, base + "seeds");
-          talk.narrate("entrelumen.solsticio.story.seeds", new java.util.HashSet<>(kinds).size(),
-              SolsticioStoryRules.SEED_SPECIES);
+          talk.narrate("entrelumen.solsticio.story.seeds", kinds.size(), SolsticioStoryRules.SEED_SPECIES);
           return;
         }
         chosen.forEach(item -> take(player, item(item), 1));
