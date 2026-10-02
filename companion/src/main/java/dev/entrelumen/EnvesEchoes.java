@@ -6,8 +6,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.entrelumen.ApotheosisTiers.Tier;
 import dev.entrelumen.EnvesBalance.Role;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -27,6 +29,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -54,6 +57,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.MobDespawnEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.slf4j.Logger;
 
@@ -107,6 +111,8 @@ public final class EnvesEchoes {
 
   /** Live echoes, ticked for their aura and affixes. */
   static final Set<Mob> LIVE = new LinkedHashSet<>();
+  /** Guardians and champions a run names that were not in the world: since when and when last asked (game time). */
+  private static final Map<UUID, long[]> MISSING = new HashMap<>();
 
   private EnvesEchoes() {}
 
@@ -119,6 +125,11 @@ public final class EnvesEchoes {
     bus.addListener(EventPriority.HIGH, EnvesEchoes::onIncomingDamage);
     bus.addListener(EnvesEchoes::onDamaged);
     bus.addListener(EventPriority.LOW, EnvesEchoes::onDeath);
+    // Peaceful discards hostile mobs before their persistence counts, with no death: a guardian or a
+    // champion would vanish and its seal or stair wait forever.
+    bus.addListener((MobDespawnEvent event) -> {
+      if (isEcho(event.getEntity())) event.setResult(MobDespawnEvent.Result.DENY);
+    });
   }
 
   public static boolean isEcho(Entity entity) {
@@ -347,6 +358,11 @@ public final class EnvesEchoes {
    * projectiles, spells. Echoes never hurt each other. Affixes and blessings add their part.
    */
   static void onIncomingDamage(LivingIncomingDamageEvent event) {
+    // On Peaceful an echo cannot hurt anyone, so nobody may fell it either: the Envés waits.
+    if (isEcho(event.getEntity()) && event.getEntity().level().getDifficulty() == Difficulty.PEACEFUL) {
+      event.setCanceled(true);
+      return;
+    }
     Entity attacker = event.getSource().getEntity();
     var attackerData = data(attacker);
     if (attackerData.isPresent() && isEcho(event.getEntity())) {
@@ -391,7 +407,7 @@ public final class EnvesEchoes {
       if (!(mob.level() instanceof ServerLevel level)) continue;
       var data = mob.getData(ATTACHMENT.get());
       // Alive or dying (one that fell in a chunk that stopped ticking never finishes dying).
-      if ((now + mob.getId()) % 20 == 0 && stale(server, level, data)) {
+      if ((now + mob.getId()) % 20 == 0 && (stale(server, level, data) || superseded(server, mob, data))) {
         mob.discard();
         LIVE.remove(mob);
         continue;
@@ -415,6 +431,45 @@ public final class EnvesEchoes {
   static boolean stale(net.minecraft.server.MinecraftServer server, ServerLevel level, Data data) {
     if (level != Enves.level(server)) return false;
     return EnvesData.get(server).attempt(data.attempt()).map(a -> a.status != EnvesData.Status.OPEN).orElse(true);
+  }
+
+  /**
+   * A guardian or champion its run no longer names: it was given up for lost and another stood in its
+   * place, then it came back from an unloaded chunk. Only the one the run names counts.
+   */
+  static boolean superseded(net.minecraft.server.MinecraftServer server, Mob mob, Data data) {
+    if (mob.level() != Enves.level(server)) return false;
+    var run = EnvesRuns.get(server).find(data.attempt());
+    if (run.isEmpty()) return false;
+    var floor = run.get().floors.get(data.depth());
+    if (floor == null) return false;
+    return switch (data.roleOf()) {
+      case GUARDIAN -> floor.seals.values().stream().noneMatch(seal -> mob.getUUID().equals(seal.guardian));
+      case CHAMPION -> floor.champion != null && !floor.champion.equals(mob.getUUID());
+      default -> false;
+    };
+  }
+
+  /**
+   * Whether the echo {@code id} that a run names has been out of the world for
+   * {@link EnvesRules#LOST_ECHO_TICKS} in a row (discarded without a death: Peaceful, a capture, a
+   * command). Callers ask while a member stands near it, so its chunk is loaded. A null id is lost.
+   */
+  static boolean lost(ServerLevel level, UUID id) {
+    if (id == null) return true;
+    if (find(id).isPresent() || level.getEntity(id) != null) {
+      MISSING.remove(id);
+      return false;
+    }
+    long now = level.getGameTime();
+    long[] seen = MISSING.get(id);
+    // Asked twice a second; a gap means nobody was near it in between, so the count starts over.
+    if (seen == null || now - seen[1] > 40 || now < seen[1]) seen = new long[] {now, now};
+    seen[1] = now;
+    MISSING.put(id, seen);
+    if (!EnvesRules.lostLongEnough(seen[0], now)) return false;
+    MISSING.remove(id);
+    return true;
   }
 
   /**

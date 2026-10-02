@@ -127,7 +127,8 @@ public final class EnvesData extends SavedData {
   /** One paid attempt of a team: its slot, difficulty, pool and floors. */
   public static final class Attempt {
     public final UUID id;
-    public final UUID team;
+    /** The campaign key that owns it; moves with the team when a party is founded or disbanded ({@link #rekey}). */
+    public UUID team;
     public final int slot;
     public final long seed;
     public final Tier tier;
@@ -266,6 +267,18 @@ public final class EnvesData extends SavedData {
     for (Attempt a : attempts.values()) if (a.slot >= 0 && a.slot < used.length) used[a.slot] = true;
     for (int i = 0; i < used.length; i++) if (!used[i]) return i;
     return -1;
+  }
+
+  /**
+   * Moves the live attempt of team {@code from} to team {@code to}, when {@code to} has none: a
+   * player founding a party, joining one or a party disbanding keeps the attempt it paid for.
+   */
+  public boolean rekey(UUID from, UUID to) {
+    var attempt = forTeam(from);
+    if (attempt.isEmpty() || forTeam(to).isPresent()) return false;
+    attempt.get().team = to;
+    setDirty();
+    return true;
   }
 
   void add(Attempt attempt) {

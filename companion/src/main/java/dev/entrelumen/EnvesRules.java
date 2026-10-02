@@ -77,6 +77,45 @@ public final class EnvesRules {
     return lit >= seals && nextReady;
   }
 
+  /**
+   * The deepest floor the group may stand on by walking: floor I, and each floor below a stairwell
+   * that opened. {@code stairOpen} answers for floors 1..floors-1. A member found deeper skipped a
+   * closed stair (a blink, a teleport staff) and is sent back.
+   */
+  public static int reachableDepth(java.util.function.IntPredicate stairOpen, int floors) {
+    int allowed = 1;
+    while (allowed < floors && stairOpen.test(allowed)) allowed++;
+    return allowed;
+  }
+
+  // ---- Giving up ----------------------------------------------------------------------------
+
+  /** Ticks a first "give up" stays armed: the second one within them ends the attempt. */
+  public static final long GIVE_UP_WINDOW = 200;
+
+  /** Whether a give-up armed at {@code armedAt} (null: never) is confirmed by another one at {@code now}. */
+  public static boolean giveUpConfirmed(Long armedAt, long now) {
+    return armedAt != null && now >= armedAt && now - armedAt <= GIVE_UP_WINDOW;
+  }
+
+  /**
+   * Who may end the whole attempt while teammates are inside it: the payer, the party owner or a
+   * member who is inside too. With nobody else inside, any member may.
+   */
+  public static boolean mayGiveUp(boolean payer, boolean owner, boolean inside, int othersInside) {
+    return othersInside <= 0 || payer || owner || inside;
+  }
+
+  // ---- Lost echoes --------------------------------------------------------------------------
+
+  /** Ticks a guardian or champion may be missing from the world before it stands again. */
+  public static final long LOST_ECHO_TICKS = 100;
+
+  /** Whether an echo missing since {@code since} has been gone long enough to stand again. */
+  public static boolean lostLongEnough(long since, long now) {
+    return now - since >= LOST_ECHO_TICKS;
+  }
+
   // ---- Movement -----------------------------------------------------------------------------
 
   /**
@@ -105,6 +144,20 @@ public final class EnvesRules {
       }
       return false;
     }
+  }
+
+  /** A move longer than this per client step is checked for walls in between (no-clip blinks). */
+  public static final double SKIP_DISTANCE = 2;
+
+  /**
+   * Whether a move since the last server tick is too long for the {@code steps} move packets the
+   * client sent in that time (several after a lag spike, server or network, and then the path may
+   * have turned a corner): only a move longer than {@link #SKIP_DISTANCE} per step is a blink worth
+   * checking for walls. A move the server made with no packet counts as one step.
+   */
+  public static boolean longMove(double distanceSqr, int steps) {
+    double reach = SKIP_DISTANCE * Math.max(1, steps);
+    return distanceSqr > reach * reach;
   }
 
   /** Whether a command line (with or without its slash) starts with a denied command. */

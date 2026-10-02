@@ -180,7 +180,9 @@ public final class SourShackle {
   }
 
   static void attack(AttackEntityEvent event) {
-    if (!(event.getEntity() instanceof ServerPlayer player) || !(event.getTarget() instanceof LivingEntity target)) return;
+    // A multipart boss (the dragon, a hydra) is hit through its parts; the damage lands on the parent.
+    Entity hit = event.getTarget() instanceof net.neoforged.neoforge.entity.PartEntity<?> part ? part.getParent() : event.getTarget();
+    if (!(event.getEntity() instanceof ServerPlayer player) || !(hit instanceof LivingEntity target)) return;
     if (!worn(player)) return;
     Wearer wearer = wearer(player);
     wearer.worn = true;   // seen worn just now, ahead of the next periodic check

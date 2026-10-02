@@ -63,7 +63,7 @@ public final class EnvesSeals {
 
     @Override
     public boolean stairMayOpen(EnvesHooks.Floor floor) {
-      return EnvesEncounters.championAllows(floor);
+      return !Enves.peaceful(floor.level().getServer()) && EnvesEncounters.championAllows(floor);
     }
   };
 
@@ -106,6 +106,10 @@ public final class EnvesSeals {
     if (EnvesHooks.forcing()) {
       EnvesEncounters.waiveChampion(floor);
       return true;
+    }
+    if (Enves.peaceful(floor.level().getServer())) {
+      player.displayClientMessage(Component.translatable("entrelumen.enves.peaceful"), true);
+      return false;
     }
     var seal = state(floor, cell);
     switch (seal.variant) {
@@ -160,6 +164,12 @@ public final class EnvesSeals {
     var seal = state(floor, cell);
     switch (seal.variant) {
       case GUARDIAN -> {
+        if (seal.guardianSpawned && !seal.guardianDead && EnvesEchoes.lost(floor.level(), seal.guardian)) {
+          // It left the world without falling (Peaceful, a capture, a command): another one stands.
+          seal.guardianSpawned = false;
+          seal.guardian = null;
+          runs.setDirty();
+        }
         if (!seal.guardianSpawned) spawnGuardian(floor, cell, player);
       }
       case CIRCLE -> {
@@ -251,7 +261,7 @@ public final class EnvesSeals {
   /** Every tick: the circles that run. Progress while a member stands inside; it cools when nobody does. */
   static void tick(MinecraftServer server) {
     ServerLevel level = Enves.level(server);
-    if (level == null) return;
+    if (level == null || Enves.peaceful(server)) return; // on Peaceful the circles wait
     var runs = EnvesRuns.get(server);
     var balance = EnvesContentConfig.balance().seals();
     int goal = balance.circleSeconds() * 20, grace = balance.circleGraceSeconds() * 20;
