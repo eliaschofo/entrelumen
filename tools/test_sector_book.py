@@ -795,17 +795,28 @@ class ReviewEngine(unittest.TestCase):
         chapters = {sector: {"quests": [quest("boss", optional=True), quest("side", ["boss"], optional=True),
                                         quest("tip", optional=True, kind="checkmark"), quest("cap", ["side", "tip"]),
                                         quest("alt", optional=True), quest("pick", ["alt", "cap"],
-                                                                           dependency_requirement="one_completed")]},
+                                                                           dependency_requirement="one_completed"),
+                                        # one_completed over optional work only, and 3 of 4 with one required: the
+                                        # shortfall is promoted in dependency order, the rest stays optional.
+                                        quest("f1", optional=True), quest("f2", optional=True),
+                                        quest("mark", ["f1", "f2"], dependency_requirement="one_completed"),
+                                        quest("b1", optional=True), quest("b2", optional=True), quest("b3", optional=True),
+                                        quest("book"), quest("mastery", ["b1", "book", "b2", "b3"],
+                                                             min_required_dependencies=3)]},
                     guide: {"quests": [quest("g_opt", optional=True), quest("g_close", ["g_opt"])]}}
-        keys = {"boss", "side", "tip", "cap", "alt", "pick", "g_opt", "g_close"}
+        keys = {"boss", "side", "tip", "cap", "alt", "pick", "f1", "f2", "mark", "b1", "b2", "b3", "book", "mastery",
+                "g_opt", "g_close"}
         files = {}
         with self.assertRaisesRegex(AssertionError, "g_close needs g_opt"):
             gq.promote_prerequisites(copy.deepcopy(chapters), {}, {"sector_x"}, keys)
         del chapters[guide]
         changed = gq.promote_prerequisites(chapters, files, {"sector_x"}, keys)
-        flags = {k: q.get("optional", False) for k, q in zip(("boss", "side", "tip", "cap", "alt", "pick"),
-                                                             chapters[sector]["quests"])}
-        self.assertEqual(flags, {"boss": False, "side": False, "tip": True, "cap": False, "alt": True, "pick": False})
+        order = ("boss", "side", "tip", "cap", "alt", "pick", "f1", "f2", "mark", "b1", "b2", "b3", "book", "mastery")
+        flags = {k: q.get("optional", False) for k, q in zip(order, chapters[sector]["quests"])}
+        self.assertEqual(flags, {"boss": False, "side": False, "tip": True, "cap": False, "alt": True, "pick": False,
+                                 "f1": False, "f2": True, "mark": False, "b1": False, "b2": False, "b3": True,
+                                 "book": False, "mastery": False})
+        self.assertEqual(gq.hard_optional_edges(chapters), [])
         self.assertEqual((changed, set(files)), ({sector}, {sector}))
 
     def test_advancement_guard_reads_the_1_21_folder_and_shape(self):

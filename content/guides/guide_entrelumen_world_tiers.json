@@ -21,7 +21,7 @@
     {"id": "road_north", "through": ["entrelumen_world_tiers_details", [12.4, -1.8], "entrelumen_world_tiers_invaders", "entrelumen_world_tiers_augments", "entrelumen_world_tiers_requires"], "texture": "minecraft:textures/block/gravel.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
     {"id": "road_mid", "through": ["entrelumen_world_tiers_details", "entrelumen_world_tiers_rarity", "entrelumen_world_tiers_pearl", "entrelumen_world_tiers_ops"], "texture": "minecraft:textures/block/cobblestone.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
     {"id": "road_south", "through": ["entrelumen_world_tiers_rarity", "entrelumen_world_tiers_enchanting", "entrelumen_world_tiers_library"], "texture": "minecraft:textures/block/stone_bricks.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
-    {"id": "road_end_b", "through": ["entrelumen_world_tiers_library", [21.4, 5.6], [25.0, 4.6], "entrelumen_world_tiers_close"], "texture": "minecraft:textures/block/polished_tuff.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
+    {"id": "road_end_b", "through": ["entrelumen_world_tiers_pearl", [21.0, 2.4], [24.6, 2.2], "entrelumen_world_tiers_close"], "texture": "minecraft:textures/block/polished_tuff.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
     {"id": "lane_threats", "text": {"en_us": "Threats", "es_es": "Amenazas"}, "x": 20.7, "y": -5.4, "scale": 2, "tint": "#E8DCB5", "reveal": "entrelumen_world_tiers_invaders"},
     {"id": "lane_loot", "text": {"en_us": "Loot", "es_es": "Botín"}, "x": 16.6, "y": -1.5, "scale": 2, "tint": "#E8DCB5", "reveal": "entrelumen_world_tiers_rarity"},
     {"id": "lane_enchanting", "text": {"en_us": "Enchanting", "es_es": "Encantar"}, "x": 16.6, "y": 6.6, "scale": 2, "tint": "#E8DCB5", "reveal": "entrelumen_world_tiers_enchanting"},
@@ -266,12 +266,12 @@
       "en_us": {"title": "Quirk: Items That Need a Tier",
         "text": ["[lead] Some Apotheosis items say \"Requires World Tier\" and stay inert until your tier gets there.",
                  "The story raises it, so just keep advancing the Atlas.",
-                 "The first time you open the tier screen, finish Apotheosis's short tutorial. Tiers still come from the story, not from a button."]},
+                 "The pack ends Apotheosis's tier tutorial when you log in, so affixed loot shows its stats from the start."]},
       "es_es": {"title": "Particularidad: ítems con nivel",
         "text": ["[lead] Algunos ítems de Apotheosis dicen \"Requiere Nivel de Mundo: …\" y quedan inertes hasta que tu nivel llega.",
                  "Lo sube la historia, así que seguí avanzando el Atlas.",
-                 "La primera vez que abrís la pantalla de niveles, terminá el tutorial corto de Apotheosis. Los niveles siguen saliendo de la historia, no de un botón."]},
-      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json", "repo:docs/design/apotheosis-family.md"]
+                 "El pack termina el tutorial de niveles de Apotheosis cuando entrás, así que el botín con afijos muestra sus estadísticas desde el principio."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json", "repo:docs/design/apotheosis-family.md", "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java"]
     },
     {
       "key": "entrelumen_world_tiers_ops", "deps": ["entrelumen_world_tiers_augments", "entrelumen_world_tiers_pearl"], "type": "checkmark", "optional": true, "layout": {"x": 22.8, "y": 0.2, "size": 1.0, "shape": "pentagon"},

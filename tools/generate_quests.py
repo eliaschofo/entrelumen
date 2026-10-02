@@ -783,11 +783,20 @@ def v2_glyphs(data):
             for para in q[lang]["text"] for ref in quest_engine.quest_text.icon_refs_in(para)}
 
 
-def waits_on_all(q):
-    """A quest the chapter's progress waits for that needs every dependency: required, not repeatable, and neither
-    one_completed nor min_required_dependencies."""
-    return (not q.get("optional") and not q.get("can_repeat") and "dependency_requirement" not in q
-            and "min_required_dependencies" not in q)
+def needed_dependencies(q):
+    """How many dependencies a quest the chapter's progress waits for (required, not repeatable) needs before it
+    opens: all of them, one (one_completed) or N (min_required_dependencies); None for any other quest."""
+    if q.get("optional") or q.get("can_repeat"):
+        return None
+    deps = q.get("dependencies", [])
+    if q.get("min_required_dependencies", 0) > 0:
+        return min(q["min_required_dependencies"], len(deps))
+    requirement = q.get("dependency_requirement", "all_completed")
+    if requirement == "all_completed":
+        return len(deps)
+    if requirement == "one_completed":
+        return min(1, len(deps))
+    return None
 
 
 def optional_work(q):
@@ -796,16 +805,26 @@ def optional_work(q):
 
 
 def hard_optional_edges(chapters):
-    """[(quest, prerequisite's chapter, prerequisite)] where a quest that waits on all its dependencies depends on
-    optional work: FTB would lock it behind a quest the progress bar never asks for (F27)."""
+    """[(quest, prerequisite's chapter, prerequisite)] where a required quest cannot open without optional work: FTB
+    would lock it behind quests the progress bar never asks for (F27). A quest that needs all its dependencies forces
+    every optional one; a one_completed or min_required_dependencies quest whose free dependencies (required work or
+    checkmarks) are fewer than it needs forces the shortfall, taken from its optional work in dependency order."""
     by_id = {q["id"]: (path, q) for path, chapter in chapters.items() for q in chapter["quests"]}
-    return [(q, *by_id[d]) for chapter in chapters.values() for q in chapter["quests"] if waits_on_all(q)
-            for d in q["dependencies"] if d in by_id and optional_work(by_id[d][1])]
+    edges = []
+    for chapter in chapters.values():
+        for q in chapter["quests"]:
+            need = needed_dependencies(q)
+            if not need:
+                continue
+            work = [d for d in q["dependencies"] if d in by_id and optional_work(by_id[d][1])]
+            short = need - (len(q["dependencies"]) - len(work))
+            edges += [(q, *by_id[d]) for d in work[:max(short, 0)]]
+    return edges
 
 
 def promote_prerequisites(chapters, files, sector_names, all_keys):
-    """Optional work that a required all-completed quest depends on becomes required (F27; Elias's decision D7,
-    1 October 2026), across chapters and until nothing changes, since a promoted quest may wait on optional work
+    """Optional work that a required quest cannot open without becomes required (F27; Elias's decision D7,
+    1 October 2026): all of it for an all-completed quest, the shortfall for a one_completed or min_required one, across chapters and until nothing changes, since a promoted quest may wait on optional work
     in turn. Only sector quests are promoted, keeping their shape and role; a guide or story chapter is hand-written,
     so the same edge there fails with its keys. chapters maps paths to compiled chapters; files gets the changed
     sector chapters back."""

@@ -117,12 +117,14 @@
       "en_us": {"title": "Wear It on a Hand",
         "text": ["[lead] It is a curio: it only works in a [hl|hands] slot.",
                  "Press [key:key.curios.open.desc] (or use the Curios button in your inventory) and put the arm in one. The pack guarantees every player that slot.",
-                 "In a pocket it does nothing. Arms work better attached."]},
+                 "In a pocket it does nothing. Arms work better attached.",
+                 "[note] Quests that ask for the arm see it in the hands slot too, so put it on right away."]},
       "es_es": {"title": "Ponételo en una mano",
         "text": ["[lead] Es un curio: sólo funciona en una ranura de [hl|manos].",
                  "Apretá [key:key.curios.open.desc] (o usá el botón de Curios del inventario) y poné el brazo ahí. El pack le garantiza esa ranura a todo jugador.",
-                 "En el bolsillo no hace nada. Los brazos andan mejor puestos."]},
-      "sources": ["repo:companion/src/main/java/dev/entrelumen/TerraArm.java", "repo:companion/src/main/resources/data/entrelumen/curios/entities/terra_arm.json", "jar:curios-neoforge-9.5.1+1.21.1.jar:META-INF/neoforge.mods.toml"]
+                 "En el bolsillo no hace nada. Los brazos andan mejor puestos.",
+                 "[note] Las quests que piden el brazo también lo ven en la ranura de manos, así que ponételo ya."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/TerraArm.java", "repo:companion/src/main/resources/data/entrelumen/curios/entities/terra_arm.json", "jar:curios-neoforge-9.5.1+1.21.1.jar:META-INF/neoforge.mods.toml", "repo:companion/src/main/java/dev/entrelumen/CarriedItemTask.java", "repo:tools/carried_items.json"]
     },
     {
       "key": "entrelumen_terra_arm_effect", "deps": ["entrelumen_terra_arm_wear"], "type": "checkmark", "layout": {"x": 13.6, "y": 0, "size": 1.5, "shape": "hexagon"}, "hide_lines": true,

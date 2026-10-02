@@ -164,14 +164,17 @@ class KeysAndNames(unittest.TestCase):
 
 
 class TierAndParty(unittest.TestCase):
-    def test_tier_quirk_sends_players_through_the_tutorial(self):
+    def test_tier_quirk_says_the_pack_ends_the_tutorial_at_login(self):
+        # F56: ApotheosisTiers.login awards world_tiers_activated, so nobody has to sit through the tutorial.
         q = quest("guides/guide_entrelumen_world_tiers.json", "entrelumen_world_tiers_requires")
         body = text(q)
         self.assertNotIn("No button to press", body)
         self.assertNotIn("disabled", body)
-        self.assertIn("short tutorial", body)
+        self.assertNotIn("finish Apotheosis", body)
+        self.assertIn("tutorial when you log in", body)
         self.assertNotIn("No hay botón que apretar", text(q, "es_es"))
-        self.assertIn("tutorial", text(q, "es_es"))
+        self.assertNotIn("terminá el tutorial", text(q, "es_es"))
+        self.assertIn("tutorial de niveles de Apotheosis cuando entrás", text(q, "es_es"))
 
     def test_joining_a_party_does_not_promise_clean_histories(self):
         q = quest("guides/guide_qol_teams.json", "qol_teams_join_rules")
@@ -309,14 +312,21 @@ class Dependencies(unittest.TestCase):
                     other = by_key.get(dep)
                     self.assertFalse(other and other.get("optional"), f"{Path(path).name}: {q['key']} <- {dep}")
 
-    def test_two_quest_art_roads_in_guides_follow_a_real_dependency(self):
+    # Decorative routes that never claimed to be dependencies (they predate the F27 rewiring): the compass's
+    # winding course past its route stops, and the world-tier road that bends past the two side lessons.
+    DECORATIVE_ROADS = {("guide_entrelumen_compass.json", "course"), ("guide_entrelumen_world_tiers.json", "road_b")}
+
+    def test_art_roads_in_guides_follow_real_dependencies(self):
+        # Every pair of consecutive quests a road runs through, with any [x, y] points between them, is a real
+        # dependency, so a road never draws an edge the F27 rewiring removed.
         for path in sorted(glob.glob(str(CONTENT / "guides" / "guide_*.json"))):
             data = json.loads(Path(path).read_text(encoding="utf-8"))
             deps = {q["key"]: set(q["deps"]) for q in data["quests"]}
             for art in data.get("art", []):
-                through = art.get("through") or []
-                if len(through) == 2 and all(isinstance(k, str) for k in through):
-                    x, y = through
+                if (Path(path).name, art["id"]) in self.DECORATIVE_ROADS:
+                    continue
+                keys = [k for k in art.get("through") or [] if isinstance(k, str)]
+                for x, y in zip(keys, keys[1:]):
                     self.assertTrue(x in deps.get(y, ()) or y in deps.get(x, ()),
                                     f"{Path(path).name}: {art['id']} draws {x} -> {y}, which is no dependency")
 
