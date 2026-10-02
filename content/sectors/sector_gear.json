@@ -322,7 +322,7 @@
                  "[li:minecraft:iron_ingot] Casco [hl|5], peto [hl|8], grebas [hl|7] y botas [hl|4] lingotes",
                  "[li] Se reparten [hl|2], [hl|6], [hl|5] y [hl|2]; encantabilidad de sólo [hl|9]",
                  "{page}",
-                 "[note] El acto I se juega en el World Tier Refugio: todavía no hay invasores, así que el hierro sobra."]},
+                 "[note] El acto I se juega en el Nivel de Mundo Refugio: todavía no hay invasores, así que el hierro sobra."]},
       "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/recipe/iron_helmet.json", "jar:minecraft_1.21.1_client.jar:data/minecraft/recipe/iron_chestplate.json", "jar:minecraft_1.21.1_client.jar:data/minecraft/recipe/iron_leggings.json", "jar:minecraft_1.21.1_client.jar:data/minecraft/recipe/iron_boots.json", "jar:minecraft_1.21.1_client.jar:csh.class#ArmorMaterials (net.minecraft.world.item.ArmorMaterials)", "repo:docs/design/act-renumbering.md#World Tiers", "repo:content/guides/guide_gear.json#gear_act1 (key reused)"]
     },
     {
@@ -479,7 +479,7 @@
                  "[li] Draconic Evolution: petos [quest:de_draconic_chestpiece|dracónico] y [quest:de_chaotic_chestpiece|caótico]",
                  "{page}",
                  "[li:eternal_starlight:unrealium_chestplate] Eternal Starlight: [quest:starlight_unrealium|Unrealium]",
-                 "[note] Acá empieza el World Tier Cumbre, y con él el botín Mítico."]},
+                 "[note] Acá empieza el Nivel de Mundo Cumbre, y con él el botín Mítico."]},
       "sources": ["repo:content/sectors/sector_cataclysm_armory.json#cata_ignitium_armor", "repo:content/sectors/sector_adastra.json#adastra_netherite_suit", "repo:content/sectors/sector_draconic_chaos.json#de_draconic_chestpiece", "repo:content/sectors/sector_starlight_crest.json#starlight_unrealium", "repo:docs/design/act-renumbering.md#World Tiers", "repo:docs/design/luminous-gear.md#Lingote Luminoso (`entrelumen:luminous_ingot`)", "repo:content/guides/guide_gear.json#gear_act5 (key reused)"]
     },
     {
@@ -797,10 +797,10 @@
                  "[li] Invaders show up from Frontier; Mythic loot from Summit",
                  "[li] The whole ladder: [chapter:guide_entrelumen_world_tiers|World Tiers]"]},
       "es_es": {"title": "La historia marca la dificultad",
-        "text": ["[lead] El acto de tu equipo fija el World Tier, y nunca baja.",
+        "text": ["[lead] El acto de tu equipo fija el Nivel de Mundo, y nunca baja.",
                  "[li] Refugio en los actos I y II, después Frontera, Ascenso, Cumbre y Pináculo",
                  "[li] Los invasores aparecen desde Frontera; el botín Mítico, desde Cumbre",
-                 "[li] La escalera completa: [chapter:guide_entrelumen_world_tiers|World Tiers]"]},
+                 "[li] La escalera completa: [chapter:guide_entrelumen_world_tiers|Niveles de Mundo]"]},
       "sources": ["repo:docs/design/act-renumbering.md#World Tiers", "repo:docs/design/apotheosis-family.md#World Tiers follow the team campaign", "repo:content/guides/guide_entrelumen_world_tiers.json#entrelumen_world_tiers_invaders", "repo:docs/design/luminous-gear.md#Lingote Luminoso (`entrelumen:luminous_ingot`)", "repo:content/guides/guide_gear.json#gear_tiers (key reused)"]
     },
     {
@@ -1082,17 +1082,17 @@
     },
     {
       "key": "gear_bounty", "role": "bounty", "deps": ["gear_ingot"],
-      "task": {"item": "minecraft:netherite_scrap", "count": 4, "consume": true},
+      "task": {"item": "minecraft:leather", "count": 16, "consume": true},
       "at": {"x": 35.0, "y": 12.6},
-      "en_us": {"title": "Scrap for the common store", "subtitle": "Somebody is always one ingot short.",
+      "en_us": {"title": "Leather for the common store", "subtitle": "Somebody is always one hide short.",
         "text": ["[lead] For the common store, once a day.",
-                 "[big|4] [item:minecraft:netherite_scrap|Netherite Scrap].",
-                 "Four scraps and the next crafter has an ingot."]},
-      "es_es": {"title": "Fragmentos para el depósito común", "subtitle": "Siempre le falta un lingote a alguien.",
+                 "[big|16] [item:minecraft:leather|Leather].",
+                 "Sixteen pieces and the next crafter has a full set of armor."]},
+      "es_es": {"title": "Cuero para el depósito común", "subtitle": "Siempre le falta un cuero a alguien.",
         "text": ["[lead] Para el depósito común, una vez por día.",
-                 "[big|4] [item:minecraft:netherite_scrap|Fragmentos de netherita].",
-                 "Con cuatro fragmentos, el que sigue arma un lingote."]},
-      "sources": ["repo:docs/design/quest-book-v3.md#Estándar de una cadena", "jar:minecraft_1.21.1_client.jar:data/minecraft/recipe/netherite_ingot.json"]
+                 "[big|16] [item:minecraft:leather|Cuero].",
+                 "Con dieciséis piezas, el que sigue arma un equipo de armadura completo."]},
+      "sources": ["repo:docs/design/quest-book-v3.md#Estándar de una cadena", "jar:minecraft_1.21.1_client.jar:data/minecraft/loot_table/entities/cow.json"]
     },
     {
       "key": "gear_decor_anvil", "role": "decor", "deps": ["gear_template"], "size": 1.5, "reveal": true,

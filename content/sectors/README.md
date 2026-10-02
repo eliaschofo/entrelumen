@@ -22,6 +22,13 @@ Un archivo `sector_<nombre>.json` por capítulo, en el formato de `tools/format_
 | `presentation` | Opcional: `2` dibuja `[tip]` con el farol del libro en vez de «» » ([quest-book-v3](../../docs/design/quest-book-v3.md#presentación-v2-28-de-septiembre-de-2026)) |
 | `quests` | Lista de quests |
 
+El acto de un capítulo es el más temprano en el que un jugador llega de verdad, no el de la historia: las tablas de recompensa siguen esa etiqueta (revisión del 1/10/2026):
+
+- `bumblezone_hive` y `bumblezone_court`: **II**. Una perla de ender contra un nido entra en la Bumblezone desde el acto I, sin ninguna puerta del Atlas.
+- `aether_deep`: **III**, como `aether`. Es el mismo portal (glowstone y un balde de agua) y su quest de entrada depende de `aether_enter`, así que nada de Deep Aether se alcanza antes que el Aether.
+- `starlight_night`: sigue en **IV**. Las ruinas del portal están en el Overworld, pero entrar pide el Orbe de la Profecía, un componente que el Atlas abre en el acto IV.
+- `deep_worlds`: sigue en **IV**. La Ciudad Antigua se puede pisar antes, pero el diseño pone Deeper and Darker en el IV (exploration-structures-family) y no hay otra puerta que la del Warden.
+
 Estilos de `draw`: `ring` (arco o círculo de segmentos), `teeth` (dientes de engranaje), `spokes`, `rails` (dos rieles y durmientes), `polyline`, `glyphs` (texturas de ítems de un mod alrededor de un círculo, por referencia).
 
 ## Quest
