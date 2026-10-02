@@ -14,7 +14,7 @@ Estado actual: ocho layouts aceptados por el parser de FancyMenu **3.9.12**; Dri
 | `generic_dirt_message_screen` | Mensaje transitorio | Texto original |
 | `drippy_loading_overlay` | Overlay de recursos Mojang | Progreso real |
 
-Los controles conservan acciones, foco, teclado y traducciones de Minecraft/NeoForge; la posición usa anclaje mid-left y coordenadas enteras. La implementación mueve los ocho widgets nativos a una columna izquierda: cinco filas de 160×20 con paso 24 y dos accesos de 20×20. El botón de Realms queda oculto a propósito (`is_hidden = true` en el generador): un cliente con mods no puede servir a Realms, y estilizado como un camino válido sólo llevaba a un callejón sin salida; sin él, los botones visibles son cinco. No crea botones duplicados ni áreas invisibles que intercepten clics. No fija una escala global de GUI. El fondo conserva proporción; los widgets siguen respondiendo a la resolución nativa.
+Los controles conservan acciones, foco, teclado y traducciones de Minecraft/NeoForge; la posición usa anclaje mid-left y coordenadas enteras. La implementación mueve los ocho widgets nativos a una columna izquierda: cinco filas de 160×20 con paso 22 y dos accesos de 20×20 con paso 24. El botón de Realms queda oculto a propósito (`is_hidden = true` en el generador): un cliente con mods no puede servir a Realms, y estilizado como un camino válido sólo llevaba a un callejón sin salida; sin él, los botones visibles son cinco. No crea botones duplicados ni áreas invisibles que intercepten clics. No fija una escala global de GUI. El fondo conserva proporción; los widgets siguen respondiendo a la resolución nativa.
 
 ## Interfaz de assets para el integrador de arte
 
