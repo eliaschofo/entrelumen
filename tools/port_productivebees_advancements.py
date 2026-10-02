@@ -1,20 +1,23 @@
-"""Port Productive Bees' husbandry advancements to the folder and format Minecraft 1.21 loads.
+"""Write ENTRELUMEN's own advancements for the Productive Bees milestones the bee quests wait for.
 
 productivebees-1.21.1-13.13.5.jar ships its 22 husbandry advancements under
 data/productivebees/advancements/ (plural, the pre-1.21 folder). 1.21 only reads advancement/
 (singular), so none of them exist at runtime: FTB Quests' advancement task is false for a missing
-advancement, and the 19 bee quests that use 17 of these ids (and every quest behind them) never
-complete.
+advancement, and the bee quests behind them never complete (F2).
 
-This tool streams only that JAR, converts each file to the 1.21 format and writes it to
+Productive Bees is All Rights Reserved, so its files are not copied into this public repository
+(tools/check_loot_tables.py --copies; THIRD_PARTY_NOTICES.md). Instead, for each advancement a bee quest
+names as entrelumen:productivebees/<path>, this tool writes ENTRELUMEN's own file to
 
-    pack/kubejs/data/productivebees/advancement/husbandry/**
+    pack/kubejs/data/entrelumen/advancement/productivebees/<path>.json
 
-with the same relative paths, so quest ids and parent links stay valid. What it rewrites:
+with only what makes it fire: the mod's triggers and their conditions, read from the JAR and put in the
+1.21 shape, and the requirements. No display (no title, description, icon, frame or tab: the quest
+says what to do, in its own words and task title), no parent, a neoforge:mod_loaded condition on
+productivebees. The mod's own husbandry tab stays as the mod ships it.
 
-  * display icon {"item": X, "nbt": ...} becomes {"id": X}. The two NBT icons become 1.21 data
-    components or lose the NBT: the crystalline comb gets "productivebees:bee_type", the bee cage
-    stays a plain cage.
+What the 1.21 shape changes in the criteria:
+
   * item filters: {"tag": "ns:t"} becomes {"items": "#ns:t"}, {"item": X} becomes {"items": X}.
   * block predicates: {"tag": "ns:t"} becomes {"blocks": "#ns:t"}.
   * block_state_property: the 1.19 "state" key becomes the loot condition's "properties", with
@@ -22,12 +25,12 @@ with the same relative paths, so quest ids and parent links stay valid. What it 
   * productivebees:* trigger conditions: the 1.21 codecs name the field "bee" (and require it),
     where the 1.19 files said "beeName". productivebees:saddle_bee carries no conditions in the
     JAR; its codec also requires "bee", so it gets {"bee": "any"}.
-  * Kept as they are (already 1.21): the location lists of item_used_on_block and placed_block,
-    the bred_animals "child" conditions, the parent minecraft:husbandry/safely_harvest_honey.
+  * Kept as they are (already 1.21): the location lists of item_used_on_block and placed_block and
+    the bred_animals "child" conditions.
   * The configurable_bee entity NBT predicates are already the 1.21 string form
     ("nbt": "{type:\\"productivebees:iron\\"}"). ConfigurableBee.addAdditionalSaveData writes the
     key "type" as the bee id string, which is what they match; a boot must still confirm it
-    against a real iron bee. The two files that use them carry a "_comment" saying so.
+    against a real iron bee. The files that use them carry a "_comment" saying so.
 
     python tools/port_productivebees_advancements.py           # write the files
     python tools/port_productivebees_advancements.py --check   # verify the committed files
@@ -40,30 +43,24 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import re
 import sys
 import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC_PREFIX = "data/productivebees/advancements/husbandry/"
-OUT_DIR = ROOT / "pack/kubejs/data/productivebees/advancement/husbandry"
+OUT_DIR = ROOT / "pack/kubejs/data/entrelumen/advancement/productivebees"
+NAMESPACE = "entrelumen:productivebees/"
+MOD_LOADED = [{"type": "neoforge:mod_loaded", "modid": "productivebees"}]
 JAR_NAME = "productivebees-1.21.1-13.13.5.jar"
 FALLBACK_MODS = Path("E:/curseforge/Instances/ENTRELUMEN/mods")
 EXPECTED_FILES = 22
 NBT_COMMENT = (
-    "Ported from the pre-1.21 advancements/ folder. The configurable_bee 'nbt' predicates are the "
-    "1.21 string form and match the 'type' key ConfigurableBee writes to its saved data; confirm "
-    "at boot with a real bee of that type."
+    "ENTRELUMEN's own trigger for a bee quest (tools/port_productivebees_advancements.py). The "
+    "configurable_bee 'nbt' predicates are the 1.21 string form and match the 'type' key "
+    "ConfigurableBee writes to its saved data; confirm at boot with a real bee of that type."
 )
-
-# Icons whose NBT cannot be a 1.21 {"id"} alone: the exact legacy NBT string -> components.
-ICON_COMPONENTS = {
-    ("productivebees:configurable_honeycomb", '{EntityTag: {type: "productivebees:crystalline"}}'): {
-        "productivebees:bee_type": "productivebees:crystalline"
-    },
-}
-# Legacy icon NBT with no 1.21 equivalent worth keeping (the icon is the bare item).
-ICON_NBT_DROPPED = {("productivebees:bee_cage", '{entity:"something"}')}
 
 ITEM_PREDICATE_KEYS = {"items", "count", "components", "predicates"}
 BLOCK_PREDICATE_KEYS = {"blocks", "nbt", "state"}
@@ -184,56 +181,48 @@ def criterion(name: str, crit: dict, where: str) -> dict:
     return out
 
 
-def icon(old: dict, where: str) -> dict:
-    item = old.get("item") or old.get("id")
-    if not item:
-        raise PortError(f"{where}: icon without item")
-    nbt = old.get("nbt")
-    out = {"id": item}
-    if nbt is not None:
-        key = (item, nbt)
-        if key in ICON_COMPONENTS:
-            out["components"] = ICON_COMPONENTS[key]
-        elif key not in ICON_NBT_DROPPED:
-            raise PortError(f"{where}: icon NBT {nbt!r} on {item} has no known translation")
-    extra = set(old) - {"item", "id", "nbt", "type"}
-    if extra:
-        raise PortError(f"{where}: unknown icon keys {sorted(extra)}")
-    return out
-
-
 def convert(doc: dict, where: str) -> dict:
-    out = {}
-    if "parent" in doc:
-        out["parent"] = doc["parent"]
-    display = copy.deepcopy(doc["display"])
-    display["icon"] = icon(display["icon"], where)
-    out["display"] = {k: display[k] for k in ("icon", "title", "description", "frame",
-                                              "show_toast", "announce_to_chat", "hidden")}
-    out["criteria"] = {n: criterion(n, c, where) for n, c in doc["criteria"].items()}
-    out["requirements"] = doc["requirements"]
+    """ENTRELUMEN's own file for one of the mod's advancements: its criteria in the 1.21 shape and its
+    requirements, loaded only with Productive Bees; nothing of its display or tree."""
     unknown = set(doc) - {"parent", "display", "criteria", "requirements"}
     if unknown:
         raise PortError(f"{where}: unknown top-level keys {sorted(unknown)}")
+    out = {"neoforge:conditions": copy.deepcopy(MOD_LOADED),
+           "criteria": {n: criterion(n, c, where) for n, c in doc["criteria"].items()},
+           "requirements": doc["requirements"],
+           "sends_telemetry_event": False}
     if any("nbt" in json.dumps(c) for c in out["criteria"].values()):
         out = {"_comment": NBT_COMMENT, **out}
     return out
+
+
+def used_advancements(root: Path = ROOT) -> set[str]:
+    """The <path>s the bee quests name as entrelumen:productivebees/<path>."""
+    used = set()
+    for sector in sorted((root / "content/sectors").glob("*.json")):
+        used |= set(re.findall(r'"advancement": "' + re.escape(NAMESPACE) + r'([^"#]+)"',
+                               sector.read_text(encoding="utf-8")))
+    return used
 
 
 def render(doc: dict) -> str:
     return json.dumps(doc, indent=2, ensure_ascii=False) + "\n"
 
 
-def ported(jar: Path) -> dict[str, str]:
-    """Relative path under husbandry/ -> converted JSON text, read from the JAR only."""
+def ported(jar: Path, used: set[str] | None = None) -> dict[str, str]:
+    """Relative path (<path>.json) -> ENTRELUMEN's file, for every advancement a bee quest names; read from the JAR only."""
+    used = used_advancements() if used is None else used
     result = {}
     with zipfile.ZipFile(jar) as z:
         names = sorted(n for n in z.namelist() if n.startswith(SRC_PREFIX) and n.endswith(".json"))
         if len(names) != EXPECTED_FILES:
             raise PortError(f"{jar.name}: expected {EXPECTED_FILES} husbandry advancements, found {len(names)}")
-        for name in names:
-            rel = name[len(SRC_PREFIX):]
-            result[rel] = render(convert(json.loads(z.read(name)), rel))
+        known = {name[len(SRC_PREFIX):-len(".json")]: name for name in names}
+        missing = sorted(used - set(known))
+        if missing:
+            raise PortError(f"{jar.name}: no husbandry advancement for {missing}")
+        for path in sorted(used):
+            result[path + ".json"] = render(convert(json.loads(z.read(known[path])), path))
     return result
 
 
@@ -258,7 +247,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"unexpected: {rel}", file=sys.stderr)
         if bad or extra:
             return 1
-        print(f"ok: {len(files)} advancements match the JAR")
+        print(f"ok: {len(files)} advancements match the JAR and the bee quests")
         return 0
     for rel, text in files.items():
         target = OUT_DIR / rel

@@ -1,0 +1,75 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "productivebees"
+    }
+  ],
+  "criteria": {
+    "lumber_bee": {
+      "trigger": "minecraft:bred_animals",
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "productivebees:lumber_bee"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "rancher_bee": {
+      "trigger": "minecraft:bred_animals",
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "productivebees:rancher_bee"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "quarry_bee": {
+      "trigger": "minecraft:bred_animals",
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "productivebees:quarry_bee"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "farmer_bee": {
+      "trigger": "minecraft:bred_animals",
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "productivebees:farmer_bee"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "lumber_bee",
+      "rancher_bee",
+      "quarry_bee",
+      "farmer_bee"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

@@ -1,0 +1,32 @@
+{
+  "_comment": "ENTRELUMEN's own trigger for a bee quest (tools/port_productivebees_advancements.py). The configurable_bee 'nbt' predicates are the 1.21 string form and match the 'type' key ConfigurableBee writes to its saved data; confirm at boot with a real bee of that type.",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "productivebees"
+    }
+  ],
+  "criteria": {
+    "iron_bee": {
+      "trigger": "minecraft:bred_animals",
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "productivebees:configurable_bee",
+              "nbt": "{type:\"productivebees:iron\"}"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "iron_bee"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

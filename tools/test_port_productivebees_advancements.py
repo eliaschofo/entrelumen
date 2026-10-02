@@ -1,4 +1,4 @@
-"""Productive Bees husbandry advancements: the 1.21 port exists, resolves and is in 1.21 format."""
+"""Productive Bees milestones: ENTRELUMEN's own criteria-only advancements exist for every bee quest, in 1.21 shape."""
 import json
 from pathlib import Path
 import re
@@ -8,7 +8,6 @@ import port_productivebees_advancements as port
 
 ROOT = port.ROOT
 OUT = port.OUT_DIR
-VANILLA_PARENTS = {"minecraft:husbandry/safely_harvest_honey", "minecraft:husbandry/fishy_business"}
 
 
 def committed():
@@ -27,33 +26,32 @@ def walk(node):
             yield from walk(v)
 
 
-class CommittedPortTest(unittest.TestCase):
-    def test_all_22_files_in_the_singular_folder(self):
-        docs = committed()
-        self.assertEqual(len(docs), port.EXPECTED_FILES)
-        self.assertFalse((OUT.parent.parent / "advancements").exists(), "the plural folder is never loaded")
-
-    def test_every_quest_advancement_resolves(self):
-        used = set()
+class CommittedTest(unittest.TestCase):
+    def test_one_file_per_quest_advancement_and_no_copy_of_the_mod(self):
+        used = port.used_advancements()
+        self.assertEqual(len(used), 17)
+        self.assertEqual(set(committed()), {f"{path}.json" for path in used})
+        # Productive Bees is All Rights Reserved: nothing is written under its namespace (check_loot_tables --copies).
+        self.assertFalse((ROOT / "pack/kubejs/data/productivebees").exists())
         for sector in (ROOT / "content/sectors").glob("*.json"):
-            used |= set(re.findall(r'"advancement": "productivebees:([^"]+)"', sector.read_text(encoding="utf-8")))
-        self.assertGreaterEqual(len(used), 17)
-        for adv in used:
-            self.assertTrue((OUT.parent / f"{adv}.json").is_file(), f"quest advancement missing: {adv}")
+            self.assertNotIn('"advancement": "productivebees:', sector.read_text(encoding="utf-8"), sector.name)
 
-    def test_parent_links_resolve(self):
+    def test_every_bee_advancement_task_has_its_own_title(self):
+        for sector in (ROOT / "content/sectors").glob("sector_bees_*.json"):
+            for match in re.finditer(r'\{"type": "advancement", "advancement": "entrelumen:productivebees/[^"]+"(, "title": \{[^}]+\})?',
+                                     sector.read_text(encoding="utf-8")):
+                self.assertTrue(match.group(1), f"{sector.name}: {match.group(0)} has no task title")
+
+    def test_criteria_only_and_loaded_only_with_the_mod(self):
         for rel, doc in committed().items():
-            parent = doc.get("parent")
-            if parent in VANILLA_PARENTS:
-                continue
-            self.assertTrue(parent and parent.startswith("productivebees:husbandry/"), f"{rel}: {parent}")
-            self.assertTrue((OUT.parent / f"{parent.split(':')[1]}.json").is_file(), f"{rel}: parent {parent}")
+            self.assertEqual(set(doc) - {"_comment"}, {"neoforge:conditions", "criteria", "requirements",
+                                                       "sends_telemetry_event"}, rel)
+            self.assertEqual(doc["neoforge:conditions"], [{"type": "neoforge:mod_loaded", "modid": "productivebees"}], rel)
+            self.assertNotIn("display", doc, rel)
+            self.assertNotIn("parent", doc, rel)
 
     def test_1_21_format(self):
         for rel, doc in committed().items():
-            icon = doc["display"]["icon"]
-            self.assertIn("id", icon, rel)
-            self.assertFalse({"item", "nbt", "type"} & set(icon), f"{rel}: legacy icon keys")
             for node in walk(doc["criteria"]):
                 self.assertNotIn("tag", node, f"{rel}: 'tag' filter must be 'items': '#...'")
                 if not isinstance(node.get("item"), dict):
@@ -67,11 +65,7 @@ class CommittedPortTest(unittest.TestCase):
                 if crit["trigger"].startswith("productivebees:"):
                     self.assertIn("bee", crit["conditions"], f"{rel}: the 1.21 trigger codec requires 'bee'")
 
-    def test_nbt_icons_and_comments(self):
-        crystalline = committed()["bee_cage/quartz_nest/catch_crystalline_bee.json"]
-        self.assertEqual(crystalline["display"]["icon"], {
-            "id": "productivebees:configurable_honeycomb",
-            "components": {"productivebees:bee_type": "productivebees:crystalline"}})
+    def test_nbt_comments(self):
         docs = committed()
         for rel in ("bee_cage/quartz_nest/catch_crystalline_bee/breed_iron_bee.json",
                     "bee_cage/quartz_nest/catch_crystalline_bee/breed_iron_bee/breed_all_productive_bees.json"):
@@ -88,19 +82,25 @@ class CommittedPortTest(unittest.TestCase):
 
 
 class ConvertTest(unittest.TestCase):
-    def doc(self, criteria, icon=None):
+    def doc(self, criteria):
         return {"parent": "minecraft:husbandry/safely_harvest_honey",
-                "display": {"icon": icon or {"item": "minecraft:stick"}, "title": {"translate": "t"},
+                "display": {"icon": {"item": "minecraft:stick"}, "title": {"translate": "t"},
                             "description": {"translate": "d"}, "frame": "task", "show_toast": True,
                             "announce_to_chat": True, "hidden": False},
                 "criteria": criteria, "requirements": [list(criteria)]}
+
+    def test_display_and_parent_are_dropped(self):
+        out = port.convert(self.doc({"a": {"trigger": "minecraft:inventory_changed", "conditions": {
+            "items": [{"item": "ns:i"}]}}}), "x")
+        self.assertNotIn("display", out)
+        self.assertNotIn("parent", out)
+        self.assertEqual(out["requirements"], [["a"]])
 
     def test_tag_and_item_filters(self):
         out = port.convert(self.doc({"a": {"trigger": "minecraft:inventory_changed", "conditions": {
             "items": [{"tag": "ns:t"}, {"item": "ns:i"}, {"items": ["ns:j"]}]}}}), "x")
         self.assertEqual(out["criteria"]["a"]["conditions"]["items"],
                          [{"items": "#ns:t"}, {"items": "ns:i"}, {"items": ["ns:j"]}])
-        self.assertEqual(out["display"]["icon"], {"id": "minecraft:stick"})
 
     def test_state_becomes_string_properties(self):
         out = port.convert(self.doc({"a": {"trigger": "minecraft:placed_block", "conditions": {"location": [
@@ -120,7 +120,7 @@ class ConvertTest(unittest.TestCase):
         with self.assertRaises(port.PortError):
             port.convert(self.doc({"a": {"trigger": "minecraft:tick", "conditions": {"weird": 1}}}), "x")
         with self.assertRaises(port.PortError):
-            port.convert(self.doc({"a": {"trigger": "minecraft:tick"}}, {"item": "ns:i", "nbt": "{x:1}"}), "x")
+            port.convert(dict(self.doc({"a": {"trigger": "minecraft:tick"}}), rewards={}), "x")
 
 
 if __name__ == "__main__":

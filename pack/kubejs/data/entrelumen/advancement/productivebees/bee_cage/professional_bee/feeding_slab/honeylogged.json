@@ -1,0 +1,30 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "productivebees"
+    }
+  ],
+  "criteria": {
+    "honeylog": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "location": [
+          {
+            "block": "productivebees:feeder",
+            "condition": "minecraft:block_state_property",
+            "properties": {
+              "honeylogged": "true"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "honeylog"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

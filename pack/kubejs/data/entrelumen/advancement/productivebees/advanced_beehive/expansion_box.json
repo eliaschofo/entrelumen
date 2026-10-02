@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "productivebees"
+    }
+  ],
+  "criteria": {
+    "get_box": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#productivebees:expansion_boxes"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_box"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

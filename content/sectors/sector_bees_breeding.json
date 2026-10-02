@@ -640,7 +640,7 @@
     },
     {
       "key": "bees_bee_sponge", "role": "side", "deps": ["bees_root_sea"], "hide_lines": true,
-      "tasks": [{"type": "advancement", "advancement": "productivebees:husbandry/fishy_bees", "icon": "minecraft:sponge"}, {"type": "biome", "biome": "#minecraft:is_deep_ocean", "icon": "minecraft:fishing_rod", "title": {"en_us": "Fish in a deep ocean", "es_es": "Pescá en un océano profundo"}}],
+      "tasks": [{"type": "advancement", "advancement": "entrelumen:productivebees/fishy_bees", "title": {"en_us": "Fish up a bee", "es_es": "Pescá una abeja"}, "icon": "minecraft:sponge"}, {"type": "biome", "biome": "#minecraft:is_deep_ocean", "icon": "minecraft:fishing_rod", "title": {"en_us": "Fish in a deep ocean", "es_es": "Pescá en un océano profundo"}}],
       "rewards": [{"item": "productivebees:spawn_egg_configurable_bee", "components": {"minecraft:entity_data": {"id": "productivebees:configurable_bee", "type": "productivebees:sponge"}}}],
       "at": {"x": 7.6, "y": 22.1},
       "en_us": {"title": "Sponge Bee",
@@ -655,7 +655,7 @@
     },
     {
       "key": "bees_bee_water", "role": "side", "deps": [],
-      "tasks": [{"type": "advancement", "advancement": "productivebees:husbandry/fishy_bees", "icon": "minecraft:fishing_rod"}, {"type": "biome", "biome": "minecraft:river", "icon": "minecraft:water_bucket", "title": {"en_us": "Fish in a river", "es_es": "Pescá en un río"}}],
+      "tasks": [{"type": "advancement", "advancement": "entrelumen:productivebees/fishy_bees", "title": {"en_us": "Fish up a bee", "es_es": "Pescá una abeja"}, "icon": "minecraft:fishing_rod"}, {"type": "biome", "biome": "minecraft:river", "icon": "minecraft:water_bucket", "title": {"en_us": "Fish in a river", "es_es": "Pescá en un río"}}],
       "rewards": [{"item": "productivebees:spawn_egg_configurable_bee", "components": {"minecraft:entity_data": {"id": "productivebees:configurable_bee", "type": "productivebees:water"}}}],
       "at": {"x": 2.2, "y": 21.2},
       "en_us": {"title": "Water Bee", "subtitle": "The one that didn't get away.",
@@ -758,7 +758,7 @@
     },
     {
       "key": "farming_resources_breeding", "role": "entry", "deps": [],
-      "task": {"type": "advancement", "advancement": "productivebees:husbandry/bee_cage/professional_bee"},
+      "task": {"type": "advancement", "advancement": "entrelumen:productivebees/bee_cage/professional_bee", "title": {"en_us": "Breed a worker bee", "es_es": "Criá una abeja trabajadora"}},
       "rewards": [{"item": "productivebees:honey_treat", "count": 8}],
       "icon": "productivebees:spawn_egg_lumber_bee",
       "at": {"x": 0, "y": 10.4},
@@ -782,7 +782,7 @@
     },
     {
       "key": "bees_crystalline", "role": "milestone", "deps": ["farming_resources_breeding"], "reward_table": "perfect_genes", "hide_lines": true,
-      "task": {"type": "advancement", "advancement": "productivebees:husbandry/bee_cage/quartz_nest/catch_crystalline_bee"},
+      "task": {"type": "advancement", "advancement": "entrelumen:productivebees/bee_cage/quartz_nest/catch_crystalline_bee", "title": {"en_us": "Catch a crystalline bee", "es_es": "Atrapá una abeja cristalina"}},
       "rewards": [{"item": "productivebees:spawn_egg_ashy_mining_bee"}],
       "icon": "productivebees:nether_quartz_nest",
       "at": {"x": 0, "y": 5.0},
@@ -800,7 +800,7 @@
     },
     {
       "key": "bees_iron", "role": "milestone", "deps": ["bees_crystalline"], "reward_table": "perfect_genes", "hide_lines": true,
-      "task": {"type": "advancement", "advancement": "productivebees:husbandry/bee_cage/quartz_nest/catch_crystalline_bee/breed_iron_bee"},
+      "task": {"type": "advancement", "advancement": "entrelumen:productivebees/bee_cage/quartz_nest/catch_crystalline_bee/breed_iron_bee", "title": {"en_us": "Breed an iron bee", "es_es": "Criá una abeja de hierro"}},
       "rewards": [{"item": "productivebees:spawn_egg_configurable_bee", "components": {"minecraft:entity_data": {"id": "productivebees:configurable_bee", "type": "productivebees:iron"}}}],
       "icon": "minecraft:raw_iron",
       "at": {"x": 0, "y": 0.0},
@@ -880,7 +880,7 @@
     },
     {
       "key": "bees_melittologist", "role": "capstone", "deps": ["bees_diamond"], "reward_choice": "perfect_genes",
-      "task": {"type": "advancement", "advancement": "productivebees:husbandry/bee_cage/quartz_nest/catch_crystalline_bee/breed_iron_bee/breed_all_productive_bees", "icon": "productivebees:honey_treat"},
+      "task": {"type": "advancement", "advancement": "entrelumen:productivebees/bee_cage/quartz_nest/catch_crystalline_bee/breed_iron_bee/breed_all_productive_bees", "title": {"en_us": "Breed every productive bee", "es_es": "Criá todas las abejas productivas"}, "icon": "productivebees:honey_treat"},
       "at": {"x": 0, "y": -18.4},
       "en_us": {"title": "Melittologist", "subtitle": "A diploma no university hands out.",
         "text": ["[lead] Breed each vanilla-material bee at least once.",
@@ -1394,7 +1394,7 @@
     },
     {
       "key": "bees_secret_egg", "role": "secret", "deps": ["bees_draconic_chunk"],
-      "task": {"type": "advancement", "advancement": "productivebees:husbandry/advanced_beehive/dragon_egg_hive/convert_egg", "icon": "productivebees:inactive_dragon_egg"},
+      "task": {"type": "advancement", "advancement": "entrelumen:productivebees/advanced_beehive/dragon_egg_hive/convert_egg", "title": {"en_us": "Use dragon's breath on an inactive dragon egg", "es_es": "Usá aliento de dragón en un huevo de dragón inactivo"}, "icon": "productivebees:inactive_dragon_egg"},
       "at": {"x": 9.678, "y": 19.45},
       "en_us": {"title": "An egg of your own", "subtitle": "Omelette postponed.",
         "text": ["[lead] A bottle of dragon's breath wakes an inactive dragon egg into a real one.",
@@ -1406,7 +1406,7 @@
     },
     {
       "key": "bees_secret_fishy", "role": "secret", "deps": ["bees_root_sea"], "hide_lines": true,
-      "task": {"type": "advancement", "advancement": "productivebees:husbandry/fishy_bees", "icon": "minecraft:fishing_rod"},
+      "task": {"type": "advancement", "advancement": "entrelumen:productivebees/fishy_bees", "title": {"en_us": "Fish up a bee", "es_es": "Pescá una abeja"}, "icon": "minecraft:fishing_rod"},
       "at": {"x": 9.4, "y": 21.2},
       "en_us": {"title": "Something's buzzing", "subtitle": "Catch of the day: stings.",
         "text": ["[lead] A bee on the end of a fishing line.",
@@ -1418,7 +1418,7 @@
     },
     {
       "key": "bees_secret_yum", "role": "secret", "deps": ["bees_bee_sugarbag"], "hide_lines": true,
-      "task": {"type": "advancement", "advancement": "productivebees:husbandry/bee_cage/overworld_nest/consume_sugarbag_comb", "icon": "productivebees:sugarbag_honeycomb"},
+      "task": {"type": "advancement", "advancement": "entrelumen:productivebees/bee_cage/overworld_nest/consume_sugarbag_comb", "title": {"en_us": "Eat a sugarbag honeycomb", "es_es": "Comé un panal de sugarbag"}, "icon": "productivebees:sugarbag_honeycomb"},
       "at": {"x": 13.082, "y": 5.224},
       "en_us": {"title": "Straight from the comb", "subtitle": "Wax and all.",
         "text": ["[lead] Sugarbag honeycomb is meant to be eaten as it comes.",
