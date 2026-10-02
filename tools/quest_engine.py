@@ -735,11 +735,13 @@ def task_ids(q):
     meaning the same requirement whatever is inserted or reordered around it (F48):
     - the signature is task:<quest>:<kind>:<target> (task_target), with :2, :3… for a repeated identical task; the
       count and consume flag are not part of it, so raising a count keeps the progress;
-    - a quest with several tasks takes stable_id(signature) for each;
-    - a quest with one task keeps task:<quest>, the ID the book always gave it;
-    - a task may pin its ID with "id" (16 hex digits), to keep a team's progress when its target is rewritten.
-    tools/task_ids.json records every ID's signature; tools/generate_quests.py refuses to let an existing ID change
-    meaning without --accept-task-id-changes."""
+    - every task takes stable_id(signature), one-task quests too: going from one task to two and back never hands
+      the old progress to another requirement, and a second task never moves the first one's;
+    - a task may pin its ID with "id" (16 hex digits): an ID its own quest used before (tools/task_ids.json), to keep
+      a team's progress when its target is rewritten. Story and guide quests keep task:<key> (generate_quests.py).
+    tools/task_ids.json records every ID the book ever gave with its last signature, retired ones too, and
+    tools/generate_quests.py refuses an ID that would stand for another requirement (generate_quests.task_id_changes)
+    without --accept-task-id-changes."""
     key = q["key"]
     tasks = tasks_of(q)
     seen, out = {}, []
@@ -751,8 +753,6 @@ def task_ids(q):
             tid = t["id"]
             assert isinstance(tid, str) and EXPLICIT_TASK_ID.fullmatch(tid) and 0 < int(tid, 16) < 2 ** 63, \
                 f"{key}: a task's own id is 16 uppercase hex digits of a positive 63-bit number"
-        elif len(tasks) == 1:
-            tid = stable_id(f"task:{key}")
         else:
             tid = stable_id(signature)
         out.append((tid, signature))

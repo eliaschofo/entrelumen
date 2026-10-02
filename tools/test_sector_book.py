@@ -213,7 +213,7 @@ class AnyOfTasks(unittest.TestCase):
         quests = {q["id"]: q for q in chapter["quests"]}
         q = quests[stable_id("quest:" + step["key"])]
         self.assertEqual(q["icon"], {"id": "create:andesite_alloy"})
-        self.assertEqual(q["tasks"], [{"id": stable_id("task:" + step["key"]), "type": "item",
+        self.assertEqual(q["tasks"], [{"id": qe.task_ids(step)[0][0], "type": "item",
                                        "item": {"id": "ftbfiltersystem:smart_filter", "count": 1, "components": {
                                            "ftbfiltersystem:filter": "or(item(create:andesite_alloy)item_tag(c:ingots/zinc))"}},
                                        "count": 2, "consume_items": False, "icon": {"id": "create:andesite_alloy"}}])
@@ -701,9 +701,16 @@ class TaskIds(unittest.TestCase):
                                 "task:crb_press:stat:minecraft:jump", "task:crb_press:dimension:minecraft:the_nether",
                                 "task:crb_press:item:create:shaft", "task:crb_press:item:create:shaft:2"])
 
-    def test_one_task_keeps_its_old_id_and_an_explicit_id_wins(self):
-        self.assertEqual(qe.task_ids(self.quest({"item": "create:shaft"})),
-                         [(qe.stable_id("task:crb_press"), "task:crb_press:item:create:shaft")])
+    def test_one_task_takes_its_signature_id_and_an_explicit_id_wins(self):
+        # One task or several, the ID is the signature's: going from one task to two and back to one never hands
+        # the old progress to another requirement, and adding a second task keeps the first one's.
+        one = qe.task_ids(self.quest({"item": "create:shaft"}))
+        self.assertEqual(one, [(qe.stable_id("task:crb_press:item:create:shaft"), "task:crb_press:item:create:shaft")])
+        two = qe.task_ids(self.quest({"item": "create:cogwheel"}, {"item": "create:shaft", "count": 3}))
+        self.assertEqual(two[1], one[0])
+        back = qe.task_ids(self.quest({"item": "create:cogwheel"}))
+        self.assertEqual(back, two[:1])
+        self.assertNotIn(qe.stable_id("task:crb_press"), {tid for tid, _ in one + two + back})
         pinned = qe.task_ids(self.quest({"item": "create:shaft", "id": "0123456789ABCDEF"}, {"item": "create:cogwheel"}))
         self.assertEqual(pinned[0], ("0123456789ABCDEF", "task:crb_press:item:create:shaft"))
         for bad in ("123", "0123456789abcdef", "F123456789ABCDEF", "0000000000000000"):
@@ -713,17 +720,45 @@ class TaskIds(unittest.TestCase):
             qe.task_ids(self.quest({"item": "create:shaft", "id": "0123456789ABCDEF"},
                                    {"item": "create:cogwheel", "id": "0123456789ABCDEF"}))
 
+    def test_the_guard_reads_retired_ids_and_lets_a_quest_pin_its_own(self):
+        import generate_quests
+        changes = generate_quests.task_id_changes
+        self.assertEqual(changes({"A": "task:x:item:a"}, {"A": "task:x:item:b", "B": "y"}),
+                         ["A: task:x:item:a -> task:x:item:b"])
+        # A pin rewrites what its own quest's ID asks for and keeps the progress; another quest's ID stays refused.
+        self.assertEqual(changes({"A": "task:x:item:a"}, {"A": "task:x:item:b"}, {"A": "x"}), [])
+        self.assertEqual(changes({"A": "task:x:item:a"}, {"A": "task:y:item:b"}, {"A": "y"}),
+                         ["A: task:x:item:a -> task:y:item:b"])
+        # A retired ID stays in the manifest with its last signature, so its return under a pin is still compared.
+        data = copy.deepcopy(next(s for s in qe.load_sectors() if s["chapter"] == "sector_create_addons"))
+        step = next(q for q in data["quests"] if q["role"] == "step" and len(qe.tasks_of(q)) == 1)
+        retired = qe.task_ids(step)[0]
+        step.pop("tasks", None)
+        step["task"] = {"item": "minecraft:bell"}
+        sectors = [s for s in qe.load_sectors() if s["chapter"] != data["chapter"]] + [data]
+        book = load_book()
+        files = generate_book(load_chapters(), load_guides(book), book, sectors)
+        manifest = json.loads(files[generate_quests.TASK_IDS])
+        self.assertEqual(manifest[retired[0]], retired[1])
+        self.assertEqual(manifest[qe.task_ids(step)[0][0]], f"task:{step['key']}:item:minecraft:bell")
+        stolen = {retired[0]: "task:another_quest:item:minecraft:bell"}
+        self.assertEqual(changes(manifest, stolen, {retired[0]: "another_quest"}),
+                         [f"{retired[0]}: {retired[1]} -> task:another_quest:item:minecraft:bell"])
+
     def test_committed_task_ids_keep_their_meaning(self):
-        # tools/task_ids.json records each sector task ID's signature: an ID that now stands for another requirement
-        # would hand a team's saved progress to it. generate_quests.py refuses that without --accept-task-id-changes.
+        # tools/task_ids.json records every sector task ID the book has given, retired ones too, with its signature:
+        # an ID that now stands for another requirement would hand a team's saved progress to it.
+        # generate_quests.py refuses that without --accept-task-id-changes, and never drops an entry.
         import generate_quests
         committed = json.loads(generate_quests.TASK_IDS.read_text(encoding="utf-8"))
         sectors = qe.load_sectors()
         current = {tid: sig for data in sectors for q in data["quests"] for tid, sig in qe.task_ids(q)}
-        self.assertEqual(generate_quests.task_id_changes(committed, current), [])
+        self.assertEqual(generate_quests.task_id_changes(committed, current, generate_quests.pinned_task_ids(sectors)),
+                         [])
+        self.assertLessEqual(current.keys(), committed.keys())
         self.assertEqual(len(current), sum(len(qe.tasks_of(q)) for d in sectors for q in d["quests"]))
-        self.assertEqual(generate_quests.task_id_changes({"A": "task:x:item:a"}, {"A": "task:x:item:b", "B": "y"}),
-                         ["A: task:x:item:a -> task:x:item:b"])
+        self.assertTrue(all(tid == qe.stable_id(sig) for tid, sig in current.items()
+                            if tid not in generate_quests.pinned_task_ids(sectors)))
 
 
 class ReviewEngine(unittest.TestCase):

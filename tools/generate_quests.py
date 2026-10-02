@@ -934,7 +934,9 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     check_unbound_keys(languages)
     for lang in LOCALES:
         files[OUT / "lang" / (lang + ".snbt")] = snbt(languages[lang])
-    files[TASK_IDS] = json.dumps(dict(sorted(task_ids.items())), ensure_ascii=False, indent=1) + "\n"
+    # The manifest never forgets: a retired ID keeps its last signature, so one that comes back is still compared.
+    files[TASK_IDS] = json.dumps(dict(sorted({**known_task_ids(), **task_ids}.items())), ensure_ascii=False,
+                                 indent=1) + "\n"
     data_snbt = json.loads(files[OUT / "data.snbt"])
     data_snbt.update(drop_loot_crates=False, icon={"id": book["hub"]["icon"]},
                      presets=quest_engine.presets_block(presets))
@@ -947,10 +949,23 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     return files
 
 
-def task_id_changes(old, new):
-    """Task IDs that tools/task_ids.json knows and that now stand for another requirement: a team's saved progress
-    on the old one would count for the new one (F48)."""
-    return sorted(f"{tid}: {old[tid]} -> {new[tid]}" for tid in old.keys() & new.keys() if old[tid] != new[tid])
+def known_task_ids():
+    """tools/task_ids.json: every sector task ID the book has given, retired ones included, with its last signature."""
+    return json.loads(TASK_IDS.read_text(encoding="utf-8")) if TASK_IDS.exists() else {}
+
+
+def pinned_task_ids(sectors):
+    """{task ID: quest key} of the sector tasks that pin their own "id"."""
+    return {t["id"]: q["key"] for data in sectors for q in data["quests"] for t in quest_engine.tasks_of(q) if "id" in t}
+
+
+def task_id_changes(old, new, pinned=None):
+    """Task IDs that tools/task_ids.json knows, retired or not, and that now stand for another requirement: a team's
+    saved progress on the old one would count for the new one (F48). A task that pins its own "id" may take over an
+    ID its own quest gave before, which is what the pin is for; a pin on another quest's ID is still a change."""
+    pinned = pinned or {}
+    return sorted(f"{tid}: {old[tid]} -> {new[tid]}" for tid in old.keys() & new.keys() if old[tid] != new[tid]
+                  and not (tid in pinned and old[tid].startswith(f"task:{pinned[tid]}:")))
 
 
 def main():
@@ -960,12 +975,11 @@ def main():
     args=parser.parse_args()
     chapters=load_chapters(); book=load_book(); guides=load_guides(book)
     files=generate_book(chapters,guides,book);failures=[]
-    old_ids=json.loads(TASK_IDS.read_text(encoding='utf-8')) if TASK_IDS.exists() else {}
-    moved=task_id_changes(old_ids,json.loads(files[TASK_IDS]))
+    moved=task_id_changes(known_task_ids(),json.loads(files[TASK_IDS]),pinned_task_ids(quest_engine.load_sectors()))
     if moved and not args.accept_task_id_changes:
         raise SystemExit('Task IDs would change meaning (a team keeps its progress by task ID): '+'; '.join(moved)+
-                         '. Give the rewritten task its own "id", or rerun with --accept-task-id-changes if the progress '
-                         'should carry over.')
+                         '. A task\'s own "id" may only take over an ID its own quest gave before; drop that pin, or '
+                         'rerun with --accept-task-id-changes if the progress should carry over.')
     expected={p.resolve() for p in files}
     stale=[p for folder in ('chapters','reward_tables') for p in (OUT/folder).glob('*.snbt') if p.resolve() not in expected]
     for path,content in files.items():
