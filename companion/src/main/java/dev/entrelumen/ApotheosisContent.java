@@ -99,10 +99,13 @@ public final class ApotheosisContent {
     bus.addListener(AtlasLibraryNetwork::register);
     bus.addListener(ApotheosisContent::registerCapabilities);
     NeoForge.EVENT_BUS.addListener(ApotheosisTiers::tick);
+    NeoForge.EVENT_BUS.addListener(ApotheosisTiers::login);
     TeamEvent.PLAYER_LOGGED_IN.register(event -> ApotheosisTiers.sync(event.getPlayer()));
     TeamEvent.PLAYER_JOINED_PARTY.register(event -> ApotheosisTiers.sync(event.getPlayer()));
     // Leaving a party: unlocks of the personal campaign apply at once; the tier never drops.
+    // The claim guard runs first and works from the player id, so offline kicks are covered too.
     TeamEvent.PLAYER_CHANGED.register(event -> {
+      QuestClaimGuard.onChanged(event);
       if (event.getPlayer() != null) ApotheosisTiers.sync(event.getPlayer());
     });
   }

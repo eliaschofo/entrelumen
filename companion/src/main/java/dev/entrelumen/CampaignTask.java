@@ -27,6 +27,8 @@ public final class CampaignTask extends Task {
             ResourceLocation.fromNamespaceAndPath("entrelumen", "campaign"),
             CampaignTask::new,
             () -> ItemIcon.getItemIcon(Items.BOOK));
+    // The carried-item task shares this registration and the tick below (Entrelumen.java calls only us).
+    CarriedItemTask.register();
   }
 
   public static void tick(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
@@ -49,6 +51,7 @@ public final class CampaignTask extends Task {
                   for (CampaignTask campaign : cachedTasks)
                     campaign.submitTask(data, player, ItemStack.EMPTY);
               }
+              CarriedItemTask.poll(file, event.getServer().getPlayerList().getPlayers());
             });
   }
 
@@ -73,6 +76,11 @@ public final class CampaignTask extends Task {
   @Override
   public net.minecraft.network.chat.MutableComponent getAltTitle() {
     return getButtonText();
+  }
+
+  /** The campaign milestone this task mirrors. */
+  String milestone() {
+    return milestone;
   }
 
   /** The Atlas project this task mirrors, by the same name the Atlas shows. */
@@ -109,12 +117,22 @@ public final class CampaignTask extends Task {
           && data.areDependenciesComplete(getQuest())) data.markTaskCompleted(this);
     } else if (data.getProgress(this) != 0
         || data.getCompletedTime(id).isPresent()
-        || data.getCompletedTime(getQuest().id).isPresent()) {
+        || data.getCompletedTime(getQuest().id).isPresent()
+        || hasClaimedReward(data, player)) {
       data.setProgress(this, 0);
       data.setCompleted(getQuest().id, null);
       data.setCompleted(getQuestChapter().id, null);
       data.setCompleted(getQuestFile().id, null);
+      // A joiner's merged history can bring a claim of a milestone this campaign has not reached;
+      // left in place it would keep the party from ever receiving that milestone's rewards.
+      for (var reward : getQuest().getRewards()) data.resetReward(player.getUUID(), reward);
     }
+  }
+
+  private boolean hasClaimedReward(TeamData data, ServerPlayer player) {
+    for (var reward : getQuest().getRewards())
+      if (data.isRewardClaimed(player.getUUID(), reward)) return true;
+    return false;
   }
 
   @Override

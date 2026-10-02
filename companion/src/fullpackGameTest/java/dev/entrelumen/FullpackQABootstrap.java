@@ -103,6 +103,8 @@ public final class FullpackQABootstrap {
       // The Envés's content (27 September): echoes, affixes, shrines, seals, vaults, the Sour Light and its loot.
       GameTestRegistry.register(RuntimeGameTestsEnvesContent.class);
       GameTestRegistry.register(EnvesContentFullpackGameTests.class);
+      // FTB Quests integration (1 October): party claim guard, milestone claims, carried items, tier tutorial.
+      GameTestRegistry.register(QuestIntegrationFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -120,7 +122,8 @@ public final class FullpackQABootstrap {
           ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class, RuntimeGameTestsStory.class,
           RecipeDesignFullpackGameTests.class, JetpackBalanceFullpackGameTests.class, ArkFullpackGameTests.class,
           RuntimeGameTestsEnves.class, EnvesFullpackGameTests.class, RuntimeGameTestsEnvesContent.class,
-          EnvesContentFullpackGameTests.class, RuntimeGameTestsRuins.class, RuinWorkshopFullpackGameTests.class))
+          EnvesContentFullpackGameTests.class, RuntimeGameTestsRuins.class, RuinWorkshopFullpackGameTests.class,
+          QuestIntegrationFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));

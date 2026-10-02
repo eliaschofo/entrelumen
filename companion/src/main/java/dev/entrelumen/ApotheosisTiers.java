@@ -9,11 +9,14 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.slf4j.Logger;
 
@@ -184,6 +187,32 @@ public final class ApotheosisTiers {
         if (player.getAdvancements().award(holder, criterion)) granted++;
     }
     return granted;
+  }
+
+  /** Apotheosis's {@code world_tiers_activated} custom stat. */
+  static final ResourceLocation TIERS_ACTIVATED_STAT =
+      ResourceLocation.fromNamespaceAndPath("apotheosis", "world_tiers_activated");
+
+  /**
+   * Ends Apotheosis's World Tier tutorial at login. The tutorial stays on while the tier is Haven and
+   * {@code world_tiers_activated} is 0; it hides every affixed item's stats as "Unidentified" and asks
+   * the player to activate a tier. Only {@code WorldTier.setTier} awards that stat, and {@link #enforce}
+   * never calls it while the player is still in Haven (acts I-II), so the companion awards it here
+   * once. Players never pick a tier in this pack, so there is nothing for the tutorial to teach.
+   */
+  public static void login(PlayerEvent.PlayerLoggedInEvent event) {
+    if (event.getEntity() instanceof ServerPlayer player) endTutorial(player);
+  }
+
+  /** Awards {@code world_tiers_activated} when it is 0 and syncs it; true when it was awarded. */
+  static boolean endTutorial(ServerPlayer player) {
+    if (!ModList.get().isLoaded("apotheosis")) return false;
+    if (!BuiltInRegistries.CUSTOM_STAT.containsKey(TIERS_ACTIVATED_STAT)) return false;
+    var stat = Stats.CUSTOM.get(BuiltInRegistries.CUSTOM_STAT.get(TIERS_ACTIVATED_STAT));
+    if (player.getStats().getValue(stat) != 0) return false;
+    player.awardStat(stat);
+    player.getStats().sendStats(player);
+    return true;
   }
 
   public static void tick(ServerTickEvent.Post event) {
