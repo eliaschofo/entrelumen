@@ -73,6 +73,18 @@ class Softlocks(unittest.TestCase):
         atlas = quest("guides/guide_entrelumen_atlas.json", "entrelumen_atlas_act2")
         self.assertIn("gives one, plus the metallurgic infuser", text(atlas))
         self.assertIn("da uno y el infusor metalúrgico", text(atlas, "es_es"))
+        act1 = quest("guides/guide_entrelumen_atlas.json", "entrelumen_atlas_act1")
+        self.assertIn("one [item:entrelumen:calibration_frame|Calibration Frame]", text(act1))
+        self.assertIn("un [item:entrelumen:calibration_frame|Marco de calibración]", text(act1, "es_es"))
+        self.assertIn("item:mekanism:metallurgic_infuser", text(act1))
+        self.assertIn("item:mekanism:metallurgic_infuser", text(act1, "es_es"))
+
+    def test_no_content_file_says_first_signal_pays_two_frames(self):
+        pair = re.compile(r"(First Signal|Primera señal)[^\"]{0,160}?\b(two|dos)\b[^\"]{0,40}?(Calibration Frames?|Marcos? de calibraci)",
+                          re.IGNORECASE)
+        for path in glob.glob(str(CONTENT / "**" / "*.json"), recursive=True):
+            body = Path(path).read_text(encoding="utf-8")
+            self.assertIsNone(pair.search(body), Path(path).name)
 
     def test_act_three_counts_match_their_recipes(self):
         want = {"exchange_processors": 2, "exchange_palis": 2, "exchange_circuits": 2, "exchange_steel": 2,
@@ -175,8 +187,18 @@ class Bounties(unittest.TestCase):
             "draconicevolution:awakened_draconium_ingot", "draconicevolution:awakened_draconium_block",
             "reliquary:nebulous_heart", "artifacts:eternal_steak", "artifacts:everlasting_beef",
             "artifacts:umbrella", "artifacts:chorus_totem", "artifacts:crystal_heart"}
-    TIER_4_5 = {"platinum", "iridium", "draconium", "uraninite", "end_steel", "vibrant_alloy", "niotic_crystal",
-                "spirited_crystal", "pulsating_alloy", "soularium", "dark_steel"}
+
+    @staticmethod
+    def greenhouse_crop_tiers() -> dict[str, int]:
+        """Essence name -> tier, read from the [hl|tier N] label of each ma_crop_* quest of the greenhouse."""
+        tiers = {}
+        for q in load("sectors/sector_ma_greenhouse.json")["quests"]:
+            if not q["key"].startswith("ma_crop_"):
+                continue
+            label = re.search(r"\[hl\|tier (\d)\]", text(q))
+            assert label, q["key"]
+            tiers[tasks(q)[0]["item"].removesuffix("_seeds").split(":")[1]] = int(label.group(1))
+        return tiers
 
     def bounties(self):
         for path in sorted(glob.glob(str(CONTENT / "sectors" / "sector_*.json"))):
@@ -213,9 +235,25 @@ class Bounties(unittest.TestCase):
 
     def test_greenhouse_bounty_has_no_top_tier_essences(self):
         entries = tasks(quest("sectors/sector_ma_greenhouse.json", "ma_gh_bounty"))[0]["any"]
-        self.assertEqual(len(entries), 40)
-        for name in self.TIER_4_5:
-            self.assertNotIn(f"mysticalagriculture:{name}_essence", entries)
+        tiers = self.greenhouse_crop_tiers()
+        self.assertGreater(len(tiers), 30)
+        for entry in entries:
+            name = entry.split(":")[1].removesuffix("_essence")
+            self.assertIn(name, tiers, entry)
+            self.assertLessEqual(tiers[name], 3, entry)
+        # Every tier-2 and tier-3 crop of the chapter still counts.
+        self.assertEqual({e.split(":")[1].removesuffix("_essence") for e in entries},
+                         {n for n, t in tiers.items() if t <= 3})
+
+    def test_gear_and_structure_bounty_texts_state_true_facts(self):
+        gear = quest("sectors/sector_gear.json", "gear_bounty")
+        self.assertNotRegex(text(gear), r"full set")
+        self.assertNotRegex(text(gear, "es_es"), r"completo")
+        bones = quest("sectors/sector_structures.json", "struct_bounty")
+        self.assertIn("skeleton dungeons", text(bones))
+        self.assertIn("calabozos de esqueletos", text(bones, "es_es"))
+        for lang in ("en_us", "es_es"):
+            self.assertNotIn("zombie dungeons" if lang == "en_us" else "calabozos de zombis", text(bones, lang))
 
     def test_reliquary_bounty_drops_the_nebulous_heart(self):
         entries = tasks(quest("sectors/sector_reliquary.json", "reliq_bounty"))[0]["any"]
@@ -246,6 +284,13 @@ class SectorActs(unittest.TestCase):
     def test_deep_aether_is_never_later_than_the_aether_it_hangs_from(self):
         self.assertEqual(self.act("aether_deep"), self.act("aether"))
 
+    def test_deep_worlds_is_act_two_because_its_entry_mining_portal_is(self):
+        self.assertEqual(self.act("deep_worlds"), "II")
+        jamd = quest("sectors/sector_deep_worlds.json", "deepworlds_jamd")
+        self.assertEqual(jamd["deps"], [])
+        self.assertIn("act II", text(jamd))
+        self.assertIn("acto II", text(jamd, "es_es"))
+
     def test_the_relabelling_reasons_are_written_down(self):
         readme = (CONTENT / "sectors" / "README.md").read_text(encoding="utf-8")
         for name in ("bumblezone_hive", "aether_deep", "starlight_night", "deep_worlds"):
@@ -263,6 +308,17 @@ class Dependencies(unittest.TestCase):
                 for dep in q["deps"]:
                     other = by_key.get(dep)
                     self.assertFalse(other and other.get("optional"), f"{Path(path).name}: {q['key']} <- {dep}")
+
+    def test_two_quest_art_roads_in_guides_follow_a_real_dependency(self):
+        for path in sorted(glob.glob(str(CONTENT / "guides" / "guide_*.json"))):
+            data = json.loads(Path(path).read_text(encoding="utf-8"))
+            deps = {q["key"]: set(q["deps"]) for q in data["quests"]}
+            for art in data.get("art", []):
+                through = art.get("through") or []
+                if len(through) == 2 and all(isinstance(k, str) for k in through):
+                    x, y = through
+                    self.assertTrue(x in deps.get(y, ()) or y in deps.get(x, ()),
+                                    f"{Path(path).name}: {art['id']} draws {x} -> {y}, which is no dependency")
 
     def test_the_backpack_quest_does_not_wait_for_the_tome(self):
         deps = quest("guides/guide_qol_inventory.json", "qol_inventory_backpack_link")["deps"]
