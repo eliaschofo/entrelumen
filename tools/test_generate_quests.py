@@ -22,6 +22,7 @@ SOLSTICIO_STORY={'solsticio_mayor':['solsticio_arrival'],'solsticio_seeds':['sol
 # The Signal Tower quest (1 October 2026) replaced act I's digest on purpose: one new quest, a root that
 # asks for the Signal Ember and gates nothing; every earlier quest keeps its ID, task, dependencies and icon.
 # The same day the bed tip's icon turned white, like the bed Habitation asks for.
+# 1 October 2026 review (F72, batch quest-content): act III's digest was re-pinned on purpose after the item counts of its exchange quests changed to match their recipes; the quest-engine batch re-pins it again if its regeneration touches routes_of_exchange.
 SEMANTIC={'a_light_among_ruins':'4c48c86d43f000dd58e40df8528d6db7049fa45d75f548926bd01822d555b294',
  'the_lost_crafts':'fdd54d54fd867c6547a2d7521cbde893aaf7177c97cb52ffe56a00de1248fde2',
  'routes_of_exchange':'3ca113a73d2b3903ef20ad086b421b3e73bae7f726d34dc894b1ce0c669e3cc9',
