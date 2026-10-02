@@ -153,8 +153,11 @@ class EnvesRulesTest {
 
   @Test
   void onlyLongMovesAreCheckedForWallsAndALostEchoWaitsFiveSeconds() {
-    assertFalse(EnvesRules.longMove(4.0), "two blocks in a tick is still a sprint jump");
-    assertTrue(EnvesRules.longMove(4.01));
+    assertFalse(EnvesRules.longMove(4.0, 1), "two blocks in a tick is still a sprint jump");
+    assertTrue(EnvesRules.longMove(4.01, 1));
+    assertTrue(EnvesRules.longMove(4.01, 0), "a move the server made with no packet is one step");
+    assertFalse(EnvesRules.longMove(5 * 5, 6), "six packets after a lag spike may cover five blocks round a corner");
+    assertTrue(EnvesRules.longMove(13 * 13, 6), "but not thirteen");
     assertFalse(EnvesRules.lostLongEnough(100, 199));
     assertTrue(EnvesRules.lostLongEnough(100, 100 + EnvesRules.LOST_ECHO_TICKS));
   }

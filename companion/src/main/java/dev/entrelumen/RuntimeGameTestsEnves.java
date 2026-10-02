@@ -134,6 +134,14 @@ public final class RuntimeGameTestsEnves {
     return Enves.attemptOf(player).orElseThrow();
   }
 
+  /** The position packets the server sent the player since the last call (the mock client never reads them). */
+  private static List<net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket> positionPackets(QaPlayer qa) {
+    List<net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket> out = new java.util.ArrayList<>();
+    for (Object message; (message = qa.channel.readOutbound()) != null;)
+      if (message instanceof net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket position) out.add(position);
+    return out;
+  }
+
   private static void cleanUp(ServerPlayer player, Attempt attempt) {
     if (attempt.live()) Enves.end(player.server, attempt, EnvesHooks.EndReason.ADMIN);
   }
@@ -404,11 +412,36 @@ public final class RuntimeGameTestsEnves {
           helper.assertTrue(!NeoForge.EVENT_BUS.post(new EntityTeleportEvent.TeleportCommand(player, player.getX(), player.getY() + 1,
               player.getZ())).isCanceled(), "An operator's teleport command was refused");
           // Psi's blink sets the position with no event at all: here straight down through the floor.
+          // The player ticks inside their connection's tick, as on a real server, which puts them
+          // back where the tick started right after it.
           BlockPos arrival = Enves.arrival(server, attempt, 1);
-          player.doTick();
+          helper.assertTrue(player.blockPosition().equals(arrival), "Not at the arrival: " + player.blockPosition());
+          player.connection.tick();
           player.setPos(player.getX(), player.getY() - 4, player.getZ());
-          player.doTick();
+          positionPackets(qa);
+          player.connection.tick();
+          helper.assertTrue(EnvesGuard.pullingBack(player), "A move through the floor was not caught");
+          stage.set(1);
+        }
+        case 1 -> {
+          // The pull-back went out after the server tick, once, and it sticks.
+          BlockPos arrival = Enves.arrival(server, attempt, 1);
           helper.assertTrue(player.blockPosition().equals(arrival), "A move through the floor was not undone: " + player.blockPosition());
+          var sent = positionPackets(qa);
+          helper.assertTrue(sent.size() == 1, "The pull-back was sent " + sent.size() + " times");
+          player.connection.tick();
+          player.connection.tick();
+          helper.assertTrue(player.blockPosition().equals(arrival) && positionPackets(qa).isEmpty(),
+              "The pull-back did not stick: " + player.blockPosition());
+          // The client accepts it, and the server listens to it again.
+          player.connection.handleAcceptTeleportPacket(
+              new net.minecraft.network.protocol.game.ServerboundAcceptTeleportationPacket(sent.get(0).getId()));
+          player.connection.handleMovePlayer(new net.minecraft.network.protocol.game.ServerboundMovePlayerPacket.Rot(45f, 10f, true));
+          player.connection.tick();
+          helper.assertTrue(Math.abs(player.getYRot() - 45f) < 0.01f, "The client was not listened to after the pull-back");
+          helper.assertTrue(player.blockPosition().equals(arrival) && positionPackets(qa).isEmpty(),
+              "The player was pulled back again after accepting: " + player.blockPosition());
+          ServerLevel level = player.serverLevel();
           // A soul vial or a lead on an echo inside does nothing.
           var entry = new EnvesEchoTables.Entry("minecraft:husk", 1, null, 40.0, 1.0, Map.of(), "");
           var echo = EnvesEchoes.spawn(level, new EnvesEchoes.Spec(entry, EnvesBalance.Role.ELITE, attempt, 1, List.of()),
@@ -421,17 +454,17 @@ public final class RuntimeGameTestsEnves {
             echo.discard();
           }
           EnvesPlacer.queue(server, attempt, 2);
-          stage.set(1);
+          stage.set(2);
         }
-        case 1 -> {
+        case 2 -> {
           if (attempt.floor(2).placement != Placement.READY) return;
           helper.assertTrue(!attempt.floor(1).stairOpen, "Floor I's stair opened by itself");
           // Floor II stands, but its stair above is shut: a raw move there (no server record) is a skip.
           BlockPos deeper = Enves.arrival(server, attempt, 2);
           player.teleportTo(player.serverLevel(), deeper.getX() + 0.5, deeper.getY(), deeper.getZ() + 0.5, 0, 0);
-          stage.set(2);
+          stage.set(3);
         }
-        case 2 -> {
+        case 3 -> {
           if (EnvesGeometry.depthAt(player.blockPosition().getY()) != 1) return;
           try {
             helper.assertTrue(attempt.frontline == 1, "The skipped floor counted as reached: " + attempt.frontline);
@@ -468,6 +501,39 @@ public final class RuntimeGameTestsEnves {
     } finally {
       cleanUp(qa.player, attempt);
       qa.close();
+    }
+    helper.succeed();
+  }
+
+  /**
+   * A solo player with an open attempt who joins a party that has none brings it along. FTB Teams
+   * fires the join only for an online player, so someone added while offline is not covered.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200, batch = "enves_attempts")
+  public static void aSoloAttemptFollowsItsPlayerIntoAPartyWithNone(GameTestHelper helper) {
+    var founder = new QaPlayer(helper, "PartyHost");
+    var joiner = new QaPlayer(helper, "SoloJoiner");
+    Attempt attempt = null;
+    try {
+      var party = (PartyTeam) FTBTeamsAPI.api().getManager().createPartyTeam(founder.player,
+          "Envés join " + founder.player.getUUID(), "", Color4I.WHITE);
+      helper.assertTrue(EnvesData.get(founder.player.server).forTeam(party.getId()).isEmpty(), "The new party already has an attempt");
+      attempt = openFor(helper, joiner.player, Tier.FRONTIER);
+      helper.assertTrue(attempt.team.equals(joiner.player.getUUID()), "A solo attempt is not the player's");
+      helper.assertTrue(party.invite(founder.player, List.of(joiner.player.getGameProfile())) == 1
+          && party.join(joiner.player) == 1, "The party could not be joined");
+      Attempt opened = attempt;
+      helper.assertTrue(Enves.attemptOf(joiner.player).map(a -> a.id.equals(opened.id)).orElse(false),
+          "Joining a party orphaned the open attempt");
+      helper.assertTrue(attempt.team.equals(party.getId()), "The attempt did not move to the party");
+      helper.assertTrue(Enves.attemptOf(founder.player).map(a -> a.id.equals(opened.id)).orElse(false),
+          "The party's host does not see the attempt the joiner brought");
+    } catch (com.mojang.brigadier.exceptions.CommandSyntaxException e) {
+      throw new IllegalStateException(e);
+    } finally {
+      if (attempt != null) cleanUp(joiner.player, attempt);
+      joiner.close();
+      founder.close();
     }
     helper.succeed();
   }

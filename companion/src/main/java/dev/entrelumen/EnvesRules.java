@@ -146,11 +146,18 @@ public final class EnvesRules {
     }
   }
 
-  /** A move longer than this in one tick is checked for walls in between (no-clip blinks). */
+  /** A move longer than this per client step is checked for walls in between (no-clip blinks). */
   public static final double SKIP_DISTANCE = 2;
 
-  public static boolean longMove(double distanceSqr) {
-    return distanceSqr > SKIP_DISTANCE * SKIP_DISTANCE;
+  /**
+   * Whether a move since the last server tick is too long for the {@code steps} move packets the
+   * client sent in that time (several after a lag spike, server or network, and then the path may
+   * have turned a corner): only a move longer than {@link #SKIP_DISTANCE} per step is a blink worth
+   * checking for walls. A move the server made with no packet counts as one step.
+   */
+  public static boolean longMove(double distanceSqr, int steps) {
+    double reach = SKIP_DISTANCE * Math.max(1, steps);
+    return distanceSqr > reach * reach;
   }
 
   /** Whether a command line (with or without its slash) starts with a denied command. */

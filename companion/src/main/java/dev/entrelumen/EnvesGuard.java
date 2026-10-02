@@ -2,6 +2,7 @@ package dev.entrelumen;
 
 import com.mojang.logging.LogUtils;
 import dev.ftb.mods.ftblibrary.integration.stages.StageHelper;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
@@ -62,11 +64,24 @@ public final class EnvesGuard {
     Vec3 ground;
     /** Where the player stood last tick, for the no-clip check; null after the server moved them. */
     Vec3 lastPos;
+    /**
+     * A pull-back decided during the player's own tick, sent after the server tick by
+     * {@link #applySnaps}: a teleport sent from inside the connection's tick is undone right after it
+     * (vanilla puts the player back where the tick started until the client accepts), so the check
+     * would see the same move again and teleport again, and the client's accept would never match.
+     */
+    Vec3 snapTo;
+    String snapKey;
     long lastMessage = Long.MIN_VALUE / 2;
   }
 
   private static final Map<UUID, Mover> MOVERS = new HashMap<>();
   private static boolean stageFailed;
+  /** Vanilla's per-tick move packet counters, by reflection; null when they are not reachable. */
+  private static Field receivedMoves, knownMoves;
+  private static boolean movesFailed;
+  /** Wall time between the starts of the last two server ticks, for when the counters are not reachable. */
+  private static long lastTickStart, tickGapNanos;
 
   private EnvesGuard() {}
 
@@ -83,7 +98,13 @@ public final class EnvesGuard {
     bus.addListener(EnvesGuard::onPlayerTick);
     bus.addListener(EnvesGuard::onSpawnCheck);
     bus.addListener((PlayerEvent.PlayerLoggedOutEvent event) -> MOVERS.remove(event.getEntity().getUUID()));
+    bus.addListener((ServerTickEvent.Pre event) -> {
+      long now = System.nanoTime();
+      tickGapNanos = lastTickStart == 0 ? 0 : now - lastTickStart;
+      lastTickStart = now;
+    });
     bus.addListener((ServerTickEvent.Post event) -> {
+      applySnaps(event.getServer());
       if (event.getServer().getTickCount() % 100 == 51)
         event.getServer().getPlayerList().getPlayers().forEach(EnvesGuard::mapStage);
     });
@@ -94,10 +115,16 @@ public final class EnvesGuard {
     return player.hasPermissions(2) && StructureProtection.actor(player).bypass();
   }
 
-  /** The server moved the player (entry, rescue, respawn, a pull-down): the no-clip check starts over. */
+  /**
+   * The server moved the player (entry, rescue, respawn, an operator's teleport): the no-clip check
+   * starts over, and a pull-back not sent yet is dropped, since the server's own move wins.
+   */
   static void moved(Player player) {
     Mover mover = MOVERS.get(player.getUUID());
-    if (mover != null) mover.lastPos = null;
+    if (mover == null) return;
+    mover.lastPos = null;
+    mover.snapTo = null;
+    mover.snapKey = null;
   }
 
   static void tell(ServerPlayer player, String key) {
@@ -195,6 +222,7 @@ public final class EnvesGuard {
     }
     if (player.isPassenger()) player.stopRiding();
     Mover mover = MOVERS.computeIfAbsent(player.getUUID(), id -> new Mover());
+    if (mover.snapTo != null) return; // already going back, after this server tick
     double y = player.getY();
     double dy = Double.isNaN(mover.lastY) ? 0 : y - mover.lastY;
     mover.lastY = y;
@@ -204,36 +232,92 @@ public final class EnvesGuard {
         && player.level().getBlockState(feet).isAir();
     boolean exempt = player.hasEffect(MobEffects.LEVITATION) || player.hasEffect(MobEffects.SLOW_FALLING);
     if (mover.lift.observe(airborne, exempt, dy) && !bypass(player)) {
-      Vec3 back = mover.ground != null ? mover.ground : player.position();
-      player.fallDistance = 0;
-      player.connection.teleport(back.x, back.y, back.z, player.getYRot(), player.getXRot());
-      mover.lastY = back.y;
-      mover.lastPos = null;
-      tell(player, "entrelumen.enves.no_flight");
+      snap(mover, mover.ground != null ? mover.ground : player.position(), "entrelumen.enves.no_flight");
       return;
     }
     noClip(player, mover);
   }
 
   /**
-   * A player who covered more than two blocks in one tick through a block (a blink spell, a travel
-   * staff, any mod that sets the position without an event) goes back where they stood.
+   * A player who covered more than two blocks per client step through a block (a blink spell, a
+   * travel staff, any mod that sets the position without an event) goes back where they stood.
+   * Both a ray at the waist and one at the eyes must cross a block, so a step or a slab on the way is
+   * no wall.
    */
   private static void noClip(ServerPlayer player, Mover mover) {
     Vec3 pos = player.position();
     Vec3 last = mover.lastPos;
-    if (last != null && EnvesRules.longMove(last.distanceToSqr(pos)) && !bypass(player)) {
-      var hit = player.level().clip(new ClipContext(last.add(0, 0.5, 0), pos.add(0, 0.5, 0), ClipContext.Block.COLLIDER,
-          ClipContext.Fluid.NONE, CollisionContext.empty()));
-      if (hit.getType() == HitResult.Type.BLOCK) {
-        player.fallDistance = 0;
-        player.connection.teleport(last.x, last.y, last.z, player.getYRot(), player.getXRot());
-        mover.lastY = last.y;
-        tell(player, "entrelumen.enves.no_teleport");
-        return;
-      }
+    if (last != null && EnvesRules.longMove(last.distanceToSqr(pos), moveSteps(player)) && !bypass(player)
+        && blocked(player, last, pos, 0.5) && blocked(player, last, pos, player.getEyeHeight())) {
+      snap(mover, last, "entrelumen.enves.no_teleport");
+      return;
     }
     mover.lastPos = pos;
+  }
+
+  private static boolean blocked(ServerPlayer player, Vec3 from, Vec3 to, double height) {
+    var hit = player.level().clip(new ClipContext(from.add(0, height, 0), to.add(0, height, 0), ClipContext.Block.COLLIDER,
+        ClipContext.Fluid.NONE, CollisionContext.empty()));
+    return hit.getType() == HitResult.Type.BLOCK;
+  }
+
+  private static void snap(Mover mover, Vec3 to, String key) {
+    mover.snapTo = to;
+    mover.snapKey = key;
+  }
+
+  /**
+   * Sends the pull-backs decided this tick, outside every connection's tick, so they stick: the
+   * server holds the player there until the client accepts, and the next check starts from there.
+   */
+  static void applySnaps(MinecraftServer server) {
+    for (var entry : MOVERS.entrySet()) {
+      Mover mover = entry.getValue();
+      Vec3 to = mover.snapTo;
+      if (to == null) continue;
+      String key = mover.snapKey;
+      mover.snapTo = null;
+      mover.snapKey = null;
+      ServerPlayer player = server.getPlayerList().getPlayer(entry.getKey());
+      if (player == null || player.isDeadOrDying() || !Enves.inEnves(player)) continue;
+      player.fallDistance = 0;
+      player.connection.teleport(to.x, to.y, to.z, player.getYRot(), player.getXRot());
+      mover.lastY = to.y;
+      mover.lastPos = to;
+      if (key != null) tell(player, key);
+    }
+  }
+
+  /**
+   * How many move packets the server took from this player since its last tick: one a tick
+   * normally, several after a lag spike on the server or the network. Read from vanilla's own
+   * counters (the connection evens them right after the player's tick); when those are not
+   * reachable, guessed from how long the server tick took to come.
+   */
+  private static int moveSteps(ServerPlayer player) {
+    if (!movesFailed && receivedMoves == null) {
+      try {
+        Field received = ServerGamePacketListenerImpl.class.getDeclaredField("receivedMovePacketCount");
+        Field known = ServerGamePacketListenerImpl.class.getDeclaredField("knownMovePacketCount");
+        received.setAccessible(true);
+        known.setAccessible(true);
+        knownMoves = known;
+        receivedMoves = received;
+      } catch (ReflectiveOperationException | RuntimeException e) {
+        movesFailed = true;
+        LOGGER.warn("Envés: the move packet counters are not reachable ({}); the no-clip check judges lag by tick time", e.toString());
+      }
+    }
+    if (receivedMoves != null && player.connection != null) {
+      try {
+        return receivedMoves.getInt(player.connection) - knownMoves.getInt(player.connection);
+      } catch (ReflectiveOperationException | RuntimeException e) {
+        movesFailed = true;
+        receivedMoves = null;
+        LOGGER.warn("Envés: the move packet counters could not be read ({}); the no-clip check judges lag by tick time", e.toString());
+      }
+    }
+    return (int) Math.max(1, Math.round(tickGapNanos / 50_000_000.0));
   }
 
   // ---- Spawning -----------------------------------------------------------------------------
@@ -317,6 +401,12 @@ public final class EnvesGuard {
       LOGGER.warn("Waystones is loaded but its teleport event could not be hooked; the dimension guard still refuses warps",
           failure);
     }
+  }
+
+  /** For tests: whether a pull-back is waiting for the end of the server tick. */
+  static boolean pullingBack(ServerPlayer player) {
+    Mover mover = MOVERS.get(player.getUUID());
+    return mover != null && mover.snapTo != null;
   }
 
   /** For tests: forget a player's movement history. */

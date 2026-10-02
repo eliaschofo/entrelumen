@@ -108,7 +108,7 @@ Roles por piso:
   - por comando (`/entrelumen enves giveup`) hay que pedirlo dos veces en 10 s; el primer pedido dice cuántos hay adentro;
   - con compañeros adentro, sólo pueden rendirse quien pagó, el dueño del grupo o alguien que esté adentro; los demás reciben «Hay compañeros adentro: sólo quien pagó, el dueño del grupo o alguien adentro puede rendirse.»;
   - al rendirse, todo el grupo lee quién lo hizo.
-- **El intento sigue al equipo.** Si alguien solo funda un grupo con un intento abierto, el intento pasa al grupo; quien se une a un grupo sin intento trae el suyo; si el grupo se disuelve, el intento vuelve a quien pagó (o al dueño, si quien pagó ya tiene otro intento o está en otro grupo).
+- **El intento sigue al equipo.** Si alguien solo funda un grupo con un intento abierto, el intento pasa al grupo; quien se une a un grupo sin intento trae el suyo (FTB Teams avisa la unión sólo si el jugador está conectado: a quien lo suman desconectado, su intento le queda huérfano); si el grupo se disuelve, el intento vuelve a quien pagó (o al dueño, si quien pagó ya tiene otro intento o está en otro grupo).
 - La bolsa empieza vacía y cada integrante le suma 3 caídas **la primera vez que entra a ese intento**: una vez por jugador y por intento, y salir y volver a entrar no suma. Cada caída adentro resta una:
   - se conserva todo: `keepInventory` rige sólo para esa muerte, así que Curios, mochilas y tumbas se comportan igual;
   - se reaparece al inicio del piso donde te caíste;
@@ -125,7 +125,7 @@ Roles por piso:
 - **Sin atajos:**
   - las perlas, el chorus y los objetos del tag `entrelumen:enves_forbidden` (los pergaminos y la piedra de Waystones) no se usan;
   - ningún jugador se teletransporta adentro: se cancela todo `EntityTeleportEvent` de un jugador (perlas, chorus, el Blink de Ars, el bastón de viaje de Ender IO), salvo los de comandos, que ya filtra `denied_commands` y así un operador puede mover gente. Los mobs (endermen, ecos que parpadean) sí se teletransportan. Los CAD de Psi no van al tag: se puede usar Psi para pelear;
-  - **sin atravesar paredes:** cada tick, quien recorrió más de 2 bloques se revisa con un rayo de colisión desde donde estaba; si cruzó un bloque, vuelve ahí. Así cae el Blink de Psi, que mueve al jugador sin ningún evento. La entrada, el rescate, la reaparición, el tirón del vuelo y el teletransporte de un operador arrancan la cuenta de cero; creativo, espectador y el bypass no se revisan;
+  - **sin atravesar paredes:** cada tick, quien recorrió más de 2 bloques por paquete de movimiento que mandó su cliente desde el tick anterior (uno por tick; varios después de un tirón de lag del servidor o de la red, y entonces el camino pudo doblar una esquina) se revisa con dos rayos de colisión desde donde estaba, a la cintura y a los ojos; si los dos cruzan un bloque, vuelve ahí. Así cae el Blink de Psi, que mueve al jugador sin ningún evento. La vuelta (y la del tirón del vuelo) se manda al terminar el tick del servidor, no durante el tick del jugador: vanilla deshace lo que se mande ahí hasta que el cliente acepta, y el chequeo volvería a ver el mismo salto y a mandar otra vuelta cada tick, sin que el cliente pueda aceptar ninguna. Después de la vuelta, el chequeo sigue desde ese punto. La entrada, el rescate, la reaparición y el teletransporte de un operador arrancan la cuenta de cero y descartan una vuelta pendiente; creativo, espectador y el bypass no se revisan;
   - **tope de profundidad:** nadie está más hondo que lo que abren las escaleras (o que el piso donde lo puso el servidor). Quien aparece más abajo vuelve al inicio de su piso y ese piso no cuenta como alcanzado;
   - los ecos no se capturan, atan, nombran ni montan adentro (se cancela la interacción con ellos): un frasco de almas dejaba un sello sin su guardián;
   - nadie cruza de dimensión hacia o desde el Envés salvo por la puerta y los portales; los warps de Waystones también se frenan en su evento;
@@ -194,14 +194,15 @@ Cada gancho recibe un `EnvesHooks.Floor`: el nivel, el intento (tier, semilla, p
 
 ### Pruebas
 
-- JUnit: `EnvesLayoutTest` (invariantes, 2000 semillas), `EnvesRulesTest` (bolsa por primera entrada, tiers, abandono, escalera, tope de profundidad, rendición en dos pasos y quién puede, movimientos largos, ecos perdidos, vuelo, comandos, niebla) y `EnvesContractTest` (marcadores, plantillas, escalera, datos, parcelas).
+- JUnit: `EnvesLayoutTest` (invariantes, 2000 semillas), `EnvesRulesTest` (bolsa por primera entrada, tiers, abandono, escalera, tope de profundidad, rendición en dos pasos y quién puede, movimientos largos según los paquetes del tick, ecos perdidos, vuelo, comandos, niebla) y `EnvesContractTest` (marcadores, plantillas, escalera, datos, parcelas).
 - GameTests (`RuntimeGameTestsEnves`):
   - el sello abre sólo con Frontier y no spoilea;
   - la ofrenda abre un intento a la dificultad elegida;
   - la bolsa compartida (vacía al pagar; 3 caídas por integrante en su primera entrada y ninguna en las siguientes), con reaparición al inicio del piso, inventario intacto y expulsión;
   - indestructible y sin atajos: perlas, chorus, cruces de dimensión y vuelo;
-  - sin blinks ni capturas: el evento de teletransporte de un jugador se cancela (el de un mob y el de un comando no), atravesar el piso se deshace al tick siguiente, un eco no se puede interactuar y quien aparece pasada una escalera cerrada vuelve a su piso;
+  - sin blinks ni capturas: el evento de teletransporte de un jugador se cancela (el de un mob y el de un comando no), atravesar el piso se deshace una sola vez al terminar el tick (con el jugador moviéndose dentro del tick de su conexión, como en un servidor real), la vuelta se mantiene y, cuando el cliente la acepta, el servidor lo vuelve a escuchar; un eco no se puede interactuar y quien aparece pasada una escalera cerrada vuelve a su piso;
   - el intento de alguien solo pasa al grupo que funda y vuelve al disolverlo;
+  - el intento de alguien solo pasa al grupo sin intento al que se une;
   - rendirse pide dos veces y, con el fundador adentro, otro integrante de afuera no puede;
   - el mapa con niebla se manda de nuevo después de reconectarse;
   - una Escalera Sellada fuera del mundo no pone puerta, y el control de spawns de la escalera no lee datos desde hilos de generación;
