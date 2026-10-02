@@ -6375,9 +6375,9 @@
    "skipReason": "dup",
    "skipReasonText": "Ya lo cubre un mod nuestro",
    "why": "admin",
-   "status": "equivalente: tools/runtime.py",
+   "status": "equivalente: tools/build_server_pack.py",
    "purpose": "Valores por defecto de server.properties.",
-   "reason": "El server pack ya fija allow-flight (tools/runtime.py).",
+   "reason": "tools/runtime.py es el camino de QA local (servidor de prueba atado a 127.0.0.1) y no el server pack. El server pack distribuible sale de tools/build_server_pack.py, cuyo server.properties.template fija allow-flight=true, spawn-protection=0 y simulation-distance=6 y se instala sólo si el archivo no existe.",
    "risks": [
     "sólo servidor"
    ]
