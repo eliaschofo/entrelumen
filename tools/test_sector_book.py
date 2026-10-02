@@ -652,9 +652,9 @@ class Sectors(unittest.TestCase):
     # F75: a sector labelled act III or later starts with an item task, a dependency on another chapter or an explicit
     # "early_reachable" waiver; otherwise act I players walk in and draw its act's reward tables. These were labelled
     # before the rule and wait for a content review (decision D8): the list may only shrink, and a sector leaves it
-    # as soon as it no longer opens early (the Bumblezone hive did when it became act II).
+    # as soon as it no longer opens early (the Bumblezone hive and the deep worlds did when they became act II).
     LATE_LABEL_REVIEW = {"sector_ae2_network", "sector_apotheosis_spawners", "sector_bees_breeding",
-                         "sector_deep_worlds", "sector_mahou", "sector_starlight_night", "sector_twilight"}
+                         "sector_mahou", "sector_starlight_night", "sector_twilight"}
 
     def test_late_act_sectors_open_behind_an_item_or_a_dependency(self):
         open_early = set()
