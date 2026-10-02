@@ -757,7 +757,8 @@ public final class RuntimeGameTestsEnvesContent {
   }
 
   /**
-   * Peaceful (Elias, D14): echoes are not discarded and cannot be hurt, and the gate takes no offering.
+   * Peaceful (Elias, D14): echoes are not discarded and cannot be hurt (but /kill and the void still reach
+   * them), and the gate takes no offering.
    * Its own batch, since the difficulty is the whole server's.
    */
   @GameTest(template = "empty", timeoutTicks = 200, batch = "enves_peaceful")
@@ -778,6 +779,10 @@ public final class RuntimeGameTestsEnvesContent {
       mob.invulnerableTime = 0;
       mob.hurt(player.damageSources().playerAttack(player), 10);
       helper.assertTrue(mob.getHealth() == health, "an echo took damage on Peaceful");
+      // /kill (genericKill bypasses invulnerability) still reaches it, so an operator can clear one.
+      mob.invulnerableTime = 0;
+      mob.hurt(mob.damageSources().genericKill(), 1);
+      helper.assertTrue(mob.getHealth() < health, "/kill could not hurt an echo on Peaceful");
       frontier(player);
       player.getInventory().add(new ItemStack(Items.NETHER_STAR));
       helper.assertTrue(Enves.open(player, Tier.FRONTIER) == Enves.Refusal.PEACEFUL, "the gate opened on Peaceful");

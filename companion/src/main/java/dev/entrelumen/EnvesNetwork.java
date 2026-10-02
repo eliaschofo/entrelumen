@@ -184,7 +184,8 @@ public final class EnvesNetwork {
     }
   }
 
-  public enum Action {OPEN, ENTER, GIVE_UP}
+  /** {@link #ARM_GIVE_UP} is the give-up button's first click, {@link #GIVE_UP} its second. */
+  public enum Action {OPEN, ENTER, GIVE_UP, ARM_GIVE_UP}
 
   /**
    * The gate screen's choice; {@code tier} and {@code offer} (the index of the offering paid, -1 for

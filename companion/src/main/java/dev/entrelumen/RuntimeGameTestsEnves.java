@@ -539,7 +539,7 @@ public final class RuntimeGameTestsEnves {
   }
 
   /**
-   * Giving up asks twice, and while the founder plays inside, a member outside who neither paid nor
+   * Giving up asks twice (the server arms it; the gate's first click only arms), and while the founder plays inside, a member outside who neither paid nor
    * owns the party cannot end the run; the founder can.
    */
   @GameTest(template = "empty", timeoutTicks = 24000, batch = "enves_attempts")
@@ -562,6 +562,7 @@ public final class RuntimeGameTestsEnves {
             "A member outside ended a run the founder is playing");
         helper.assertTrue(!Enves.giveUp(guest.player, true) && attempt.live(), "The gate let a member outside end it");
         helper.assertTrue(!Enves.giveUp(founder.player) && attempt.live(), "One ask ended the attempt");
+        helper.assertTrue(!Enves.giveUp(founder.player, true) && attempt.live(), "The gate's first click ended the attempt");
         helper.assertTrue(Enves.giveUp(founder.player) && !attempt.live(), "A second ask within ten seconds did not end it");
         helper.assertTrue(!Enves.inEnves(founder.player), "The founder stayed inside an ended attempt");
       } finally {

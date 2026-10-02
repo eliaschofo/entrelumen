@@ -367,8 +367,10 @@ public final class RuntimeGameTestsStory {
         give(player, coil, 3);
         give(player, plate, 2);
         // A charged FE tool in the hotbar is not the battery: only the off hand counts.
+        // Slot 8 is empty: the coils and plates just given sit in slots 0 and 1.
         ItemStack tool = battery(helper, player, true);
-        player.getInventory().setItem(0, tool);
+        helper.assertTrue(player.getInventory().getItem(8).isEmpty(), "Hotbar slot 8 is not free for the tool");
+        player.getInventory().setItem(8, tool);
         talk = SolsticioStory.character(player, terra, "inventor");
         assertSaid(helper, talk, "story.missing");
         assertSaid(helper, talk, "story.battery");
@@ -391,7 +393,7 @@ public final class RuntimeGameTestsStory {
         helper.assertTrue(campaign.completed.contains(SolsticioStoryRules.POWER) && count(player, coil) == 0 && count(player, plate) == 0
             && player.getOffhandItem().isEmpty() && SolsticioStory.battery(player) == null,
             "Terra did not take the parts and the off-hand battery");
-        helper.assertTrue(player.getInventory().getItem(0) == tool && tool.getCount() == 1,
+        helper.assertTrue(player.getInventory().getItem(8) == tool && tool.getCount() == 1,
             "Terra took the charged tool from the hotbar instead of the off-hand battery");
         ItemStack diagram = player.getInventory().items.stream().filter(stack -> stack.is(Items.WRITTEN_BOOK)).findFirst()
             .orElse(ItemStack.EMPTY);

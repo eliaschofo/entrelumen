@@ -241,10 +241,11 @@ public final class EnvesEntrance {
         if (!Enves.enter(player)) player.displayClientMessage(Component.translatable(Enves.peaceful(player.server)
             ? "entrelumen.enves.peaceful" : "entrelumen.enves.cannot_enter"), true);
       }
+      // Two steps the server keeps itself: the first click only arms the give-up, the second ends the run
+      // only while that arm is fresh (a modified client cannot skip it), and who may give up is judged again.
+      case ARM_GIVE_UP -> Enves.giveUp(player, true);
       case GIVE_UP -> {
-        // The screen asked twice already (its button turns into "Confirm give up"); the server still
-        // judges who may give up while teammates are inside.
-        if (Enves.giveUp(player, true)) EnvesNetwork.send(player, gateView(player));
+        if (Enves.giveUp(player, false)) EnvesNetwork.send(player, gateView(player));
       }
     }
   }

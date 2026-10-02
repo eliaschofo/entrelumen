@@ -254,6 +254,10 @@ public final class RuntimeGameTestsArkCampaign {
     fake.setItemInHand(InteractionHand.MAIN_HAND, atlas);
     helper.assertTrue(atlas.getItem().use(level, fake, InteractionHand.MAIN_HAND).getResult() == InteractionResult.PASS,
         "A fake player opened the Atlas");
+    // Clicking a Solsticio shopkeeper teaches the team's remote trade; a teamless fake player has none (F26).
+    int known = ArkData.get(level.getServer()).knownShops.size();
+    ArkCommerce.know(fake, "qa_fake_shop", controller.asLong());
+    helper.assertTrue(ArkData.get(level.getServer()).knownShops.size() == known, "A fake player taught a team a shop");
     helper.succeed();
   }
 

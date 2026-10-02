@@ -358,8 +358,10 @@ public final class EnvesEchoes {
    * projectiles, spells. Echoes never hurt each other. Affixes and blessings add their part.
    */
   static void onIncomingDamage(LivingIncomingDamageEvent event) {
-    // On Peaceful an echo cannot hurt anyone, so nobody may fell it either: the Envés waits.
-    if (isEcho(event.getEntity()) && event.getEntity().level().getDifficulty() == Difficulty.PEACEFUL) {
+    // On Peaceful an echo cannot hurt anyone, so nobody may fell it either: the Envés waits. /kill and the void
+    // (damage that bypasses invulnerability) still go through, so an operator can clear one and a fallen echo dies.
+    if (isEcho(event.getEntity()) && event.getEntity().level().getDifficulty() == Difficulty.PEACEFUL
+        && !event.getSource().is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)) {
       event.setCanceled(true);
       return;
     }

@@ -444,7 +444,10 @@ public final class Enves {
     return moved;
   }
 
-  /** The command's give-up: the first call only arms it; a second within 10 s ends the attempt. */
+  /**
+   * The command's give-up, and the gate's second click: it ends the attempt only when a give-up was armed
+   * within the last {@link EnvesRules#GIVE_UP_WINDOW} ticks; otherwise it arms one, as a first click would.
+   */
   public static boolean giveUp(ServerPlayer player) {
     return giveUp(player, false);
   }
@@ -452,11 +455,12 @@ public final class Enves {
   /**
    * The team gives its attempt up, which ends it for everyone and wipes the slot. While teammates are
    * inside, only the payer, the party owner or a member who is inside may ({@link EnvesRules#mayGiveUp}).
-   * Unless {@code confirmed} (the gate screen already asked twice), the first call arms the give-up
-   * and says how many are inside; a second one within {@link EnvesRules#GIVE_UP_WINDOW} ticks ends it.
-   * Returns whether the attempt ended.
+   * The server arms it itself, whatever the client counted: a call with {@code armOnly} (the gate's first
+   * click) only arms it and says how many are inside; any call ends it only when an armed give-up from
+   * the last {@link EnvesRules#GIVE_UP_WINDOW} ticks is waiting, and otherwise arms one. The armed state
+   * expires with the window, so a second click minutes later only asks again. Returns whether the attempt ended.
    */
-  public static boolean giveUp(ServerPlayer player, boolean confirmed) {
+  public static boolean giveUp(ServerPlayer player, boolean armOnly) {
     var found = attemptOf(player);
     if (found.isEmpty()) return false;
     Attempt attempt = found.get();
@@ -472,7 +476,7 @@ public final class Enves {
       return false;
     }
     long now = server.overworld().getGameTime();
-    if (!confirmed && !EnvesRules.giveUpConfirmed(GIVE_UP_ARMED.get(player.getUUID()), now)) {
+    if (armOnly || !EnvesRules.giveUpConfirmed(GIVE_UP_ARMED.get(player.getUUID()), now)) {
       GIVE_UP_ARMED.put(player.getUUID(), now);
       player.sendSystemMessage(Component.translatable("entrelumen.enves.giveup.confirm", inside.size()));
       return false;

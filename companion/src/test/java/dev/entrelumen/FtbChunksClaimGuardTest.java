@@ -62,6 +62,9 @@ class FtbChunksClaimGuardTest {
     var values = tag("/data/entrelumen/tags/block/spawn_protection_exempt.json");
     assertTrue(values.containsAll(List.of("entrelumen:heliodor_pedestal", "entrelumen:enves_gate",
         "entrelumen:enves_seal", "entrelumen:solsticio_portal")), values.toString());
+    // Only blocks with a use handler of their own: a click on the lock or a gate cell would fall through to the
+    // held item and place a block, pour a bucket or light fire beside it inside spawn protection.
+    assertFalse(values.contains("entrelumen:ruin_lock") || values.contains("entrelumen:ruin_gate"), values.toString());
     assertRegistered(values);
     var mixins = JsonParser.parseString(read("/entrelumen.common.mixins.json")).getAsJsonObject();
     assertTrue(mixins.getAsJsonArray("server").toString().contains("DedicatedServerSpawnProtectionMixin"),

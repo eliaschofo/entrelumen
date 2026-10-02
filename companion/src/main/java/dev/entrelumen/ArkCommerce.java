@@ -68,8 +68,11 @@ public final class ArkCommerce {
 
   static void know(ServerPlayer player, String key, long site) {
     if (key.isEmpty()) return;
+    // A fake player FTB Teams does not know (a deployer clicking a shopkeeper) has no campaign to teach (F26).
+    UUID campaign = CampaignActions.campaignIdOrNull(player);
+    if (campaign == null) return;
     ArkData data = ArkData.get(player.server);
-    if (data.knownShops.computeIfAbsent(CampaignActions.campaignId(player), team -> new TreeSet<>())
+    if (data.knownShops.computeIfAbsent(campaign, team -> new TreeSet<>())
         .add(ArkRules.shopId(key, site))) {
       data.setDirty();
       if (ArkState.status(player).active(ArkRules.Module.LOGISTICS))

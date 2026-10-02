@@ -3,6 +3,7 @@ package dev.entrelumen.client;
 import dev.entrelumen.ApotheosisTiers;
 import dev.entrelumen.EnvesEntrance;
 import dev.entrelumen.EnvesNetwork;
+import dev.entrelumen.EnvesRules;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -28,8 +29,11 @@ public final class EnvesGateScreen extends Screen {
   /** The offer the payer picked; starts on the first one they carry. */
   private int offer;
   private final List<Button> tierButtons = new ArrayList<>();
-  /** The give-up button was clicked once: the next click sends it. */
+  /** The give-up button was clicked once (the server armed it too): the next click confirms it. */
   private boolean giveUpArmed;
+  /** Screen ticks since the first click; the arm lapses with the server's window. */
+  private int giveUpArmedTicks;
+  private Button giveUpButton;
 
   EnvesGateScreen(EnvesNetwork.Gate gate) {
     super(Component.translatable("entrelumen.enves.gate.title"));
@@ -94,14 +98,27 @@ public final class EnvesGateScreen extends Screen {
     addRenderableWidget(Button.builder(Component.translatable("gui.cancel"), b -> onClose()).bounds(x, y + 6, 200, 20).build());
     if (state() == EnvesEntrance.GateState.OPEN) {
       // Far from Enter, under Cancel, and two clicks: ending the run for everyone is never a slip.
-      addRenderableWidget(Button.builder(giveUpLabel(), b -> {
+      // The server keeps the two steps too: the first click arms it there, and only a second click within
+      // its window ends the run.
+      giveUpButton = addRenderableWidget(Button.builder(giveUpLabel(), b -> {
         if (!giveUpArmed) {
           giveUpArmed = true;
+          giveUpArmedTicks = 0;
           b.setMessage(giveUpLabel());
+          PacketDistributor.sendToServer(new EnvesNetwork.GateAction(EnvesNetwork.Action.ARM_GIVE_UP, 0, -1));
           return;
         }
         send(EnvesNetwork.Action.GIVE_UP, 0, -1);
       }).bounds(x, y + 6 + 20 + 16, 200, 20).build());
+    }
+  }
+
+  @Override
+  public void tick() {
+    super.tick();
+    if (giveUpArmed && ++giveUpArmedTicks > EnvesRules.GIVE_UP_WINDOW) {
+      giveUpArmed = false;
+      if (giveUpButton != null) giveUpButton.setMessage(giveUpLabel());
     }
   }
 

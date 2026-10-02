@@ -216,8 +216,9 @@ public final class SolsticioStory {
   /** Per-item totals of the matching stacks, in inventory order. */
   static Map<String, Integer> totals(ServerPlayer player, Predicate<ItemStack> test) {
     Map<String, Integer> totals = new LinkedHashMap<>();
+    // An errand item (the library book, the cartographer's map, the river shears) is never a material (F41).
     for (ItemStack stack : Entrelumen.deliveryStacks(player))
-      if (!stack.isEmpty() && test.test(stack)) totals.merge(id(stack), stack.getCount(), Integer::sum);
+      if (!stack.isEmpty() && errandOf(stack) == null && test.test(stack)) totals.merge(id(stack), stack.getCount(), Integer::sum);
     return totals;
   }
 
@@ -241,8 +242,9 @@ public final class SolsticioStory {
     player.containerMenu.broadcastChanges();
   }
 
+  /** A material by ID; an errand item of that ID is never one (F41). */
   static Predicate<ItemStack> item(String id) {
-    return stack -> id(stack).equals(id);
+    return stack -> id(stack).equals(id) && errandOf(stack) == null;
   }
 
   static boolean exists(String id) {

@@ -382,23 +382,35 @@ public final class RuntimeGameTestsCompass {
   /**
    * Dedicated-server spawn protection leaves the shared ruin blocks to everyone: the exempt tag
    * holds the pedestal, the Envés gate and seals and the Solsticio portal, only ENTRELUMEN blocks,
-   * all unbreakable.
+   * all unbreakable, and each with its own use handler so the click never falls through to the item
+   * (a block placed, a bucket poured or a fire lit beside it).
    */
   @GameTest(template = "empty", timeoutTicks = 20)
   public static void spawnProtectionExemptsOnlyTheSharedUnbreakableBlocks(GameTestHelper helper) {
     var tag = HeliodorRuins.SPAWN_PROTECTION_EXEMPT;
     for (var block : List.of(HeliodorContent.PEDESTAL.get(), Enves.GATE.get(), Enves.SEAL.get(),
-        Solsticio.PORTAL.get(), RuinContent.PEDESTAL.get(), RuinContent.GATE.get()))
+        Solsticio.PORTAL.get(), RuinContent.PEDESTAL.get()))
       helper.assertTrue(block.defaultBlockState().is(tag), block + " is not exempt from spawn protection");
+    for (var block : List.of(RuinContent.LOCK.get(), RuinContent.GATE.get()))
+      helper.assertTrue(!block.defaultBlockState().is(tag), block + " has no use of its own but is exempt");
     int count = 0;
     for (var holder : net.minecraft.core.registries.BuiltInRegistries.BLOCK.getTagOrEmpty(tag)) {
       count++;
       var key = holder.unwrapKey().orElseThrow().location();
       helper.assertTrue(key.getNamespace().equals("entrelumen"), key + " is not an ENTRELUMEN block");
       helper.assertTrue(holder.value().defaultDestroyTime() < 0, key + " can be broken inside spawn protection");
+      helper.assertTrue(answersClicks(holder.value().getClass()), key + " has no use handler of its own");
     }
     helper.assertTrue(count >= 6, "The spawn protection tag lost entries: " + count);
     helper.succeed();
+  }
+
+  /** Whether a block class below {@link net.minecraft.world.level.block.Block} overrides useItemOn or useWithoutItem. */
+  private static boolean answersClicks(Class<?> type) {
+    for (Class<?> c = type; c != null && c != net.minecraft.world.level.block.Block.class; c = c.getSuperclass())
+      for (var method : c.getDeclaredMethods())
+        if (method.getName().equals("useItemOn") || method.getName().equals("useWithoutItem")) return true;
+    return false;
   }
 
   private static CompassTargets.Objective objective(String id, int act, CompassTargets.Kind kind,
