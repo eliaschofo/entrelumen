@@ -104,7 +104,12 @@ class LangFeedbackKeysTest {
       var lang = json(locale);
       for (String key : List.of("entrelumen.enves.champion.fell", "entrelumen.ark.screen.reason.core")) {
         String text = lang.get(key).getAsString();
-        assertTrue(text.matches(".*: %s[.]?"), locale + ": " + key + " is not a 'Label: %s' line: " + text);
+        if (key.endsWith(".reason.core")) {
+          // Rendered inside "Unfinished: %s" / "Off: %s", so it must not add a second colon.
+          assertTrue(text.matches("[^:]* %s"), locale + ": " + key + " must be a colon-free phrase ending in %s: " + text);
+        } else {
+          assertTrue(text.matches(".*: %s[.]?"), locale + ": " + key + " is not a 'Label: %s' line: " + text);
+        }
         assertFalse(Pattern.compile("%s[ ]+(seals|blocks|sellos|bloques)").matcher(text).find(),
             locale + ": " + key + " reads wrong with 1: " + text);
       }
