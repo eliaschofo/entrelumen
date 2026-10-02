@@ -634,6 +634,172 @@ public final class RuntimeGameTestsRuins {
         .thenSucceed();
   }
 
+  /** A site search of a shipped surface ruin from the noise alone, around {@code (cx, cz)}, in the ring given. */
+  static RuinPlacement.Sites searchNoise(GameTestHelper helper, RuinPlacement.Prepared p, String ruin, int cx, int cz,
+      int[] ring, double[] border) {
+    var level = helper.getLevel();
+    var source = level.getChunkSource();
+    return RuinPlacement.site(new RuinPlacement.Siting(source.getGenerator(), source.randomState(), level,
+        source.getGenerator().getBiomeSource(), RuinDefinitions.Mode.SURFACE, level.getSeed(), ruin, cx, FLAT_GROUND, cz,
+        ring[0], ring[1], p.sizeX(), p.sizeZ(), p.above(), p.ground(), List.of(), 0, border));
+  }
+
+  /**
+   * The test world is the thin default superflat: the Sunken Workshop (17 layers under its ground) and
+   * the Dome Greenhouse (6) still find sites, standing as high as the world's bottom needs.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void deepRuinsFindSitesOnAThinSuperflat(GameTestHelper helper) throws Exception {
+    var level = helper.getLevel();
+    var server = level.getServer();
+    for (String id : List.of("entrelumen:sunken_workshop", "entrelumen:dome_greenhouse")) {
+      var definition = RuinRegistry.get(id).orElseThrow();
+      var p = RuinPlacement.prepare(server, ResourceLocation.parse(definition.template()));
+      var sites = searchNoise(helper, p, id, 30_000, -30_000, new int[] {definition.placement().min(),
+          definition.placement().max()}, null);
+      helper.assertTrue(!sites.dry().isEmpty(), id + ": no site on the superflat");
+      int floor = RuinRules.surfaceFloor(FLAT_GROUND, level.getMinBuildHeight(), p.ground());
+      for (var site : sites.dry()) {
+        helper.assertTrue(site.floor() == floor, id + ": floor " + site.floor() + ", expected " + floor);
+        helper.assertTrue(RuinPlacement.fits(level, site.floor() - p.ground(), p.sizeY()), id + ": does not fit at " + site);
+      }
+    }
+    helper.succeed();
+  }
+
+  /**
+   * A world border 300 blocks around the search's centre: the definition's ring (400..1200) lies past
+   * it and finds nothing; cut to the border it finds sites, all of them inside with their margin.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void aSearchStaysInsideTheWorldBorder(GameTestHelper helper) throws Exception {
+    var server = helper.getLevel().getServer();
+    var definition = RuinRegistry.get("entrelumen:cliff_observatory").orElseThrow();
+    var p = RuinPlacement.prepare(server, ResourceLocation.parse(definition.template()));
+    int cx = 34_000, cz = -34_000, margin = RuinPlacement.borderMargin(RuinDefinitions.Mode.SURFACE);
+    double[] border = {cx - 300, cz - 300, cx + 300, cz + 300};
+    int[] ring = {400, 1200};
+    var outside = searchNoise(helper, p, definition.id(), cx, cz, ring, border);
+    helper.assertTrue(outside.dry().isEmpty() && outside.wet().isEmpty(), "Sites past the border: " + outside.dry());
+    int fit = RuinRules.borderFit(border, cx, cz, p.sizeX(), p.sizeZ(), margin);
+    int[] clamped = RuinRules.clampRing(ring, fit);
+    helper.assertTrue(clamped != null && clamped[1] == fit && clamped[0] == 0, "Ring cut to " + Arrays.toString(clamped));
+    var inside = searchNoise(helper, p, definition.id(), cx, cz, clamped, border);
+    helper.assertTrue(!inside.dry().isEmpty(), "No site inside the border");
+    for (var site : inside.dry())
+      helper.assertTrue(RuinRules.inside(border, site.x(), site.z(), p.sizeX(), p.sizeZ(), margin), "Past the border: " + site);
+    helper.succeed();
+  }
+
+  /** A piece of a test structure: only its box matters. */
+  static net.minecraft.world.level.levelgen.structure.StructurePiece testPiece(BoundingBox box) {
+    return new net.minecraft.world.level.levelgen.structure.StructurePiece(
+        net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType.JIGSAW, 0, box) {
+      @Override
+      protected void addAdditionalSaveData(
+          net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext context,
+          net.minecraft.nbt.CompoundTag tag) {}
+
+      @Override
+      public void postProcess(net.minecraft.world.level.WorldGenLevel level,
+          net.minecraft.world.level.StructureManager structures,
+          net.minecraft.world.level.chunk.ChunkGenerator generator, net.minecraft.util.RandomSource random,
+          BoundingBox box, net.minecraft.world.level.ChunkPos chunk, BlockPos pos) {}
+    };
+  }
+
+  /**
+   * The structure check reads the exact boxes of the pieces of every structure referenced by the chunks
+   * under the grown footprint: a start referenced twice counts once, a box beside the footprint or wholly
+   * under the lowest the blend reaches does not count, and the shaping leaves the columns under a piece.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void theStructureCheckReadsPieceBoxes(GameTestHelper helper) {
+    var level = helper.getLevel();
+    BlockPos base = helper.absolutePos(new BlockPos(2, 0, 2));
+    var chunk = level.getChunkAt(base);
+    var neighbour = level.getChunk(chunk.getPos().x + 1, chunk.getPos().z);
+    var structure = level.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.STRUCTURE)
+        .getOrThrow(net.minecraft.world.level.levelgen.structure.BuiltinStructures.VILLAGE_PLAINS);
+    var pieceBox = new BoundingBox(base.getX() - 3, base.getY() - 4, base.getZ() - 3, base.getX() + 3, base.getY() + 6,
+        base.getZ() + 3);
+    // The footprint grown by the margin: the piece's chunk and the next one east.
+    var grown = new BoundingBox(base.getX() - 8, level.getMinBuildHeight(), base.getZ() - 8, base.getX() + 24,
+        level.getMaxBuildHeight() - 1, base.getZ() + 8);
+    int before = RuinPlacement.structureHits(level, grown, base.getY() - 32);
+    Map<net.minecraft.world.level.levelgen.structure.Structure, net.minecraft.world.level.levelgen.structure.StructureStart>
+        starts = new HashMap<>(chunk.getAllStarts());
+    var references = copyReferences(chunk.getAllReferences());
+    var neighbourReferences = copyReferences(neighbour.getAllReferences());
+    try {
+      var start = new net.minecraft.world.level.levelgen.structure.StructureStart(structure, chunk.getPos(), 0,
+          new net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer(List.of(testPiece(pieceBox))));
+      chunk.setStartForStructure(structure, start);
+      chunk.addReferenceForStructure(structure, chunk.getPos().toLong());
+      neighbour.addReferenceForStructure(structure, chunk.getPos().toLong());
+      int hits = RuinPlacement.structureHits(level, grown, base.getY() - 32);
+      helper.assertTrue(hits == before + 1, "One structure, referenced twice: " + hits + " over " + before);
+      var obstacles = RuinPlacement.obstacles(level, grown, base.getY() - 32);
+      helper.assertTrue(obstacles.pieces().contains(pieceBox), "Its piece's box: " + obstacles.pieces());
+      // Beside the footprint (still in the referencing chunks) and wholly under the blend: no hit.
+      var east = new BoundingBox(base.getX() + 4, grown.minY(), grown.minZ(), grown.maxX(), grown.maxY(), grown.maxZ());
+      helper.assertTrue(!RuinPlacement.obstacles(level, east, base.getY() - 32).pieces().contains(pieceBox),
+          "A piece beside the box");
+      helper.assertTrue(!RuinPlacement.obstacles(level, grown, base.getY() + 7).pieces().contains(pieceBox),
+          "A piece under the blend's reach");
+      // The shaping's guard: the piece's columns of a grid laid over the grown box, and no other.
+      int width = grown.getXSpan(), depth = grown.getZSpan();
+      boolean[] guarded = RuinRules.covered(List.<int[]>of(new int[] {pieceBox.minX(), pieceBox.minZ(), pieceBox.maxX(),
+          pieceBox.maxZ()}), grown.minX(), grown.minZ(), width, depth);
+      int count = 0;
+      for (boolean g : guarded) if (g) count++;
+      helper.assertTrue(count == 7 * 7, "Guarded columns: " + count);
+    } finally {
+      chunk.setAllStarts(starts);
+      chunk.setAllReferences(references);
+      neighbour.setAllReferences(neighbourReferences);
+    }
+    helper.succeed();
+  }
+
+  static Map<net.minecraft.world.level.levelgen.structure.Structure, it.unimi.dsi.fastutil.longs.LongSet> copyReferences(
+      Map<net.minecraft.world.level.levelgen.structure.Structure, it.unimi.dsi.fastutil.longs.LongSet> references) {
+    Map<net.minecraft.world.level.levelgen.structure.Structure, it.unimi.dsi.fastutil.longs.LongSet> copy = new HashMap<>();
+    references.forEach((structure, refs) -> copy.put(structure, new it.unimi.dsi.fastutil.longs.LongOpenHashSet(refs)));
+    return copy;
+  }
+
+  /** The Sunken Workshop's pit froze in a cold biome: draining takes the ice with the water, top layer first. */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void drainingTakesTheIceOverThePit(GameTestHelper helper) {
+    var level = helper.getLevel();
+    // A stone basin 3x3 inside, water at y 1 and its ice lid at y 2.
+    for (int x = 0; x <= 4; x++)
+      for (int z = 0; z <= 4; z++) {
+        helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+        boolean wall = x == 0 || z == 0 || x == 4 || z == 4;
+        helper.setBlock(new BlockPos(x, 1, z), wall ? Blocks.STONE : Blocks.WATER);
+        helper.setBlock(new BlockPos(x, 2, z), wall ? Blocks.STONE : (x + z) % 2 == 0 ? Blocks.ICE : Blocks.FROSTED_ICE);
+      }
+    var drain = new RuinData.PlacedMarker(RuinMarkers.parse("drain challenge=pit size=3,2,3").orElseThrow(),
+        helper.absolutePos(new BlockPos(1, 1, 1)));
+    helper.assertTrue(!RuinWorkshop.drainStep(level, drain), "The first step drains something");
+    for (int x = 1; x <= 3; x++)
+      for (int z = 1; z <= 3; z++) {
+        helper.assertBlockNotPresent(Blocks.ICE, new BlockPos(x, 2, z));
+        helper.assertBlockNotPresent(Blocks.FROSTED_ICE, new BlockPos(x, 2, z));
+      }
+    boolean dry = false;
+    for (int i = 0; i < 8 && !dry; i++) dry = RuinWorkshop.drainStep(level, drain);
+    helper.assertTrue(dry, "The pit never drained");
+    for (int x = 1; x <= 3; x++)
+      for (int y = 1; y <= 2; y++)
+        for (int z = 1; z <= 3; z++)
+          helper.assertTrue(level.getBlockState(helper.absolutePos(new BlockPos(x, y, z))).isAir(),
+              "Left at " + x + "," + y + "," + z);
+    helper.succeed();
+  }
+
   // ---- Challenges, per team -------------------------------------------------------------------
 
   @GameTest(template = "empty", timeoutTicks = 200)
