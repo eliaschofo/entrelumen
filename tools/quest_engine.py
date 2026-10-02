@@ -73,6 +73,15 @@ FILTER_COMPONENT = "ftbfiltersystem:filter"
 FILTER_MODS = ("ftbfiltersystem", "ftbxmodcompat")
 ANY_ENTRY = re.compile(r"#?[a-z0-9_.-]+:[a-z0-9_./-]+")
 _FILTER_MODS_LOCKED = None
+EXPLICIT_TASK_ID = re.compile(r"[0-9A-F]{16}")
+# Equippables a player wears or holds off the main inventory (armour, off hand, Curios): FTB's item task counts only
+# the 36 main slots, so a non-consuming task on one of these is the companion's entrelumen:carried_item (F25).
+CARRIED_ITEMS_FILE = ROOT / "tools/carried_items.json"
+CARRIED_TASK = "entrelumen:carried_item"
+_CARRIED = None
+# Keys the pack ships unbound (tools/unbound_keys.json): a quest that cites one says where to set it (F49).
+UNBOUND_KEYS_FILE = ROOT / "tools/unbound_keys.json"
+_UNBOUND = None
 
 # Copy palette (docs/design/quest-copy.md). Items teal, keys yellow, links blue, tips gold.
 COLORS = {"item": "#8FD6C8", "key": "#F2D060", "link": "#9DC3FF", "tip": "#E8B04A", "warn": "#FF8C7A",
@@ -188,6 +197,10 @@ def compile_paragraph(text, lang, ctx, where):
             seg = {"translate": arg, "color": COLORS["item"]}
         elif name == "key":
             assert arg and re.fullmatch(r"[a-z0-9_]+(\.[A-Za-z0-9_]+)+", arg) and not parts, f"{where}: [key:key.id]"
+            # EMI's binds live in its own config, not in Controls: the keybind component would print the action's
+            # name ("[View Uses]"). Write the default key in words instead.
+            assert not arg.startswith("key.emi."), \
+                f"{where}: [key:{arg}] is an EMI config bind, not a key mapping: write its default key in words"
             ctx["keys"].add(arg)
             seg = {"text": "", "extra": [{"text": "["}, {"keybind": arg}, {"text": "]"}], "color": COLORS["key"]}
         elif name in ("quest", "chapter"):
@@ -259,23 +272,88 @@ def quest_copy(q, name, ctx):
     compile_sector and tools/quest_draft.py, so a draft passes exactly the rules the book compiles with."""
     key = q["key"]
     texts = {}
+    paragraphs = with_notes(q, name, ctx)
     for lang in LOCALES:
         copy = q[lang]
         where = f"{name}:{key}:{lang}"
-        lines, first = compile_text(copy["text"], lang, ctx, where)
+        lines, first = compile_text(paragraphs[lang], lang, ctx, where)
         check_copy(copy["title"], copy.get("subtitle"), first, lang, where)
         texts[lang] = (lines, first)
     assert bool(q["en_us"].get("subtitle")) == bool(q["es_es"].get("subtitle")), f"{key}: subtitle parity"
     assert texts["en_us"][0].count("{@pagebreak}") == texts["es_es"][0].count("{@pagebreak}"), f"{key}: page parity"
     refs = {}
     for lang in LOCALES:
-        raw = " ".join(q[lang]["text"])
+        raw = " ".join(paragraphs[lang])
         refs[lang] = {(m.group(1), m.group(2)) for m in TAG.finditer(raw) if m.group(1) in LINKED_TAGS}
         visible = TAG.sub(lambda m: " ".join(m.group(3).split("|")[1:]) if m.group(3) else "", raw)
         assert not HARD_KEYS.search(visible), f"{name}:{key}:{lang}: hard-coded key; use [key:...]"
     assert refs["en_us"] == refs["es_es"], \
         f"{key}: linked items, keys and quests differ between languages ({sorted(refs['en_us'] ^ refs['es_es'])})"
     return texts
+
+
+# Notes the generator adds from a quest's own data (quest-copy.md), in both languages or in neither.
+UNBOUND_NOTE = {"en_us": ("[note] This key ships unbound: set it in Controls.",
+                          "[note] These keys ship unbound: set them in Controls."),
+                "es_es": ("[note] Esta tecla viene sin asignar: asignala en Controles.",
+                          "[note] Estas teclas vienen sin asignar: asignalas en Controles.")}
+UNBOUND_SAID = {"en_us": re.compile(r"\bControls\b|\bunbound\b", re.I),
+                "es_es": re.compile(r"\bControles\b|\bsin asignar\b", re.I)}
+CARRY_NOTE = {"en_us": ("[note] Carry all {n} at once; placed or installed ones don't count.",
+                        "[note] Carry each full amount at once; placed or installed ones don't count."),
+              "es_es": ("[note] Tené las {n} unidades encima a la vez; las colocadas o instaladas no cuentan.",
+                        "[note] Tené cada cantidad completa encima a la vez; las unidades colocadas o instaladas no cuentan.")}
+CARRY_SAID = {"en_us": re.compile(r"\bat once\b", re.I), "es_es": re.compile(r"\ba la vez\b", re.I)}
+
+
+def held_counts(q):
+    """Counts of the quest's non-consuming item tasks that ask for two or more: FTB checks the most items held in the
+    main inventory at one moment, so placed or installed ones never count (F40). Sector tasks, or the one task of a
+    guide or story quest."""
+    if "tasks" in q or "task" in q:
+        tasks = tasks_of(q)
+    elif "item" in q and q.get("type", "item") == "item":
+        tasks = [{"item": q["item"], "count": q.get("count", 1)}]
+    else:
+        tasks = []
+    return [t.get("count", 1) for t in tasks
+            if task_kind(t) == "item" and not t.get("consume") and t.get("count", 1) >= 2]
+
+
+def cited_unbound_keys(paragraphs):
+    return sorted({m.group(2) for m in TAG.finditer(" ".join(paragraphs)) if m.group(1) == "key"} & unbound_keys())
+
+
+def auto_notes(q):
+    """{lang: [note paragraphs]} the quest's data asks for: the unbound keys it cites (F49), unless the text already
+    says where to set them, and the held count of its item tasks (F40), unless it already says "at once"."""
+    notes = {lang: [] for lang in LOCALES}
+    texts = {lang: q[lang]["text"] for lang in LOCALES}
+    keys = cited_unbound_keys(texts["en_us"] + texts["es_es"])
+    if keys and not all(UNBOUND_SAID[lang].search(" ".join(texts[lang])) for lang in LOCALES):
+        for lang in LOCALES:
+            notes[lang].append(UNBOUND_NOTE[lang][len(keys) > 1])
+    counts = held_counts(q)
+    if counts and not all(CARRY_SAID[lang].search(" ".join(texts[lang])) for lang in LOCALES):
+        for lang in LOCALES:
+            notes[lang].append(CARRY_NOTE[lang][0].format(n=counts[0]) if len(counts) == 1 else CARRY_NOTE[lang][1])
+    return notes
+
+
+def with_notes(q, name, ctx):
+    """{lang: paragraphs}: the quest's text with its auto_notes at the end. When they would push a one-page text past
+    MAX_PAGE_CHARS they open a page of their own."""
+    notes = auto_notes(q)
+    texts = {lang: list(q[lang]["text"]) for lang in LOCALES}
+    if not notes["en_us"]:
+        return texts
+    paged = False
+    if all("{page}" not in texts[lang] for lang in LOCALES):
+        for lang in LOCALES:
+            probe = dict(ctx, items=set(), names=set(), keys=set(), textures=set())
+            _, first = compile_text(texts[lang] + notes[lang], lang, probe, f"{name}:{q['key']}:{lang}")
+            paged |= len(first) > MAX_PAGE_CHARS
+    return {lang: texts[lang] + (["{page}"] if paged else []) + notes[lang] for lang in LOCALES}
 
 
 def check_copy(title, subtitle, first_page, lang, where):
@@ -598,11 +676,96 @@ def any_icon(t, ctx, key=""):
     return {"id": items[0]}
 
 
-def compile_task(t, key, index, languages, ctx):
+def carried_items():
+    """The equippables of tools/carried_items.json (read once)."""
+    global _CARRIED
+    if _CARRIED is None:
+        items = json.loads(CARRIED_ITEMS_FILE.read_text(encoding="utf-8"))["items"]
+        assert all(ID.fullmatch(i) for i in items), "tools/carried_items.json: item ids"
+        _CARRIED = frozenset(items)
+    return _CARRIED
+
+
+def carried_task(out):
+    """An item task that waits for an equippable without taking it -> entrelumen:carried_item, which also counts
+    armour, the off hand and Curios: {"type", "item", "count"}; ID, icon and title stay. A component variant (the
+    nine-pocket Tool Belt) stays an FTB item task: the companion's task matches the item id only, so it would pass on
+    any belt, while the variant is crafted into the inventory, where FTB's task sees it."""
+    if (out["type"] != "item" or out.get("consume_items") or out["item"]["id"] not in carried_items()
+            or out["item"].get("components")):
+        return out
+    out["type"] = CARRIED_TASK
+    out.pop("consume_items", None)
+    return out
+
+
+def unbound_keys():
+    """Key mapping ids the pack ships unbound (tools/unbound_keys.json, read once)."""
+    global _UNBOUND
+    if _UNBOUND is None:
+        _UNBOUND = frozenset(json.loads(UNBOUND_KEYS_FILE.read_text(encoding="utf-8"))["keys"])
+    return _UNBOUND
+
+
+def task_target(t):
+    """What a task asks for, without its count or consume flag: the item and its components, the any-of filter, or
+    the advancement, dimension, biome, structure, entity, observed target or stat. A checkmark asks for nothing."""
+    kind = task_kind(t)
+    if kind == "item" and "any" in t:
+        return filter_expression(sorted(t["any"]))
+    if kind == "item":
+        components = t.get("components")
+        return t["item"] + (json.dumps(components, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+                            if components else "")
+    if kind == "advancement":
+        return t["advancement"] + ("#" + t["criterion"] if t.get("criterion") else "")
+    if kind in ("dimension", "biome", "structure"):
+        return t[kind]
+    if kind == "kill":
+        return t["entity"]
+    if kind == "observation":
+        return f"{t['observe']}={t['target']}"
+    if kind == "stat":
+        return t["stat"]
+    return ""
+
+
+def task_ids(q):
+    """[(task ID, content signature)] of a sector quest. FTB keeps a team's progress by task ID, so an ID must keep
+    meaning the same requirement whatever is inserted or reordered around it (F48):
+    - the signature is task:<quest>:<kind>:<target> (task_target), with :2, :3… for a repeated identical task; the
+      count and consume flag are not part of it, so raising a count keeps the progress;
+    - every task takes stable_id(signature), one-task quests too: going from one task to two and back never hands
+      the old progress to another requirement, and a second task never moves the first one's;
+    - a task may pin its ID with "id" (16 hex digits): an ID its own quest used before (tools/task_ids.json), to keep
+      a team's progress when its target is rewritten. Story and guide quests keep task:<key> (generate_quests.py).
+    tools/task_ids.json records every ID the book ever gave with its last signature, retired ones too, and
+    tools/generate_quests.py refuses an ID that would stand for another requirement (generate_quests.task_id_changes)
+    without --accept-task-id-changes."""
+    key = q["key"]
+    tasks = tasks_of(q)
+    seen, out = {}, []
+    for t in tasks:
+        base = f"task:{key}:{task_kind(t)}:{task_target(t)}"
+        seen[base] = seen.get(base, 0) + 1
+        signature = base if seen[base] == 1 else f"{base}:{seen[base]}"
+        if "id" in t:
+            tid = t["id"]
+            assert isinstance(tid, str) and EXPLICIT_TASK_ID.fullmatch(tid) and 0 < int(tid, 16) < 2 ** 63, \
+                f"{key}: a task's own id is 16 uppercase hex digits of a positive 63-bit number"
+        else:
+            tid = stable_id(signature)
+        out.append((tid, signature))
+    assert len({tid for tid, _ in out}) == len(out), f"{key}: two tasks share an ID"
+    return out
+
+
+def compile_task(t, key, tid, languages, ctx):
+    """One task of a sector quest; tid comes from task_ids."""
     kind = task_kind(t)
     assert kind in TASK_TYPES, f"{key}: task type {kind}"
     assert "any" not in t or kind == "item", f"{key}: any-of is an item task"
-    tid = stable_id(f"task:{key}" if index == 0 else f"task:{key}:{index}")
+    assert isinstance(tid, str) and EXPLICIT_TASK_ID.fullmatch(tid), f"{key}: task ID {tid!r}"
     out = {"id": tid, "type": kind}
     if kind == "item" and "any" in t:
         out.update(any_item_task(t, key, ctx))
@@ -623,6 +786,7 @@ def compile_task(t, key, index, languages, ctx):
             out["item"]["components"] = components
             out["match_components"] = "fuzzy"
         ctx["items"].add(t["item"])
+        carried_task(out)
     elif kind == "advancement":
         assert ID.fullmatch(t["advancement"]), f"{key}: advancement"
         out.update(advancement=t["advancement"], criterion=t.get("criterion", ""))
@@ -883,8 +1047,10 @@ def sector_rewards(q, role, act, book, tables, chapter=None, gated=frozenset()):
             crate["random_bonus"] = 1
         out.append(crate)
     if role == "secret":
+        # Not a team reward: a secret found by a kill has no player to hand a team auto-reward to, so FTB would
+        # hold the toast until the next login (and leave an unclaimed marker meanwhile).
         out.append({"id": stable_id(f"reward:{key}:toast"), "type": "toast", "description": "entrelumen.quests.toast.secret",
-                    "auto": "invisible"})
+                    "auto": "invisible", "team_reward": False})
     if role == "capstone":
         out.append({"id": stable_id(f"reward:{key}:fanfare"), "type": "command", "auto": "invisible",
                     "command": rules["fanfare"], "permission_level": 2, "silent": True})
@@ -905,7 +1071,7 @@ def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_id
     assert len(by_key) == len(quests), f"{name}: duplicate key"
     ctx = {"items": set(), "names": set(), "keys": set(), "textures": set(), "entities": set(),
            "structures": set(), "advancements": set(), "accent": motif["accent"],
-           "presentation": data.get("presentation", 1)}
+           "presentation": data.get("presentation", 1), "task_ids": {}}
 
     def resolve_quest(target, where):
         assert target in all_keys, f"{where}: link to unknown quest {target}"
@@ -1039,8 +1205,11 @@ def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_id
             curves[stable_id("quest:" + dep)] = bezier_points((x, y), size, placed[dep], bend)
         if curves:
             out["dep_control_pts"] = curves
-        for i, t in enumerate(tasks):
-            out["tasks"].append(compile_task(t, key, i, languages, ctx))
+        for t, (tid, signature) in zip(tasks, task_ids(q)):
+            assert tid not in seen_ids, f"{key}: task ID {tid} ({signature}) is already taken"
+            seen_ids.add(tid)
+            ctx["task_ids"][tid] = signature
+            out["tasks"].append(compile_task(t, key, tid, languages, ctx))
         chapter["quests"].append(out)
         nodes.append((key, x, y, size))
         texts = quest_copy(q, name, ctx)

@@ -144,10 +144,10 @@ class AnyOfTasks(unittest.TestCase):
         cls.guides = load_guides(cls.book)
         cls.sectors = {s["chapter"]: s for s in qe.load_sectors()}
 
-    def compile(self, task, index=0):
+    def compile(self, task, tid=None):
         languages = {lang: {} for lang in LOCALES}
         ctx = ctx_for()
-        return qe.compile_task(task, "crb_press", index, languages, ctx), languages, ctx
+        return qe.compile_task(task, "crb_press", tid or qe.stable_id("task:crb_press"), languages, ctx), languages, ctx
 
     def test_items_and_tags_compile_to_one_smart_filter(self):
         out, languages, ctx = self.compile({"any": ["minecraft:oak_log", "#minecraft:logs"], "count": 4,
@@ -162,9 +162,11 @@ class AnyOfTasks(unittest.TestCase):
         self.assertEqual((ctx["items"], ctx["item_tags"]), ({"minecraft:oak_log"}, {"minecraft:logs"}))
 
     def test_one_tag_needs_no_or_and_takes_the_given_icon(self):
-        out, _, _ = self.compile({"any": ["#c:ingots/copper"], "icon": "minecraft:copper_ingot", "consume": True,
-                                  "title": self.TITLE}, 1)
-        self.assertEqual(out["id"], qe.stable_id("task:crb_press:1"))
+        task = {"any": ["#c:ingots/copper"], "icon": "minecraft:copper_ingot", "consume": True, "title": self.TITLE}
+        tid, signature = qe.task_ids({"key": "crb_press", "tasks": [{"item": "create:shaft"}, task]})[1]
+        self.assertEqual(signature, "task:crb_press:item:item_tag(c:ingots/copper)")
+        out, _, _ = self.compile(task, tid)
+        self.assertEqual(out["id"], qe.stable_id(signature))
         self.assertEqual(out["item"]["components"], {"ftbfiltersystem:filter": "item_tag(c:ingots/copper)"})
         self.assertEqual((out["icon"], out["consume_items"], out["count"]), ({"id": "minecraft:copper_ingot"}, True, 1))
 
@@ -211,7 +213,7 @@ class AnyOfTasks(unittest.TestCase):
         quests = {q["id"]: q for q in chapter["quests"]}
         q = quests[stable_id("quest:" + step["key"])]
         self.assertEqual(q["icon"], {"id": "create:andesite_alloy"})
-        self.assertEqual(q["tasks"], [{"id": stable_id("task:" + step["key"]), "type": "item",
+        self.assertEqual(q["tasks"], [{"id": qe.task_ids(step)[0][0], "type": "item",
                                        "item": {"id": "ftbfiltersystem:smart_filter", "count": 1, "components": {
                                            "ftbfiltersystem:filter": "or(item(create:andesite_alloy)item_tag(c:ingots/zinc))"}},
                                        "count": 2, "consume_items": False, "icon": {"id": "create:andesite_alloy"}}])
@@ -591,6 +593,249 @@ class Sectors(unittest.TestCase):
             with self.subTest(message=message):
                 with self.assertRaisesRegex(AssertionError, message):
                     generate_book(self.story, self.guides, self.book, sectors)
+
+    # Review fixes of 1 October 2026 (ultra review, batch quest-engine) on the whole book.
+
+    def test_secret_toasts_and_kill_quest_auto_rewards_are_not_team_rewards(self):
+        # F74: a kill has no player context, so a team auto reward would wait for the next login.
+        toasts = 0
+        for q in self.quests.values():
+            kill = any(t["type"] == "kill" for t in q["tasks"])
+            for r in q["rewards"]:
+                if r["type"] == "toast":
+                    toasts += 1
+                    self.assertIs(r["team_reward"], False)
+                if kill and r.get("auto"):
+                    with self.subTest(quest=q["id"], reward=r["type"]):
+                        self.assertIs(r.get("team_reward"), False)
+        self.assertGreater(toasts, 0)
+
+    def test_no_required_quest_waits_on_optional_work(self):
+        # F27 (decision D7): optional work a required all-completed quest needs is promoted to required.
+        import generate_quests
+        self.assertEqual(generate_quests.hard_optional_edges(self.chapters), [])
+        promoted = [source for name, data in self.sectors.items() for source, q in
+                    zip(data["quests"], self.sector_quests(name)) if qe.ROLES[source["role"]][2] and not q.get("optional")
+                    and qe.task_kind(qe.tasks_of(source)[0]) != "checkmark"]
+        self.assertGreater(len(promoted), 0)
+        for source in promoted:   # promoted, not redrawn: the role's tag stays (shapes: test_nodes_follow_the_role_grammar)
+            self.assertIn(f"entrelumen_{source['role']}", self.quests[stable_id("quest:" + source["key"])]["tags"])
+
+    def test_equippables_are_carried_item_tasks(self):
+        # F25: a worn or off-hand item never sits in the 36 slots FTB's item task counts.
+        carried = qe.carried_items()
+        seen = 0
+        for q in self.quests.values():
+            for t in q["tasks"]:
+                if t["type"] == qe.CARRIED_TASK:
+                    seen += 1
+                    self.assertIn(t["item"]["id"], carried)
+                    self.assertEqual(set(t) - {"icon", "title"}, {"id", "type", "item", "count"})
+                    self.assertNotIn("components", t["item"])
+                elif t["type"] == "item":   # a component variant stays FTB's: the carried task ignores components
+                    self.assertFalse(t["item"]["id"] in carried and not t["consume_items"]
+                                     and not t["item"].get("components"), t)
+        self.assertGreaterEqual(seen, 23)
+
+    def test_unbound_keys_say_where_to_set_them(self):
+        # F49: every quest that shows a key the pack ships unbound says where to bind it, in both languages.
+        unbound = qe.unbound_keys()
+        cited = 0
+        for lang in LOCALES:
+            for name, lines in self.lang[lang].items():
+                text = "\n".join(lines) if name.endswith(".quest_desc") else ""
+                if any(f'"keybind":"{k}"' in text for k in unbound):
+                    cited += 1
+                    self.assertRegex(text, qe.UNBOUND_SAID[lang], name)
+        self.assertGreater(cited, 0)
+
+    # F75: a sector labelled act III or later starts with an item task, a dependency on another chapter or an explicit
+    # "early_reachable" waiver; otherwise act I players walk in and draw its act's reward tables. These were labelled
+    # before the rule and wait for a content review (decision D8): the list may only shrink, and a sector leaves it
+    # as soon as it no longer opens early (the Bumblezone hive and the deep worlds did when they became act II).
+    LATE_LABEL_REVIEW = {"sector_ae2_network", "sector_apotheosis_spawners", "sector_bees_breeding",
+                         "sector_mahou", "sector_starlight_night", "sector_twilight"}
+
+    def test_late_act_sectors_open_behind_an_item_or_a_dependency(self):
+        open_early = set()
+        for name, data in self.sectors.items():
+            if qe.ACT_TIER[data["act"]] <= 2 or data.get("early_reachable"):
+                continue
+            entry = next(q for q in data["quests"] if q["key"] == data["entry"])
+            if entry["deps"] or "item" in [qe.task_kind(t) for t in qe.tasks_of(entry)]:
+                continue
+            open_early.add(name)
+        self.assertEqual(open_early, self.LATE_LABEL_REVIEW)
+
+
+class TaskIds(unittest.TestCase):
+    """F48: a task's ID follows what it asks for, not its position, so saved progress never lands on another task."""
+
+    @staticmethod
+    def quest(*tasks):
+        return {"key": "crb_press", "tasks": list(tasks)}
+
+    def test_signature_ids_survive_inserts_reorders_and_new_counts(self):
+        a, b = {"item": "create:shaft", "count": 4}, {"type": "advancement", "advancement": "create:root"}
+        c = {"type": "kill", "entity": "minecraft:zombie", "value": 3}
+        first = dict(qe.task_ids(self.quest(a, b)))
+        later = dict(qe.task_ids(self.quest(c, dict(b), dict(a, count=64, consume=True))))
+        self.assertEqual({sig: tid for tid, sig in first.items()},
+                         {sig: tid for tid, sig in later.items() if sig in first.values()})
+        self.assertEqual(sorted(later.values()), ["task:crb_press:advancement:create:root",
+                                                  "task:crb_press:item:create:shaft",
+                                                  "task:crb_press:kill:minecraft:zombie"])
+        self.assertTrue(all(tid == qe.stable_id(sig) for tid, sig in later.items()))
+
+    def test_targets_cover_every_kind_and_repeats_take_an_occurrence(self):
+        tasks = [{"item": "create:wrench", "components": {"ars_technica:runic_wrench": True}},
+                 {"any": ["#minecraft:logs", "minecraft:stick"], "title": {}},
+                 {"type": "observation", "observe": "block", "target": "minecraft:bell"},
+                 {"type": "stat", "stat": "minecraft:jump", "value": 10},
+                 {"type": "dimension", "dimension": "minecraft:the_nether"},
+                 {"item": "create:shaft"}, {"item": "create:shaft", "count": 9}]
+        sigs = [sig for _, sig in qe.task_ids(self.quest(*tasks))]
+        self.assertEqual(sigs, ['task:crb_press:item:create:wrench{"ars_technica:runic_wrench":true}',
+                                "task:crb_press:item:or(item_tag(minecraft:logs)item(minecraft:stick))",
+                                "task:crb_press:observation:block=minecraft:bell",
+                                "task:crb_press:stat:minecraft:jump", "task:crb_press:dimension:minecraft:the_nether",
+                                "task:crb_press:item:create:shaft", "task:crb_press:item:create:shaft:2"])
+
+    def test_one_task_takes_its_signature_id_and_an_explicit_id_wins(self):
+        # One task or several, the ID is the signature's: going from one task to two and back to one never hands
+        # the old progress to another requirement, and adding a second task keeps the first one's.
+        one = qe.task_ids(self.quest({"item": "create:shaft"}))
+        self.assertEqual(one, [(qe.stable_id("task:crb_press:item:create:shaft"), "task:crb_press:item:create:shaft")])
+        two = qe.task_ids(self.quest({"item": "create:cogwheel"}, {"item": "create:shaft", "count": 3}))
+        self.assertEqual(two[1], one[0])
+        back = qe.task_ids(self.quest({"item": "create:cogwheel"}))
+        self.assertEqual(back, two[:1])
+        self.assertNotIn(qe.stable_id("task:crb_press"), {tid for tid, _ in one + two + back})
+        pinned = qe.task_ids(self.quest({"item": "create:shaft", "id": "0123456789ABCDEF"}, {"item": "create:cogwheel"}))
+        self.assertEqual(pinned[0], ("0123456789ABCDEF", "task:crb_press:item:create:shaft"))
+        for bad in ("123", "0123456789abcdef", "F123456789ABCDEF", "0000000000000000"):
+            with self.subTest(id=bad), self.assertRaisesRegex(AssertionError, "own id"):
+                qe.task_ids(self.quest({"item": "create:shaft", "id": bad}))
+        with self.assertRaisesRegex(AssertionError, "share an ID"):
+            qe.task_ids(self.quest({"item": "create:shaft", "id": "0123456789ABCDEF"},
+                                   {"item": "create:cogwheel", "id": "0123456789ABCDEF"}))
+
+    def test_the_guard_reads_retired_ids_and_lets_a_quest_pin_its_own(self):
+        import generate_quests
+        changes = generate_quests.task_id_changes
+        self.assertEqual(changes({"A": "task:x:item:a"}, {"A": "task:x:item:b", "B": "y"}),
+                         ["A: task:x:item:a -> task:x:item:b"])
+        # A pin rewrites what its own quest's ID asks for and keeps the progress; another quest's ID stays refused.
+        self.assertEqual(changes({"A": "task:x:item:a"}, {"A": "task:x:item:b"}, {"A": "x"}), [])
+        self.assertEqual(changes({"A": "task:x:item:a"}, {"A": "task:y:item:b"}, {"A": "y"}),
+                         ["A: task:x:item:a -> task:y:item:b"])
+        # A retired ID stays in the manifest with its last signature, so its return under a pin is still compared.
+        data = copy.deepcopy(next(s for s in qe.load_sectors() if s["chapter"] == "sector_create_addons"))
+        step = next(q for q in data["quests"] if q["role"] == "step" and len(qe.tasks_of(q)) == 1)
+        retired = qe.task_ids(step)[0]
+        step.pop("tasks", None)
+        step["task"] = {"item": "minecraft:bell"}
+        sectors = [s for s in qe.load_sectors() if s["chapter"] != data["chapter"]] + [data]
+        book = load_book()
+        files = generate_book(load_chapters(), load_guides(book), book, sectors)
+        manifest = json.loads(files[generate_quests.TASK_IDS])
+        self.assertEqual(manifest[retired[0]], retired[1])
+        self.assertEqual(manifest[qe.task_ids(step)[0][0]], f"task:{step['key']}:item:minecraft:bell")
+        stolen = {retired[0]: "task:another_quest:item:minecraft:bell"}
+        self.assertEqual(changes(manifest, stolen, {retired[0]: "another_quest"}),
+                         [f"{retired[0]}: {retired[1]} -> task:another_quest:item:minecraft:bell"])
+
+    def test_committed_task_ids_keep_their_meaning(self):
+        # tools/task_ids.json records every sector task ID the book has given, retired ones too, with its signature:
+        # an ID that now stands for another requirement would hand a team's saved progress to it.
+        # generate_quests.py refuses that without --accept-task-id-changes, and never drops an entry.
+        import generate_quests
+        committed = json.loads(generate_quests.TASK_IDS.read_text(encoding="utf-8"))
+        sectors = qe.load_sectors()
+        current = {tid: sig for data in sectors for q in data["quests"] for tid, sig in qe.task_ids(q)}
+        self.assertEqual(generate_quests.task_id_changes(committed, current, generate_quests.pinned_task_ids(sectors)),
+                         [])
+        self.assertLessEqual(current.keys(), committed.keys())
+        self.assertEqual(len(current), sum(len(qe.tasks_of(q)) for d in sectors for q in d["quests"]))
+        self.assertTrue(all(tid == qe.stable_id(sig) for tid, sig in current.items()
+                            if tid not in generate_quests.pinned_task_ids(sectors)))
+
+
+class ReviewEngine(unittest.TestCase):
+    """Engine rules of the 1 October 2026 review that need no whole book."""
+
+    def test_emi_binds_are_not_keys(self):
+        # F50: EMI's binds are its own config, so the keybind component would print the action's name.
+        with self.assertRaisesRegex(AssertionError, "EMI config bind"):
+            qe.compile_paragraph("Press [key:key.emi.view_uses] on it.", "en_us", ctx_for(), "t")
+
+    def test_carried_task_only_for_listed_non_consuming_items(self):
+        item = sorted(qe.carried_items())[0]
+        out = qe.carried_task({"id": "0123456789ABCDEF", "type": "item", "item": {"id": item, "count": 1}, "count": 2,
+                               "consume_items": False, "title": "kept"})
+        self.assertEqual(out, {"id": "0123456789ABCDEF", "type": "entrelumen:carried_item",
+                               "item": {"id": item, "count": 1}, "count": 2, "title": "kept"})
+        for task in ({"type": "item", "item": {"id": item, "count": 1}, "count": 1, "consume_items": True},
+                     {"type": "item", "item": {"id": "minecraft:stone", "count": 1}, "count": 1, "consume_items": False},
+                     {"type": "item", "item": {"id": item, "count": 1, "components": {"a:b": 9}}, "count": 1,
+                      "consume_items": False, "match_components": "fuzzy"}):
+            self.assertEqual(qe.carried_task(dict(task))["type"], "item")
+
+    def test_promotion_is_transitive_in_sectors_and_refused_in_hand_written_chapters(self):
+        import generate_quests as gq
+        from pathlib import Path
+
+        def quest(key, deps=(), optional=False, kind="item", **extra):
+            q = {"id": stable_id("quest:" + key), "dependencies": [stable_id("quest:" + d) for d in deps],
+                 "tasks": [{"type": kind}], **extra}
+            if optional:
+                q["optional"] = True
+            return q
+        sector, guide = Path("chapters/sector_x.snbt"), Path("chapters/guide_x.snbt")
+        chapters = {sector: {"quests": [quest("boss", optional=True), quest("side", ["boss"], optional=True),
+                                        quest("tip", optional=True, kind="checkmark"), quest("cap", ["side", "tip"]),
+                                        quest("alt", optional=True), quest("pick", ["alt", "cap"],
+                                                                           dependency_requirement="one_completed")]},
+                    guide: {"quests": [quest("g_opt", optional=True), quest("g_close", ["g_opt"])]}}
+        keys = {"boss", "side", "tip", "cap", "alt", "pick", "g_opt", "g_close"}
+        files = {}
+        with self.assertRaisesRegex(AssertionError, "g_close needs g_opt"):
+            gq.promote_prerequisites(copy.deepcopy(chapters), {}, {"sector_x"}, keys)
+        del chapters[guide]
+        changed = gq.promote_prerequisites(chapters, files, {"sector_x"}, keys)
+        flags = {k: q.get("optional", False) for k, q in zip(("boss", "side", "tip", "cap", "alt", "pick"),
+                                                             chapters[sector]["quests"])}
+        self.assertEqual(flags, {"boss": False, "side": False, "tip": True, "cap": False, "alt": True, "pick": False})
+        self.assertEqual((changed, set(files)), ({sector}, {sector}))
+
+    def test_advancement_guard_reads_the_1_21_folder_and_shape(self):
+        # F2: 1.21 loads data/<ns>/advancement/ only, with "id" icons and "items" filters.
+        import io
+        import zipfile
+        import check_guides as cg
+        good = {"display": {"icon": {"id": "minecraft:honeycomb"}, "title": "x", "description": "y"},
+                "criteria": {"c": {"trigger": "minecraft:inventory_changed",
+                                   "conditions": {"items": [{"items": "#c:honeycombs"}]}}}}
+        old = {"display": {"icon": {"item": "minecraft:honeycomb"}, "title": "x", "description": "y"},
+               "criteria": {"c": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"tag": "c:x"}]}}}}
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w") as z:
+            z.writestr("data/bees/advancement/good.json", json.dumps(good))
+            z.writestr("data/bees/advancement/old.json", json.dumps(old))
+            z.writestr("data/bees/advancements/plural.json", json.dumps(good))
+        index = {}
+        with zipfile.ZipFile(buf) as z:
+            cg.scan_advancements(z, index)
+        self.assertEqual(sorted(index), ["bees:good", "bees:old"])
+        errors = []
+        cg.check_advancement_tasks(errors, tasks=[("s", "a", "bees:good"), ("s", "b", "bees:old"),
+                                                  ("s", "c", "bees:plural")], jar_index=index, pack_index={})
+        self.assertEqual(len(errors), 3)
+        self.assertTrue(any("s:c: advancement bees:plural is in no" in e for e in errors))
+        self.assertTrue(any('"id"' in e for e in errors) and any('"tag"' in e for e in errors))
+        errors = []   # a fixed copy in the pack replaces the mod's
+        cg.check_advancement_tasks(errors, tasks=[("s", "b", "bees:old")], jar_index=index, pack_index={"bees:old": []})
+        self.assertEqual(errors, [])
 
 
 def egg(bee, **extra):

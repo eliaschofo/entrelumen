@@ -47,6 +47,7 @@ BOOK = ROOT / "content/quest_book.json"
 GUIDES = ROOT / "content/guides"
 THEME = ROOT / "companion/src/main/resources/assets/ftbquests/ftb_quests_theme.txt"
 FTBQ_LANG = ROOT / "companion/src/main/resources/assets/ftbquests/lang"
+TASK_IDS = ROOT / "tools/task_ids.json"   # sector task ID -> content signature (quest_engine.task_ids)
 LOCALES = ("en_us", "es_es")
 # Acts renumbered 24 September 2026: act V is two chapters (the plan and the activation), act VI Solsticio.
 CHAPTER_SOURCES = ("first_hour.json", "act_two.json", "act_three.json", "act_four.json",
@@ -462,6 +463,7 @@ def generate(data, all_quests=None, order_index=0, book=None):
             assert re.fullmatch(r"[a-z0-9_]+:[a-z0-9_/]+", q["item"])
             assert 1 <= q.get("count", 1) <= 64
             task.update(type="item", item={"id": q["item"], "count": 1}, count=q.get("count", 1), consume_items=False)
+            quest_engine.carried_task(task)   # a worn or off-hand equippable: entrelumen:carried_item
         else:
             assert q["type"] == "checkmark" and q.get("optional"), "checkmarks must be optional learning tasks"
             task.update(type="checkmark")
@@ -622,6 +624,7 @@ def generate_guide(data, group_id, order_index, book, languages, seen_ids, all_k
             # No item-filter mod is installed, so a tag task names one concrete member in "item".
             assert "item" in q, f"{key}: item tasks need a concrete item (tag {q.get('tag')})"
             task.update(item={"id": q["item"], "count": 1}, count=q.get("count", 1), consume_items=False)
+            quest_engine.carried_task(task)   # a worn or off-hand equippable: entrelumen:carried_item
         elif kind == "advancement":
             task.update(advancement=q["advancement"], criterion="")
         elif kind == "dimension":
@@ -780,6 +783,73 @@ def v2_glyphs(data):
             for para in q[lang]["text"] for ref in quest_engine.quest_text.icon_refs_in(para)}
 
 
+def waits_on_all(q):
+    """A quest the chapter's progress waits for that needs every dependency: required, not repeatable, and neither
+    one_completed nor min_required_dependencies."""
+    return (not q.get("optional") and not q.get("can_repeat") and "dependency_requirement" not in q
+            and "min_required_dependencies" not in q)
+
+
+def optional_work(q):
+    """An optional quest that asks for real work (a checkmark is a free click, so it may stay optional)."""
+    return bool(q.get("optional")) and not all(t["type"] == "checkmark" for t in q["tasks"])
+
+
+def hard_optional_edges(chapters):
+    """[(quest, prerequisite's chapter, prerequisite)] where a quest that waits on all its dependencies depends on
+    optional work: FTB would lock it behind a quest the progress bar never asks for (F27)."""
+    by_id = {q["id"]: (path, q) for path, chapter in chapters.items() for q in chapter["quests"]}
+    return [(q, *by_id[d]) for chapter in chapters.values() for q in chapter["quests"] if waits_on_all(q)
+            for d in q["dependencies"] if d in by_id and optional_work(by_id[d][1])]
+
+
+def promote_prerequisites(chapters, files, sector_names, all_keys):
+    """Optional work that a required all-completed quest depends on becomes required (F27; Elias's decision D7,
+    1 October 2026), across chapters and until nothing changes, since a promoted quest may wait on optional work
+    in turn. Only sector quests are promoted, keeping their shape and role; a guide or story chapter is hand-written,
+    so the same edge there fails with its keys. chapters maps paths to compiled chapters; files gets the changed
+    sector chapters back."""
+    key_of = {stable_id("quest:" + k): k for k in all_keys}
+    changed, refused = set(), set()
+    while True:
+        edges = [(q, home, p) for q, home, p in hard_optional_edges(chapters) if (q["id"], p["id"]) not in refused]
+        promoted = False
+        for q, home, p in edges:
+            if home.stem in sector_names:
+                if p.pop("optional", None):
+                    changed.add(home)
+                    promoted = True
+            else:
+                refused.add((q["id"], p["id"]))
+        if not promoted:
+            break
+    for path in changed:
+        files[path] = snbt(chapters[path])
+    if refused:
+        names = sorted(f"{key_of.get(q, q)} needs {key_of.get(p, p)}" for q, p in refused)
+        raise AssertionError("required quests wait on optional work in a hand-written chapter (make the prerequisite "
+                             "required or drop the edge): " + "; ".join(names))
+    assert not hard_optional_edges(chapters), "a required quest still waits on optional work"
+    return changed
+
+
+def check_unbound_keys(languages):
+    """Every quest text that shows a key the pack ships unbound (tools/unbound_keys.json) also says where to set it:
+    the bound key would print "[Not Bound]" as if it were the instruction (F49)."""
+    unbound = quest_engine.unbound_keys()
+    missing = []
+    for lang in LOCALES:
+        said = quest_engine.UNBOUND_SAID[lang]
+        for name, lines in languages[lang].items():
+            if not name.endswith(".quest_desc"):
+                continue
+            text = "\n".join(lines)
+            keys = {k for k in re.findall(r'"keybind":"([^"]+)"', text) if k in unbound}
+            if keys and not said.search(text):
+                missing.append(f"{name} ({lang}): {', '.join(sorted(keys))}")
+    assert not missing, "unbound keys cited without saying where to set them: " + "; ".join(missing)
+
+
 def generate_book(chapters=None, guides=None, book=None, sectors=None):
     """Every generated file: story (generate_all), hub, guides, sector chapters, chapter groups, reward
     tables, data.snbt presets, theme and the companion's ftbquests strings."""
@@ -789,9 +859,10 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     sectors = sectors if sectors is not None else quest_engine.load_sectors()
     files = generate_all(chapters, book)
     languages = {lang: json.loads(files[OUT / "lang" / (lang + ".snbt")]) for lang in LOCALES}
-    story_ids = {q["id"] for data in chapters
-                 for q in json.loads(files[OUT / "chapters" / (data["chapter"] + ".snbt")])["quests"]}
-    seen = set(story_ids) | {stable_id("task:" + q["key"]) for data in chapters for q in data["quests"]}
+    # Every ID the story emitted, its quests' and their tasks': guides and sectors may take none of them.
+    seen = {i for data in chapters for q in json.loads(files[OUT / "chapters" / (data["chapter"] + ".snbt")])["quests"]
+            for i in [q["id"]] + [t["id"] for t in q["tasks"]]}
+    task_ids = {}   # sector task ID -> its content signature (tools/task_ids.json)
     groups = []
     first = {}
     for group in book["groups"]:
@@ -835,6 +906,7 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
                 data, book, tables, languages, seen, all_keys, chapter_names, gid, order[gid], gated)
             presets.update(sector_presets)
             glyphs |= sector_ctx.get("glyphs", set())
+            task_ids.update(sector_ctx["task_ids"])
         else:
             chapter = generate_guide(data, gid, order[gid], book, languages, seen, all_keys, chapter_names)
             glyphs |= v2_glyphs(data)
@@ -845,6 +917,8 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
         assert set(first) == {g["id"] for g in book["groups"]}, "every group needs guides"
         hub = build_hub(book, chapters, first, ordered, languages)
         files[OUT / "chapters" / (book["hub"]["chapter"] + ".snbt")] = snbt(hub)
+    promote_prerequisites({path: json.loads(files[path]) for path in files if path.parent == OUT / "chapters"},
+                          files, {data["chapter"] for data in sectors}, all_keys)
     # What the real client draws (tools/quest_client.py): sheets as sprites or tile glyphs.
     quest_client.reset()
     compiled = {path: quest_client.fix_chapter(json.loads(files[path]), languages)
@@ -857,8 +931,12 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     for lang in LOCALES:
         languages[lang]["file.0000000000000001.title"] = book["file_title"]
     assert languages["en_us"].keys() == languages["es_es"].keys(), "locale key mismatch"
+    check_unbound_keys(languages)
     for lang in LOCALES:
         files[OUT / "lang" / (lang + ".snbt")] = snbt(languages[lang])
+    # The manifest never forgets: a retired ID keeps its last signature, so one that comes back is still compared.
+    files[TASK_IDS] = json.dumps(dict(sorted({**known_task_ids(), **task_ids}.items())), ensure_ascii=False,
+                                 indent=1) + "\n"
     data_snbt = json.loads(files[OUT / "data.snbt"])
     data_snbt.update(drop_loot_crates=False, icon={"id": book["hub"]["icon"]},
                      presets=quest_engine.presets_block(presets))
@@ -871,10 +949,37 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     return files
 
 
+def known_task_ids():
+    """tools/task_ids.json: every sector task ID the book has given, retired ones included, with its last signature."""
+    return json.loads(TASK_IDS.read_text(encoding="utf-8")) if TASK_IDS.exists() else {}
+
+
+def pinned_task_ids(sectors):
+    """{task ID: quest key} of the sector tasks that pin their own "id"."""
+    return {t["id"]: q["key"] for data in sectors for q in data["quests"] for t in quest_engine.tasks_of(q) if "id" in t}
+
+
+def task_id_changes(old, new, pinned=None):
+    """Task IDs that tools/task_ids.json knows, retired or not, and that now stand for another requirement: a team's
+    saved progress on the old one would count for the new one (F48). A task that pins its own "id" may take over an
+    ID its own quest gave before, which is what the pin is for; a pin on another quest's ID is still a change."""
+    pinned = pinned or {}
+    return sorted(f"{tid}: {old[tid]} -> {new[tid]}" for tid in old.keys() & new.keys() if old[tid] != new[tid]
+                  and not (tid in pinned and old[tid].startswith(f"task:{pinned[tid]}:")))
+
+
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true')
+    parser.add_argument('--accept-task-id-changes',action='store_true',
+                        help='let a task ID of tools/task_ids.json stand for another requirement (saved progress follows it)')
+    args=parser.parse_args()
     chapters=load_chapters(); book=load_book(); guides=load_guides(book)
     files=generate_book(chapters,guides,book);failures=[]
+    moved=task_id_changes(known_task_ids(),json.loads(files[TASK_IDS]),pinned_task_ids(quest_engine.load_sectors()))
+    if moved and not args.accept_task_id_changes:
+        raise SystemExit('Task IDs would change meaning (a team keeps its progress by task ID): '+'; '.join(moved)+
+                         '. A task\'s own "id" may only take over an ID its own quest gave before; drop that pin, or '
+                         'rerun with --accept-task-id-changes if the progress should carry over.')
     expected={p.resolve() for p in files}
     stale=[p for folder in ('chapters','reward_tables') for p in (OUT/folder).glob('*.snbt') if p.resolve() not in expected]
     for path,content in files.items():
