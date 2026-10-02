@@ -94,6 +94,15 @@ public final class TerraGardenRules {
     return Math.multiplyExact(harvests, keptItems) / fullItems;
   }
 
+  /**
+   * A core's first offset into a period after it loads, from a mixed hash of its packed position
+   * ({@code BlockPos.hashCode} keeps neighbours close), so gardens that load together do not all work on
+   * the same tick; {@code shift} draws the check's phase from other bits than the batch's.
+   */
+  public static long phase(long packedPos, int period, int shift) {
+    return Math.floorMod(it.unimi.dsi.fastutil.HashCommon.mix(packedPos) >>> shift, (long) period);
+  }
+
   /** Harvests a second of the garden. */
   public static double harvestsPerSecond() {
     return HARVESTS_PER_BATCH * 20.0 / BATCH_TICKS;

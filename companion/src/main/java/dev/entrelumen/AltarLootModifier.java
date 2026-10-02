@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.function.Predicate;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -28,7 +29,8 @@ import net.neoforged.neoforge.common.util.FakePlayer;
  *   <li>{@code growth}: a ripe harvest (see {@link GrowthAltarEntity#ripe}) inside an active Altar of
  *       Growth gives twice its drops. Seeds ({@code c:seeds}) and the items and crops tagged
  *       {@code entrelumen:growth_altar_no_bonus} (Mystical Agriculture's essences and crops) keep
- *       their count and rate. An unripe crop gets nothing, so replanting cannot duplicate.</li>
+ *       their count and rate. An unripe crop gets nothing, so replanting cannot duplicate. Terra's
+ *       garden engine, whose rolls have their origin at its core, gets nothing either.</li>
  *   <li>{@code time}: a hostile, non-boss mob a real player kills inside an active Altar of Time
  *       drops three times its loot. Bosses, fake-player kills and items tagged
  *       {@code entrelumen:time_altar_no_bonus} are left alone.</li>
@@ -68,6 +70,8 @@ public final class AltarLootModifier extends LootModifier {
     if (state == null || !context.getQueriedLootTableId().equals(state.getBlock().getLootTable().location())
         || state.is(AltarEffects.GROWTH_NO_BONUS_BLOCKS) || !GrowthAltarEntity.ripe(state)
         || !inside(context.getLevel(), AltarType.GROWTH, origin)) return loot;
+    // Terra's engine rolls its crop's table with the origin at its core; it refuses outside multipliers
+    if (context.getLevel().getBlockEntity(BlockPos.containing(origin)) instanceof TerraGardenCoreEntity) return loot;
     return multiply(loot, AltarEffectRules.GROWTH_HARVEST_MULTIPLIER,
         stack -> stack.is(Tags.Items.SEEDS) || stack.is(AltarEffects.GROWTH_NO_BONUS_ITEMS));
   }

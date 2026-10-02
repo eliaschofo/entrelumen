@@ -72,6 +72,26 @@ class AltarRulesTest {
   }
 
   @Test
+  void overlappingFieldsOfOneTypeHaveOneOwnerPerBlock() {
+    var index = new AltarRegistry.Index();
+    var low = new net.minecraft.core.BlockPos(0, 64, 0);
+    var high = new net.minecraft.core.BlockPos(10, 64, 0);
+    index.put(new AltarRegistry.Entry(AltarType.GROWTH, low, 16, 4));
+    index.put(new AltarRegistry.Entry(AltarType.GROWTH, high, 16, 4));
+    index.put(new AltarRegistry.Entry(AltarType.TIME, new net.minecraft.core.BlockPos(-5, 64, 0), 16, 4));
+    var shared = new net.minecraft.core.BlockPos(5, 64, 3);
+    assertTrue(low.compareTo(high) < 0);
+    assertFalse(index.anyCoveringBefore(AltarType.GROWTH, shared.getX(), shared.getY(), shared.getZ(), low),
+        "the lowest altar owns the shared block; another type does not outrank it");
+    assertTrue(index.anyCoveringBefore(AltarType.GROWTH, shared.getX(), shared.getY(), shared.getZ(), high));
+    var onlyHigh = new net.minecraft.core.BlockPos(20, 64, 0);
+    assertFalse(index.anyCoveringBefore(AltarType.GROWTH, onlyHigh.getX(), onlyHigh.getY(), onlyHigh.getZ(), high),
+        "outside the lower field the higher altar still ticks");
+    index.remove(low);
+    assertFalse(index.anyCoveringBefore(AltarType.GROWTH, shared.getX(), shared.getY(), shared.getZ(), high));
+  }
+
+  @Test
   void theLoadedAreaCoversTheDiscItsCanopiesAndTheirNeighbours() {
     for (int[] center : new int[][] {{0, 0}, {15, -16}, {-1000, 523}}) {
       int radius = AltarRules.RENEWAL_ARK_RADIUS, reach = radius + AltarRules.TREE_MARGIN + 1;

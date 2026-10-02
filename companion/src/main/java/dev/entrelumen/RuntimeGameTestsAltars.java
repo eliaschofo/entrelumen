@@ -1331,6 +1331,84 @@ public final class RuntimeGameTestsAltars {
     });
   }
 
+  // ---- Accelerators and overlapping fields ---------------------------------------------------------------
+
+  /** A Growth altar on stone at a relative position, fuelled with bone blocks through its capability. */
+  private static GrowthAltarEntity fuelledGrowth(GameTestHelper helper, BlockPos relative, int radius, int half, int samples) {
+    ServerLevel level = helper.getLevel();
+    BlockPos pos = helper.absolutePos(relative);
+    level.setBlockAndUpdate(pos.below(), Blocks.STONE.defaultBlockState());
+    level.setBlockAndUpdate(pos, Altars.GROWTH_ALTAR.get().defaultBlockState());
+    var altar = (GrowthAltarEntity) level.getBlockEntity(pos);
+    altar.configureArea(radius, half);
+    altar.configureSamples(samples);
+    var fuel = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, Direction.UP);
+    helper.assertTrue(fuel != null && fuel.insertItem(0, new ItemStack(Items.BONE_BLOCK, 8), false).isEmpty(),
+        "The Growth altar at " + relative.toShortString() + " did not take its bone blocks");
+    return altar;
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 100)
+  public static void altarsRunOnceAGameTickWhateverAcceleratesThem(GameTestHelper helper) {
+    ServerLevel level = helper.getLevel();
+    var deny = net.minecraft.tags.TagKey.create(Registries.BLOCK,
+        net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("justdirethings", "tick_speed_deny"));
+    for (Block block : List.of(Altars.RENEWAL_ALTAR.get(), Altars.TERRAFORM_ALTAR.get(), Altars.PEACE_ALTAR.get(),
+        Altars.GROWTH_ALTAR.get(), Altars.TIME_ALTAR.get(), Altars.REPOSE_ALTAR.get(), TerraGarden.CORE.get(),
+        Terralight.ROD.get(), Terralight.CRYSTAL.get()))
+      helper.assertTrue(block.defaultBlockState().is(deny), BuiltInRegistries.BLOCK.getKey(block) + " is not in tick_speed_deny");
+    var altar = fuelledGrowth(helper, new BlockPos(2, 1, 2), 1, 1, 0);
+    // a Time Wand calls the world ticker again and again in one game tick: only the first call works
+    long before = altar.workingTicks;
+    for (int i = 0; i < 9; i++) altar.worldTick(level);
+    helper.assertTrue(altar.workingTicks - before <= 1, "Nine ticker calls in one game tick worked "
+        + (altar.workingTicks - before) + " times");
+    helper.assertTrue(altar.fuelUsed() == 1, "Extra ticker calls paid fuel: " + altar.fuelUsed());
+    // a test or a direct caller still reaches serverTick itself
+    long direct = altar.workingTicks;
+    altar.serverTick(level);
+    altar.serverTick(level);
+    helper.assertTrue(altar.workingTicks - direct == 2, "serverTick is guarded too");
+    helper.succeed();
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 200)
+  public static void overlappingGrowthAltarsTickASharedCropOnlyOnce(GameTestHelper helper) {
+    ServerLevel level = helper.getLevel();
+    for (int x = 8; x <= 20; x++)
+      for (int z = 14; z <= 26; z++) {
+        level.setBlock(at(helper, x, -1, z), Blocks.DIRT.defaultBlockState(), 2);
+        level.setBlock(at(helper, x, 0, z), Blocks.FARMLAND.defaultBlockState()
+            .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, 7), 2);
+        for (int y = 1; y <= 4; y++) level.setBlock(at(helper, x, y, z), Blocks.AIR.defaultBlockState(), 2);
+      }
+    // the lower altar (smaller x, same y and z) covers the whole field of the higher one
+    var low = fuelledGrowth(helper, new BlockPos(13, 1, 20), 4, 1, 64);
+    var high = fuelledGrowth(helper, new BlockPos(15, 1, 20), 1, 1, 64);
+    helper.assertTrue(low.getBlockPos().compareTo(high.getBlockPos()) < 0, "The fixture's altars are not ranked as meant");
+    List<BlockPos> shared = new ArrayList<>();
+    for (int dx = -1; dx <= 1; dx++)
+      for (int dz = -1; dz <= 1; dz++) {
+        if (dx == 0 && dz == 0) continue;
+        BlockPos crop = high.getBlockPos().offset(dx, 0, dz);
+        level.setBlock(crop, Blocks.WHEAT.defaultBlockState(), 2);
+        shared.add(crop);
+      }
+    for (int i = 0; i < 100; i++) {
+      low.serverTick(level);
+      high.serverTick(level);
+    }
+    helper.assertTrue(high.sampled > 0 && high.ticked == 0, "The higher altar ticked crops the lower one owns: "
+        + high.ticked + " of " + high.sampled + " samples");
+    helper.assertTrue(low.ticked > 0, "The lower altar did not tick the shared crops");
+    // without the lower altar, the higher one ticks its own field again
+    level.setBlockAndUpdate(low.getBlockPos(), Blocks.AIR.defaultBlockState());
+    for (BlockPos crop : shared) level.setBlock(crop, Blocks.WHEAT.defaultBlockState(), 2);
+    for (int i = 0; i < 100; i++) high.serverTick(level);
+    helper.assertTrue(high.ticked > 0, "Alone, the higher altar did not tick its field");
+    helper.succeed();
+  }
+
   @GameTest(template = "empty", timeoutTicks = 200)
   public static void levellingAltarHandsBackItsOldBufferOnce(GameTestHelper helper) {
     var level = helper.getLevel();

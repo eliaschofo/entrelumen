@@ -45,6 +45,8 @@ public abstract class AltarBlockEntity extends BlockEntity implements Container 
   private boolean actorReady;
   /** One-time cost of resolving the acting player, kept out of tick measurements. */
   long actorNanos = -1;
+  /** The game tick the world ticker last ran; not saved. */
+  private long lastTick = Long.MIN_VALUE;
 
   private final IItemHandlerModifiable fuelHandler = new IItemHandlerModifiable() {
     @Override
@@ -131,6 +133,18 @@ public abstract class AltarBlockEntity extends BlockEntity implements Container 
   protected abstract boolean working();
 
   public abstract void serverTick(ServerLevel world);
+
+  /**
+   * The world ticker's entry: runs {@link #serverTick} at most once per game tick, so an accelerator
+   * that calls the ticker again in the same tick (the Just Dire Things Time Wand) neither opens a
+   * fresh work budget nor pays fuel twice. Tests call {@link #serverTick} directly.
+   */
+  final void worldTick(ServerLevel world) {
+    long now = world.getGameTime();
+    if (now == lastTick) return;
+    lastTick = now;
+    serverTick(world);
+  }
 
   /** Standing use with an empty main hand. */
   public abstract void use(ServerPlayer player);

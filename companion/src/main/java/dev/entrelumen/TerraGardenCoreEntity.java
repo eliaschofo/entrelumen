@@ -49,6 +49,11 @@ public final class TerraGardenCoreEntity extends BlockEntity {
   private long nextBatch = Long.MIN_VALUE;
   private long nextCheck = Long.MIN_VALUE;
   private long lastTick = Long.MIN_VALUE;
+  /**
+   * Whether the first batch and check were given their phase; not saved, so gardens that load together
+   * spread over the second instead of all working on the same tick.
+   */
+  private boolean phased;
   private long harvests;
   private Status status = Status.NO_SEED;
   /** The store, one entry per kind of item (insertion order). */
@@ -82,6 +87,11 @@ public final class TerraGardenCoreEntity extends BlockEntity {
     long now = level.getGameTime();
     if (now == lastTick) return;   // an accelerator ticking the core again in the same game tick gains nothing
     lastTick = now;
+    if (!phased) {
+      phased = true;
+      nextBatch = now + TerraGardenRules.phase(worldPosition.asLong(), TerraGardenRules.BATCH_TICKS, 0);
+      nextCheck = now + TerraGardenRules.phase(worldPosition.asLong(), TerraGardenRules.CHECK_TICKS, 20);
+    }
     if (now >= nextCheck) {
       nextCheck = now + TerraGardenRules.CHECK_TICKS;
       check(level);
@@ -111,13 +121,26 @@ public final class TerraGardenCoreEntity extends BlockEntity {
    */
   void setFormed(ServerLevel level, boolean formed) {
     if (rotation < 0) return;
+    form(level, worldPosition, rotation, formed, net.minecraft.world.level.block.Block.UPDATE_ALL);
+  }
+
+  /**
+   * Unforms the members of the engine whose core stands (or stood) at {@code core} with {@code rotation},
+   * from the blockstate alone: for a core removed without its block entity (a contraption moving it), so no
+   * member is left formed and invisible. Clients only, no neighbour updates: it runs inside a removal.
+   */
+  static void unform(ServerLevel level, BlockPos core, net.minecraft.world.level.block.Rotation rotation) {
+    form(level, core, rotation.ordinal(), false, net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+  }
+
+  private static void form(ServerLevel level, BlockPos core, int rotation, boolean formed, int flags) {
     for (var part : TerraGardenLayout.builtin().parts()) {
       if (part.core()) continue;
-      BlockPos at = TerraGardenLayout.world(worldPosition, rotation, part.offset());
+      BlockPos at = TerraGardenLayout.world(core, rotation, part.offset());
       if (!level.isLoaded(at)) continue;
       BlockState state = level.getBlockState(at);
       if (state.getBlock() instanceof TerraEngineMemberBlock && state.getValue(TerraEngineMemberBlock.FORMED) != formed)
-        level.setBlock(at, state.setValue(TerraEngineMemberBlock.FORMED, formed), net.minecraft.world.level.block.Block.UPDATE_ALL);
+        level.setBlock(at, state.setValue(TerraEngineMemberBlock.FORMED, formed), flags);
     }
   }
 
@@ -358,6 +381,7 @@ public final class TerraGardenCoreEntity extends BlockEntity {
     awake = true;
     waker = player.getUUID();
     nextBatch = level.getGameTime() + TerraGardenRules.BATCH_TICKS;
+    phased = true;
     setFormed(level, true);
     updateLook(level);
     player.awardStat(TerraGarden.ACTIVATIONS.get());
@@ -433,6 +457,7 @@ public final class TerraGardenCoreEntity extends BlockEntity {
 
   /** Test hook: the next batch runs on the next tick. */
   void runSoon() {
+    phased = true;
     nextBatch = Long.MIN_VALUE;
     nextCheck = Long.MIN_VALUE;
     lastTick = Long.MIN_VALUE;

@@ -331,6 +331,74 @@ public final class RuntimeGameTestsTerraGarden {
     helper.succeed();
   }
 
+  @GameTest(template = "terra_garden_plot", timeoutTicks = 200)
+  public static void terraGardenIgnoresTheGrowthAltarButAHandHarvestInItsFieldStillDoubles(GameTestHelper helper) {
+    ServerLevel level = helper.getLevel();
+    BlockPos pos = build(helper, 0, false);
+    try (var session = new Session(helper, new BlockPos(5, 1, 10))) {
+      var core = core(helper, pos);
+      core.insertSeed(session.player, new ItemStack(Items.WHEAT_SEEDS));
+      useOn(session.player, pos, new ItemStack(TerraGarden.GROW_LAMP.get()));
+      helper.assertTrue(core.awake(), "Not awake");
+      // the baseline: one batch with no altar
+      core.runSoon();
+      core.serverTick(level);
+      long baseline = count(core, Items.WHEAT);
+      helper.assertTrue(baseline == TerraGardenRules.HARVESTS_PER_BATCH, "The baseline batch made " + baseline + " wheat");
+      // an active Altar of Growth in front of the engine, whose field (kept inside the plot) covers the core
+      BlockPos altarPos = helper.absolutePos(new BlockPos(5, 1, 8));
+      level.setBlockAndUpdate(altarPos.below(), Blocks.STONE.defaultBlockState());
+      level.setBlockAndUpdate(altarPos, Altars.GROWTH_ALTAR.get().defaultBlockState());
+      var altar = (GrowthAltarEntity) level.getBlockEntity(altarPos);
+      altar.configureArea(3, 1);
+      altar.configureSamples(0);   // only its field and its loot bonus: no random ticks on the engine's vines
+      var fuel = level.getCapability(Capabilities.ItemHandler.BLOCK, altarPos, Direction.UP);
+      helper.assertTrue(fuel != null && fuel.insertItem(0, new ItemStack(Items.BONE_BLOCK, 4), false).isEmpty(),
+          "The altar did not take its bone blocks");
+      altar.serverTick(level);
+      helper.assertTrue(AltarRegistry.isInsideActive(level, AltarType.GROWTH, pos), "The core is not inside the active field");
+      core.runSoon();
+      core.serverTick(level);
+      long withAltar = count(core, Items.WHEAT) - baseline;
+      helper.assertTrue(withAltar == baseline, "A batch beside an active Altar of Growth made " + withAltar
+          + " wheat instead of " + baseline);
+      // a ripe wheat broken by hand inside the same field still drops twice
+      BlockPos field = helper.absolutePos(new BlockPos(6, 1, 9));
+      var ripe = Blocks.WHEAT.defaultBlockState().setValue(net.minecraft.world.level.block.CropBlock.AGE, 7);
+      long wheat = Block.getDrops(ripe, level, field, null).stream().filter(stack -> stack.is(Items.WHEAT))
+          .mapToLong(ItemStack::getCount).sum();
+      helper.assertTrue(wheat == 2, "Ripe wheat inside the field dropped " + wheat + " wheat, not 2");
+    }
+    helper.succeed();
+  }
+
+  @GameTest(template = "terra_garden_plot", timeoutTicks = 200)
+  public static void terraEngineMembersCannotBePushedAndACoreTakenWithoutItsEntityUnformsThem(GameTestHelper helper) {
+    ServerLevel level = helper.getLevel();
+    helper.assertTrue(TerraGarden.CASING.get().defaultBlockState().getPistonPushReaction()
+        == net.minecraft.world.level.material.PushReaction.BLOCK, "Pistons and contraptions can push a casing");
+    helper.assertTrue(TerraGarden.OUTLET.get().defaultBlockState().getPistonPushReaction()
+        == net.minecraft.world.level.material.PushReaction.BLOCK, "Pistons and contraptions can push an outlet");
+    int rotation = 2;
+    BlockPos pos = build(helper, rotation, false);
+    try (var session = new Session(helper, new BlockPos(5, 1, 0))) {
+      useOn(session.player, pos, new ItemStack(TerraGarden.GROW_LAMP.get()));
+      helper.assertTrue(core(helper, pos).awake(), "Not awake");
+    }
+    helper.assertTrue(level.getBlockState(pos).getValue(TerraGardenCoreBlock.GARDEN) == TerraGardenCoreBlock.Garden.GROWING,
+        "The woken core does not show it");
+    // a contraption takes the core's entity first and then the block: the members left behind unform
+    level.removeBlockEntity(pos);
+    level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+    for (var part : TerraGardenLayout.builtin().parts()) {
+      if (part.core()) continue;
+      var member = level.getBlockState(TerraGardenLayout.world(pos, rotation, part.offset()));
+      helper.assertTrue(!(member.getBlock() instanceof TerraEngineMemberBlock) || !member.getValue(TerraEngineMemberBlock.FORMED),
+          "A member stayed formed and invisible: " + member);
+    }
+    helper.succeed();
+  }
+
   @GameTest(template = "terra_garden_plot", timeoutTicks = 100)
   public static void terraGardenCoreKeepsItsSeedAndStoreWhenBroken(GameTestHelper helper) {
     ServerLevel level = helper.getLevel();
