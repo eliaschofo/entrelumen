@@ -653,7 +653,8 @@ PROTECTED = {
     'naturesaura:offering_table', 'naturesaura:nature_altar', 'farmersdelight:cooking_pot',
 }
 # A protected machine gated by a component its own acquisition needs. Allowed only because the campaign
-# hands out the first ones (first_signal grants two frames; also checked by generate_integration_recipes.py).
+# hands out the first ones (first_signal grants the infuser and one frame since 1 October 2026; also checked by
+# generate_integration_recipes.py).
 BOOTSTRAP = {('mekanism:metallurgic_infuser', CF): 'first_signal'}
 
 
@@ -1470,7 +1471,9 @@ def check_function_gate(change, output, sources):
     needed = output in PROTECTED or output in component_closure(component, sources)
     if needed:
         assert (output, component) in BOOTSTRAP, f"{change['id']}: {output} is needed to make {component}"
-        assert story_grants(component) >= 2, f"{change['id']}: the bootstrap needs two story {component}"
+        # Either the story hands out the gated machine itself (and one component), or two components.
+        assert (story_grants(output) >= 1 and story_grants(component) >= 1) or story_grants(component) >= 2, (
+            f"{change['id']}: the bootstrap needs the story {output} or two story {component}")
     if 'function' in change:
         expected, act, _ = FUNCTIONS[change['function']]
         if expected == 'luminosity':

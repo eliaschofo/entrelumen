@@ -108,16 +108,44 @@ public final class ArkState {
   /** A module or controller was placed; a player's placement founds or joins their team's Ark. */
   public static void onPlaced(ServerLevel level, BlockPos pos, String slot, LivingEntity placer) {
     if (slot.isEmpty()) return;
-    if (placer instanceof ServerPlayer player) {
-      Placement result = place(level, pos, slot, CampaignActions.campaignId(player));
-      tell(player, result, level.getServer());
-    } else {
+    // A fake player FTB Teams knows nothing about (a printed deployer) places like a command does.
+    UUID team = placer instanceof ServerPlayer player ? CampaignActions.campaignIdOrNull(player) : null;
+    if (team == null) {
       refreshAt(level, pos);
+      return;
     }
+    ServerPlayer player = (ServerPlayer) placer;
+    Placement result = place(level, pos, slot, team, owner -> mayTakeOver(player, owner));
+    tell(player, result, level.getServer());
   }
 
   /** Records a piece placed by a member of {@code team}; returns what it did. */
   public static Placement place(ServerLevel level, BlockPos pos, String slot, UUID team) {
+    return place(level, pos, slot, team, owner -> false);
+  }
+
+  /**
+   * Whether a player whose team has no Ark may take over the Ark recorded under {@code owner}: their
+   * own personal Ark (left behind when they joined or founded a party before the hand-over existed),
+   * or the Ark of a party that was disbanded or archived and that they were in. FTB Teams forgets a
+   * deleted party's members, so a party that no longer exists counts as one the placer was in: its
+   * Ark is abandoned, and its unprotected modules could be broken and carried off anyway.
+   */
+  static boolean mayTakeOver(ServerPlayer player, UUID owner) {
+    if (owner.equals(player.getUUID())) return true;
+    var campaign = CampaignData.get(player.server).campaigns.parties.get(owner);
+    if (campaign == null) return false;
+    var party = dev.ftb.mods.ftbteams.api.FTBTeamsAPI.api().getManager().getTeamByID(owner).orElse(null);
+    if (party == null) return true;
+    return campaign.archived && party.getMembers().contains(player.getUUID());
+  }
+
+  /**
+   * Records a piece placed by a member of {@code team}. An Ark already recorded for another team is
+   * taken over (re-keyed to {@code team}) when {@code mayTakeOver} accepts its owner.
+   */
+  static Placement place(ServerLevel level, BlockPos pos, String slot, UUID team,
+      java.util.function.Predicate<UUID> mayTakeOver) {
     if (team == null) return Placement.NO_TEAM;
     ArkData data = ArkData.get(level.getServer());
     var definition = ArkMultiblock.definition();
@@ -149,7 +177,14 @@ public final class ArkState {
     if (!slot.equals(ArkMultiblock.CONTROLLER)) return Placement.NEEDS_CONTROLLER;
     var anchor = ArkMultiblock.locate(definition, slot, pos, matcher(level));
     UUID owner = data.owner(level.dimension(), anchor);
-    if (owner != null && !owner.equals(team)) return Placement.OTHER_TEAM;
+    if (owner != null && !owner.equals(team)) {
+      if (!mayTakeOver.test(owner)) return Placement.OTHER_TEAM;
+      ark = data.arks.remove(owner);
+      data.arks.put(team, ark);
+      rescan(level, ark, data);
+      data.setDirty();
+      return Placement.JOINED;
+    }
     ark = new ArkData.Ark(level.dimension(), anchor);
     data.arks.put(team, ark);
     rescan(level, ark, data);

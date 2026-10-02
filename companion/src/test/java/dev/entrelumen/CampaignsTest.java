@@ -51,17 +51,20 @@ class CampaignsTest {
     assertTrue(c.completed.isEmpty());
   }
 
+  /** An archive stays frozen; {@code /entrelumen admin recover} plays on from a fresh copy of it. */
   @Test
-  void archivedTeamsRequireExplicitRecovery() {
+  void archivedTeamsRecoverOnlyAsACopy() {
     Campaigns d = new Campaigns();
     UUID team = UUID.randomUUID();
     var c = d.party(team, UUID.randomUUID());
     c.completed.add("x");
     d.archive(team);
     assertFalse(Campaigns.advance(c, Set.of("x")));
-    assertTrue(d.recover(team));
-    assertTrue(Campaigns.advance(c, Set.of("x")));
-    assertFalse(d.recover(team));
+    var recovered = c.copy();
+    assertFalse(recovered.archived);
+    assertTrue(Campaigns.advance(recovered, Set.of("x")));
+    assertTrue(c.archived);
+    assertEquals(1, c.act);
   }
 
 }

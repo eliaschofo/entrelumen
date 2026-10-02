@@ -112,17 +112,19 @@ class ProjectValidationTest {
   }
 
   /**
-   * 24 September 2026: the calibration frame has no crafting recipe. First Signal, the Act I closure,
-   * grants the first two (one builds the metallurgic infuser that copies the rest, one is spare), and
-   * no other project hands out frames.
+   * The calibration frame has no crafting recipe and only the Metallurgic Infuser copies it, while the
+   * infuser's own recipe takes a frame. Since 1 October 2026 First Signal, the Act I closure, grants the
+   * infuser itself and one frame (it gave two frames, and a team that spent both on act II deliveries
+   * before building the infuser was stuck); no other project hands out frames.
    */
   @Test
-  void firstSignalGrantsTheOnlyStoryFrames() throws Exception {
+  void firstSignalGrantsTheInfuserAndTheOnlyStoryFrame() throws Exception {
     var projects = Projects.parse(defaults(), id -> true);
     var signal = projects.get("first_signal");
     assertEquals(1, signal.act());
     assertEquals("entrelumen:signal_core", signal.reward());
-    assertEquals(java.util.Map.of("entrelumen:calibration_frame", 2), signal.extraRewards());
+    assertEquals(java.util.Map.of("mekanism:metallurgic_infuser", 1, "entrelumen:calibration_frame", 1),
+        signal.extraRewards());
     // Terra's garden (29/9): Renewable Horizons gives the plan and one grow lamp, the only other extra reward.
     var renewal = projects.get("renewal_engine");
     assertEquals("entrelumen:terra_garden_plan", renewal.reward());
@@ -139,6 +141,23 @@ class ProjectValidationTest {
     assertThrows(UnsupportedOperationException.class,
         () -> signal.extraRewards().put("minecraft:stone", 1));
     assertEquals(java.util.Map.of(), new Projects.Project(1, java.util.Map.of(), java.util.Set.of(), "").extraRewards());
+  }
+
+  /** Without Mekanism (the companion's own test server) the infuser is left out, not the whole file. */
+  @Test
+  void extraRewardsFromAModThatIsNotLoadedAreLeftOut() throws Exception {
+    var withoutMekanism = Projects.parse(defaults(), id -> !id.getNamespace().equals("mekanism"),
+        mod -> !mod.equals("mekanism"));
+    assertEquals(java.util.Map.of("entrelumen:calibration_frame", 1),
+        withoutMekanism.get("first_signal").extraRewards());
+    // A loaded mod's unknown item is still an error, and so is a missing vanilla or companion item.
+    assertThrows(IllegalArgumentException.class,
+        () -> Projects.parse(defaults(), id -> !id.getNamespace().equals("mekanism"), mod -> true));
+    var definitions = defaults();
+    definitions.getAsJsonObject("first_signal").add("extraRewards",
+        JsonParser.parseString("{\"entrelumen:no_such_item\": 1}"));
+    assertThrows(IllegalArgumentException.class,
+        () -> Projects.parse(definitions, id -> !id.getPath().equals("no_such_item"), mod -> false));
   }
 
   @Test

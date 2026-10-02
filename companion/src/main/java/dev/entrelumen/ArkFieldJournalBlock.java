@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.common.util.FakePlayer;
 
 /**
  * One of the Ark's six modules (Ark v2). Placed in its slot of the team's Ark it turns its global
@@ -54,6 +55,7 @@ public class ArkFieldJournalBlock extends Block {
   @Override
   protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    if (player instanceof FakePlayer) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     if (kind == ArkFieldJournals.Kind.NATURE && hand == InteractionHand.MAIN_HAND
         && (stack.is(Items.COMPASS) || stack.is(Items.BONE_MEAL))) {
       if (player instanceof ServerPlayer serverPlayer) NatureRestoration.use(serverPlayer, pos, hand);
@@ -65,7 +67,7 @@ public class ArkFieldJournalBlock extends Block {
   @Override
   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
       Player player, BlockHitResult hit) {
-    if (!player.getMainHandItem().isEmpty()) return InteractionResult.PASS;
+    if (player instanceof FakePlayer || !player.getMainHandItem().isEmpty()) return InteractionResult.PASS;
     if (player instanceof ServerPlayer serverPlayer) ArkFieldJournals.inspect(serverPlayer, pos);
     return InteractionResult.sidedSuccess(level.isClientSide);
   }

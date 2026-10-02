@@ -113,7 +113,24 @@ public final class Solsticio {
 
   private static DeferredItem<Item> relic(int index) {
     return ITEMS.register("heliodor_relic_" + index,
-        () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.RARE).fireResistant()));
+        () -> new RelicItem(new Item.Properties().stacksTo(16).rarity(Rarity.RARE).fireResistant()));
+  }
+
+  /** A relic is awarded once per team: dropped, it never despawns and only the void or /kill destroys it. */
+  static final class RelicItem extends Item {
+    RelicItem(Item.Properties properties) {
+      super(properties);
+    }
+
+    @Override
+    public int getEntityLifespan(ItemStack stack, net.minecraft.world.level.Level level) {
+      return Integer.MAX_VALUE;
+    }
+
+    @Override
+    public boolean canBeHurtBy(ItemStack stack, net.minecraft.world.damagesource.DamageSource source) {
+      return source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY);
+    }
   }
 
   /** The relic number (1..3) of a stack, or 0. */

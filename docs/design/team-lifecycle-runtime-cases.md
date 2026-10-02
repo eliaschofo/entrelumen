@@ -13,3 +13,17 @@ La prueba es headless con conexiones mock: no acredita un cliente humano, paquet
 Semántica actual de recuperación: `admin recover` **reemplaza** la campaña activa del equipo o la personal del OP por `archived.copy()`; no fusiona historiales ni preserva lo que tenía el destino. El archivo original sigue marcado como archivado, por lo que la operación puede repetirse. Es una restauración destructiva para un destino con progreso; la UX o una recuperación protectiva quedan como decisión posterior, fuera de esta prueba.
 
 El caso pasó el 23 de septiembre en el dedicado con 135 dependencias reales y watchdog de 60 segundos. El recibo confirma todas las transiciones, dos Atlas y una lente en total, depósitos conservados y cero jugadores conectados después de limpiar las sesiones. [Evidencia y límites](../verification/magic-cooking-teams-runtime.json).
+
+## Administración desde la consola (1 de octubre)
+
+`/entrelumen admin` (permiso 2) suma tres formas que no necesitan un jugador que ejecute, así funcionan desde la consola del servidor:
+
+- `admin archived` lista cada campaña de partido archivada: su UUID, el acto y cuántos proyectos completó. Devuelve la cantidad.
+- `admin recover <uuid> <jugador>` hace lo mismo que `admin recover <uuid>`, pero sobre la campaña actual del jugador nombrado (la de su partido o la personal).
+- `admin set <jugador> <acto>` lleva la campaña actual del jugador nombrado a ese acto, como `admin set <acto>` con el propio OP.
+
+Las formas viejas siguen iguales y las nuevas comparten la misma rutina (`Entrelumen.recover` y `Entrelumen.setAct`). En `admin set` el acto se prueba antes que el jugador, así `set 3` sigue siendo un acto aunque exista un jugador llamado «3». `nativePartySnapshotsArchiveRecoveryAndReconnect` cierra con la consola: lista los archivos, recupera el del partido para el invitado por nombre y le pone el acto 2 sin tocar al fundador. Esta parte todavía no corrió en el servidor de pruebas.
+
+## Qué pasa con el Arca, la parcela y el jardín (1 de octubre)
+
+`TeamHandoff` acompaña los mismos eventos de FTB Teams: al crear un partido, el Arca del fundador pasa al partido, se copian sus tiendas conocidas y su sitio de jardín, su parcela de Solsticio pasa al partido y su Llave forjada cuenta también para el partido. Al borrarse el partido, el Arca y la parcela vuelven al dueño si no tiene propias; si las tiene, el registro del Arca se borra y la parcela queda libre (los bloques quedan). Las tiendas conocidas y las Llaves forjadas quedan con el archivo. Lo cubren `TeamHandoffTest` (unidad) y `RuntimeGameTestsArkCampaign` (servidor de pruebas, todavía sin correr).

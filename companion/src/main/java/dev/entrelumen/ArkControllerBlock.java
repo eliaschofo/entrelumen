@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
@@ -56,6 +57,7 @@ public final class ArkControllerBlock extends Block {
   @Override
   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
       Player player, BlockHitResult hit) {
+    if (player instanceof FakePlayer) return InteractionResult.PASS;
     if (player instanceof ServerPlayer serverPlayer) {
       if (player.isSecondaryUseActive() && player.getMainHandItem().isEmpty()) ArkActions.activate(serverPlayer, pos);
       else ArkFieldJournals.inspect(serverPlayer, pos);

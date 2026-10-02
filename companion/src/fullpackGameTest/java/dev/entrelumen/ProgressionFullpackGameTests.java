@@ -73,6 +73,20 @@ public final class ProgressionFullpackGameTests {
     return String.valueOf(BuiltInRegistries.RECIPE_TYPE.getKey(holder.value().getType()));
   }
 
+  /**
+   * The infuser's recipe takes a frame and only the infuser copies frames, so First Signal pays the
+   * infuser itself and one frame (1 October 2026): spending the frame never strands a team.
+   */
+  @GameTest(template = "empty", timeoutTicks = 20)
+  public static void firstSignalPaysTheInfuserAndOneFrame(GameTestHelper helper) {
+    requireSuite();
+    var signal = Projects.all().get("first_signal");
+    helper.assertTrue(signal != null && signal.extraRewards().equals(
+        java.util.Map.of("mekanism:metallurgic_infuser", 1, FRAME, 1)),
+        "First Signal does not pay the infuser and one frame: " + (signal == null ? "none" : signal.extraRewards()));
+    helper.succeed();
+  }
+
   @GameTest(template = "empty", timeoutTicks = 20)
   public static void calibrationFrameComesOnlyFromInfusion(GameTestHelper helper) throws Exception {
     requireSuite();

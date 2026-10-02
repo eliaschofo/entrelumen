@@ -4,7 +4,10 @@ import com.mojang.brigadier.arguments.*;
 import dev.ftb.mods.ftbteams.api.*;
 import dev.ftb.mods.ftbteams.api.event.TeamEvent;
 import java.util.*;
+import java.util.function.Predicate;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,9 +31,17 @@ public final class Entrelumen {
   public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks("entrelumen");
   public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
       DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, "entrelumen");
+  /**
+   * The six Ark modules are one-time rewards without a recipe, so none may be lost: blast-proof (3 to
+   * mine, 1200 against explosions, wither- and dragon-immune by tag), dropped by any tool, and as items
+   * fireproof, undamageable and never despawning ({@link ArkFieldJournalItem}).
+   */
+  static BlockBehaviour.Properties moduleProperties() {
+    return BlockBehaviour.Properties.of().strength(3f, 1200f);
+  }
+
   public static final DeferredBlock<LogisticsModuleBlock> LOGISTICS_MODULE = BLOCKS.register(
-      "logistics_module", () -> new LogisticsModuleBlock(
-          BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
+      "logistics_module", () -> new LogisticsModuleBlock(moduleProperties()));
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LogisticsStock>>
       LOGISTICS_STOCK = BLOCK_ENTITIES.register("logistics_stock",
           () -> BlockEntityType.Builder.of(LogisticsStock::new, LOGISTICS_MODULE.get()).build(null));
@@ -53,7 +64,12 @@ public final class Entrelumen {
               @Override
               public InteractionResultHolder<ItemStack> use(
                   Level level, Player player, InteractionHand hand) {
-                if (player instanceof ServerPlayer serverPlayer) AtlasNetwork.open(serverPlayer);
+                if (player instanceof ServerPlayer serverPlayer) {
+                  // A fake player FTB Teams does not know (a printed deployer) has no campaign.
+                  if (CampaignActions.campaignIdOrNull(serverPlayer) == null)
+                    return InteractionResultHolder.pass(player.getItemInHand(hand));
+                  AtlasNetwork.open(serverPlayer);
+                }
                 return InteractionResultHolder.sidedSuccess(
                     player.getItemInHand(hand), level.isClientSide);
               }
@@ -64,12 +80,11 @@ public final class Entrelumen {
     for (var kind : ArkFieldJournals.Kind.values()) {
       String id = kind.module();
       if (kind == ArkFieldJournals.Kind.LOGISTICS) {
-        ITEMS.register(id, () -> new ArkFieldJournalItem(LOGISTICS_MODULE.get(), new Item.Properties()));
+        ITEMS.register(id, () -> new ArkFieldJournalItem(LOGISTICS_MODULE.get(), new Item.Properties().fireResistant()));
         continue;
       }
-      var module = BLOCKS.register(id, () -> new ArkFieldJournalBlock(kind,
-          BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
-      ITEMS.register(id, () -> new ArkFieldJournalItem(module.get(), new Item.Properties()));
+      var module = BLOCKS.register(id, () -> new ArkFieldJournalBlock(kind, moduleProperties()));
+      ITEMS.register(id, () -> new ArkFieldJournalItem(module.get(), new Item.Properties().fireResistant()));
     }
     var surveyStation = BLOCKS.register("survey_station", () -> new SignalStationBlock(
         BlockBehaviour.Properties.of().strength(3f).sound(SoundType.WOOD).noOcclusion().requiresCorrectToolForDrops()));
@@ -128,17 +143,21 @@ public final class Entrelumen {
     TeamEvent.CREATED.register(
         event -> {
           if (event.getTeam().isPartyTeam()) {
-            var data = CampaignData.get(FTBTeamsAPI.api().getManager().getServer());
+            var server = FTBTeamsAPI.api().getManager().getServer();
+            var data = CampaignData.get(server);
             data.campaigns.party(event.getTeam().getId(), event.getCreatorId());
             data.setDirty();
+            TeamHandoff.onCreated(server, event.getTeam().getId(), event.getCreatorId());
           }
         });
     TeamEvent.DELETED.register(
         event -> {
           if (event.getTeam().isPartyTeam()) {
-            var data = CampaignData.get(FTBTeamsAPI.api().getManager().getServer());
+            var server = FTBTeamsAPI.api().getManager().getServer();
+            var data = CampaignData.get(server);
             data.campaigns.archive(event.getTeam().getId());
             data.setDirty();
+            TeamHandoff.onDeleted(server, event.getTeam().getId(), event.getTeam().getOwner());
           }
         });
   }
@@ -168,14 +187,46 @@ public final class Entrelumen {
         .toList());
   }
 
+  /** A Solsticio errand item (a named book, map or tool a story mission hands out) is never a material. */
+  static boolean errand(ItemStack stack) {
+    return SolsticioStory.errandOf(stack) != null;
+  }
+
+  /** Whether a stack counts as {@code item} for a project delivery. */
+  static boolean material(ItemStack stack, String item) {
+    return !stack.isEmpty() && !errand(stack)
+        && BuiltInRegistries.ITEM.getKey(stack.getItem()).toString().equals(item);
+  }
+
   static Map<String, Integer> availableMaterials(ServerPlayer player) {
     Map<String, Integer> result = new HashMap<>();
     for (var stack : deliveryStacks(player))
-      result.merge(
-          BuiltInRegistries.ITEM.getKey(stack.getItem()).toString(),
-          stack.getCount(),
-          Integer::sum);
+      if (!stack.isEmpty() && !errand(stack))
+        result.merge(
+            BuiltInRegistries.ITEM.getKey(stack.getItem()).toString(),
+            stack.getCount(),
+            Integer::sum);
     return result;
+  }
+
+  /**
+   * Takes {@code amount} matching items from the delivery stacks: plain stacks first, then those that
+   * carry data (a lodestone-bound compass, a paid survey map, a named copy), each pass in slot order.
+   * Takes what there is if there is less; the caller checks the count first.
+   */
+  static void consume(ServerPlayer player, Predicate<ItemStack> test, int amount) {
+    int remaining = amount;
+    List<ItemStack> stacks = deliveryStacks(player);
+    for (boolean plain : new boolean[] {true, false})
+      for (ItemStack stack : stacks) {
+        if (remaining <= 0) break;
+        if (stack.isEmpty() || stack.getComponentsPatch().isEmpty() != plain || !test.test(stack)) continue;
+        int take = Math.min(remaining, stack.getCount());
+        stack.shrink(take);
+        remaining -= take;
+      }
+    player.getInventory().setChanged();
+    player.containerMenu.broadcastChanges();
   }
 
   public static List<Component> statusLines(ServerPlayer player) {
@@ -238,24 +289,7 @@ public final class Entrelumen {
             p.act(),
             p.items(),
             inventory,
-            () -> {
-              p.items()
-                  .forEach(
-                      (item, count) -> {
-                        int remaining = count;
-                        for (var stack : deliveryStacks(player))
-                          if (BuiltInRegistries.ITEM
-                              .getKey(stack.getItem())
-                              .toString()
-                              .equals(item)) {
-                            int take = Math.min(remaining, stack.getCount());
-                            stack.shrink(take);
-                            remaining -= take;
-                          }
-                      });
-              player.getInventory().setChanged();
-              player.containerMenu.broadcastChanges();
-            });
+            () -> p.items().forEach((item, count) -> consume(player, stack -> material(stack, item), count)));
     if (ok) {
       CampaignData.get(player.server).setDirty();
       if (!p.reward().isEmpty()) {
@@ -365,49 +399,89 @@ public final class Entrelumen {
                                       return 1;
                                     }))
                         .then(
+                            Commands.literal("archived")
+                                .executes(ctx -> archived(ctx.getSource())))
+                        .then(
                             Commands.literal("recover")
                                 .then(
                                     Commands.argument("uuid", StringArgumentType.word())
                                         .executes(
-                                            ctx -> {
-                                              UUID id;
-                                              try {
-                                                id =
-                                                    UUID.fromString(
-                                                        StringArgumentType.getString(ctx, "uuid"));
-                                              } catch (IllegalArgumentException e) {
-                                                return 0;
-                                              }
-                                              var player = ctx.getSource().getPlayerOrException();
-                                              var d = CampaignData.get(player.server);
-                                              var archived = d.campaigns.parties.get(id);
-                                              if (archived == null || !archived.archived) return 0;
-                                              var team =
-                                                  FTBTeamsAPI.api()
-                                                      .getManager()
-                                                      .getTeamForPlayer(player)
-                                                      .orElseThrow();
-                                              if (team.isPartyTeam())
-                                                d.campaigns.parties.put(
-                                                    team.getId(), archived.copy());
-                                              else
-                                                d.campaigns.personal.put(
-                                                    player.getUUID(), archived.copy());
-                                              d.setDirty();
-                                              status(player);
-                                              return 1;
-                                            })))
+                                            ctx ->
+                                                recover(
+                                                    StringArgumentType.getString(ctx, "uuid"),
+                                                    ctx.getSource().getPlayerOrException()))
+                                        .then(
+                                            Commands.argument("target", EntityArgument.player())
+                                                .executes(
+                                                    ctx ->
+                                                        recover(
+                                                            StringArgumentType.getString(ctx, "uuid"),
+                                                            EntityArgument.getPlayer(ctx, "target"))))))
                         .then(
                             Commands.literal("set")
+                                // "act" before "target": "set 3" is an act even if a player is named 3.
                                 .then(
                                     Commands.argument("act", IntegerArgumentType.integer(1, Campaigns.FINAL_ACT))
                                         .executes(
-                                            ctx -> {
-                                              var p = ctx.getSource().getPlayerOrException();
-                                              current(p).act =
-                                                  IntegerArgumentType.getInteger(ctx, "act");
-                                              CampaignData.get(p.server).setDirty();
-                                              return 1;
-                                            })))));
+                                            ctx ->
+                                                setAct(
+                                                    ctx.getSource().getPlayerOrException(),
+                                                    IntegerArgumentType.getInteger(ctx, "act"))))
+                                .then(
+                                    Commands.argument("target", EntityArgument.player())
+                                        .then(
+                                            Commands.argument(
+                                                    "act", IntegerArgumentType.integer(1, Campaigns.FINAL_ACT))
+                                                .executes(
+                                                    ctx ->
+                                                        setAct(
+                                                            EntityArgument.getPlayer(ctx, "target"),
+                                                            IntegerArgumentType.getInteger(ctx, "act"))))))));
+  }
+
+  /** {@code admin archived}: every archived party campaign, with its act and completed count. */
+  static int archived(CommandSourceStack source) {
+    var parties = CampaignData.get(source.getServer()).campaigns.parties;
+    List<Map.Entry<UUID, Campaigns.Campaign>> archived = new ArrayList<>();
+    parties.entrySet().forEach(entry -> {
+      if (entry.getValue().archived) archived.add(entry);
+    });
+    archived.sort(Map.Entry.comparingByKey());
+    source.sendSuccess(() -> Component.literal("archived=" + archived.size()), false);
+    for (var entry : archived)
+      source.sendSuccess(() -> Component.literal(entry.getKey() + " act=" + entry.getValue().act
+          + " completed=" + entry.getValue().completed.size()), false);
+    return archived.size();
+  }
+
+  /**
+   * {@code admin recover <uuid> [target]}: replaces the target's current campaign (their party's, or
+   * their personal one) with a copy of the archived party; the archive stays as it is.
+   */
+  static int recover(String uuid, ServerPlayer target) {
+    UUID id;
+    try {
+      id = UUID.fromString(uuid);
+    } catch (IllegalArgumentException e) {
+      return 0;
+    }
+    var d = CampaignData.get(target.server);
+    var archived = d.campaigns.parties.get(id);
+    if (archived == null || !archived.archived) return 0;
+    var team = FTBTeamsAPI.api().getManager().getTeamForPlayer(target).orElse(null);
+    if (team == null) return 0;
+    if (team.isPartyTeam()) d.campaigns.parties.put(team.getId(), archived.copy());
+    else d.campaigns.personal.put(target.getUUID(), archived.copy());
+    d.setDirty();
+    status(target);
+    return 1;
+  }
+
+  /** {@code admin set [target] <act>}: moves the target's current campaign to {@code act}. */
+  static int setAct(ServerPlayer target, int act) {
+    if (FTBTeamsAPI.api().getManager().getTeamForPlayer(target).isEmpty()) return 0;
+    current(target).act = act;
+    CampaignData.get(target.server).setDirty();
+    return 1;
   }
 }

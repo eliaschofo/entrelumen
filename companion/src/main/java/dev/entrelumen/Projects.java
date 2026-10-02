@@ -9,8 +9,9 @@ import net.minecraft.resources.ResourceLocation;
 public final class Projects {
   /**
    * One campaign project. {@code reward} is the single item granted once after a successful delivery;
-   * {@code extraRewards} are further stacks granted with it (24 September 2026: the Act I closure also
-   * hands out the first two calibration frames, which have no crafting recipe).
+   * {@code extraRewards} are further stacks granted with it (1 October 2026: the Act I closure hands out
+   * Mekanism's Metallurgic Infuser and one calibration frame, which has no crafting recipe; the infuser
+   * copies the rest, so spending the frame never leaves a team without a way to make more).
    */
   public record Project(
       int act, Map<String, Integer> items, Set<String> prerequisites, String reward,
@@ -65,6 +66,22 @@ public final class Projects {
   }
 
   static Map<String, Project> parse(JsonElement root, Predicate<ResourceLocation> itemExists) {
+    return parse(root, itemExists, Projects::modLoaded);
+  }
+
+  /** Whether a mod is loaded; true outside a running game (unit tests check every item strictly). */
+  static boolean modLoaded(String namespace) {
+    var mods = net.neoforged.fml.ModList.get();
+    return mods == null || mods.isLoaded(namespace);
+  }
+
+  /**
+   * Parses and validates the definitions. An extra reward from a mod that is not loaded is left out
+   * instead of rejecting the file: First Signal pays Mekanism's infuser, which the companion's own
+   * test server does not have. Every other item, and an extra reward from a loaded mod, must exist.
+   */
+  static Map<String, Project> parse(JsonElement root, Predicate<ResourceLocation> itemExists,
+      Predicate<String> modLoaded) {
     if (!root.isJsonObject()) throw invalid("root", "expected an object of project definitions");
     Map<String, Project> result = new LinkedHashMap<>();
     root.getAsJsonObject()
@@ -123,6 +140,10 @@ public final class Projects {
                     .entrySet()
                     .forEach(
                         extra -> {
+                          ResourceLocation key = ResourceLocation.tryParse(extra.getKey());
+                          if (key != null && !key.getNamespace().equals("minecraft")
+                              && !key.getNamespace().equals("entrelumen") && !modLoaded.test(key.getNamespace()))
+                            return;
                           String item = validateItem(extra.getKey(), id + ".extraRewards", itemExists);
                           int count = positiveInteger(extra.getValue(), id + ".extraRewards." + item);
                           if (count > 64)
