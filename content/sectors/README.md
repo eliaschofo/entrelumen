@@ -27,7 +27,7 @@ El acto de un capítulo es el más temprano en el que un jugador llega de verdad
 - `bumblezone_hive` y `bumblezone_court`: **II**. Una perla de ender contra un nido entra en la Bumblezone desde el acto I, sin ninguna puerta del Atlas.
 - `aether_deep`: **III**, como `aether`. Es el mismo portal (glowstone y un balde de agua) y su quest de entrada depende de `aether_enter`, así que nada de Deep Aether se alcanza antes que el Aether.
 - `starlight_night`: sigue en **IV**. Las ruinas del portal están en el Overworld, pero entrar pide el Orbe de la Profecía, un componente que el Atlas abre en el acto IV.
-- `deep_worlds`: sigue en **IV**. La Ciudad Antigua se puede pisar antes, pero el diseño pone Deeper and Darker en el IV (exploration-structures-family) y no hay otra puerta que la del Warden.
+- `deep_worlds`: **II**. Su quest de entrada a la minería, `deepworlds_jamd`, es el portal minero de JAMD y pide un Marco de calibración arriba (acto II), sin ninguna otra puerta; la Ciudad Antigua (`deepworlds_city`) es un logro sin puerta. Que Deeper and Darker figure como IV en el diseño (exploration-structures-family) no cuenta: manda el acto más temprano en el que se llega de verdad.
 
 Estilos de `draw`: `ring` (arco o círculo de segmentos), `teeth` (dientes de engranaje), `spokes`, `rails` (dos rieles y durmientes), `polyline`, `glyphs` (texturas de ítems de un mod alrededor de un círculo, por referencia).
 
