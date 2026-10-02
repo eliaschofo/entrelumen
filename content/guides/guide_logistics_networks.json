@@ -254,7 +254,7 @@
       "sources": ["https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/channels"]
     },
     {
-      "key": "logistics_networks_components_link", "deps": ["logistics_networks_autocraft", "logistics_networks_mixing"], "type": "checkmark", "layout": {"x": 26.5, "y": 0, "size": 1.0, "shape": "pentagon"}, "hide_lines": true,
+      "key": "logistics_networks_components_link", "deps": ["logistics_networks_autocraft"], "type": "checkmark", "layout": {"x": 26.5, "y": 0, "size": 1.0, "shape": "pentagon"}, "hide_lines": true,
       "icon": "entrelumen:inventory_sensor",
       "en_us": {"title": "The Network Feeds the Story",
         "text": ["[lead] Several act components are made from network parts.",
@@ -379,7 +379,6 @@
     {"id": "c_sh_auto", "through": ["logistics_networks_external", "logistics_networks_autocraft"], "color": "#9DC3FF", "width": 0.34, "grow": true, "sketch": true, "order": -4},
     {"id": "c_sh_mix", "through": ["logistics_networks_external", "logistics_networks_mixing"], "color": "#9DC3FF", "width": 0.34, "grow": true, "sketch": true, "order": -4},
     {"id": "c_sh_link1", "through": ["logistics_networks_autocraft", "logistics_networks_components_link"], "color": "#9DC3FF", "width": 0.34, "grow": true, "sketch": true, "order": -4},
-    {"id": "c_sh_link2", "through": ["logistics_networks_mixing", "logistics_networks_components_link"], "color": "#9DC3FF", "width": 0.34, "grow": true, "sketch": true, "order": -4},
     {"id": "c_sh_close", "through": ["logistics_networks_components_link", "logistics_networks_close"], "color": "#9DC3FF", "width": 0.5, "grow": true, "sketch": true, "order": -4},
     {"id": "pat_ae2", "picture": "ae2:textures/item/crafting_pattern.png", "x": 22.0, "y": -5.3, "w": 0.8, "h": 0.8, "reveal": "logistics_networks_autocraft", "order": -4},
     {"id": "pat_rs", "picture": "refinedstorage:textures/item/pattern/crafting.png", "x": 22.9, "y": -5.3, "w": 0.8, "h": 0.8, "reveal": "logistics_networks_autocraft", "order": -4},

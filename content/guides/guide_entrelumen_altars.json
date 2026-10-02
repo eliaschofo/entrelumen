@@ -81,7 +81,6 @@
     {"id": "square_0", "frame": [6.6, -3.4, 13.4, 3.4], "color": "#F2C14E", "thickness_px": 1.5, "alpha": 130, "corners": false, "reveal": "entrelumen_altars_symmetry", "order": 2},
     {"id": "square_1", "frame": [3.5999999999999996, -6.4, 16.4, 6.4], "color": "#F2C14E", "thickness_px": 1.5, "alpha": 110, "corners": false, "reveal": "entrelumen_altars_symmetry", "order": 2},
     {"id": "shards", "scatter": ["minecraft:textures/item/amethyst_shard.png"], "region": [6.8, -6.1, 13.2, -5.1], "count": 5, "size": [0.35, 0.45], "seed": 2, "reveal": "entrelumen_altars_time", "order": -2, "avoid": [[11.87, -4.64, 0.9]]},
-    {"id": "road_sym", "through": ["entrelumen_altars_symmetry", "entrelumen_altars_close"], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": ["entrelumen_altars_symmetry"], "sketch": true, "order": -6},
     {"id": "road_claims", "through": ["entrelumen_altars_claims", "entrelumen_altars_close"], "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": ["entrelumen_altars_claims"], "sketch": true, "order": -6},
     {"id": "road_tip", "through": ["entrelumen_altars_tip_farm", [12.5, 11.9], [19.8, 10.6], [24.8, 5.6], "entrelumen_altars_close"], "smooth": 3, "texture": "minecraft:textures/block/oxidized_cut_copper.png", "width": 0.34, "step": 0.7, "grow": ["entrelumen_altars_tip_farm", "entrelumen_altars_tip_farm", "entrelumen_altars_tip_farm", "entrelumen_altars_tip_farm"], "sketch": true, "order": -6},
     {"id": "sun", "picture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 25.8, "y": -4.6, "w": 2.6, "h": 2.6, "reveal": "entrelumen_altars_close", "order": -3},
@@ -433,7 +432,7 @@
       "sources": ["repo:docs/design/ark-altars.md", "repo:docs/design/story-bible.md"]
     },
     {
-      "key": "entrelumen_altars_claims", "deps": ["entrelumen_altars_renewal_limits"], "type": "checkmark", "layout": {"x": 21.6, "y": -4.7, "size": 1.0, "shape": "pentagon"},
+      "key": "entrelumen_altars_claims", "deps": ["entrelumen_altars_renewal"], "type": "checkmark", "layout": {"x": 21.6, "y": -4.7, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:shield",
       "en_us": {"title": "Altars Act as Their Owner",
         "text": ["[lead] The owner is whoever placed the altar, or the first player who fed it.",
@@ -465,7 +464,7 @@
       "sources": ["repo:docs/design/ark-altars.md"]
     },
     {
-      "key": "entrelumen_altars_close", "deps": ["entrelumen_altars_symmetry", "entrelumen_altars_claims", "entrelumen_altars_tip_farm"], "type": "item", "item": "entrelumen:repose_altar", "layout": {"x": 25.8, "y": 0.2, "size": 2.0, "shape": "hexagon"}, "hide_lines": true,
+      "key": "entrelumen_altars_close", "deps": ["entrelumen_altars_claims"], "type": "item", "item": "entrelumen:repose_altar", "layout": {"x": 25.8, "y": 0.2, "size": 2.0, "shape": "hexagon"}, "hide_lines": true,
       "en_us": {"title": "Six Gifts From the Past",
         "text": ["[lead] Heliodor could not save itself, but it left very good tools.",
                  "[li] Peace for the base",

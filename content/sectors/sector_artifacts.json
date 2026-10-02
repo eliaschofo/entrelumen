@@ -291,16 +291,22 @@
     },
     {
       "key": "art_bounty", "role": "bounty", "deps": ["accessories_find"],
-      "task": {"any": ["#artifacts:artifacts"], "count": 2, "consume": true, "icon": "minecraft:chest", "title": {"en_us": "Two spare artifacts", "es_es": "Dos artefactos de sobra"}},
+      "task": {"any": ["artifacts:plastic_drinking_hat", "artifacts:novelty_drinking_hat", "artifacts:snorkel", "artifacts:night_vision_goggles", "artifacts:villager_hat", "artifacts:superstitious_hat", "artifacts:cowboy_hat", "artifacts:anglers_hat", "artifacts:lucky_scarf", "artifacts:scarf_of_invisibility", "artifacts:cross_necklace", "artifacts:panic_necklace", "artifacts:shock_pendant", "artifacts:flame_pendant", "artifacts:thorn_pendant", "artifacts:charm_of_sinking", "artifacts:charm_of_shrinking", "artifacts:cloud_in_a_bottle", "artifacts:obsidian_skull", "artifacts:antidote_vessel", "artifacts:universal_attractor", "artifacts:helium_flamingo", "artifacts:warp_drive", "artifacts:digging_claws", "artifacts:feral_claws", "artifacts:power_glove", "artifacts:fire_gauntlet", "artifacts:pocket_piston", "artifacts:vampiric_glove", "artifacts:golden_hook", "artifacts:onion_ring", "artifacts:pickaxe_heater", "artifacts:withered_bracelet", "artifacts:aqua_dashers", "artifacts:bunny_hoppers", "artifacts:kitty_slippers", "artifacts:running_shoes", "artifacts:snowshoes", "artifacts:steadfast_spikes", "artifacts:flippers", "artifacts:rooted_boots", "artifacts:strider_shoes", "artifacts:whoopee_cushion"], "count": 2, "consume": true, "icon": "minecraft:chest", "title": {"en_us": "Two spare artifacts", "es_es": "Dos artefactos de sobra"}},
       "icon": "minecraft:chest",
       "at": {"x": -22.0, "y": 4.2},
       "en_us": {"title": "Duplicates for the common store", "subtitle": "The third Villager Hat helps nobody.",
         "text": ["[lead] Any two artifacts you won't wear for the common store, once a day.",
-                 "Between mimics and chests, copies pile up fast."]},
+                 "Between mimics and chests, copies pile up fast.",
+                 "[note] Submit takes the first matching items, hotbar first.",
+                 "{page}",
+                 "Never accepted: the [item:artifacts:eternal_steak|Eternal Steak], [item:artifacts:everlasting_beef|Everlasting Beef], [item:artifacts:umbrella|Umbrella], [item:artifacts:chorus_totem|Chorus Totem] and [item:artifacts:crystal_heart|Crystal Heart]."]},
       "es_es": {"title": "Repetidos para el depósito común", "subtitle": "El tercer Sombrero de Paja no le sirve a nadie.",
         "text": ["[lead] Dos artefactos que no vas a usar para el depósito común, una vez por día.",
-                 "Entre mímics y cofres, los repetidos se juntan rápido."]},
-      "sources": ["repo:docs/design/quest-book-v3.md#Estándar de una cadena", "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/tags/item/artifacts.json"]
+                 "Entre mímics y cofres, los repetidos se juntan rápido.",
+                 "[note] Entregar toma los primeros ítems que coinciden, empezando por la barra.",
+                 "{page}",
+                 "No se aceptan nunca: el [item:artifacts:eternal_steak|Filete Eterno], el [item:artifacts:everlasting_beef|Filete Crudo Eterno], el [item:artifacts:umbrella|Paraguas], el [item:artifacts:chorus_totem|Tótem de Coral] y el [item:artifacts:crystal_heart|Corazón de Cristal]."]},
+      "sources": ["repo:docs/design/quest-book-v3.md#Estándar de una cadena", "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/tags/item/artifacts.json#minus eternal_steak, everlasting_beef, umbrella, chorus_totem and crystal_heart"]
     },
     {
       "key": "accessories_life", "role": "milestone", "deps": [], "hide_dependent_lines": true,

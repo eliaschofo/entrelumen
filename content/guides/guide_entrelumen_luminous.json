@@ -87,7 +87,6 @@
     {"id": "emerald_7", "item": "minecraft:emerald_block", "x": 1.72, "y": 5.4, "size": 0.55, "reveal": "entrelumen_luminous_budget", "order": -1},
     {"id": "cable_boss", "through": ["entrelumen_luminous_boss_drops", "entrelumen_luminous_close"], "color": "#F3E3B0", "width": 0.12, "alpha": 200, "grow": ["entrelumen_luminous_boss_drops"], "sketch": true, "order": -6},
     {"id": "cable_dupes", "through": ["entrelumen_luminous_no_dupes", "entrelumen_luminous_close"], "color": "#F3E3B0", "width": 0.12, "alpha": 200, "grow": ["entrelumen_luminous_no_dupes"], "sketch": true, "order": -6},
-    {"id": "cable_dyn", "through": ["entrelumen_luminous_dynlight", "entrelumen_luminous_close"], "color": "#F3E3B0", "width": 0.12, "alpha": 200, "grow": ["entrelumen_luminous_dynlight"], "sketch": true, "order": -6},
     {"id": "finale", "glow": [13.5, 0.9], "r": 10.0, "tint": "#FFF1B8", "alpha": 60, "reveal": "entrelumen_luminous_close", "order": 3},
     {"id": "spark_engineering_0", "glow": [14.3, 0.9], "r": 0.35, "tint": "#E07B39", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
     {"id": "spark_engineering_1", "glow": [14.52, 2.0], "r": 0.35, "tint": "#E07B39", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
@@ -186,7 +185,7 @@
       "es_es": {"title": "Juntar la columna del medio",
         "text": ["[lead] Las tres son también materiales del Arca, así que lo que armaste en el acto V sigue rindiendo.",
                  "[li] [item:naturesaura:sky_ingot|Lingote celeste]: magia de Nature's Aura, de su altar y su aura",
-                 "[li] [item:apotheosis:godforged_pearl|Perla forjada por dioses]: sólo sale de reciclar botín mítico de Apotheosis, que cae desde el World Tier Cumbre",
+                 "[li] [item:apotheosis:godforged_pearl|Perla forjada por dioses]: sólo sale de reciclar botín mítico de Apotheosis, que cae desde el Nivel de Mundo Cumbre",
                  "[li] [item:mekanism:alloy_atomic|Aleación atómica]: la aleación más alta de Mekanism"]},
       "sources": ["repo:docs/design/luminous-gear.md", "repo:content/integration-design.json"]
     },
@@ -349,7 +348,7 @@
       "sources": ["repo:docs/design/luminous-gear.md"]
     },
     {
-      "key": "entrelumen_luminous_creative", "deps": ["entrelumen_luminous_sword", "entrelumen_luminous_vs_top"], "type": "item", "item": "mekanism:creative_energy_cube", "layout": {"x": 25.0, "y": -2.2, "size": 1.5, "shape": "hexagon"},
+      "key": "entrelumen_luminous_creative", "deps": ["entrelumen_luminous_set_bonus"], "type": "item", "item": "mekanism:creative_energy_cube", "layout": {"x": 25.0, "y": -2.2, "size": 1.5, "shape": "hexagon"},
       "en_us": {"title": "Creative Items From Light",
         "text": ["[lead] Twelve creative items get a recipe here, never a sale.",
                  "All twelve cost [big|48] Luminosities.",
@@ -379,7 +378,7 @@
       "sources": ["repo:docs/design/luminous-gear.md", "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js", "repo:pack/kubejs/data/entrelumen/recipe/creative"]
     },
     {
-      "key": "entrelumen_luminous_boss_drops", "deps": ["entrelumen_luminous_creative"], "type": "item", "item": "minecraft:nether_star", "optional": true, "layout": {"x": 31.6, "y": -2.2, "size": 1.0, "shape": "diamond"},
+      "key": "entrelumen_luminous_boss_drops", "deps": ["entrelumen_luminous_creative"], "type": "item", "item": "minecraft:nether_star", "layout": {"x": 31.6, "y": -2.2, "size": 1.0, "shape": "diamond"},
       "en_us": {"title": "The Boss Drops Matter",
         "text": ["[lead] Act VI wants more than one of each: farm the Wither and pay the dragon a few more visits.",
                  "[li] [item:minecraft:nether_star|Nether star]: the Wither",
@@ -429,7 +428,7 @@
       "sources": ["repo:docs/design/luminous-gear.md", "repo:docs/design/solsticio-commerce.md"]
     },
     {
-      "key": "entrelumen_luminous_close", "deps": ["entrelumen_luminous_boss_drops", "entrelumen_luminous_no_dupes", "entrelumen_luminous_dynlight"], "type": "item", "item": "entrelumen:luminous_ingot", "layout": {"x": 27.6, "y": 7.4, "size": 2.0, "shape": "hexagon"}, "hide_lines": true,
+      "key": "entrelumen_luminous_close", "deps": ["entrelumen_luminous_boss_drops", "entrelumen_luminous_no_dupes"], "type": "item", "item": "entrelumen:luminous_ingot", "layout": {"x": 27.6, "y": 7.4, "size": 2.0, "shape": "hexagon"}, "hide_lines": true,
       "en_us": {"title": "The Brightest Things You Own",
         "text": ["[lead] Gear that never breaks and flies, and creative items forged from light.",
                  "The top of ENTRELUMEN's ladder. What you do with it is yours.",
