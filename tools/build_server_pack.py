@@ -8,7 +8,12 @@ tools/sync_pack.py stay the isolated QA path). It never starts a server.
 The marker file records every file the builder wrote. A rebuild replaces only a folder whose content still
 matches that record; a folder that was used (world/, server.properties, libraries/, logs/, ops.json, edited
 files, ...) is refused unless --replace is passed, and --replace deletes all of it. To update a running
-server, build into a new folder and copy mods/ and the config folders into the running server instead.
+server, build into a new folder and replace (never merge) mods/, kubejs/server_scripts/ and kubejs/data/ of the
+running server with the new ones; see README.md.
+
+An <output>.zip is overwritten only when it is byte for byte the archive this tool last wrote there: its size
+and SHA-256 are recorded beside it in <output>.zip.entrelumen.json. A zip of a used folder (Explorer's
+"Compress to ZIP", zip -r) carries the builder's own marker, so the marker inside a zip proves nothing.
 
     python tools/build_server_pack.py --output E:/servers/entrelumen --jar companion/build/libs/entrelumen-0.1.0.jar --zip
 """
@@ -35,6 +40,10 @@ ROOT = Path(__file__).resolve().parents[1]
 MARKER = '.entrelumen-server-pack.json'
 HASH_LIMIT = 4 * 1024 * 1024  # files up to this size are fingerprinted by sha256 in the marker
 TEST_MARKERS = ('.entrelumen-test-server.json', '.entrelumen-test-client.json')
+# What a server leaves in its folder once it has run (or was set up by hand): never there after a bare build.
+RUNTIME_ENTRIES = ('world', 'server.properties', 'libraries', 'logs', 'crash-reports', 'ops.json', 'whitelist.json',
+                   'banned-players.json', 'banned-ips.json', 'usercache.json')
+ZIP_RECORD_SUFFIX = '.entrelumen.json'
 
 # Paths below pack/ that only a client uses (resources, menus, client scripts, display settings).
 CLIENT_ONLY_DIRS = (
@@ -279,15 +288,21 @@ def check_destination(destination: Path, replace: bool = False) -> None:
     marker = read_marker(destination)
     if marker.get('owner') != 'entrelumen' or marker.get('kind') != 'server-pack':
         raise SystemExit('Refusing a folder whose server-pack marker is unreadable')
-    if marker.get('complete') is False or replace:
-        return  # an unfinished build never ran, or the person asked for a wipe
-    foreign = foreign_entries(destination, marker)
+    if replace:
+        return  # the person asked for a wipe
+    if marker.get('complete') is False:
+        # An interrupted build: its launchers may already exist, so somebody may have started it.
+        foreign = sorted(name + ('/' if (destination / name).is_dir() else '')
+                         for name in RUNTIME_ENTRIES if (destination / name).exists())
+    else:
+        foreign = foreign_entries(destination, marker)
     if foreign:
         shown = ', '.join(foreign[:8]) + (f' and {len(foreign) - 8} more' if len(foreign) > 8 else '')
         raise SystemExit(
             f'Refusing to replace {destination}: it holds files this tool did not write or that changed since ({shown}). '
-            'Build into a new folder and copy mods/ and the config folders into the running server; '
-            'or pass --replace to delete this whole folder, world included.')
+            'Build into a new folder and replace mods/, kubejs/server_scripts/ and kubejs/data/ of the running server '
+            'with its own (README.md, "Running a dedicated server"); or pass --replace to delete this whole folder, '
+            'world included.')
 
 
 def remove_previous(destination: Path) -> None:
@@ -320,19 +335,33 @@ def zip_path(destination: Path) -> Path:
     return Path(str(destination) + '.zip')
 
 
+def zip_record_path(archive: Path) -> Path:
+    return Path(str(archive) + ZIP_RECORD_SUFFIX)
+
+
+def file_digest(path: Path) -> dict:
+    digest = hashlib.sha256()
+    with path.open('rb') as stream:
+        for block in iter(lambda: stream.read(1 << 20), b''):
+            digest.update(block)
+    return {'size': path.stat().st_size, 'sha256': digest.hexdigest()}
+
+
 def check_zip(destination: Path) -> None:
-    """Refuse to overwrite a zip next to the output unless it is a previous archive of this tool's pack."""
+    """Refuse to overwrite a zip next to the output unless it is exactly the archive this tool last wrote there.
+    A marker inside the zip proves nothing: a zipped copy of a used folder, world included, carries it too."""
     archive = zip_path(destination)
     if not archive.exists():
         return
-    inner = f'{destination.name}/{MARKER}'
     try:
-        with zipfile.ZipFile(archive) as bundle:
-            marker = json.loads(bundle.read(inner).decode('utf-8'))
-    except (OSError, KeyError, ValueError, zipfile.BadZipFile):
-        marker = None
-    if not isinstance(marker, dict) or marker.get('owner') != 'entrelumen' or marker.get('kind') != 'server-pack':
-        raise SystemExit(f'Refusing to overwrite {archive}: it is not a server pack archive written by this tool. '
+        record = json.loads(zip_record_path(archive).read_text(encoding='utf-8'))
+    except (OSError, ValueError):
+        record = None
+    ours = (isinstance(record, dict) and record.get('owner') == 'entrelumen' and record.get('kind') == 'server-pack-zip'
+            and archive.is_file() and record.get('zip') == file_digest(archive))
+    if not ours:
+        raise SystemExit(f'Refusing to overwrite {archive}: it is not a server pack archive written by this tool, or it '
+                         'changed since (a backup of a used folder looks the same from inside). '
                          'Move or delete it, or pick another --output.')
 
 
@@ -363,8 +392,10 @@ def build(output: Path, jar: Path, pvp: bool = False, make_zip: bool = False, re
 def zip_folder(destination: Path) -> Path:
     archive = zip_path(destination)
     check_zip(destination)
+    record = zip_record_path(archive)
     if archive.exists():
         archive.unlink()
+    record.unlink(missing_ok=True)
     with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as bundle:
         for path in sorted(destination.rglob('*')):
             if not path.is_file():
@@ -374,6 +405,8 @@ def zip_folder(destination: Path) -> Path:
             if path.suffix == '.sh':
                 info.external_attr = (stat.S_IFREG | 0o755) << 16
             bundle.writestr(info, path.read_bytes())
+    write_text(record, json.dumps({'owner': 'entrelumen', 'kind': 'server-pack-zip', 'zip': file_digest(archive)},
+                                  indent=1, sort_keys=True) + '\n')
     return archive
 
 

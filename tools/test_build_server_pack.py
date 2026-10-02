@@ -186,6 +186,21 @@ class ServerPackTest(unittest.TestCase):
         self.build()
         self.assertFalse((self.out / "half.txt").exists())
 
+    def test_unfinished_build_that_was_started_is_refused(self):
+        # The launchers exist before the final marker scan: a started half-build holds a world to keep.
+        self.build()
+        (self.out / bsp.MARKER).write_text(json.dumps({"owner": "entrelumen", "kind": "server-pack", "complete": False}))
+        (self.out / "world").mkdir()
+        (self.out / "world" / "level.dat").write_text("save")
+        (self.out / "server.properties").write_text("motd=mine\n")
+        with self.assertRaisesRegex(SystemExit, "--replace") as caught:
+            self.build()
+        self.assertIn("world/", str(caught.exception))
+        self.assertIn("server.properties", str(caught.exception))
+        self.assertEqual((self.out / "world" / "level.dat").read_text(), "save")
+        self.build(replace=True)
+        self.assertFalse((self.out / "world").exists())
+
     def test_rebuild_refuses_a_link_inside_the_folder(self):
         self.build()
         target = self.base / "elsewhere"
@@ -215,12 +230,52 @@ class ServerPackTest(unittest.TestCase):
         self.assertEqual(archive.read_bytes(), b"someone else's backup")
         self.assertTrue((self.out / "extra").is_dir())
 
+    def zip_used_folder(self):
+        """A backup of a used pack folder, made like Explorer's "Compress to ZIP": the builder's marker comes along."""
+        self.build()
+        (self.out / "world").mkdir()
+        (self.out / "world" / "level.dat").write_text("save")
+        archive = Path(str(self.out) + ".zip")
+        with zipfile.ZipFile(archive, "w") as bundle:
+            for path in sorted(self.out.rglob("*")):
+                if path.is_file():
+                    bundle.write(path, Path(self.out.name, path.relative_to(self.out)).as_posix())
+        return archive
+
+    def test_zip_never_overwrites_a_zipped_backup_of_a_used_folder(self):
+        archive = self.zip_used_folder()
+        backup = archive.read_bytes()
+        shutil.rmtree(self.out)  # the folder moved away: the zip is the only copy of the world
+        with self.assertRaisesRegex(SystemExit, "not a server pack archive"):
+            self.build(make_zip=True)
+        self.assertEqual(archive.read_bytes(), backup)
+
+    def test_zip_never_overwrites_a_zipped_backup_even_with_replace(self):
+        archive = self.zip_used_folder()
+        backup = archive.read_bytes()
+        with self.assertRaisesRegex(SystemExit, "not a server pack archive"):
+            self.build(make_zip=True, replace=True)
+        self.assertEqual(archive.read_bytes(), backup)
+        self.assertTrue((self.out / "world" / "level.dat").is_file(), "the folder went before the zip refusal")
+
+    def test_zip_never_overwrites_its_own_archive_once_changed(self):
+        result = self.build(make_zip=True)
+        archive = Path(result["zip"])
+        with zipfile.ZipFile(archive, "a") as bundle:
+            bundle.writestr("server-pack/world/level.dat", "save")
+        with self.assertRaisesRegex(SystemExit, "not a server pack archive"):
+            self.build(make_zip=True)
+        with zipfile.ZipFile(archive) as bundle:
+            self.assertIn("server-pack/world/level.dat", bundle.namelist())
+
     def test_zip_replaces_its_own_previous_archive(self):
         self.build(make_zip=True)
         second = self.build(pvp=True, make_zip=True)
         with zipfile.ZipFile(second["zip"]) as bundle:
             self.assertIn("server-pack/" + bsp.MARKER, bundle.namelist())
             self.assertIn(b"pvp=true", bundle.read("server-pack/server.properties.template"))
+        record = json.loads(Path(second["zip"] + bsp.ZIP_RECORD_SUFFIX).read_text())
+        self.assertEqual(record["zip"], bsp.file_digest(Path(second["zip"])))
 
     def test_output_is_required(self):
         with patch.object(bsp.sys, "argv", ["build_server_pack.py", "--zip"]), patch.object(bsp.sys, "stderr", io.StringIO()):
