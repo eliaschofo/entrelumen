@@ -568,7 +568,7 @@ Familia `catalog/families/pingpong5-information.json`: 11 mods y 3 librerías. E
 | WITS | 1.3.1 | CF 909375/8412915 (ATM10) | ambos | `/wits` dice en qué estructura estás parado. |
 | Bad Wither No Cookie | 3.20.4 | CF 261251/8135209 (ATM10) | cliente | Los sonidos del Wither y del Dragón se oyen sólo cerca. |
 | Yeetus Experimentus | 87.0.0 | CF 635427/5444189 (ATM10) | cliente | Sin el aviso de «ajustes experimentales» al crear o abrir un mundo. |
-| Chunky | 1.4.23 | CF 485681/6383261 | ambos | Pregenera el mundo antes de abrir un servidor. |
+| Chunky | 1.4.23 | CF 485681/6383261 | servidor (ambos hasta el 3/10, ver [Distant Horizons](#distant-horizons-310)) | Pregenera el mundo antes de abrir un servidor. |
 | Dynamic FPS | 3.11.4 | CF 335493/7546938 | cliente | Baja FPS y volumen con la ventana en segundo plano. |
 | Ping Wheel | 1.12.2 (beta) | CF 734339/7996932 | ambos | Marca un lugar o una criatura para tu grupo de FTB Teams (Mouse 5). |
 
@@ -1089,7 +1089,7 @@ Elias lo decidió el 3/10, después de una investigación: Distant Horizons (DH)
 | Distant Horizons | 3.3.2 | CF 508933/8943824 (los mismos bytes en Modrinth, `Ez3cx7Yd`) | cliente | Dibuja terreno lejano simplificado (LODs) más allá de la distancia de renderizado. |
 
 - **Por qué 3.3.2 y no 3.3.3:** 3.3.3 suma un enganche con Chunky que tira «Chunky is not loaded» en el primer evento de chunk: tumba un servidor dedicado y desconecta a un cliente la primera vez que entra (DH #1329, abierto). 3.3.2 no lo trae, y Chunky 1.4.23 está en el lock de los dos lados.
-- **Pero 3.3.2 apaga su generador con Chunky:** si encuentra la API de Chunky, fija por su API el plan de generación en `DISABLED`. Con el lock de hoy, DH sólo muestra tierra ya generada (explorada o pregenerada). Queda para Elias: así, o Chunky sólo en el servidor. Detalle en [loading-compatibility](loading-compatibility.md#distant-horizons-332-3-de-octubre-de-2026).
+- **Chunky pasa al servidor (Elias, 3/10):** 3.3.2 fija por su API el plan de generación en `DISABLED` si encuentra la API de Chunky. Para que DH genere el terreno lejano, Chunky queda sólo en el servidor (`serverOnly` en `pingpong5-information.json`, lado `server` en el lock, que `curate_pack.py` saltea en el cliente). El servidor y el server pack lo conservan; en un mundo de un jugador no hay `/chunky`. Detalle en [loading-compatibility](loading-compatibility.md#distant-horizons-332-3-de-octubre-de-2026).
 - **Defaults**, sembrados una vez por Default Options en `config/DistantHorizons.toml` (como Iris: quien cambia algo lo conserva al actualizar el pack; un perfil que ya tiene el archivo no recibe cambios nuevos):
   - `_version = 4`, la de 3.3.2: con otra más vieja, DH borra el archivo y arranca con los suyos;
   - calidad MEDIUM con SSAO apagado, `vanillaFadeMode=DOUBLE_PASS` y radio de 128 chunks;

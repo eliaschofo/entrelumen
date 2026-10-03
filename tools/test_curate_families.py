@@ -36,7 +36,7 @@ class FamilyCurationTest(unittest.TestCase):
             },
         })
         self.patch = patch.multiple(
-            curate, CATALOG=self.catalog, CONTENT={}, QOL={}, CLIENT=set(),
+            curate, CATALOG=self.catalog, CONTENT={}, QOL={}, CLIENT=set(), SERVER=set(),
             PERFORMANCE=set(), INFRA=set(), FAMILY_PINS={}, REPLACED={}, CF_SATISFIED={}, CF_WAIVED={},
         )
         self.patch.start()
@@ -268,6 +268,60 @@ class FamilyCurationTest(unittest.TestCase):
         self.assertEqual([role['modId'] for role in by_name['kotlinlib-all.jar']['roles']], ['kotlinlib'])
         paths = curate.read_json(self.catalog / 'local-paths.json')
         self.assertEqual(curate.check(lock, paths, 'server')[1], [])
+
+    def test_server_only_mod_is_locked_for_servers_and_skipped_on_clients(self):
+        """Chunky (Elias, 3/10): a family's serverOnly mod goes to servers and the server pack, never to clients."""
+        pregen = self.add_jar('pregen-1.jar', 'pregen', '1.0', 300, 10)
+        viewer = self.add_jar('viewer-1.jar', 'viewer', '1.0', 400, 20)
+        self.sync_instance()
+        self.write_json(self.catalog / 'families' / 'tools.json', {
+            'schemaVersion': 1, 'qol': {'pregen': 'Pregenerates the world', 'viewer': 'Shows the map'},
+            'clientOnly': ['viewer'], 'serverOnly': ['pregen'], 'pins': [pregen, viewer]})
+        curate.load_families()
+
+        curate.refresh(self.source)
+
+        lock = curate.read_json(self.catalog / 'curated.json')
+        paths = curate.read_json(self.catalog / 'local-paths.json')
+        self.assertEqual({entry['filename']: entry['side'] for entry in lock['mods']},
+                         {'pregen-1.jar': 'server', 'viewer-1.jar': 'client'})
+        client, client_errors = curate.check(lock, paths, 'client')
+        server, server_errors = curate.check(lock, paths, 'server')
+        self.assertEqual(([entry['filename'] for entry in client], client_errors), (['viewer-1.jar'], []))
+        self.assertEqual(([entry['filename'] for entry in server], server_errors), (['pregen-1.jar'], []))
+
+        stale = copy.deepcopy(lock)
+        stale['mods'][0]['side'] = 'both'  # an additive refresh keeps an entry written before the move
+        self.assertIn("Side out of date (family serverOnly): pregen-1.jar is 'both'", curate.check(stale, paths, 'client')[1])
+
+    def test_client_mod_that_needs_a_server_only_mod_fails_the_client_closure(self):
+        pregen = self.add_jar('pregen-1.jar', 'pregen', '1.0', 300, 10)
+        path = self.source / 'mods' / 'needy-1.jar'
+        with zipfile.ZipFile(path, 'w') as jar:
+            jar.writestr('META-INF/neoforge.mods.toml',
+                         'modLoader="javafml"\nloaderVersion="[1,)"\nlicense="MIT"\n[[mods]]\nmodId="needy"\n'
+                         'version="1.0"\n[[dependencies.needy]]\nmodId="pregen"\ntype="required"\n'
+                         'versionRange="[1,)"\nside="BOTH"\n')
+        data = path.read_bytes()
+        self.addons.append({'fileNameOnDisk': 'needy-1.jar', 'isEnabled': True, 'addonID': 500,
+                            'installedFile': {'id': 50, 'hashes': [{'type': 1, 'value': hashlib.sha1(data).hexdigest()}],
+                                              'dependencies': []}})
+        self.sync_instance()
+        needy = {'modIds': ['needy'], 'filename': 'needy-1.jar', 'sha256': hashlib.sha256(data).hexdigest(),
+                 'projectID': 500, 'fileID': 50}
+        self.write_json(self.catalog / 'families' / 'tools.json', {
+            'schemaVersion': 1, 'qol': {'needy': 'Needs the pregenerator'}, 'serverOnly': ['pregen'],
+            'pins': [pregen, needy]})
+        curate.load_families()
+
+        with self.assertRaisesRegex(ValueError, r'needy-1\.jar: missing pregen \(client\)'):
+            curate.refresh(self.source)
+
+    def test_a_mod_cannot_be_client_only_and_server_only(self):
+        self.write_json(self.catalog / 'families' / 'tools.json', {
+            'schemaVersion': 1, 'clientOnly': ['pregen'], 'serverOnly': ['pregen']})
+        with self.assertRaisesRegex(ValueError, 'Both client-only and server-only'):
+            curate.load_families()
 
     def test_family_replacement_swaps_one_old_entry_and_is_enforced(self):
         curate.CONTENT['base'] = ('I', 'Existing role', 'Existing integration')

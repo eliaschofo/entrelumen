@@ -314,7 +314,7 @@
         "text": ["[lead] Past your render distance, Distant Horizons draws simplified far terrain, up to [hl|128] chunks away.",
                  "Only in the Overworld: every other dimension looks as it always did.",
                  "{page}",
-                 "[note] For now it only fills in land that is already generated, explored or pregenerated with Chunky: with Chunky installed, Distant Horizons 3.3.2 switches its own generator off.",
+                 "[note] In single player it generates the far land itself as you play: first the rough surface, then trees and villages. On a server it only shows land you have already loaded.",
                  "{page}",
                  "[note] The far terrain leaves things out: [hl|Aeronautics] ships vanish past about [hl|320] blocks, and [hl|LittleTiles] builds do not show.",
                  "[note] With a shader pack on, the far terrain loses its textures.",
@@ -323,12 +323,12 @@
         "text": ["[lead] Más allá de tu distancia de renderizado, Distant Horizons dibuja el terreno lejano simplificado, hasta [hl|128] chunks.",
                  "Sólo en el Overworld: las demás dimensiones se ven como siempre.",
                  "{page}",
-                 "[note] Por ahora sólo completa tierra ya generada, explorada o pregenerada con Chunky: con Chunky instalado, Distant Horizons 3.3.2 apaga su propio generador.",
+                 "[note] En un mundo de un jugador genera la tierra lejana mientras jugás: primero la superficie, después árboles y aldeas. En un servidor sólo muestra la tierra que ya cargaste.",
                  "{page}",
                  "[note] El terreno lejano deja cosas afuera: los barcos de [hl|Aeronautics] desaparecen pasados unos [hl|320] bloques, y las construcciones de [hl|LittleTiles] no se ven.",
                  "[note] Con un shader pack prendido, el terreno lejano pierde las texturas.",
                  "[tip] Para bajarlo o apagarlo: Opciones, el ícono a la izquierda del campo de visión (esa pantalla está en inglés). Bajá [hl|LOD Chunk Render Distance Radius] o apagá [hl|Enable Rendering]."]},
-      "sources": ["repo:pack/config/defaultoptions/extra/config/DistantHorizons.toml", "jar:DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar:assets/distanthorizons/lang/en_us.json", "jar:sable-neoforge-1.21.1-2.0.5.jar:dev/ryanhcode/sable/SableConfig.class", "repo:docs/design/loading-compatibility.md", "https://gitlab.com/distant-horizons-team/distant-horizons/-/issues/1301", "https://gitlab.com/distant-horizons-team/distant-horizons/-/issues/1316"]
+      "sources": ["repo:pack/config/defaultoptions/extra/config/DistantHorizons.toml", "jar:DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar:assets/distanthorizons/lang/en_us.json", "jar:DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar:com/seibel/distanthorizons/core/config/Config$Common$WorldGenerator.class", "jar:sable-neoforge-1.21.1-2.0.5.jar:dev/ryanhcode/sable/SableConfig.class", "repo:docs/design/loading-compatibility.md", "https://gitlab.com/distant-horizons-team/distant-horizons/-/issues/1301", "https://gitlab.com/distant-horizons-team/distant-horizons/-/issues/1316"]
     },
     {
       "key": "qol_client_toy_tap", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": -1.4, "y": 2.6, "size": 1.5, "shape": "none"},

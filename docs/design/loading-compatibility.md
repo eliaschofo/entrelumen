@@ -60,11 +60,11 @@ Decisión de Elias del 3/10: Distant Horizons (DH) sólo en el cliente, prendido
 - El JAR trae Fabric API en `META-INF/jars` para el lado Fabric; no tiene `META-INF/jarjar`, así que NeoForge no lo carga.
 - DH no registra teclas fuera de las de depuración (F6 a F8), que dependen de `enableDebugKeybindings` y van apagadas.
 
-### Chunky apaga el generador de DH (el hallazgo más importante)
+### Chunky apaga el generador de DH: Chunky pasa a ser sólo del servidor
 
-`AbstractModInitializer.logIncompatibilityWarnings` de 3.3.2 busca la clase `org.popcraft.chunky.api.ChunkyAPI`. Chunky 1.4.23 la trae y está en el lock de los dos lados. Si la encuentra, DH fija por su API `generatorPlan = DISABLED` y `disableUnchangedChunkCheck = true` (origen «Distant Horizons / Chunky»), por encima del archivo; su pantalla lo muestra bloqueado. Además avisa en el log que Chunky puede dejar huecos.
+`AbstractModInitializer.logIncompatibilityWarnings` de 3.3.2 busca la clase `org.popcraft.chunky.api.ChunkyAPI`. Chunky 1.4.23 la trae. Si la encuentra, DH fija por su API `generatorPlan = DISABLED` y `disableUnchangedChunkCheck = true` (origen «Distant Horizons / Chunky»), por encima del archivo; su pantalla lo muestra bloqueado. Además avisa en el log que Chunky puede dejar huecos.
 
-Consecuencia: con el lock de hoy, DH no genera terreno lejano. Sólo arma LODs de chunks que ya existen: lo explorado y lo que pregenera Chunky (DH los toma al guardarse, en `ChunkMap.save`). El `SURFACE_THEN_CHUNKS` con `FEATURES` del archivo sembrado vale recién si Chunky sale del cliente. Es una decisión para Elias: 3.3.2 con Chunky y sin generador lejano, o Chunky sólo en el servidor (con 3.3.2 o 3.3.3 y su generador). La guía lo dice tal cual.
+Con Chunky en el cliente, DH no generaría terreno lejano: sólo armaría LODs de chunks ya existentes. Elias decidió el 3/10 que Chunky quede sólo en el servidor: la familia lo marca `serverOnly`, el lock le pone el lado `server` y `tools/curate_pack.py` lo deja fuera de toda instalación de cliente (el servidor y el server pack lo siguen trayendo; `--check` falla si un mod de cliente lo pide). Así DH genera el terreno lejano con el `SURFACE_THEN_CHUNKS` y `FEATURES` del archivo sembrado: primero la superficie, después los chunks con árboles y aldeas. En un mundo de un jugador ya no hay `/chunky`; en un servidor sin DH, el cliente sólo arma LODs de lo que recibe.
 
 ### Mixins frente al pack
 
@@ -91,7 +91,7 @@ Contra el índice de 5.603 inyecciones de los 377 JAR anteriores (con los anidad
 - **Flywheel** (en Create 6.0.10 y Aeronautics): no comparte ningún método con DH. Los bloques con entidad no van a los LODs.
 - **Sable y Create Aeronautics:** `SableConfig` deja `sub_level_tracking_range` en 320 bloques y el pack no lo cambia. Pasada esa distancia el barco deja de existir en el cliente mientras el terreno lejano sigue. Sable #376 (abierto) además muestra estructuras tapadas por los LODs.
 - **LittleTiles:** sus construcciones no aparecen en los LODs (DH #1301, abierto).
-- **Chunky 1.4.23:** ver arriba. 3.3.2 no trae el `ChunkyAccessor` de 3.3.3 que tira «Chunky is not loaded» (#1329).
+- **Chunky 1.4.23:** sólo en el servidor, ver arriba. 3.3.2 no trae el `ChunkyAccessor` de 3.3.3 que tira «Chunky is not loaded» (#1329).
 
 ### Dimensiones
 
@@ -101,7 +101,7 @@ Contra el índice de 5.603 inyecciones de los 377 JAR anteriores (con los anidad
 
 - **Hilos:** el preset LOW_IMPACT no se guarda en el archivo (es sólo de la pantalla) y vale el 25 % de los hilos de la CPU, redondeado para arriba. El archivo fija 3 hilos al 100 %, lo que LOW_IMPACT da con 9 a 12 hilos. En una CPU de 4 hilos, 3 es casi todo; la pantalla muestra «Custom».
 - **Calidad:** igual, MEDIUM no se guarda. El archivo lleva los valores de MEDIUM con SSAO apagado; la pantalla muestra «Custom».
-- **Avisos:** los avisos de chat de DH van apagados (memoria, recolector, compatibilidad, Chunky). El log los sigue escribiendo.
+- **Avisos:** los avisos de chat de DH van apagados (memoria, recolector, compatibilidad). El log los sigue escribiendo.
 - **Memoria y GPU:** los búferes de DH van fuera del heap; la GTX 1070 de Elias ya tiene reinicios de driver sin DH. Se mide en la fase final.
 - **Respaldo:** la base de DH queda dentro de cada mundo y SimpleBackups la comprime con el resto. No se verificó si se puede excluir.
 - **Cambio de dimensión:** DH #1279 (niveles viejos que no se liberan) figura cerrado; se mira igual.
