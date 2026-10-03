@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "about": "Distant Horizons 3.3.2, approved by Elias on 3 October 2026 (docs/design/mod-pingpong.md#distant-horizons-310): client only, on by default in the Overworld and ignored in every other dimension. 3.3.2 rather than 3.3.3, whose new Chunky hook throws 'Chunky is not loaded' (DH issue #1329). Chunky is server-only since the same day: with it loaded, 3.3.2 switches its own generator off. Default Options seeds config/DistantHorizons.toml once (tools/generate_client_defaults.py), so a player's later changes survive pack updates.",
+  "qol": {
+    "distanthorizons": "Renders simplified far terrain (LODs) beyond the vanilla render distance in the Overworld only; on by default at a 128-chunk radius, turned down or off from its button in the video settings"
+  },
+  "clientOnly": [
+    "distanthorizons"
+  ],
+  "performance": [],
+  "infrastructure": [],
+  "pins": [
+    {
+      "modIds": [
+        "distanthorizons"
+      ],
+      "filename": "DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar",
+      "sha256": "cf63717e037bc2576933d63d11246b5f2f317f4cd5b6d4ea1ea077ad027e4a36",
+      "dependencies": [
+        "minecraft [1.21],[1.21.1]",
+        "neoforge [*,)"
+      ],
+      "license": "LGPL-3.0-only",
+      "projectID": 508933,
+      "fileID": 8943824,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/distant-horizons/files/8943824",
+      "downloadUrl": "https://edge.forgecdn.net/files/8943/824/DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar",
+      "sourceSha512": "758d9591bb63a7851d368b6439135ec35ceb3b22e35723fca26433c4069be87c4098a23e8fc590be61903ac92e6ae1e3e1adf5beb744e6226c1fe70dd1933011",
+      "modrinthMapping": {
+        "projectId": "uCdwusMi",
+        "versionId": "Ez3cx7Yd",
+        "downloadUrl": "https://cdn.modrinth.com/data/uCdwusMi/versions/Ez3cx7Yd/DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar"
+      },
+      "evidence": "Official Modrinth CDN (version Ez3cx7Yd), SHA-1 d18b0829416ec6948102524b6e913e5bc73ae402 and SHA-512 from the version API matched; the official CurseForge file record lists the same name and 28,224,156 bytes. The mods.toml declares clientSideOnly=true, the project license LGPL-3.0-only (LICENSE.LESSER.txt in the jar) and one incompatibility, SSRD <=1.8.6, which the lock does not hold"
+    }
+  ]
+}

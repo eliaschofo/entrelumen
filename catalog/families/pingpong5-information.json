@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "about": "Mod ping-pong round 5, batch 2 (docs/design/mod-pingpong.md#lote-2--información-y-comodidad): information and comfort from the 27 September census, plus Chunky, Dynamic FPS and Ping Wheel from the outward search (docs/research/mod-outward.md). No items, no act gate. FindMe was dropped: it pulls items from any container in range without asking FTB Chunks.",
+  "about": "Mod ping-pong round 5, batch 2 (docs/design/mod-pingpong.md#lote-2--información-y-comodidad): information and comfort from the 27 September census, plus Chunky, Dynamic FPS and Ping Wheel from the outward search (docs/research/mod-outward.md). No items, no act gate. FindMe was dropped: it pulls items from any container in range without asking FTB Chunks. Chunky is server-only since 3 October 2026 (Elias): with Chunky loaded, Distant Horizons 3.3.2 switches its own far-terrain generator off, so clients go without it and single player has no /chunky (docs/design/mod-pingpong.md#distant-horizons-310).",
   "qol": {
     "emi_loot": "EMI shows what mobs, blocks and chests drop; ENTRELUMEN's own tables and the quest loot crates stay hidden",
     "emi_ores": "EMI shows the heights and biomes where each ore generates",
@@ -10,7 +10,7 @@
     "wits": "/wits names the structure you stand in",
     "bwncr": "The Wither and Ender Dragon sounds carry only nearby instead of across the whole world",
     "yeetusexperimentus": "No experimental-settings warning when creating or opening a world with the pack's dimensions",
-    "chunky": "Pregenerates the world before a server opens",
+    "chunky": "Pregenerates the world before a server opens; server only",
     "dynamic_fps": "Lowers frame rate and volume while the window is in the background (about 15 FPS unfocused)",
     "pingwheel": "Ping a place or a creature for your FTB party (Mouse 5)"
   },
@@ -20,6 +20,9 @@
     "bwncr",
     "yeetusexperimentus",
     "dynamic_fps"
+  ],
+  "serverOnly": [
+    "chunky"
   ],
   "performance": [],
   "infrastructure": [],

@@ -127,6 +127,8 @@ CLIENT = {'defaultoptions', 'drippyloadingscreen', 'smithingtemplateviewer', 'ch
           'justenoughprofessions', 'jearchaeology', 'jei_mekanism_multiblocks', 'ae2jeiintegration',
           'extremesoundmuffler', 'toastcontrol', 'justzoom', 'rebind_narrator', 'moreoverlays',
           'sodium', 'immediatelyfast', 'fancymenu', 'konkrete', 'melody', 'searchables', 'lambdynlights'}
+# Server-only mods (family `serverOnly`): locked with side "server", installed on servers and left out of clients.
+SERVER = set()
 EXCLUDED = {'projecte', 'allthemodium', 'allthetweaks', 'alltheores', 'allthecompressed'}
 FAMILY_PINS = {}
 # Earlier lock entries a family replaces on purpose: {filename: {'by': pinned filename, 'why': reason}}.
@@ -190,10 +192,17 @@ def modrinth_pin_entry(path, meta, pin):
 
 
 def jar_side(meta):
-    """Client-only when every declared mod is; a library-only JAR (no top-level [[mods]], only
-    JarJar providers such as Kotlin for Forge) is judged by what it provides, never client by default."""
+    """Client-only (or server-only) when every declared mod is; a library-only JAR (no top-level [[mods]],
+    only JarJar providers such as Kotlin for Forge) is judged by what it provides, never one side by default."""
     ids = [m['id'] for m in meta['mods']] or sorted(provided(meta))
-    return 'client' if ids and all(mod_id in CLIENT for mod_id in ids) else 'both'
+    if ids and all(mod_id in CLIENT for mod_id in ids):
+        return 'client'
+    return 'server' if ids and all(mod_id in SERVER for mod_id in ids) else 'both'
+
+
+def on_side(entry, side):
+    """A client gets everything but server-only entries; a server everything but client-only ones."""
+    return entry['side'] != ('server' if side == 'client' else 'client')
 
 
 def load_families():
@@ -212,8 +221,11 @@ def load_families():
                 if field == 'qol' and (not isinstance(role, str) or not role):
                     raise ValueError(f'Expected QoL role for {mod_id}')
                 target[mod_id] = role
-        for field, target in (('clientOnly', CLIENT), ('performance', PERFORMANCE), ('infrastructure', INFRA)):
+        for field, target in (('clientOnly', CLIENT), ('serverOnly', SERVER), ('performance', PERFORMANCE),
+                              ('infrastructure', INFRA)):
             target.update(family.get(field, []))
+        if CLIENT & SERVER:
+            raise ValueError(f'Both client-only and server-only: {sorted(CLIENT & SERVER)}')
         for pin in family.get('pins', []):
             name = pin['filename']
             if (Path(name).name != name or not name.endswith('.jar')
@@ -433,9 +445,15 @@ def refresh(source, preserve=False):
 
 def check(lock, paths, side='client'):
     errors = [f"Requested dependency unavailable: {item['id']} ({item['reason']})" for item in lock['missing']]
-    active = [e for e in lock['mods'] if side == 'client' or e['side'] != 'client']
+    active = [e for e in lock['mods'] if on_side(e, side)]
     supplied = BUILTINS | set().union(*(provided(e['metadata']) for e in active))
     locked_by_name = {entry['filename']: entry for entry in lock['mods']}
+    # Additive curation keeps old entries as they were: a mod moved to one side must have its entry moved too.
+    for entry in lock['mods']:
+        if entry['side'] not in ('client', 'server', 'both'):
+            errors.append(f"Unknown side {entry['side']!r}: {entry['filename']}")
+        elif (entry['side'] == 'server') != (jar_side(entry['metadata']) == 'server'):
+            errors.append(f"Side out of date (family serverOnly): {entry['filename']} is {entry['side']!r}")
     errors += [f"Replaced family dependency still locked: {name} (replaced by {REPLACED[name]['by']})"
                for name in sorted(set(locked_by_name) & set(REPLACED))]
     for name, pin in FAMILY_PINS.items():

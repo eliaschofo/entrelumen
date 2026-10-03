@@ -33,7 +33,7 @@
                  "[li] [hl|AllTheLeaks]: leak fixes for long sessions",
                  "[li] [hl|AI Improvements]: lighter mob thinking on the server",
                  "{page}",
-                 "[careful] Another optimizer on top usually brings conflicts, not frames."]},
+                 "[careful] Thinking of another optimizer? Check first that it supports this Sodium on NeoForge: two mods that rewrite the same code can clash."]},
       "es_es": {"title": "Lo que ya viene optimizado",
         "text": ["[lead] El pack ya trae seis optimizadores.",
                  "[li] [hl|Sodium]: renderizado más rápido, con sus propias páginas de video",
@@ -42,7 +42,7 @@
                  "[li] [hl|AllTheLeaks]: arreglos de fugas para sesiones largas",
                  "[li] [hl|AI Improvements]: mobs que piensan más liviano en el servidor",
                  "{page}",
-                 "[careful] Otro optimizador encima suele traer conflictos, no cuadros."]},
+                 "[careful] ¿Pensás sumar otro optimizador? Revisá antes que soporte este Sodium en NeoForge: dos mods que reescriben el mismo código pueden chocar."]},
       "sources": ["repo:catalog/curated.json", "repo:docs/design/small-qol-family.md", "repo:docs/design/qol-functional-decor-family.md"]
     },
     {
@@ -56,6 +56,7 @@
                  "[li] Entity distance [hl|75%], darkness and screen effects at half",
                  "[li] GUI scale [hl|3]",
                  "{page}",
+                 "Far terrain from [hl|Distant Horizons] reaches [hl|128] chunks, in the Overworld only.",
                  "[tip] Raise render distance first: simulation distance costs the server far more."]},
       "es_es": {"title": "El primer perfil",
         "text": ["[lead] Un perfil nuevo arranca modesto a propósito: un comienzo seguro, no una regla.",
@@ -65,8 +66,9 @@
                  "[li] Distancia de entidades al [hl|75%], oscuridad y efectos de pantalla a la mitad",
                  "[li] Escala de GUI [hl|3]",
                  "{page}",
+                 "El terreno lejano de [hl|Distant Horizons] llega a [hl|128] chunks, sólo en el Overworld.",
                  "[tip] Subí primero el renderizado: la simulación pesa mucho más en el servidor."]},
-      "sources": ["repo:pack/config/defaultoptions/options.txt", "repo:pack/config/entrelumen/client-preset.json", "repo:docs/design/automatic-client-defaults.md"]
+      "sources": ["repo:pack/config/defaultoptions/options.txt", "repo:pack/config/entrelumen/client-preset.json", "repo:docs/design/automatic-client-defaults.md", "repo:pack/config/defaultoptions/extra/config/DistantHorizons.toml"]
     },
     {
       "key": "qol_client_sodium", "deps": ["qol_client_optimizers"], "type": "checkmark", "layout": {"x": 6, "y": 0, "size": 1.0, "shape": "circle"},
@@ -75,14 +77,16 @@
                  "[li] General, Quality, Performance and Advanced, plus pages other mods add",
                  "[li] Hover any option to read what it does and what it costs",
                  "{page}",
+                 "Distant Horizons has its own screen instead: the icon left of the FOV slider, in Options.",
                  "[tip] On a weak PC: lower render distance, keep particles decreased and leave the performance options alone."]},
       "es_es": {"title": "Las opciones de video de Sodium",
         "text": ["[lead] Opciones, Configuración de video abre las páginas de Sodium, y cada opción se explica sola.",
                  "[li] General, Calidad, Rendimiento y Avanzado, más las páginas que suman otros mods",
                  "[li] Pasá el mouse por una opción para leer qué hace y cuánto cuesta",
                  "{page}",
+                 "Distant Horizons tiene su propia pantalla: el ícono a la izquierda del campo de visión, en Opciones.",
                  "[tip] En una PC modesta: bajá el renderizado, dejá las partículas reducidas y no toques las opciones de rendimiento."]},
-      "sources": ["jar:sodium-neoforge-0.8.13+mc1.21.1.jar:META-INF/neoforge.mods.toml"]
+      "sources": ["jar:sodium-neoforge-0.8.13+mc1.21.1.jar:META-INF/neoforge.mods.toml", "jar:DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar:assets/distanthorizons/lang/en_us.json"]
     },
     {
       "key": "qol_client_dynlights", "deps": ["qol_client_sodium"], "type": "checkmark", "optional": true, "layout": {"x": 9, "y": -2.5, "size": 1.0, "shape": "circle"},
@@ -302,6 +306,29 @@
                  "Sus teclas (recargar, alternar, pantalla de packs) arrancan sin asignar: asignalas en Controles si las querés.",
                  "Mientras no haya un pack, el interruptor dice [hl|Shaders: No hay Packs]."]},
       "sources": ["repo:pack/config/defaultoptions/extra/config/iris.properties", "repo:pack/config/defaultoptions/keybindings.txt", "repo:docs/design/mod-pingpong.md", "jar:iris-neoforge-1.8.14-beta.1+mc1.21.1.jar:assets/iris/lang/en_us.json", "jar:iris-neoforge-1.8.14-beta.1+mc1.21.1.jar:assets/iris/lang/es_es.json"]
+    },
+    {
+      "key": "qol_client_distant_horizons", "deps": ["qol_client_sodium"], "type": "checkmark", "layout": {"x": 7.5, "y": 5.5, "size": 1.25, "shape": "circle"},
+      "icon": "minecraft:filled_map",
+      "en_us": {"title": "Distant Horizons: The Far View", "subtitle": "Mountains you will never walk to. Probably.",
+        "text": ["[lead] Past your render distance, Distant Horizons draws simplified far terrain, up to [hl|128] chunks away.",
+                 "Only in the Overworld: every other dimension looks as it always did.",
+                 "{page}",
+                 "[note] In single player it generates the far land itself as you play: first the rough surface, then trees and villages. On a server it only shows land you have already loaded.",
+                 "{page}",
+                 "[note] The far terrain leaves things out: [hl|Aeronautics] ships vanish past about [hl|320] blocks, and [hl|LittleTiles] builds do not show.",
+                 "[note] With a shader pack on, the far terrain loses its textures.",
+                 "[tip] To lower it or turn it off: Options, the icon left of the FOV slider. Lower [hl|LOD Chunk Render Distance Radius] or switch [hl|Enable Rendering] off."]},
+      "es_es": {"title": "Distant Horizons: la vista lejana", "subtitle": "Montañas a las que nunca vas a llegar caminando. Probablemente.",
+        "text": ["[lead] Más allá de tu distancia de renderizado, Distant Horizons dibuja el terreno lejano simplificado, hasta [hl|128] chunks.",
+                 "Sólo en el Overworld: las demás dimensiones se ven como siempre.",
+                 "{page}",
+                 "[note] En un mundo de un jugador genera la tierra lejana mientras jugás: primero la superficie, después árboles y aldeas. En un servidor sólo muestra la tierra que ya cargaste.",
+                 "{page}",
+                 "[note] El terreno lejano deja cosas afuera: los barcos de [hl|Aeronautics] desaparecen pasados unos [hl|320] bloques, y las construcciones de [hl|LittleTiles] no se ven.",
+                 "[note] Con un shader pack prendido, el terreno lejano pierde las texturas.",
+                 "[tip] Para bajarlo o apagarlo: Opciones, el ícono a la izquierda del campo de visión (esa pantalla está en inglés). Bajá [hl|LOD Chunk Render Distance Radius] o apagá [hl|Enable Rendering]."]},
+      "sources": ["repo:pack/config/defaultoptions/extra/config/DistantHorizons.toml", "jar:DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar:assets/distanthorizons/lang/en_us.json", "jar:DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar:com/seibel/distanthorizons/core/config/Config$Common$WorldGenerator.class", "jar:sable-neoforge-1.21.1-2.0.5.jar:dev/ryanhcode/sable/SableConfig.class", "repo:docs/design/loading-compatibility.md", "https://gitlab.com/distant-horizons-team/distant-horizons/-/issues/1301", "https://gitlab.com/distant-horizons-team/distant-horizons/-/issues/1316"]
     },
     {
       "key": "qol_client_toy_tap", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": -1.4, "y": 2.6, "size": 1.5, "shape": "none"},

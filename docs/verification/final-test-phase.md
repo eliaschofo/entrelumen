@@ -122,6 +122,20 @@ Lo que quedó abierto después de los 14 lotes y no se corrigió en código qued
 - `quest-book-v3.md`: se acepta la nota del motor del 1/10, con el caso F27 de `one_completed` y `min_required_dependencies` agregado.
 - La guarda opcional de `check_guides.py` (que falle si una fuente de quest apunta a una receta que un script de familia saca, como pasó con F17) no se agregó: se acepta dejarla para otra ronda.
 
+## Distant Horizons (3/10)
+
+Distant Horizons 3.3.2, sólo cliente, prendido en el Overworld ([mod-pingpong](../design/mod-pingpong.md#distant-horizons-310), riesgos en [loading-compatibility](../design/loading-compatibility.md#distant-horizons-332-3-de-octubre-de-2026)). Nada de esto corrió.
+
+- **Archivo sembrado:** en un perfil sin `config/DistantHorizons.toml`, el archivo aparece con `_version = 4` y DH no lo resetea (en el log no está «config is of an older version»). Cambiar el radio, reiniciar y actualizar el pack: el cambio queda.
+- **Sin Chunky en un jugador:** la instancia del cliente no trae Chunky y `/chunky` no existe. El mundo abre sin «Chunky is not loaded», el log no muestra «Distant Horizons / Chunky» y la pantalla de DH deja cambiar el plan de generación (`Surface Then Chunks`). Confirmar que el terreno lejano se genera solo: primero la superficie, después árboles y aldeas. En el servidor de QA, `/chunky start` sigue andando y un cliente con DH entra sin desconexión.
+- **Niebla:** Iris (sin shader pack), Sodium Extra y DH escriben la niebla. Mirar el borde entre el terreno normal y el lejano de día, de noche, bajo la lluvia y bajo el agua, y que las demás dimensiones conservan su niebla.
+- **Sable y Veil:** un dirigible de Aeronautics cerca, a 200 y a 400 bloques: que no quede tapado por los LODs ni se vea a través del terreno, y que desaparezca pasados unos 320 bloques (lo que dice la guía).
+- **ModernFix con recursos dinámicos:** LODs sin manchas moradas o negras, también con bloques de mods (Fusion, Create y sus complementos, Framed Blocks).
+- **Tres corridas con `/entrelumen_capture`**, mismo mundo y mismo recorrido: sin DH (`Enable Rendering` apagado), con radio 128 y con radio 192. Comparar tiempo de cuadro, heap, recolector y memoria fuera del heap.
+- **TDR:** contar los eventos `nvlddmkm` del Visor de eventos durante las tres corridas, frente a una sesión igual sin DH.
+- **Cambio de dimensión:** entrar y salir varias veces del Nether, del Envés y de Solsticio. En el Envés y en las demás, ni un LOD; al volver al Overworld, los LODs vuelven, y en F3 o en un volcado de heap no se acumulan niveles viejos (DH #1279).
+- **Botón y textos:** el ícono a la izquierda del campo de visión en Opciones abre la pantalla de DH, con los nombres que cita la guía (`LOD Chunk Render Distance Radius`, `Enable Rendering`), en inglés también con el juego en español.
+
 ## Instalación en tu cliente
 
 Con todo lo anterior en verde, el sí de Elias y un backup de su instancia.
