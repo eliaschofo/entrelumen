@@ -143,6 +143,70 @@
     "config/iris.properties": {
       "enableShaders": "false",
       "disableUpdateMessage": "true"
+    },
+    "config/DistantHorizons.toml": {
+      "_version": 4,
+      "client": {
+        "showDhOptionsButtonInMinecraftUi": true,
+        "advanced": {
+          "graphics": {
+            "enableSsao": false,
+            "enableAntiAliasing": true,
+            "quality": {
+              "lodChunkRenderDistanceRadius": 128,
+              "maxHorizontalResolution": "BLOCK",
+              "verticalQuality": "MEDIUM",
+              "horizontalQuality": "MEDIUM",
+              "transparency": "COMPLETE",
+              "vanillaFadeMode": "DOUBLE_PASS",
+              "ditherDhFade": true,
+              "lodBiomeBlending": 3
+            },
+            "culling": {
+              "enableCaveCulling": true
+            },
+            "genericRendering": {
+              "enableCloudRendering": true,
+              "dimensionEnabledCloudRenderingCsv": "minecraft:overworld"
+            },
+            "experimental": {
+              "ignoredDimensionCsv": "ad_astra:earth_orbit,ad_astra:glacio,ad_astra:glacio_orbit,ad_astra:mars,ad_astra:mars_orbit,ad_astra:mercury,ad_astra:mercury_orbit,ad_astra:moon,ad_astra:moon_orbit,ad_astra:venus,ad_astra:venus_orbit,ae2:spatial_storage,aether:the_aether,compactmachines:compact_world,deeperdarker:otherside,entrelumen:enves,entrelumen:solsticio,eternal_starlight:starlight,irons_spellbooks:pocket_dimension,jamd:end,jamd:mining,jamd:nether,mahoutsukai:reality_marble,minecraft:the_end,minecraft:the_nether,neovitae:dungeon,the_bumblezone:the_bumblezone,twilightforest:twilight_forest,undergarden:undergarden"
+            }
+          },
+          "autoUpdater": {
+            "enableAutoUpdater": false,
+            "enableSilentUpdates": false
+          },
+          "debugging": {
+            "enableDebugKeybindings": false
+          }
+        }
+      },
+      "common": {
+        "worldGenerator": {
+          "generatorPlan": "SURFACE_THEN_CHUNKS",
+          "chunkGeneratorMode": "FEATURES",
+          "showGenerationProgress": "DISABLED"
+        },
+        "multiThreading": {
+          "numberOfThreads": 3,
+          "threadRunTimeRatio": 1.0
+        },
+        "logging": {
+          "warning": {
+            "showLowMemoryWarningOnStartup": false,
+            "showPoolInsufficientMemoryWarning": false,
+            "showHighVanillaRenderDistanceWarning": false,
+            "showReplayWarningOnStartup": false,
+            "showUpdateQueueOverloadedChatWarning": false,
+            "showSlowWorldGenSettingWarnings": false,
+            "showModCompatibilityWarningsOnStartup": false,
+            "showGarbageCollectorWarning": false,
+            "showExplicitGcDisabledWarning": false
+          }
+        }
+      }
     }
-  }
+  },
+  "extraEvidence": "Distant Horizons 3.3.2 (Elias, 3 October 2026; docs/design/mod-pingpong.md#distant-horizons-310): names and types read from the pinned JAR (Config.java fields, assets/distanthorizons/lang/en_us.json), _version 4 from ConfigFileHandler.loadFromFile. Quality and CPU presets live only in its GUI, so the file carries what MEDIUM (RenderQualityPresetConfigEventHandler) and LOW_IMPACT (3 threads at ratio 1.0 on a 12-thread CPU) set, with SSAO off; the GUI then reads Custom. ignoredDimensionCsv lists every dimension the pinned JARs and the companion register except the Overworld (tools/test_generate_client_defaults.py checks it); ae2:spatial_storage is registered in code. Ars Nouveau planarium dimensions get random names and cannot be listed."
 }

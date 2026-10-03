@@ -4,6 +4,8 @@
 
 Desde el 24 de septiembre de 2026 no hay un número objetivo de mods: cada mod tiene que contar, tener sentido y no arruinar el rendimiento. El controlador propone por tipo; Elias elige. Antes de instalar, cada elegido se verifica: versión para NeoForge 1.21.1 (21.1.249), dependencias, conflictos, costo de rendimiento y escalonado por actos.
 
+Si el mod registra una dimensión, se agrega la dimensión nueva a `ignoredDimensionCsv` de Distant Horizons (sección `extra` de `pack/config/entrelumen/client-preset.json`) y se regenera con `tools/generate_client_defaults.py --write`. `tools/test_generate_client_defaults.py` falla mientras falte ([Distant Horizons](#distant-horizons-310)).
+
 ## Ronda 1 (24/9)
 
 | Tipo | Elegidos por Elias | Notas |
@@ -1077,3 +1079,25 @@ La familia usa el mismo mecanismo de siempre: cada ID quitado se verifica contra
 
 - `tools/generate_family_balance.py --check`, `tools/test_family_balance.py` (clase `LoopsTest`), `check_recipe_design.py`, `check_loot_tables.py --copies`, `test_recipe_tools.py` y `test_sync_pack.py` pasan.
 - Pendiente de arranque (sin servidor hoy): `[ENTRELUMEN_LOOPS_BALANCE]` informa `registered` y `loaded-ingredient-check` sin `failed`; la receta de perlas se carga con `ae2:ender_dust` como único ingrediente; las 27 recetas de grumo cargan con un solo resultado; ninguna receta quitada reaparece en JEI/EMI.
+
+## Distant Horizons (3/10)
+
+Elias lo decidió el 3/10, después de una investigación: Distant Horizons (DH) entra sólo en el cliente, prendido por defecto y sólo en el Overworld. Familia `catalog/families/distant-horizons.json`, con Iris de precedente: el lock pasa a **378 cliente**; el servidor y el server pack no cambian.
+
+| Mod | Versión | Fuente | Lado | Para qué |
+|---|---|---|---|---|
+| Distant Horizons | 3.3.2 | CF 508933/8943824 (los mismos bytes en Modrinth, `Ez3cx7Yd`) | cliente | Dibuja terreno lejano simplificado (LODs) más allá de la distancia de renderizado. |
+
+- **Por qué 3.3.2 y no 3.3.3:** 3.3.3 suma un enganche con Chunky que tira «Chunky is not loaded» en el primer evento de chunk: tumba un servidor dedicado y desconecta a un cliente la primera vez que entra (DH #1329, abierto). 3.3.2 no lo trae, y Chunky 1.4.23 está en el lock de los dos lados.
+- **Pero 3.3.2 apaga su generador con Chunky:** si encuentra la API de Chunky, fija por su API el plan de generación en `DISABLED`. Con el lock de hoy, DH sólo muestra tierra ya generada (explorada o pregenerada). Queda para Elias: así, o Chunky sólo en el servidor. Detalle en [loading-compatibility](loading-compatibility.md#distant-horizons-332-3-de-octubre-de-2026).
+- **Defaults**, sembrados una vez por Default Options en `config/DistantHorizons.toml` (como Iris: quien cambia algo lo conserva al actualizar el pack; un perfil que ya tiene el archivo no recibe cambios nuevos):
+  - `_version = 4`, la de 3.3.2: con otra más vieja, DH borra el archivo y arranca con los suyos;
+  - calidad MEDIUM con SSAO apagado, `vanillaFadeMode=DOUBLE_PASS` y radio de 128 chunks;
+  - 3 hilos al 100 %, lo que da LOW_IMPACT en una CPU de 12 hilos (los presets no se guardan en el archivo);
+  - `generatorPlan=SURFACE_THEN_CHUNKS` con `chunkGeneratorMode=FEATURES`;
+  - nubes de DH prendidas en el Overworld, para tapar dónde termina el terreno lejano (el pack deja las de vanilla apagadas);
+  - las otras 29 dimensiones en `ignoredDimensionCsv`, el Envés incluido;
+  - sin actualizador, sin teclas de depuración y sin avisos de chat.
+- **Teclas:** DH no registra ninguna; sus F6 a F8 de depuración van apagadas. `tools/check_keybinds.py`: 0 choques.
+- **Guía QoL** (`guide_qol_client`): un nodo de DH (alcance, sólo el Overworld, lo que falta en el terreno lejano, shaders y cómo bajarlo o apagarlo), el radio en el primer perfil, su botón en la de Sodium y la advertencia de los optimizadores corregida.
+- **Fase final:** lo que hay que mirar en juego está en [final-test-phase](../verification/final-test-phase.md#distant-horizons-310).

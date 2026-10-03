@@ -95,6 +95,29 @@ class SyncPackTest(unittest.TestCase):
                 self.assertEqual(self.receipt.read_bytes(), receipt_before)
                 self.assertEqual(jar_target.read_bytes(), jar_before)
 
+    def test_seed_once_defaults_never_reach_the_players_own_config(self):
+        """The pack ships Iris and Distant Horizons defaults only under config/defaultoptions/extra, which
+        Default Options copies to config/ when the file is missing; a player's later changes stay theirs."""
+        real = Path(sync_pack.__file__).resolve().parents[1] / "pack/config/defaultoptions/extra/config"
+        player = {"config/DistantHorizons.toml": b"_version = 4\n[client.advanced.graphics.quality]\n"
+                                                 b"lodChunkRenderDistanceRadius = 64\n",
+                  "config/iris.properties": b"enableShaders=true\n"}
+        for name, content in player.items():
+            seed = self.root / "pack/config/defaultoptions/extra" / name
+            seed.parent.mkdir(parents=True, exist_ok=True)
+            seed.write_bytes((real / Path(name).name).read_bytes())
+            (self.destination / name).write_bytes(content)
+        self.sync()
+        self.sync()
+        managed = json.loads(self.receipt.read_text())
+        for name, content in player.items():
+            self.assertEqual((self.destination / name).read_bytes(), content)
+            self.assertNotIn(name, managed)
+            seeded = "config/defaultoptions/extra/" + name
+            self.assertEqual((self.destination / seeded).read_bytes(), (real / Path(name).name).read_bytes())
+            self.assertIn(seeded, managed)
+        self.assertEqual(sorted(p.name for p in real.iterdir()), ["DistantHorizons.toml", "iris.properties"])
+
 
 if __name__ == "__main__":
     unittest.main()

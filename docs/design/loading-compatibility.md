@@ -48,3 +48,60 @@ El integrador debe revisar arranque, recarga F3+T, entrada/salida de mundo y con
 ### Riesgo sin resolver
 
 Ninguna prueba de arranque corrió: no hay evidencia propia de que alguno de los 378 mods use una API de modelos no estándar. Los candidatos son los que cambian modelos o texturas por su cuenta (Fusion, texturas conectadas de Create y sus complementos, modelos de LittleTiles y Framed Blocks, Sodium/Iris). Hay que mirar en el primer arranque real: texturas faltantes o morado y negro, el log de ModernFix y el uso de heap en el menú. Si algo falla, borrar el archivo o poner la línea en `false` basta.
+
+## Distant Horizons 3.3.2 (3 de octubre de 2026)
+
+Decisión de Elias del 3/10: Distant Horizons (DH) sólo en el cliente, prendido por defecto y sólo en el Overworld ([mod-pingpong](mod-pingpong.md#distant-horizons-310)). Esta sección junta lo que se leyó en los JAR fijados; no corrió ningún arranque.
+
+### Binario y dependencias
+
+- `DistantHorizons-3.3.2-1.21.1-fabric-neoforge.jar`: CurseForge 508933/8943824, Modrinth `uCdwusMi`/`Ez3cx7Yd`. Bajado del CDN de Modrinth; SHA-1 `d18b0829416ec6948102524b6e913e5bc73ae402` y SHA-512 iguales a los de su API; el registro de CurseForge da el mismo nombre y 28.224.156 bytes. Licencia LGPL-3.0. No va en el repo ni en overrides: el lock referencia el archivo.
+- `neoforge.mods.toml`: `clientSideOnly = "true"`, Minecraft `[1.21],[1.21.1]`, NeoForge `[*,)` y una sola incompatibilidad, SSRD `[*,1.8.6]`, que no está en el lock. Ningún JAR del pack declara a DH. La familia `catalog/families/distant-horizons.json` lo marca `clientOnly`: el lock pasa a **378 cliente**; el servidor y el server pack no cambian.
+- El JAR trae Fabric API en `META-INF/jars` para el lado Fabric; no tiene `META-INF/jarjar`, así que NeoForge no lo carga.
+- DH no registra teclas fuera de las de depuración (F6 a F8), que dependen de `enableDebugKeybindings` y van apagadas.
+
+### Chunky apaga el generador de DH (el hallazgo más importante)
+
+`AbstractModInitializer.logIncompatibilityWarnings` de 3.3.2 busca la clase `org.popcraft.chunky.api.ChunkyAPI`. Chunky 1.4.23 la trae y está en el lock de los dos lados. Si la encuentra, DH fija por su API `generatorPlan = DISABLED` y `disableUnchangedChunkCheck = true` (origen «Distant Horizons / Chunky»), por encima del archivo; su pantalla lo muestra bloqueado. Además avisa en el log que Chunky puede dejar huecos.
+
+Consecuencia: con el lock de hoy, DH no genera terreno lejano. Sólo arma LODs de chunks que ya existen: lo explorado y lo que pregenera Chunky (DH los toma al guardarse, en `ChunkMap.save`). El `SURFACE_THEN_CHUNKS` con `FEATURES` del archivo sembrado vale recién si Chunky sale del cliente. Es una decisión para Elias: 3.3.2 con Chunky y sin generador lejano, o Chunky sólo en el servidor (con 3.3.2 o 3.3.3 y su generador). La guía lo dice tal cual.
+
+### Mixins frente al pack
+
+DH 3.3.2 en NeoForge inyecta, en 1.21.1 (los demás mixins de su lista están vacíos para esta versión, entre ellos el de Twilight Forest):
+
+- Servidor (también el integrado): `ChunkMap.save` al volver, `ServerPlayer.changeDimension` al empezar y `setServerLevel` al volver, `Util.backgroundExecutor` y `wrapThreadWithTaskName` al empezar.
+- Cliente: `ClientPacketListener.handleLogin` y `close`, `DebugScreenOverlay.getSystemInformation`, `FogRenderer.setupFog` al volver, `LevelRenderer.renderSectionLayer` al empezar, `LightTexture.updateLightTexture` al volver, `OptionsScreen.init` al volver (el botón), `Minecraft.close`, un `@Redirect` de `Runnable.run` dentro de `Minecraft.onGameLoadFinished`, `Main.main` (sólo carga RenderDoc en desarrollo) y un `@Redirect` en `GlFramebuffer.addDepthAttachment` de Iris. El de Immersive Portals no aplica: no está.
+
+Contra el índice de 5.603 inyecciones de los 377 JAR anteriores (con los anidados), ningún otro mod redirige las mismas llamadas, así que no aparece un choque de carga. Coinciden en el mismo método:
+
+- `FogRenderer.setupFog`: Iris al empezar, Sodium Extra al final y DH al volver. Tres mods escriben la niebla: hay que mirarla.
+- `LevelRenderer.renderSectionLayer`: Iris (al empezar y al volver), Sable, Create Aeronautics y Veil (inyecciones en el medio y un `@Redirect` del perfilador). DH entra al empezar; el orden de dibujo con las estructuras de Sable no se puede leer sin correrlo.
+- `LightTexture.updateLightTexture`: Iris, Just Dire Things y Tombstone envuelven llamadas internas; DH lee al volver.
+- `DebugScreenOverlay.getSystemInformation` (seis mods suman líneas al F3), `ClientPacketListener.handleLogin` y `close`, `Minecraft.close`, `ServerPlayer.changeDimension` (Moonlight, sin cancelar) y `Main.main` (Veil): sólo agregan, sin pisarse.
+- `OptionsScreen`: Sodium inyecta en la lambda del botón de video, no en `init`; el botón de DH queda a la izquierda del campo de visión.
+- El access transformer de DH abre campos (por ejemplo `ThreadingDetector.lock` sin `final`); los transformers se suman.
+
+### Con los mods de render del pack
+
+- **Sodium 0.8.13:** sin relación declarada de ningún lado. DH dibuja en su propio pase. Sin evidencia de choque; se ve en juego.
+- **Iris 1.8.14-beta:** las 108 referencias de `net/irisshaders/iris/compat/dh` a clases y miembros de DH resuelven contra 3.3.2. Con Iris presente, DH fuerza por API el motor `OPEN_GL` (el archivo deja `AUTO`) y la transparencia `COMPLETE`. Si alguien elige a mano el motor `BLAZE_3D` con Iris instalado, DH muestra un diálogo y cierra el juego; el archivo no toca `renderingEngine`. Con un shader pack, los LODs salen sin textura (DH #1316, abierto: Iris 1.10 y anteriores).
+- **ImmediatelyFast 1.6.13:** sólo comparte el método del F3. Que 1.6.14 arregle un estado de profundidad con DH no se verificó.
+- **ModernFix con `dynamic_resources=true`:** ningún JAR nombra al otro. DH arma colores y modelos desde hilos propios; si un modelo se carga tarde, el LOD puede salir morado o negro. Se ve en juego.
+- **Flywheel** (en Create 6.0.10 y Aeronautics): no comparte ningún método con DH. Los bloques con entidad no van a los LODs.
+- **Sable y Create Aeronautics:** `SableConfig` deja `sub_level_tracking_range` en 320 bloques y el pack no lo cambia. Pasada esa distancia el barco deja de existir en el cliente mientras el terreno lejano sigue. Sable #376 (abierto) además muestra estructuras tapadas por los LODs.
+- **LittleTiles:** sus construcciones no aparecen en los LODs (DH #1301, abierto).
+- **Chunky 1.4.23:** ver arriba. 3.3.2 no trae el `ChunkyAccessor` de 3.3.3 que tira «Chunky is not loaded» (#1329).
+
+### Dimensiones
+
+`ignoredDimensionCsv` se compara nombre por nombre (`equalsIgnoreCase`, sin recortar espacios) y no admite comodines. El archivo sembrado lleva las 29 dimensiones que registran los JAR fijados y el companion, menos el Overworld: Nether, End, Aether (el Deep Aether vive ahí), Twilight Forest, Undergarden, Bumblezone, Eternal Starlight, los cinco planetas y las cinco órbitas de Ad Astra, Compact Machines, Solsticio, Envés, la Otherside de Deeper and Darker, el bolsillo de Iron's Spells, la Reality Marble de Mahou Tsukai, el calabozo de Neo Vitae, las tres de JAMD y el almacenamiento espacial de AE2 (registrado en código). Las dimensiones del planarium de Ars Nouveau tienen nombres al azar (UUID) y no se pueden listar; el jugador no entra en ellas. `tools/test_generate_client_defaults.py` falla si un JAR fijado o el companion suma una dimensión que la lista no tiene.
+
+### Otros riesgos
+
+- **Hilos:** el preset LOW_IMPACT no se guarda en el archivo (es sólo de la pantalla) y vale el 25 % de los hilos de la CPU, redondeado para arriba. El archivo fija 3 hilos al 100 %, lo que LOW_IMPACT da con 9 a 12 hilos. En una CPU de 4 hilos, 3 es casi todo; la pantalla muestra «Custom».
+- **Calidad:** igual, MEDIUM no se guarda. El archivo lleva los valores de MEDIUM con SSAO apagado; la pantalla muestra «Custom».
+- **Avisos:** los avisos de chat de DH van apagados (memoria, recolector, compatibilidad, Chunky). El log los sigue escribiendo.
+- **Memoria y GPU:** los búferes de DH van fuera del heap; la GTX 1070 de Elias ya tiene reinicios de driver sin DH. Se mide en la fase final.
+- **Respaldo:** la base de DH queda dentro de cada mundo y SimpleBackups la comprime con el resto. No se verificó si se puede excluir.
+- **Cambio de dimensión:** DH #1279 (niveles viejos que no se liberan) figura cerrado; se mira igual.
